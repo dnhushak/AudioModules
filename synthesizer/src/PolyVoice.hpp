@@ -1,11 +1,4 @@
 #pragma once
-
-#include <stdio.h>
-#include <math.h>
-#include "Module.hpp"
-#include "Wavetables.hpp"
-
-
 using namespace chip
 {
 
@@ -16,7 +9,10 @@ using namespace chip
             ~Polyvoice();
         
         private:
-            
+            int note;
+			float phase;
+            float frequency;
+            int isActive;
     };
     
 }
