@@ -1,22 +1,17 @@
 #pragma once
 
-#include <stdio.h>
-#include <math.h>
-#include "AudioProcessor.hpp"
 #include "PolyVoice.hpp"
+#include "Mixer.hpp"
 
-
-using namespace chip
-{
-
-    class Module 
-    {
+using namespace chip;
+class Module {
         public:
+			//Voice voice //defines the modules current instrument TODO LATER
+			Mixer mixer;
+			std::vector<Polyvoice> polyvoices; //each element represents one note being played
             Module();
-            ~Module();
-        
-        private:
-            
-    };
+			vector<float> advance(int); //create a mixer advance the phase registers of every 
+										//polyvoice in this module (aka - move along the sound wave)
+};
 
-}
+
