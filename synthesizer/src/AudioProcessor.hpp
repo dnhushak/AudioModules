@@ -1,37 +1,58 @@
-#include "AudioProcessor.hpp"
 
-namespace chip 
+#pragma once
+
+#include <stdio.h>
+#include <math.h>
+#include <iostream>
+#include <vector>
+#include "portaudio.h"
+#include "mixer.hpp"
+//#include "Module.hpp"
+
+//NUM-SECONDS is simply a playback mechanism
+#define NUM_SECONDS   (1)
+
+//Sample rate of the soundcard
+#define SAMPLE_RATE   (32000)
+
+//Audio buffer size
+#define FRAMES_PER_BUFFER  (256)
+
+//Power of wavetable size (wavetable size = 2 ^ POWER)
+#define POWER (4)
+#define TABLE_SIZE   (1<<POWER)
+
+//Pi, for generation of sine table
+#ifndef M_PI
+#define M_PI  (3.14159265)
+#endif
+
+
+namespace chip
 {
-    AudioProcessor::AudioProcessor()
+
+    class AudioProcessor
     {
-        int i;
-        
-        // Create the 5 modules for the synthesizer and add them to the mixer
-        for(i = 0; i < 5; i++)
-        {
-            //modules.push_back(new Module());
-            //masterMixer.addObjects((IAudio)modules[i]);
-        }
-    }
-    
-    AudioProcessor::~AudioProcessor()
-    {
-       
-    }
-    
-    static int paCallback( const void *inputBuffer, void *outputBuffer,
+        public:
+            AudioProcessor();
+            ~AudioProcessor();
+            
+            //void generateWavetables();
+            
+            /* This routine will be called by the PortAudio engine when audio is needed.
+            ** It may called at interrupt level on some machines so don't do anything
+            ** that could mess up the system like calling malloc() or free().
+            */
+            static int paCallback( const void *inputBuffer, void *outputBuffer,
                                    unsigned long framesPerBuffer,
                                    const PaStreamCallbackTimeInfo* timeInfo,
                                    PaStreamCallbackFlags statusFlags,
-                                   void *userData )
-    {
-        float *out = (float*)outputBuffer;
-        
-        (void) inputBuffer;
-        (void) timeInfo;
-        (void) statusFlags;
-        (void) userData;
-        
-        AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
-    }
-}
+                                   void *userData );
+            
+        private:
+            Mixer masterMixer;
+            //vector<Module> modules;
+    };
+
+} 
+
