@@ -6,6 +6,11 @@ Mixer::Mixer(std::vector<IAudio> elements)
 	audioList = new std::vector<IAudio>();
 }
 
+Mixer::Mixer()
+{
+	//empty
+}
+
 vector<float> Mixer::advance(int numSamples)
 {
 	//the 0th elements are all added together, the 1st elements, 2nd, all the way to the 
