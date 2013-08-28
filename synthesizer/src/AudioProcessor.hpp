@@ -37,6 +37,9 @@ namespace chip
             AudioProcessor();
             ~AudioProcessor();
             
+            Mixer* masterMixer;
+            std::vector<IAudio*> modules;
+            
             //void generateWavetables();
             
             /* This routine will be called by the PortAudio engine when audio is needed.
@@ -48,10 +51,6 @@ namespace chip
                                    const PaStreamCallbackTimeInfo* timeInfo,
                                    PaStreamCallbackFlags statusFlags,
                                    void *userData );
-            
-        private:
-            Mixer masterMixer;
-            std::vector<Module> modules;
     };
 
 } 

@@ -1,9 +1,9 @@
 #include "Mixer.hpp"
 	
-Mixer::Mixer(std::vector<IAudio> elements)
+Mixer::Mixer(std::vector<IAudio*> elements)
 {
 	//constructor
-	audioList = new std::vector<IAudio>();
+	audioList = new std::vector<IAudio*>();
 }
 
 Mixer::Mixer()
@@ -31,7 +31,7 @@ vector<float> Mixer::advance(int numSamples)
 	return mixedFinal; //the final, "synthesized" list
 }
 
-void Mixer::addObjects(IAudio theThingToAdd)
+void Mixer::addObjects(IAudio* theThingToAdd)
 {
 	audioList.push_back(theThingToAdd);
 }

@@ -9,7 +9,8 @@ namespace chip
         // Create the 5 modules for the synthesizer and add them to the mixer
         for(i = 0; i < 5; i++)
         {
-            modules.push_back(new Module());
+            IAudio* module = new Module();
+            modules.push_back(module);
         }
         
         masterMixer = new Mixer(modules);

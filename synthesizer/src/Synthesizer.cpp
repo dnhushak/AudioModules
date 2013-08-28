@@ -24,10 +24,10 @@ int main(void)
     PaStreamParameters outputParameters;
     PaStream *stream;
     PaError err;
-    void data;
+    //void data;
     int i;
     
-    // TODO create the AudioProcessor
+    chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
     
     err = Pa_Initialize();
     if( err != paNoError ) error(err);
@@ -40,7 +40,6 @@ int main(void)
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
     
-    // TODO send in the AudioProcessor's callback instead of one that doesn't exist
     err = Pa_OpenStream(
           &stream,
           NULL, /* no input */
@@ -48,8 +47,8 @@ int main(void)
           SAMPLE_RATE,
           FRAMES_PER_BUFFER,
           paClipOff,      /* we won't output out of range samples so don't bother clipping them */
-          patestCallback,
-          &data );
+          audioProcessor->paCallback,
+          NULL );
           
     if( err != paNoError ) error(err);
     
