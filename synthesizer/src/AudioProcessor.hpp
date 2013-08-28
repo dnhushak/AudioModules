@@ -7,7 +7,7 @@
 #include <vector>
 #include "portaudio.h"
 #include "Mixer.hpp"
-//#include "Module.hpp"
+#include "Module.hpp"
 
 //NUM-SECONDS is simply a playback mechanism
 #define NUM_SECONDS   (1)
@@ -51,7 +51,7 @@ namespace chip
             
         private:
             Mixer masterMixer;
-            //vector<Module> modules;
+            std::vector<Module> modules;
     };
 
 } 

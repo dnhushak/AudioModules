@@ -9,9 +9,10 @@ namespace chip
         // Create the 5 modules for the synthesizer and add them to the mixer
         for(i = 0; i < 5; i++)
         {
-            //modules.push_back(new Module());
-            //masterMixer.addObjects((IAudio)modules[i]);
+            modules.push_back(new Module());
         }
+        
+        masterMixer = new Mixer(modules);
     }
     
     AudioProcessor::~AudioProcessor()
@@ -32,6 +33,6 @@ namespace chip
         (void) statusFlags;
         (void) userData;
         
-        AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
+        //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
     }
 }

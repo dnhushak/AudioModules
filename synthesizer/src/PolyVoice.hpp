@@ -6,7 +6,7 @@ namespace chip
     {
         public:
             PolyVoice();
-            ~Polyvoice();
+            ~PolyVoice();
         
         private:
             int note;
