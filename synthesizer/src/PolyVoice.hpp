@@ -1,5 +1,5 @@
 #pragma once
-using namespace chip
+namespace chip
 {
 
     class PolyVoice
