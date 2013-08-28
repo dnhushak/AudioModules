@@ -1,10 +1,10 @@
 //Audio Object Interface
 using namespace chip;
 
-class IAudio:
+class IAudio
 {
 	//no member variables
 	public:
-		//function that advances..things! Will be different for each IAudio implementation
-		float[] advance(int);
-}
+		//Will be different for each IAudio implementation
+		std::vector<float> advance(int);
+};

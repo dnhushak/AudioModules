@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "portaudio.h"
-#include "mixer.hpp"
+#include "Mixer.hpp"
 //#include "Module.hpp"
 
 //NUM-SECONDS is simply a playback mechanism
