@@ -4,7 +4,7 @@
 #include <vector>
 namespace chip
 {
-	class Module 
+	class Module: public IAudio
 	{
 			public:
 				//Voice voice //TODO - defines the module's current instrument

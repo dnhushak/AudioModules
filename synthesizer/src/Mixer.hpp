@@ -4,7 +4,7 @@
 
 namespace chip
 {
-	class Mixer 
+	class Mixer: public IAudio
 	{
 		public:
 			std::vector<IAudio> audioList; // each of the IAudio objects that will be added together
