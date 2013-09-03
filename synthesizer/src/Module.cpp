@@ -1,6 +1,6 @@
 #include <Module.hpp>
 
-Module::Module(stuff)
+Module::Module()
 { 
 	//constructor
 }

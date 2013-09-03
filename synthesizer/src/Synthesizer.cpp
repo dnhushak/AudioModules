@@ -14,6 +14,13 @@ int error(int err)
     return err;
 }
 
+/*
+ * This routine is called by portaudio when playback is done.
+ */
+static void StreamFinished( void* userData )
+{
+   
+}
 
 /*
  * Sets up the PortAudio audio stream and then waits until the user presses

@@ -5,15 +5,14 @@ namespace chip
     AudioProcessor::AudioProcessor()
     {
         int i;
+        masterMixer = new Mixer();
         
         // Create the 5 modules for the synthesizer and add them to the mixer
         for(i = 0; i < 5; i++)
         {
             IAudio* module = new Module();
-            modules.push_back(module);
+            masterMixer->addObjects(module);
         }
-        
-        masterMixer = new Mixer(modules);
     }
     
     AudioProcessor::~AudioProcessor()
