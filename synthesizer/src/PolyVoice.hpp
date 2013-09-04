@@ -1,4 +1,10 @@
 #pragma once
+#include <stdio.h>
+#include <math.h>
+#include "Module.hpp"
+#include "Wavetables.hpp"
+
+
 namespace chip
 {
 

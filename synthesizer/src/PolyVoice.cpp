@@ -1,11 +1,6 @@
 #include "PolyVoice.hpp"
 
-#include <stdio.h>
-#include <math.h>
-#include "Module.hpp"
-#include "Wavetables.hpp"
-
-PolyVoice::PolyVoice()
+chip::PolyVoice::PolyVoice()
 {
 	int note = 0;
 	float phase = 0;

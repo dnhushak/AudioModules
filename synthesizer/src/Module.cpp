@@ -1,11 +1,11 @@
 #include <Module.hpp>
 
-Module::Module()
+chip::Module::Module()
 { 
 	//constructor
 }
 
-std::vector<float> Module::advance(int numSamples)
+std::vector<float> chip::Module::advance(int numSamples)
 {
 	return mixer.advance(numSamples);
 }

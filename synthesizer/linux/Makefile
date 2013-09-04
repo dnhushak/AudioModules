@@ -16,9 +16,12 @@ Synthesizer.o: $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.hpp
 AudioProcessor.o: $(SRC)AudioProcessor.cpp $(SRC)Mixer.hpp $(SRC)Module.hpp
 	$(CC) -c $(SRC)AudioProcessor.cpp $(LDFLAGS)
 
-Mixer.o: $(SRC)Mixer.cpp $(SRC)IAudio.hpp
+Mixer.o: $(SRC)Mixer.cpp $(SRC)IAudio.hpp $(SRC)Module.hpp
 	$(CC) -c $(SRC)Mixer.cpp $(LDFLAGS)
-	
-Module.o: $(SRC)Module.hpp
+
+Module.o: $(SRC)Module.cpp $(SRC)Mixer.hpp
 	$(CC) -c $(SRC)Module.cpp $(LDFLAGS)
-	
+
+PolyVoice.o: $(SRC)PolyVoice.cpp
+	$(CC) -c $(SRC)PolyVoice.cpp $(LDFLAGS)
+
