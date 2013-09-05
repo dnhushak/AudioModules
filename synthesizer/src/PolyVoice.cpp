@@ -2,8 +2,15 @@
 
 chip::PolyVoice::PolyVoice()
 {
-	int note = 0;
-	float phase = 0;
-    float frequency = 0;
-    int isActive = 0;
+	note = 0;
+	phase = 0;
+    frequency = 0;
+    isActive = 0;
+}
+
+
+std::vector<float> chip::PolyVoice::advance(int numSamples) 
+{
+    
+    return NULL;    //TODO wavetable lookup
 }

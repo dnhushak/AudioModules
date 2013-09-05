@@ -20,19 +20,22 @@ namespace chip
        
     }
     
-    static int paCallback( const void *inputBuffer, void *outputBuffer,
+    int paCallback( const void *inputBuffer, void *outputBuffer,
                                    unsigned long framesPerBuffer,
                                    const PaStreamCallbackTimeInfo* timeInfo,
                                    PaStreamCallbackFlags statusFlags,
                                    void *userData )
     {
-        float *out = (float*)outputBuffer;
+        //float *out = (float*)outputBuffer;
         
         (void) inputBuffer;
+        (void) outputBuffer;
         (void) timeInfo;
         (void) statusFlags;
         (void) userData;
         
         //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
+        
+        return 0;
     }
 }

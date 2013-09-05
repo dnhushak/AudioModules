@@ -7,9 +7,13 @@ namespace chip
 {
 	class IAudio
 	{
-		//no member variables
+        //no member variables
 		public:
+		
+		    virtual ~IAudio() = 0;
+			
 			//Will be different for each IAudio implementation
-			std::vector<float> advance(int);
+			virtual std::vector<float> advance(int) = 0;
 	};
 }
+

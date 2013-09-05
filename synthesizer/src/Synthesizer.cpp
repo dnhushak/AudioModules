@@ -32,7 +32,6 @@ int main(void)
     PaStream *stream;
     PaError err;
     //void data;
-    int i;
     
     chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
     
