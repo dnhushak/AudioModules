@@ -41,22 +41,15 @@ void wavetablegen(void){
 	for (i=0;i<TABLE_SIZE;i++){
 		//First half of the wave
     		if (i<half){
-    			tri[i] = -16384 + (((float)i/quarter) * 16384);
     			sq1[i] = -16384;
-    			sq2[i] = -16384;
     		}
     		//Third quarter of the wave
     		else if (i<three_fourths){
-    			tri[i] = 16383 - ((((float)i-half)/quarter) * 16384);
     			sq1[i] = 16383;
-    			sq2[i] = -16384;
     		}
     		//Fourth quarter of the wave
     		else {
-    			tri[i] = 16384 - ((((float)i-half)/quarter) * 16384);
     			sq1[i] = 16383;
-    			sq2[i] = 16383;
     		}
-    		nse[i] = rand() % 16384 - 16384;
     	}
 }
