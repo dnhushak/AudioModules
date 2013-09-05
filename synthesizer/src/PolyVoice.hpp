@@ -1,9 +1,7 @@
 #pragma once
-#include <stdio.h>
-#include <math.h>
-#include <vector>
 //#include "Wavetables.hpp"
 #include "IAudio.hpp"
+#include <vector>
 
 namespace chip
 {
@@ -13,7 +11,7 @@ namespace chip
             PolyVoice();
             ~PolyVoice();
             
-            std::vector<float> advance(int);
+            std::vector<float> myadvance(int);
         
         private:
             int note;

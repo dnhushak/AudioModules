@@ -32,7 +32,7 @@ IAudio.o: $(SRC)IAudio.cpp $(HEADERS)
 	$(CC) -c $(SRC)IAudio.cpp $(LDFLAGS)
 
 clean:
-	rm *.o
+	rm -rf $(EXE) *.o
 	
 depend:
 	gccmakedep -- $(LDFLAGS) -- $(SRCS)

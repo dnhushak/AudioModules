@@ -1,6 +1,18 @@
 #include "AudioProcessor.hpp"
 
 
+
+            /* This routine will be called by the PortAudio engine when audio is needed.
+            ** It may called at interrupt level on some machines so don't do anything
+            ** that could mess up the system like calling malloc() or free().
+            */
+            static int paCallback( const void *inputBuffer, void *outputBuffer,
+                                   unsigned long framesPerBuffer,
+                                   const PaStreamCallbackTimeInfo* timeInfo,
+                                   PaStreamCallbackFlags statusFlags,
+                                   void *userData );
+
+
 /*
  * This function gets called whenever an error occurred while setting up
  * PortAudio.
@@ -45,7 +57,7 @@ int main(void)
     outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
-    
+        
     err = Pa_OpenStream(
           &stream,
           NULL, /* no input */
@@ -53,8 +65,8 @@ int main(void)
           SAMPLE_RATE,
           FRAMES_PER_BUFFER,
           paClipOff,      /* we won't output out of range samples so don't bother clipping them */
-          audioProcessor->paCallback,
-          NULL );
+          paCallback,
+          audioProcessor); //JAZ: Double-check );
           
     if( err != paNoError ) error(err);
     
@@ -76,4 +88,29 @@ int main(void)
 
     Pa_Terminate();
 }
+
+    static int paCallback( const void *inputBuffer, void *outputBuffer,
+                                   unsigned long framesPerBuffer,
+                                   const PaStreamCallbackTimeInfo* timeInfo,
+                                   PaStreamCallbackFlags statusFlags,
+                                   void *userData )
+    {
+        //float *out = (float*)outputBuffer;
+        
+        (void) inputBuffer;
+        (void) outputBuffer;
+        (void) timeInfo;
+        (void) statusFlags;
+        (void) userData;
+        
+        //Something like
+        //chip::AudioProcessor *myAudio = (chip::AudioProcessor *)userData;
+        //myAudio->masterMixer.advance(FRAMES_PER_BUFFER);
+        
+        
+        //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
+        
+        return 0;
+    }
+
 
