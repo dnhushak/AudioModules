@@ -1,33 +1,33 @@
 #include "Wavetables.hpp"
 
-//Power of wavetable size (wavetable size = 2 ^ POWER)
-#define POWER (4)
-#define TABLE_SIZE  (1<<POWER)
-#define PHASESCALE ((1<<17)-1)
-#define NUM_SECONDS (1)
-
 using namespace chip;
 
-enum
+Wavetables::Wavetables()
 {
-	SQUARE, PULSE, TRIANGLE, SAWTOOTH, NOISE
-}WaveEnum;
+    /*
+    int waveType;
+    int i;
+    
+    for (waveType = 0; waveType < NUM_WAVES; waveType++)
+	{ 
+        for (i = 0; i < TABLE_SIZE; i++)
+	    { 
+	        table[waveType][i] = 0;
+	    }
+    }
+    */
 
-Wavetables::Wavetables(int waveTypeEnum)
-{
-	waveType = waveTypeEnum
-	//initialize 5x16 table
-	float table[5][16];
+	wavetablegen();
 }
 
-float Wavetables::getSample(WaveEnum waveType, float phase, int numSamples) 
+float Wavetables::getSample(int waveType, float phase, int numSamples) 
 {
-	
-    return 0;    //TODO lern2C++
+    // return table[waveType][??];
+	return 0;
 }
 
 //Generate Waves
-void wavetablegen(void){
+void Wavetables::wavetablegen(void){
 
     int i;
 
@@ -38,18 +38,24 @@ void wavetablegen(void){
 
     //Cycle through the entirety of TABLE_SIZE and generate triangle, and square waves
     //The triangle wave statement takes the current index of the for loop, casts it to a float (to do division), and scales it to do the correct math in triangle wave generation
-	for (i=0;i<TABLE_SIZE;i++){
+	for (i = 0; i < TABLE_SIZE; i++)
+	{    
+		// TODO: Add more than just square wave
+	
 		//First half of the wave
-    		if (i<half){
-    			sq1[i] = -16384;
-    		}
-    		//Third quarter of the wave
-    		else if (i<three_fourths){
-    			sq1[i] = 16383;
-    		}
-    		//Fourth quarter of the wave
-    		else {
-    			sq1[i] = 16383;
-    		}
-    	}
+		if ( i < half )
+		{
+			table[SQUARE][i] = -16384;
+		}
+		//Third quarter of the wave
+		else if ( i < three_fourths )
+		{
+			table[SQUARE][i] = 16383;
+		}
+		//Fourth quarter of the wave
+		else 
+		{
+			table[SQUARE][i] = 16383;
+		}
+	}
 }
