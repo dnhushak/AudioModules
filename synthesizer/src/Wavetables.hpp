@@ -9,13 +9,14 @@ namespace chip
     class Wavetables
     {
         public:
-            Wavetables();
+            Wavetables(int waveType);
             ~Wavetables();
-			float getSample(WaveEnum, float, int);
+			float getSample(enum, float, int);
+			int waveType;
 			
         private:
-			//5x16 table
-            
+			float[5][16];//wave table
+            void wavetablegen(void);
     };  
     
 }
