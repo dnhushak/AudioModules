@@ -2,23 +2,8 @@
 
 using namespace chip;
 
-Wavetables::Wavetables()
-{
-    /*
-    int waveType;
-    int i;
-    
-    for (waveType = 0; waveType < NUM_WAVES; waveType++)
-	{ 
-        for (i = 0; i < TABLE_SIZE; i++)
-	    { 
-	        table[waveType][i] = 0;
-	    }
-    }
-    */
-
-	wavetablegen();
-}
+bool Wavetables::instanceFlag;
+chip::Wavetables *Wavetables::single;
 
 float Wavetables::getSample(int waveType, float phase, int numSamples) 
 {
@@ -27,7 +12,7 @@ float Wavetables::getSample(int waveType, float phase, int numSamples)
 }
 
 //Generate Waves
-void Wavetables::wavetablegen(void){
+void Wavetables::wavetableGen(){
 
     int i;
 

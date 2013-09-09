@@ -5,13 +5,13 @@ chip::Module::Module()
 	//constructor 
 	
 	//instantiates "bucket" of polyvoices
-	polyvoices = new std::vector<float>();
+	polyvoices = new std::vector<chip::PolyVoice>();
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < 5; i++)
     {
-        IAudio* polyvoice = new PolyVoice();
-        polyvoices->push_back(polyvoice);
+        chip::PolyVoice* polyvoice = new chip::PolyVoice();
+        polyvoices->push_back(*polyvoice);
     }
 	
 }

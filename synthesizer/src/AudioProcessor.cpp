@@ -1,11 +1,16 @@
 #include "AudioProcessor.hpp"
 
+#include "Wavetables.hpp"
+
 namespace chip 
 {
     AudioProcessor::AudioProcessor()
     {
         int i;
         masterMixer = new Mixer();
+        
+        // Create the first and only instance of the Wavetables.
+        chip::Wavetables* wavetable = chip::Wavetables::getInstance();
         
         // Create the 5 modules for the synthesizer and add them to the mixer
         for(i = 0; i < 5; i++)
@@ -17,7 +22,6 @@ namespace chip
     
     AudioProcessor::~AudioProcessor()
     {
-       
     }
     
 }

@@ -19,15 +19,45 @@
 
 namespace chip
 {
-    class Wavetables
-    {
-        public:
-            Wavetables();
-            ~Wavetables();
-			float getSample(int waveType, float phase, int numSamples);
-			float table[NUM_WAVES][TABLE_SIZE]; //wave table
+class Wavetables
+{
+    private:
+        static bool instanceFlag;
+        static Wavetables *single;
+        
+        float table[NUM_WAVES][TABLE_SIZE];
+        
+        Wavetables()
+        {
+            //private constructor
+            instanceFlag = false;
+            single = NULL;
             
-        private:
-			void wavetablegen(void);
-    };  
+            wavetableGen();
+        }
+        
+        void wavetableGen();
+        
+    public:
+        static Wavetables* getInstance() 
+        {
+            if(!instanceFlag)
+            {
+                single = new Wavetables();
+                instanceFlag = true;
+                return single;
+            }
+            else
+            {
+                return single;
+            }
+        }
+        
+        ~Wavetables()
+        {
+            instanceFlag = false;
+        }
+        
+        float getSample(int waveType, float phase, int numSamples);
+};  
 }

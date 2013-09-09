@@ -1,5 +1,5 @@
 #pragma once
-//#include "Wavetables.hpp"
+#include "Wavetables.hpp"
 #include "IAudio.hpp"
 #include <vector>
 
@@ -9,15 +9,17 @@ namespace chip
     {
         public:
             PolyVoice();
-            ~PolyVoice();
+            ~PolyVoice() {}
             
-            std::vector<float> myadvance(int);
-        
+            std::vector<float> advance(int);
+            
         private:
             int note;
 			float phase;
             float frequency;
             int isActive;
+            
+            Wavetables* wavetable;
     };
     
 }
