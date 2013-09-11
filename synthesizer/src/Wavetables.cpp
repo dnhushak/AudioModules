@@ -5,10 +5,9 @@ using namespace chip;
 bool Wavetables::instanceFlag;
 chip::Wavetables *Wavetables::single;
 
-float Wavetables::getSample(int waveType, float phase, int numSamples) 
+float Wavetables::getSample(int waveType, int phase) 
 {
-    // return table[waveType][??];
-	return 0;
+    return table[waveType][phase];
 }
 
 //Generate Waves

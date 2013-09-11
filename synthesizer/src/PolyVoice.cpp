@@ -12,14 +12,34 @@ PolyVoice::PolyVoice()
     wavetable = Wavetables::getInstance();
 }
 
+/*
+ * 
+ */
 std::vector<float> PolyVoice::advance(int numSamples) 
 {
-    std::vector<float> temp;
+    std::vector<float>* samples = new std::vector<float>(numSamples);
     
     int waveType = SQUARE;
-    float phase = 0; // ?
+    int phase_truncated = 16-POWER;
+    float sample;
     
-    wavetable->getSample(waveType, phase, numSamples); //TODO pass the correct values
+    for(int i = 0; i < numSamples; i++)
+    {
+        sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
+        samples->push_back(sample);
+                                                
+        phase += stepsize();
+    }
     
-    return temp;    //TODO lern2C++
+    return *samples;
+}
+
+unsigned int PolyVoice::stepsize()
+{
+    //Maximum value of phase scale (16^4 in this case)
+	int step;
+
+	//Our equation!
+	step = (frequency*PHASESCALE)/SAMPLE_RATE;
+	return step;
 }

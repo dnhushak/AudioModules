@@ -10,12 +10,14 @@
 #define NUM_SECONDS (1)
 
 // Types of waves
-#define NUM_WAVES 5
 #define SQUARE   0
 #define PULSE    1
 #define TRIANGLE 2
 #define SAWTOOTH 3
 #define NOISE    4
+
+#define NUM_WAVES 5
+
 
 namespace chip
 {
@@ -58,6 +60,11 @@ class Wavetables
             instanceFlag = false;
         }
         
-        float getSample(int waveType, float phase, int numSamples);
+        
+        /*
+         * Takes the rounded phase and type of table and returns the sample of those
+         * indices from the wavetable.
+         */
+        float getSample(int waveType, int phase);
 };  
 }
