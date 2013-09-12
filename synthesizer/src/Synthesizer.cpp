@@ -69,7 +69,7 @@ int main(void)
           FRAMES_PER_BUFFER,
           paClipOff,      /* we won't output out of range samples so don't bother clipping them */
           paCallback,
-          audioProcessor); // We want to pass a pointer to the AudioProcessor
+          &audioProcessor); // We want to pass a pointer to the AudioProcessor
           
     if( err != paNoError ) error(err);
     
@@ -104,7 +104,10 @@ static int paCallback( const void *inputBuffer, void *outputBuffer,
     chip::AudioProcessor* audio = (chip::AudioProcessor*)userData;
     float *out = (float*)outputBuffer;
     
-    std::vector<float> buffer = audio->masterMixer->advance(FRAMES_PER_BUFFER);
+    //std::cout << audio << "\n";
+    //std::cout << "&: " << &audio << "\n";
+    
+    std::vector<float> buffer = audio->advance(FRAMES_PER_BUFFER);
     
     for(int i = 0; i < FRAMES_PER_BUFFER; i++)
     {

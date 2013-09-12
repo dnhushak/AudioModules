@@ -8,6 +8,7 @@
 #include "portaudio.h"
 #include "Mixer.hpp"
 #include "Module.hpp"
+#include "Wavetables.hpp"
 
 //NUM-SECONDS is simply a playback mechanism
 #define NUM_SECONDS   (1)
@@ -39,6 +40,8 @@ namespace chip
             
             Mixer* masterMixer;
             std::vector<IAudio*> modules;
+            
+            std::vector<float> advance(int);
             
             //void generateWavetables();
             

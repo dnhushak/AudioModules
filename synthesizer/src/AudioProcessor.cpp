@@ -1,7 +1,5 @@
 #include "AudioProcessor.hpp"
 
-#include "Wavetables.hpp"
-
 namespace chip 
 {
     AudioProcessor::AudioProcessor()
@@ -19,9 +17,15 @@ namespace chip
         {
             Module* module = new Module();
             
-		    module->activatePolyVoice(0, 80, 0.0, 2100);
+		    module->activatePolyVoice(0, 80, 90.0, 2100);
             masterMixer->addObjects((IAudio*)module);
         }
+    }
+    
+    std::vector<float> AudioProcessor::advance(int numSamples)
+    {
+        std::vector<float> buffer = masterMixer->advance(numSamples);
+        return buffer;
     }
     
     AudioProcessor::~AudioProcessor()
