@@ -13,7 +13,7 @@ namespace chip
 	{
 			public:
 				//Voice voice //TODO - defines the module's current instrument
-				Mixer mixer;
+				Mixer* mixer;
 				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
 				Module();
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 

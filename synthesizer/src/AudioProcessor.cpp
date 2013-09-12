@@ -19,27 +19,7 @@ namespace chip
         {
             Module* module = new Module();
             
-            PolyVoice* polyvoice1 = new PolyVoice();
-            polyvoice1->frequency = 210;
-            polyvoice1->note = 80;
-		    polyvoice1->isActive = 1;
-		    
-		    PolyVoice* polyvoice2 = new PolyVoice();
-            polyvoice2->frequency = 1000;
-            polyvoice2->note = 80;
-		    polyvoice2->isActive = 0;
-		    
-		    PolyVoice* polyvoice3 = new PolyVoice();
-            polyvoice3->frequency = 1000;
-            polyvoice3->note = 80;
-		    polyvoice3->isActive = 0;
-		    
-		    std::vector<PolyVoice>* pointer = module->polyvoices; 
-		    
-            (*pointer)[0] = *polyvoice1;
-            //module->polyvoices->push_back(*polyvoice2);
-            //module->polyvoices->push_back(*polyvoice3);
-            
+		    module->activatePolyVoice(0, 80, 0.0, 2100);
             masterMixer->addObjects((IAudio*)module);
         }
     }

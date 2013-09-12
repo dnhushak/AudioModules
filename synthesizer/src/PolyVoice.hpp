@@ -2,6 +2,7 @@
 #include "Wavetables.hpp"
 #include "IAudio.hpp"
 #include <vector>
+#include <iostream>
 
 
 //NUM-SECONDS is simply a playback mechanism

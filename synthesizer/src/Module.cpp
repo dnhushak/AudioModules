@@ -4,6 +4,9 @@ chip::Module::Module()
 { 
 	//constructor 
 	
+	//instantiates the mixer
+	mixer = new Mixer();
+	
 	//instantiates "bucket" of polyvoices
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
@@ -11,16 +14,14 @@ chip::Module::Module()
     for(int i = 0; i < 127; i++)
     {
         chip::PolyVoice* polyvoice = new chip::PolyVoice();
+        mixer->addObjects((IAudio*)polyvoice);
         polyvoices->push_back(*polyvoice);
     }
-    
-    printPolyVoices();
-	
 }
 
 std::vector<float> chip::Module::advance(int numSamples)
 {
-	return mixer.advance(numSamples);
+	return mixer->advance(numSamples);
 }
 
 void chip::Module::activatePolyVoice(int index, int note, float phase, int frequency)
