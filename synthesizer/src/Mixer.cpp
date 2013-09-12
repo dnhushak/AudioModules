@@ -16,6 +16,7 @@ std::vector<float> chip::Mixer::advance(int numSamples)
 	
 	for(unsigned int i = 0; i < audioList->size(); i++)
 	{ 
+	    
 		//for each IAudio in audioList, advance
 		*temp = (*audioList)[i]->advance(numSamples);
 		

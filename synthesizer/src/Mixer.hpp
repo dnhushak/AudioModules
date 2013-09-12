@@ -1,6 +1,7 @@
 #pragma once
 #include "IAudio.hpp"
 #include <vector>
+#include <iostream>
 
 namespace chip
 {

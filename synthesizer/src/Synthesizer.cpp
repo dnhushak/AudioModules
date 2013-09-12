@@ -2,15 +2,15 @@
 
 
 
-            /* This routine will be called by the PortAudio engine when audio is needed.
-            ** It may called at interrupt level on some machines so don't do anything
-            ** that could mess up the system like calling malloc() or free().
-            */
-            static int paCallback( const void *inputBuffer, void *outputBuffer,
-                                   unsigned long framesPerBuffer,
-                                   const PaStreamCallbackTimeInfo* timeInfo,
-                                   PaStreamCallbackFlags statusFlags,
-                                   void *userData );
+/* This routine will be called by the PortAudio engine when audio is needed.
+ ** It may called at interrupt level on some machines so don't do anything
+ ** that could mess up the system like calling malloc() or free().
+ */
+static int paCallback( const void *inputBuffer, void *outputBuffer,
+                       unsigned long framesPerBuffer,
+                       const PaStreamCallbackTimeInfo* timeInfo,
+                       PaStreamCallbackFlags statusFlags,
+                       void *userData );
 
 
 /*
@@ -47,6 +47,9 @@ int main(void)
     
     chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
     
+    std::cout << audioProcessor << "\n";
+    std::cout << "&: " << &audioProcessor << "\n";
+     
     err = Pa_Initialize();
     if( err != paNoError ) error(err);
     
@@ -66,7 +69,7 @@ int main(void)
           FRAMES_PER_BUFFER,
           paClipOff,      /* we won't output out of range samples so don't bother clipping them */
           paCallback,
-          audioProcessor); //JAZ: Double-check );
+          audioProcessor); // We want to pass a pointer to the AudioProcessor
           
     if( err != paNoError ) error(err);
     
@@ -89,28 +92,29 @@ int main(void)
     Pa_Terminate();
 }
 
-    static int paCallback( const void *inputBuffer, void *outputBuffer,
+static int paCallback( const void *inputBuffer, void *outputBuffer,
                                    unsigned long framesPerBuffer,
                                    const PaStreamCallbackTimeInfo* timeInfo,
                                    PaStreamCallbackFlags statusFlags,
                                    void *userData )
+{
+    (void) inputBuffer;
+    (void) timeInfo;
+    (void) statusFlags;
+    chip::AudioProcessor* audio = (chip::AudioProcessor*)userData;
+    float *out = (float*)outputBuffer;
+    
+    std::vector<float> buffer = audio->masterMixer->advance(FRAMES_PER_BUFFER);
+    
+    for(int i = 0; i < FRAMES_PER_BUFFER; i++)
     {
-        //float *out = (float*)outputBuffer;
-        
-        (void) inputBuffer;
-        (void) outputBuffer;
-        (void) timeInfo;
-        (void) statusFlags;
-        (void) userData;
-        
-        //Something like
-        //chip::AudioProcessor *myAudio = (chip::AudioProcessor *)userData;
-        //myAudio->masterMixer.advance(FRAMES_PER_BUFFER);
-        
-        
-        //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
-        
-        return 0;
+        //std::cout << buffer[i] << "\n";
+        *out++ = buffer[i] / 65536;
     }
+      
+    //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
+        
+    return paContinue;
+}
 
 

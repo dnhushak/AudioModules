@@ -180,6 +180,7 @@ static int patestCallback( const void *inputBuffer, void *outputBuffer,
        	 		data[j].phase += stepsize(data[j].frequency);
        	 	}
     	}
+    	// Set the next element of the ARRAY (that's what *out++ does) to the fameVal / 65536 
         *out++ = (float)frameVal / 65536;
         
         

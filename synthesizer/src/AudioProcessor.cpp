@@ -9,6 +9,8 @@ namespace chip
         int i;
         masterMixer = new Mixer();
         
+        std::cout << "Creating audio processor!\n";
+        
         // Create the first and only instance of the Wavetables.
         chip::Wavetables* wavetable = chip::Wavetables::getInstance();
         
@@ -18,28 +20,28 @@ namespace chip
             Module* module = new Module();
             
             PolyVoice* polyvoice1 = new PolyVoice();
-            polyvoice1->frequency = 200;
-            polyvoice1->note = 60;
+            polyvoice1->frequency = 210;
+            polyvoice1->note = 80;
 		    polyvoice1->isActive = 1;
 		    
 		    PolyVoice* polyvoice2 = new PolyVoice();
-            polyvoice2->frequency = 200;
-            polyvoice2->note = 60;
-		    polyvoice2->isActive = 1;
+            polyvoice2->frequency = 1000;
+            polyvoice2->note = 80;
+		    polyvoice2->isActive = 0;
 		    
 		    PolyVoice* polyvoice3 = new PolyVoice();
-            polyvoice3->frequency = 200;
-            polyvoice3->note = 60;
-		    polyvoice3->isActive = 1;
+            polyvoice3->frequency = 1000;
+            polyvoice3->note = 80;
+		    polyvoice3->isActive = 0;
 		    
-            module->polyvoices->push_back(*polyvoice1);
-            module->polyvoices->push_back(*polyvoice2);
-            module->polyvoices->push_back(*polyvoice3);
+		    std::vector<PolyVoice>* pointer = module->polyvoices; 
+		    
+            (*pointer)[0] = *polyvoice1;
+            //module->polyvoices->push_back(*polyvoice2);
+            //module->polyvoices->push_back(*polyvoice3);
             
             masterMixer->addObjects((IAudio*)module);
         }
-        
-        masterMixer->advance(5);
     }
     
     AudioProcessor::~AudioProcessor()
