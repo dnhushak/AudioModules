@@ -1,4 +1,5 @@
 #include "Wavetables.hpp"
+#include <iostream>
 
 using namespace chip;
 
@@ -7,6 +8,13 @@ chip::Wavetables *Wavetables::single;
 
 float Wavetables::getSample(int waveType, int phase) 
 {
+    if (waveType > NUM_WAVES || phase > TABLE_SIZE )
+    {
+        std::cerr << "Wavetables.cpp Warning: Array out of bounds in the wavetable.\n";
+        waveType = waveType % NUM_WAVES;
+        phase = phase % TABLE_SIZE;
+    }
+
     return table[waveType][phase];
 }
 

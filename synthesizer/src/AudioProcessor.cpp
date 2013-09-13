@@ -20,6 +20,10 @@ namespace chip
 		    module->activatePolyVoice(0, 80, 90.0, 2100);
             masterMixer->addObjects((IAudio*)module);
         }
+        
+        std::vector<float> buffer; // TODO finish this line
+        
+        std::cout << "Advancing master mixer: ";
     }
     
     std::vector<float> AudioProcessor::advance(int numSamples)
