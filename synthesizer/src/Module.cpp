@@ -2,7 +2,7 @@
 
 chip::Module::Module()
 { 
-	//constructor 
+	//constructor
 	
 	//instantiates the mixer
 	mixer = new Mixer();
@@ -17,6 +17,8 @@ chip::Module::Module()
         mixer->addObjects((IAudio*)polyvoice);
         polyvoices->push_back(*polyvoice);
     }
+    
+    std::cout << "Module created num polyvoices = " << NUM_POLYVOICES << "\n";
 }
 
 std::vector<float> chip::Module::advance(int numSamples)

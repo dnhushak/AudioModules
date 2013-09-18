@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
 
 class Assert
 { 
@@ -81,5 +84,58 @@ class Assert
                 << actual << ". " << message;
         }
     }
-    private:
+    
+    void static areEqual( std::vector<float> expected, std::vector<float> actual, const char* message )
+    {
+        int passed = 1;
+        int expectedSize = expected.size();
+        int actualSize = actual.size();
+        
+        if( expectedSize == actualSize )
+        {
+            for( int i = 0; i < expectedSize; i++ )
+            {
+                if( expected[i] != actual[i] )
+                {
+                    passed = 0;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            passed = 0;
+        }
+        
+        if( passed )
+        {
+            std::cout << "Passed: Arrays contained same values. " 
+                << vectorToString(expected) << " " << message;
+        }
+        else
+        {   
+            std::cout << "ERROR - Expected " 
+                << vectorToString(expected) << " but was " 
+                << vectorToString(actual) << ". " << message;
+        }
+    }
+    
+    static std::string vectorToString( std::vector<float> vector )
+    {
+        std::stringstream builder;
+        builder << "[";
+        
+        if( vector.size() >= 1 ) 
+        {
+            unsigned int i = 0;
+            for( i = 0; i < vector.size() - 1; i++)
+            {
+                builder << vector[i] << ", ";
+            }
+            builder << vector[vector.size()-1];
+        }
+        builder << "]";
+        
+        return builder.str();
+    }
 };

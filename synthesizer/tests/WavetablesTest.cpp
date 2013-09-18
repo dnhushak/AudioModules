@@ -8,13 +8,12 @@ void TestSquareWave();
 
 int main(void)
 {
-    std::cout << "--- Testing Wavetables ---\n";
+    std::cout << "\n--- Testing Wavetables ---\n";
     
     // Create the first and only instance of the Wavetables.
     wavetable = chip::Wavetables::getInstance();
     
     TestOnlyOneInstance();
-    
     TestSquareWave();
     
     return 0;

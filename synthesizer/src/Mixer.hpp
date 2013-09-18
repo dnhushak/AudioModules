@@ -13,5 +13,7 @@ namespace chip
 			std::vector<float> advance(int); //the 0th elements are all added together, the 1st elements, 2nd, all the way to the 
 										//nth elements and the result is returned -- aka move along the sound wave
 			void addObjects(IAudio*); //used in construction, adds an IAudio object to audioList
+			
+            void removeObjects(IAudio* audioObject);
 	};
 }	

@@ -1,26 +1,38 @@
 # Makefile for tests x86-Linux-specific makefile
+
 CC = g++
 LDFLAGS = -lportaudio -Wall
-
 SRC = ../src/
-EXE = Tests
-HEADERS = $(SRC)AudioProcessor.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp
-SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp
+OBJECTS = Wavetables.o WavetablesTest.o Mixer.o MixerTest.o MockIAudio.o
 
-OBJECTS = Wavetables.o WavetablesTest.o 
+default: TestWavetables TestMixer
+	./TestWavetables
+	./TestMixer
 
-Tests: $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(EXE) $(LDFLAGS)
+# Tests for the wavetables
+TestWavetables: WavetablesTest.o Wavetables.o
+	$(CC) WavetablesTest.o Wavetables.o -o TestWavetables $(LDFLAGS)
 	
 WavetablesTest.o: WavetablesTest.cpp $(SRC)Wavetables.hpp Assert.hpp
 	$(CC) -c WavetablesTest.cpp $(LDFLAGS)
-	
+
 Wavetables.o: $(SRC)Wavetables.cpp $(SRC)Wavetables.hpp
 	$(CC) -c $(SRC)Wavetables.cpp $(LDFLAGS)
 
+# Tests for the mixer
+TestMixer: MixerTest.o Mixer.o
+	$(CC) MixerTest.o Mixer.o -o TestMixer $(LDFLAGS)
+
+MixerTest.o: MixerTest.cpp $(SRC)Mixer.hpp MockIAudio.hpp Assert.hpp
+	$(CC) -c MixerTest.cpp $(LDFLAGS)
+
+Mixer.o: $(SRC)Mixer.cpp $(SRC)Mixer.hpp
+	$(CC) -c $(SRC)Mixer.cpp $(LDFLAGS)
+
+MockIAudio.o: MockIAudio.cpp MockIAudio.hpp IAudio.hpp
+	$(CC) -c MockIAudio.cpp $(LDFLAGS)
+
+# Remove generated files
 clean:
 	rm -rf $(EXE) *.o
-	
-depend:
-	gccmakedep -- $(LDFLAGS) -- $(SRCS)
-
+	rm *~
