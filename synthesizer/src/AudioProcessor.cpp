@@ -16,14 +16,14 @@ namespace chip
         for(i = 0; i < 5; i++)
         {
             Module* module = new Module();
-            
-		    module->activatePolyVoice(0, 80, 90.0, 2100);
+              
+		    module->activatePolyVoice(0, 80, 90, 2100);
             masterMixer->addObjects((IAudio*)module);
         }
         
-        std::vector<float> buffer; // TODO finish this line
+        //std::vector<float> buffer = masterMixer->advance(FRAMES_PER_BUFFER);
         
-        std::cout << "Advancing master mixer: ";
+        //std::cout << "Advancing master mixer: " << buffer[0] << "\n";
     }
     
     std::vector<float> AudioProcessor::advance(int numSamples)

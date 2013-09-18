@@ -11,7 +11,7 @@ chip::Module::Module()
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
-    for(int i = 0; i < 127; i++)
+    for(int i = 0; i < NUM_POLYVOICES; i++)
     {
         chip::PolyVoice* polyvoice = new chip::PolyVoice();
         mixer->addObjects((IAudio*)polyvoice);

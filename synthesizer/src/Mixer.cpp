@@ -14,13 +14,15 @@ std::vector<float> chip::Mixer::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
+	//std::cout << mixedFinal->size() << "\n";
+	
 	for(unsigned int i = 0; i < audioList->size(); i++)
 	{ 
 	    
 		//for each IAudio in audioList, advance
 		*temp = (*audioList)[i]->advance(numSamples);
 		
-		for(int j = 0; j<numSamples; j++)
+		for(int j = 0; j < numSamples; j++)
 		{
 			//sum each advanced IAudio to the master mixed vector
 			(*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];

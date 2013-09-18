@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#define NUM_POLYVOICES 127
+#define NUM_POLYVOICES 16
 
 namespace chip
 {

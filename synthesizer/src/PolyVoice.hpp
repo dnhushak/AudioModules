@@ -12,7 +12,7 @@
 #define SAMPLE_RATE   (32000)
 
 //Audio buffer size
-#define FRAMES_PER_BUFFER  (256)
+#define FRAMES_PER_BUFFER  (64)
 #define PHASESCALE ((1<<17)-1)
 
 //Power of wavetable size (wavetable size = 2 ^ POWER)
@@ -31,7 +31,7 @@ namespace chip
             unsigned int stepsize();
             
             int note;
-			float phase;
+			unsigned short phase;
             int frequency;
             int isActive;
             
