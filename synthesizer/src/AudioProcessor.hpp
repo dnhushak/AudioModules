@@ -28,7 +28,7 @@ namespace chip
             ~AudioProcessor();
             
             Mixer* masterMixer;
-            std::vector<IAudio*> modules;
+            std::vector<Module*>* modules;
             
             std::vector<float> advance(int);
             

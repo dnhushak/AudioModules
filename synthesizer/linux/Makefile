@@ -1,14 +1,14 @@
 
 # x86-Linux-specific makefile
 CC = g++
-LDFLAGS = -lportaudio -Wall
+LDFLAGS = -lportaudio -lportmidi -Wall
 
 SRC = ../src/
 EXE = Synthesizer
-HEADERS = $(SRC)AudioProcessor.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp
-SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp
+HEADERS = $(SRC)AudioProcessor.hpp $(SRC)MIDIParser.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp
+SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)MIDIParser.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp
 
-OBJECTS = Synthesizer.o AudioProcessor.o Mixer.o Module.o PolyVoice.o Wavetables.o IAudio.o
+OBJECTS = Synthesizer.o AudioProcessor.o MIDIParser.o Mixer.o Module.o PolyVoice.o Wavetables.o IAudio.o
 
 Synthesizer: $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXE) $(LDFLAGS)
@@ -18,6 +18,9 @@ Synthesizer.o: $(SRC)Synthesizer.cpp $(HEADERS)
 
 AudioProcessor.o: $(SRC)AudioProcessor.cpp $(HEADERS)
 	$(CC) -c $(SRC)AudioProcessor.cpp $(LDFLAGS)
+	
+MIDIParser.o: $(SRC)MIDIParser.cpp $(HEADERS)
+	$(CC) -c $(SRC)MIDIParser.cpp $(LDFLAGS)
 
 Mixer.o: $(SRC)Mixer.cpp $(HEADERS)
 	$(CC) -c $(SRC)Mixer.cpp $(LDFLAGS)

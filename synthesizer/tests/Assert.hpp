@@ -120,6 +120,19 @@ class Assert
         }
     }
     
+    void static areNotEqual( int a, float b, const char* message )
+    {
+        if ( a != b )
+        {
+            std::cout << "Passed: " << a << " != " << b << ". " << message;
+        }
+        else 
+        {
+            std::cout << "ERROR - Values are not supposed to be equal =" 
+                << a << ". " << message;
+        }
+    }
+    
     static std::string vectorToString( std::vector<float> vector )
     {
         std::stringstream builder;

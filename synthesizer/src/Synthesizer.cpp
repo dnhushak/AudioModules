@@ -1,4 +1,5 @@
 #include "AudioProcessor.hpp"
+#include "MIDIParser.hpp"
 
 
 
@@ -49,7 +50,15 @@ int main(void)
     
     std::cout << audioProcessor << "\n";
     std::cout << "&: " << &audioProcessor << "\n";
-     
+    
+    chip::MIDIParser* midiParser = new chip::MIDIParser();
+    
+    // Give the MIDIParser pointers to the modules
+    for(int i = 0; i < 5; i++)
+    {
+        midiParser->addObject((*(audioProcessor->modules))[i]);
+    }
+    
     err = Pa_Initialize();
     if( err != paNoError ) error(err);
     
