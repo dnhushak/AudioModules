@@ -17,16 +17,14 @@ namespace chip
         for(i = 0; i < 5; i++)
         {
             Module* module = new Module();
-            
-            //module->activatePolyVoice(40);
-                        
+                              
             modules->push_back(module);
             masterMixer->addObjects((IAudio*)module);
         }
         
-        //(*modules)[0]->activatePolyVoice(40);
-        //(*modules)[0]->activatePolyVoice(44);
-        //(*modules)[0]->activatePolyVoice(47);
+        (*modules)[0]->activatePolyVoice(40);
+        (*modules)[0]->activatePolyVoice(44);
+        (*modules)[0]->activatePolyVoice(47);
                 
         //std::vector<float> buffer = masterMixer->advance(FRAMES_PER_BUFFER);
         

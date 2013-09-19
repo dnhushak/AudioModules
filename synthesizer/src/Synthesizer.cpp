@@ -88,6 +88,8 @@ int main(void)
     err = Pa_StartStream( stream );
     if( err != paNoError ) error(err);
     
+    midiParser->readMIDI();
+    
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening
     std::cin.ignore(255, '\n');
