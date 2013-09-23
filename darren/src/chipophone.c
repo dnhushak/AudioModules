@@ -52,7 +52,7 @@
 #define SAMPLE_RATE   (32000)
 
 //Audio buffer size
-#define FRAMES_PER_BUFFER  (128)
+#define FRAMES_PER_BUFFER  (1024)
 
 //Number of Poly Voices per module
 #define NUM_POLYVOICES (127)
