@@ -3,28 +3,19 @@
 #include <porttime.h>
 
 
-void readMIDI() {
+void readMIDI(int devID) {
 
-	int cnt, i, dev; // dev is the device, should always be 2
+	int cnt, i;
 	PmError retval;
 	const PmDeviceInfo *info;
 	PmEvent msg[32];
 	PortMidiStream *mstream;
 	
 	Pm_Initialize();
-	cnt = Pm_CountDevices();
-	
-	if(cnt) {
-		for(i=0; i<cnt; i++) {
-			info = Pm_GetDeviceInfo(i);
-			if(info->input) {
-				printf("%d: %s \n", i, info->name);
-			}
-		}
-		dev = 2;
+
 		
-		Pt_Start(1, NULL, NULL);
-		retval = Pm_OpenInput(&mstream, dev, NULL, 512L, NULL, NULL);
+		Pt_Start(devID, NULL, NULL);
+		retval = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
 		
 		if(retval != pmNoError) {
 			printf("error: %s \n", Pm_GetErrorText(retval));
@@ -44,16 +35,26 @@ void readMIDI() {
 			}
 		}
 		Pm_Close(mstream);
-	}
-	else {
-		printf("No MIDI devices found\n");
-	}
+	
 	Pm_Terminate();
 	return;
 }
 
 
-int main() {
-	readMIDI();
+int main(int argc, char *argv[]) {
+	int devID;
+	if (argc==0){
+		devID=0;
+	}
+	else if (argc>2){
+		printf("Enter MIDI Device ID\n");
+		return -1;
+	}
+	else{
+		devID = atoi(argv[1]);
+	}
+	
+	
+	readMIDI(devID);
 	return 0;
 }

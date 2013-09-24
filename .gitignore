@@ -1,7 +1,7 @@
 #Chipophone Specifics
 chipophone
-Synthesizer
-
+printMidiDevices
+readMidiData
 
 # Compiled source #
 ###################
