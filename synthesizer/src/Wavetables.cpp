@@ -33,7 +33,9 @@ void Wavetables::wavetableGen(){
 	for (i = 0; i < TABLE_SIZE; i++)
 	{    
 		// TODO: Add more than just square wave
-	
+	    
+	    table[SAW][i] = -16384 + (((float)i/TABLE_SIZE) * 16384);
+	    
 		//First half of the wave
 		if ( i < half )
 		{
@@ -50,7 +52,7 @@ void Wavetables::wavetableGen(){
 		else 
 		{
 			table[SQUARE][i] = 16383;
-			table[TRIANGLE][i] = 16384 - ((((float)i-half)/quarter) * 16384);
+			table[TRIANGLE][i] = 16383 - ((((float)i-half)/quarter) * 16384);
 		}
 	}
 }
