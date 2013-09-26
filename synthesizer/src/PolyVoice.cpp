@@ -19,7 +19,7 @@ std::vector<float> PolyVoice::advance(int numSamples)
 {
     std::vector<float>* samples = new std::vector<float>(numSamples);
     
-    int waveType = SQUARE;
+    int waveType = TRIANGLE;
     int phase_truncated = 16-POWER;
     float sample;
     
