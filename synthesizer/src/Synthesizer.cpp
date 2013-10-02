@@ -115,16 +115,17 @@ static int paCallback( const void *inputBuffer, void *outputBuffer,
     chip::AudioProcessor* audio = (chip::AudioProcessor*)userData;
     float *out = (float*)outputBuffer;
     
-    //std::cout << audio << "\n";
-    //std::cout << "&: " << &audio << "\n";
-    
-    //std::cout << "bluh1\n";
     std::vector<float> buffer = audio->advance(FRAMES_PER_BUFFER);
+    if(buffer[0] == 0)
+    {
+        (void) buffer;
+    }
     
     for(int i = 0; i < FRAMES_PER_BUFFER; i++)
     {
         //std::cout << buffer[i] / 65536 << "\n";
         *out++ = buffer[i] / 65536;
+        std::cout << buffer[i];
     }
       
     //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
