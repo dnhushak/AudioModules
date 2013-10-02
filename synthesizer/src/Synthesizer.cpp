@@ -118,7 +118,7 @@ static int paCallback( const void *inputBuffer, void *outputBuffer,
     std::vector<float> buffer = audio->advance(FRAMES_PER_BUFFER);
     if(buffer[0] == 0)
     {
-        buffer = 0;
+        (void) buffer;
     }
     
     for(int i = 0; i < FRAMES_PER_BUFFER; i++)
