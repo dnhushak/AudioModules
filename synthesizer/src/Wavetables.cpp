@@ -15,6 +15,11 @@ float Wavetables::getSample(int waveType, int phase)
         waveType = waveType % NUM_WAVES;
         phase = phase % TABLE_SIZE;
     }
+    
+    if(waveType == NOISE)
+    {
+        return rand() % (16384 * 2) - 16384;
+    }
 
     return table[waveType][phase];
 }
