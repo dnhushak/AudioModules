@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 //Power of wavetable size (wavetable size = 2 ^ POWER)
 #define POWER (4)

@@ -7,7 +7,7 @@ namespace chip
         private:
             int attack;
             int decay;
-            int sustain;
+            float sustain;
             int release;
             
         
@@ -16,7 +16,7 @@ namespace chip
             Voice();
             
             // Creates an ADSR envelope of the given values
-            Voice(int, int, int, int);
+            Voice(int, int, float, int);
         
     };
 }

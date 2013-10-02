@@ -8,7 +8,7 @@ chip::Voice::Voice()
     release = 1;
 }
 
-chip::Voice::Voice(int attack, int decay, int sustain, int release)
+chip::Voice::Voice(int attack, int decay, float sustain, int release)
 {
     this->attack = attack;
     this->decay = decay;

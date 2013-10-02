@@ -47,7 +47,7 @@ void chip::Module::activatePolyVoice(int note)
     (*polyvoices)[next].note = note;
     (*polyvoices)[next].phase = 0.0;
     (*polyvoices)[next].frequency = MtoF(note);
-    (*polyvoices)[next].isActive = 1;
+    (*polyvoices)[next].state = ATTACK;
     
     next++;
 }
@@ -64,9 +64,9 @@ void chip::Module::deactivatePolyVoice(int note)
             (*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
-            (*polyvoices)[i].isActive = 1;
+            (*polyvoices)[i].state = ATTACK;
             
-            (*polyvoices)[next-1].isActive = 0;
+            (*polyvoices)[next-1].state = OFF;
             
             next--;
             
@@ -84,6 +84,6 @@ void chip::Module::printPolyVoices()
 {
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
-        std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].isActive << "\n";
+        std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].state << "\n";
     }
 }

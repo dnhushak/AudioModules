@@ -1,6 +1,7 @@
 #include "Wavetables.hpp"
 #include <iostream>
 
+
 using namespace chip;
 
 bool Wavetables::instanceFlag;
@@ -35,6 +36,8 @@ void Wavetables::wavetableGen(){
 		// TODO: Add more than just square wave
 	    
 	    table[SAWTOOTH][i] = -16384 + (((float)i/TABLE_SIZE) * 16384);
+	    
+	    table[NOISE][i] = -16384 + rand() % (16384 * 2);
 	    
 		//First half of the wave
 		if ( i < half )

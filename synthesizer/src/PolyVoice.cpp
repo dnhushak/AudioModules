@@ -7,7 +7,7 @@ PolyVoice::PolyVoice()
 	note = 0;
 	phase = 0;
     frequency = 0;
-    isActive = 0;
+    state = 0;
     
     wavetable = Wavetables::getInstance();
 }
@@ -19,7 +19,7 @@ std::vector<float> PolyVoice::advance(int numSamples)
 {
     std::vector<float>* samples = new std::vector<float>(numSamples);
     
-    int waveType = SAWTOOTH;
+    int waveType = NOISE;
     int phase_truncated = 16-POWER;
     float sample;
     

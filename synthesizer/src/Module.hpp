@@ -5,8 +5,7 @@
 #include "Voice.hpp"
 #include <vector>
 #include <iostream>
-
-#define NUM_POLYVOICES 127
+#include "chiputil.hpp"
 
 namespace chip
 {
