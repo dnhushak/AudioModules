@@ -23,3 +23,15 @@
 
 // Number of polyvoices
 #define NUM_POLYVOICES 127
+
+#define NUM_SECONDS (1)
+
+// Types of waves
+#define SQUARE   0
+#define PULSE    1
+#define TRIANGLE 2
+#define SAWTOOTH 3
+#define NOISE    4
+
+#define NUM_WAVES 5
+

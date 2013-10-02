@@ -3,22 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
-//Power of wavetable size (wavetable size = 2 ^ POWER)
-#define POWER (4)
-#define TABLE_SIZE  (1<<POWER)
-#define PHASESCALE ((1<<17)-1)
-#define NUM_SECONDS (1)
-
-// Types of waves
-#define SQUARE   0
-#define PULSE    1
-#define TRIANGLE 2
-#define SAWTOOTH 3
-#define NOISE    4
-
-#define NUM_WAVES 5
-
+#include "chiputil.hpp"
 
 namespace chip
 {
