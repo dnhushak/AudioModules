@@ -5,10 +5,10 @@ LDFLAGS = -lportaudio -lportmidi -Wall
 
 SRC = ../src/
 EXE = Synthesizer
-HEADERS = $(SRC)AudioProcessor.hpp $(SRC)MIDIParser.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp
-SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)MIDIParser.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp
+HEADERS = $(SRC)AudioProcessor.hpp $(SRC)MIDIParser.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp $(SRC)Voice.hpp
+SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)MIDIParser.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp $(SRC)Voice.cpp
 
-OBJECTS = Synthesizer.o AudioProcessor.o MIDIParser.o Mixer.o Module.o PolyVoice.o Wavetables.o IAudio.o
+OBJECTS = Synthesizer.o AudioProcessor.o MIDIParser.o Mixer.o Module.o PolyVoice.o Wavetables.o IAudio.o Voice.o
 
 Synthesizer: $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXE) $(LDFLAGS)
@@ -36,6 +36,9 @@ Wavetables.o: $(SRC)Wavetables.cpp $(HEADERS)
 
 IAudio.o: $(SRC)IAudio.cpp $(HEADERS)
 	$(CC) -c $(SRC)IAudio.cpp $(LDFLAGS)
+	
+Voice.o: $(SRC)Voice.cpp $(HEADERS)
+	$(CC) -c $(SRC)Voice.cpp $(LDFLAGS)
 
 clean:
 	rm -rf $(EXE) *.o

@@ -2,6 +2,7 @@
 #include "PolyVoice.hpp"
 #include "Mixer.hpp"
 #include "IAudio.hpp"
+#include "Voice.hpp"
 #include <vector>
 #include <iostream>
 
@@ -12,9 +13,9 @@ namespace chip
 	class Module: public IAudio
 	{
 			public:
-				//Voice voice //TODO - defines the module's current instrument
-				Mixer* mixer;
-				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
+				Voice* voice; // Defines the module's current instrument
+				Mixer* mixer; // Mixes the module's polyvoices 
+ 				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
 				int next; // The next inactive polyvoice
 				
 				Module();
