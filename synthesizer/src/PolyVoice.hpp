@@ -14,19 +14,41 @@ namespace chip
             PolyVoice();
             ~PolyVoice() {}
             
-            std::vector<float> advance(int);
-            unsigned int stepsize();
-            
             int note;
 			unsigned short phase;
             int frequency;
+            
+            // State of the polyvoice
             int state;
+            
+            std::vector<float> advance(int);
+            unsigned int stepsize();
+            
+            // Sets the ADSR parameters for this polyvoice
+            void setVoice(int, int, float, int);
+            
+        private:
+            Wavetables* wavetable;
+            
+            // ADSR envelope parameters
+            int attack;
+            int decay;
+            float sustain;
+            int release;
             
             float envmult;  // Envelope multiplier
             float envloc;   // Envelope location
             
-        private:
-            Wavetables* wavetable;
+            int Asamp; // Length (in samples) of the attack
+            float Aslope; // Slope of the attack curve
+            
+            int Dsamp; // Length (in samples) of the decay
+            float Dslope; // Slope of the decay curve
+            
+            int Rsamp; // Length (in samples) of the release
+            float Rslope; // Slope of the release curve
+            
+            float getSample();
     };
     
 }

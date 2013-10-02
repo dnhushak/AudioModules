@@ -21,6 +21,9 @@ namespace chip
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 
 												 //polyvoice in this module (aka - move along the sound wave)
 			    
+			    // Creates a voice with an ADSR envelope
+			    void setVoice(int, int, float, int);
+			    
 			    void activatePolyVoice(int note);
 			    void deactivatePolyVoice(int note);
 			    //Midi Note to Frequency

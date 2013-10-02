@@ -11,6 +11,9 @@ chip::Module::Module()
 	//instantiates "bucket" of polyvoices
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
+	// Create the voice for this module
+	setVoice(1000, 1000, 0.5, 1000);
+	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
@@ -42,12 +45,21 @@ std::vector<float> chip::Module::advance(int numSamples)
 	return *mixedFinal; //the final, "synthesized" list
 }
 
+void chip::Module::setVoice(int attack, int decay, float sustain, int release)
+{
+    voice = new Voice(attack, decay, sustain, release);
+}
+
 void chip::Module::activatePolyVoice(int note)
 {
     (*polyvoices)[next].note = note;
     (*polyvoices)[next].phase = 0.0;
     (*polyvoices)[next].frequency = MtoF(note);
     (*polyvoices)[next].state = ATTACK;
+    (*polyvoices)[next].setVoice(voice->getAttack(), 
+                                    voice->getDecay(), 
+                                    voice->getSustain(),
+                                    voice->getRelease());
     
     next++;
 }

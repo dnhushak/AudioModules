@@ -12,15 +12,58 @@ PolyVoice::PolyVoice()
     wavetable = Wavetables::getInstance();
 }
 
+float PolyVoice::getSample()
+{
+    int waveType = TRIANGLE;
+    int phase_truncated = 16-POWER;
+    float sample;
+    sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
+    
+    switch(state)
+    {
+        case ATTACK:
+            envmult += Aslope;
+            
+            if(envloc >= Asamp) 
+            {
+                state = DECAY;
+                envloc = 0;
+            }
+            break;
+            
+        case DECAY:
+            envmult += Dslope;
+            
+            if(envloc >= Dsamp) 
+            {
+                state = SUSTAIN;
+                envloc = 0;
+            }
+            break;
+            
+        case SUSTAIN:
+            envmult = sustain;
+            break;
+            
+        case RELEASE:
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    envloc++;
+    
+    return sample * envmult;
+}
+
 /*
  * 
  */
 std::vector<float> PolyVoice::advance(int numSamples) 
 {
     std::vector<float>* samples = new std::vector<float>(numSamples);
-    
-    int waveType = NOISE;
-    int phase_truncated = 16-POWER;
     float sample;
     
     //int shifted = ((int)phase)>>(phase_truncated);
@@ -29,10 +72,8 @@ std::vector<float> PolyVoice::advance(int numSamples)
     
     for(int i = 0; i < numSamples; i++)
     {
-        sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
+        sample = getSample();
         (*samples)[i] = (sample);
-        
-        //std::cout << (*samples)[i]/65536.0 << "\n";
         
         //std::cout << stepsize() << "\n";                  
         phase += stepsize();
@@ -49,4 +90,21 @@ unsigned int PolyVoice::stepsize()
 	//Our equation!
 	step = (frequency*PHASESCALE)/SAMPLE_RATE;
 	return step;
+}
+
+void PolyVoice::setVoice(int attack, int decay, float sustain, int release)
+{
+    this->attack = attack;
+    this->decay = decay;
+    this->sustain = sustain;
+    this->release = release;
+    
+    envmult = 0;
+    envloc = 0;
+    
+    Asamp = (attack * SAMPLE_RATE) / 1000;
+    Aslope = 1.0 / Asamp;
+    
+    Dsamp = (decay * SAMPLE_RATE) / 1000;
+    Dslope = (sustain - 1.0) / Dsamp;
 }

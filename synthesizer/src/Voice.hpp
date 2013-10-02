@@ -17,6 +17,11 @@ namespace chip
             
             // Creates an ADSR envelope of the given values
             Voice(int, int, float, int);
-        
+            
+            // Getters
+            int getAttack();
+            int getDecay();
+            float getSustain();
+            int getRelease();
     };
 }
