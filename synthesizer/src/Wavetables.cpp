@@ -37,7 +37,7 @@ void Wavetables::wavetableGen(){
 	    
 	    table[SAWTOOTH][i] = -16384 + (((float)i/TABLE_SIZE) * 16384);
 	    
-	    table[NOISE][i] = -16384 + rand() % (16384 * 2);
+	    table[NOISE][i] = rand() % (16384 * 2) - 16384;
 	    
 		//First half of the wave
 		if ( i < half )
