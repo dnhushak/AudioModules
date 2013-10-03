@@ -12,7 +12,7 @@ chip::Module::Module()
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
 	// Create the voice for this module
-	setVoice(1000, 1000, 0.5, 1000);
+	setVoice(100, 1000, 0.5, 1000);
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
