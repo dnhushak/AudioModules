@@ -125,7 +125,7 @@ static int paCallback( const void *inputBuffer, void *outputBuffer,
     {
         //std::cout << buffer[i] / 65536 << "\n";
         *out++ = buffer[i] / 65536;
-        std::cout << buffer[i];
+        //std::cout << buffer[i];
     }
       
     //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
