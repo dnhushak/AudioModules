@@ -78,7 +78,7 @@ void chip::Module::deactivatePolyVoice(int note)
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
             (*polyvoices)[i].state = ATTACK;
             
-            (*polyvoices)[next-1].state = OFF;
+            (*polyvoices)[next-1].state = RELEASE;
             
             next--;
             

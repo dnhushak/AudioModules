@@ -14,6 +14,11 @@ PolyVoice::PolyVoice()
 
 float PolyVoice::getSample()
 {
+    if(state = OFF)
+    {
+        return 0.0;
+    }
+
     int waveType = TRIANGLE;
     int phase_truncated = 16-POWER;
     float sample;
@@ -46,7 +51,16 @@ float PolyVoice::getSample()
             break;
             
         case RELEASE:
+            if(envloc == 0)
+            {
+                Rslope = -envmult / Rsamp;
+            }
+            envmult += Rslope;
             
+            if(envloc >= Rsamp)
+            {
+                state = OFF;
+            }
             break;
             
         default:
@@ -107,4 +121,6 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release)
     
     Dsamp = (decay * SAMPLE_RATE) / 1000;
     Dslope = (sustain - 1.0) / Dsamp;
+    
+    Rsamp = (release * SAMPLE_RATE) / 1000;
 }
