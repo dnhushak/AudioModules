@@ -51,10 +51,6 @@ float PolyVoice::getSample()
             break;
             
         case RELEASE:
-            if(envloc == 0)
-            {
-                Rslope = -envmult / Rsamp;
-            }
             envmult += Rslope;
             
             if(envloc >= Rsamp)
@@ -75,6 +71,13 @@ float PolyVoice::getSample()
 int PolyVoice::getState()
 {
     return state;
+}
+
+void PolyVoice::releasePolyVoice()
+{
+    state = RELEASE;
+    envloc = 0;
+    Rslope = -envmult / Rsamp;
 }
 
 /*

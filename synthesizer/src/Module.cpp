@@ -12,7 +12,7 @@ chip::Module::Module()
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
 	// Create the voice for this module
-	setVoice(100, 1000, 0.5, 1000);
+	setVoice(100, 1000, 0.5, 500);
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
@@ -83,7 +83,7 @@ void chip::Module::deactivatePolyVoice(int note)
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
             (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
             
-            (*polyvoices)[next-1].state = RELEASE;
+            (*polyvoices)[next-1].releasePolyVoice();
             
             next--;
             

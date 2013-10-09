@@ -25,6 +25,9 @@ namespace chip
             std::vector<float> advance(int);
             unsigned int stepsize();
             
+            // Sets the state of the polyvoice to release
+            void releasePolyVoice();
+            
             // Sets the ADSR parameters for this polyvoice
             void setVoice(int, int, float, int);
             
