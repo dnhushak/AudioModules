@@ -19,7 +19,7 @@ float PolyVoice::getSample()
         return 0.0;
     }
 
-    int waveType = TRIANGLE;
+    int waveType = SQUARE;
     int phase_truncated = 16-POWER;
     float sample;
     sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
