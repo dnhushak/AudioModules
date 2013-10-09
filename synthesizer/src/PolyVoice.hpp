@@ -20,6 +20,7 @@ namespace chip
             
             // State of the polyvoice
             int state;
+            int getState();
             
             std::vector<float> advance(int);
             unsigned int stepsize();

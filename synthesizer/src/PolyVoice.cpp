@@ -14,7 +14,7 @@ PolyVoice::PolyVoice()
 
 float PolyVoice::getSample()
 {
-    if(state = OFF)
+    if(state == OFF)
     {
         return 0.0;
     }
@@ -70,6 +70,11 @@ float PolyVoice::getSample()
     envloc++;
     
     return sample * envmult;
+}
+
+int PolyVoice::getState()
+{
+    return state;
 }
 
 /*

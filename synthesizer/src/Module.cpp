@@ -32,8 +32,13 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
-	for(int i = 0; i < next; i++)
-	{ 
+	for(int i = 0; i < NUM_POLYVOICES; i++)
+	{
+	    if((*polyvoices)[i].getState() == OFF)
+	    {
+	        break;
+	    }
+	    
 	    //for each IAudio in audioList, advance
 	    *temp = (*polyvoices)[i].advance(numSamples);
 		for(int j = 0; j < numSamples; j++)
@@ -76,7 +81,7 @@ void chip::Module::deactivatePolyVoice(int note)
             (*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
-            (*polyvoices)[i].state = ATTACK;
+            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
             
             (*polyvoices)[next-1].state = RELEASE;
             
