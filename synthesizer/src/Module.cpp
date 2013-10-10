@@ -32,7 +32,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
-	for(int i = 0; i < next; i++)
+	for(int i = 0; i < NUM_POLYVOICES; i++)
 	{
 	    if((*polyvoices)[i].getState() == OFF)
         {
