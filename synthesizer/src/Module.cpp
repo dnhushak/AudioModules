@@ -56,7 +56,6 @@ std::vector<float> chip::Module::advance(int numSamples)
 
 void chip::Module::setVoice(int attack, int decay, float sustain, int release)
 {
-    delete voice;
     voice = new Voice(attack, decay, sustain, release);
 }
 
