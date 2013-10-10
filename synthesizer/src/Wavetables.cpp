@@ -48,18 +48,21 @@ void Wavetables::wavetableGen(){
 		if ( i < half )
 		{
 			table[SQUARE][i] = -16384;
+			table[PULSE][i] = -16384;
 			table[TRIANGLE][i] = -16384 + (((float)i/quarter) * 16384);
 		}
 		//Third quarter of the wave
 		else if ( i < three_fourths )
 		{
 			table[SQUARE][i] = 16383;
+			table[PULSE][i] = -16384;
 			table[TRIANGLE][i] = 16383 - ((((float)i-half)/quarter) * 16384);
 		}
 		//Fourth quarter of the wave
 		else 
 		{
 			table[SQUARE][i] = 16383;
+			table[PULSE][i] = 16384;
 			table[TRIANGLE][i] = 16383 - ((((float)i-half)/quarter) * 16384);
 		}
 	}

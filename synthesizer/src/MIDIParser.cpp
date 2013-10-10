@@ -9,24 +9,36 @@ namespace chip
     
     void MIDIParser::doAction(PmEvent data) 
     {
-	    //int status = Pm_MessageStatus(data.message);
-	    // TODO int channel;
+	    int status = Pm_MessageStatus(data.message);
+	    //Finds channel. %4 is in there currently to fold everything down to the first four channels
+	    //TODO: Handle more channels
+		int channel = (status & 0x0F) %4;
+		int message = status >> 4;
 	    int note = Pm_MessageData1(data.message);
 	    
 	    // note on: (velocity > 0)
 	    // note off: (velocity == 0)
 	    int velocity = Pm_MessageData2(data.message);
         
-        if(velocity > 0)
-        {
-            (*modules)[0]->activatePolyVoice(note);
+        //Check for note on message
+        if(message==0x9){
+        	//Checks for velocity = 0 for note on message
+        	if(velocity == 0)
+        	{
+           		(*modules)[channel]->releasePolyVoice(note);
+	    	}
+	    	else
+	    	{
+	    	    (*modules)[channel]->activatePolyVoice(note);
+	    	}
+	    	
+	    	return;
 	    }
-	    else
-	    {
-	        (*modules)[0]->releasePolyVoice(note);
+	    //Checks for note off message
+	    if(message==0x8){
+	        (*modules)[channel]->releasePolyVoice(note);
+	    	return;
 	    }
-	    
-	    return;
     }
     
     void MIDIParser::interpretMIDI(int devID) 
@@ -45,13 +57,8 @@ namespace chip
 				for (i = 0; i < Pm_CountDevices(); i++) {
         		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         		if (info->input){
-        			printf("Input:  ");
+        			printf("Input:  %d: %s, %s\n", i, info->interf, info->name);
         		}
-        		else{
-        			printf("Output: ");
-       			}
-        		printf("%d: %s, %s", i, info->interf, info->name);
-        		printf("\n");
     		}
 		}
 	    else {
