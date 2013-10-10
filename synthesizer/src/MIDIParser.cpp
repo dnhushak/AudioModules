@@ -9,7 +9,7 @@ namespace chip
     
     void MIDIParser::doAction(PmEvent data) 
     {
-	    int status = Pm_MessageStatus(data.message);
+	    //int status = Pm_MessageStatus(data.message);
 	    // TODO int channel;
 	    int note = Pm_MessageData1(data.message);
 	    
@@ -29,22 +29,33 @@ namespace chip
 	    return;
     }
     
-    void MIDIParser::interpretMIDI() 
+    void MIDIParser::interpretMIDI(int devID) 
     {
-	    int dev = 2; // dev is the device, should always be 2		
 	    int i;
 	    PmError retval;
 	    //const PmDeviceInfo *info;
 	    PmEvent msg[32];
 	    PortMidiStream *mstream;
-
-	    //Pt_Start(1, NULL, NULL);
-	    retval = Pm_OpenInput(&mstream, dev, NULL, 512L, NULL, NULL);
+	    
+	    retval = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
 	
-	    if(retval != pmNoError) {
-		    printf("error: %s \n", Pm_GetErrorText(retval));
-	    }
+		if(retval != pmNoError) {
+			printf("error: %s \nValid ports:\n", Pm_GetErrorText(retval));
+				int i;
+				for (i = 0; i < Pm_CountDevices(); i++) {
+        		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+        		if (info->input){
+        			printf("Input:  ");
+        		}
+        		else{
+        			printf("Output: ");
+       			}
+        		printf("%d: %s, %s", i, info->interf, info->name);
+        		printf("\n");
+    		}
+		}
 	    else {
+			printf("Bound to port %d\n", devID);
 		    while(1) {
 			    if(Pm_Poll(mstream)) {
 				    int cnt = Pm_Read(mstream, msg, 32);
@@ -58,7 +69,7 @@ namespace chip
 	    return;
     }
     
-    void MIDIParser::readMIDI() 
+    void MIDIParser::readMIDI(int devID) 
     {
 	    int cnt;
 
@@ -66,7 +77,7 @@ namespace chip
 	    cnt = Pm_CountDevices();
 	
 	    if(cnt) {
-		    interpretMIDI();
+		    interpretMIDI(devID);
 	    }
 	    else {
 		    printf("No MIDI devices found\n");

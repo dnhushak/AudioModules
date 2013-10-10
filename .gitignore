@@ -2,6 +2,7 @@
 chipophone
 printMidiDevices
 readMidiData
+Synthesizer
 
 # Compiled source #
 ###################

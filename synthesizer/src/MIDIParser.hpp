@@ -16,12 +16,12 @@ namespace chip
             
             void doAction(PmEvent data);
             
-            void interpretMIDI();
+            void interpretMIDI(int devID);
             
             /*
              * Reads the MIDI input stream
              */
-            void readMIDI();
+            void readMIDI(int devID);
             
             void addObject(Module* audioObject);
     };

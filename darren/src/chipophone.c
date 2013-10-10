@@ -241,7 +241,7 @@ void interpretMIDI(int devID) {
 	PmEvent msg[32];
 	PortMidiStream *mstream;
 
-	Pt_Start(1, NULL, NULL);
+	Pt_Start(devID, NULL, NULL);
 	retval = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
 	
 	if(retval != pmNoError) {
