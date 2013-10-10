@@ -20,6 +20,7 @@
 #define DECAY 2
 #define SUSTAIN 3
 #define RELEASE 4
+#define CLEANUP 5
 
 // Number of polyvoices
 #define NUM_POLYVOICES 127

@@ -47,11 +47,16 @@ std::vector<float> chip::Module::advance(int numSamples)
 			(*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
 		}
 	}
+	
+	temp->clear();
+	delete temp;
+	
 	return *mixedFinal; //the final, "synthesized" list
 }
 
 void chip::Module::setVoice(int attack, int decay, float sustain, int release)
 {
+    delete voice;
     voice = new Voice(attack, decay, sustain, release);
 }
 
@@ -62,9 +67,9 @@ void chip::Module::activatePolyVoice(int note)
     (*polyvoices)[next].frequency = MtoF(note);
     (*polyvoices)[next].state = ATTACK;
     (*polyvoices)[next].setVoice(voice->getAttack(), 
-                                    voice->getDecay(), 
-                                    voice->getSustain(),
-                                    voice->getRelease());
+                                 voice->getDecay(), 
+                                 voice->getSustain(),
+                                 voice->getRelease());
     
     next++;
 }

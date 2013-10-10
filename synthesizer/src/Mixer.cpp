@@ -23,6 +23,9 @@ std::vector<float> chip::Mixer::advance(int numSamples)
 			(*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
 		}
 	}
+	temp->clear();
+	delete temp;
+	
 	return *mixedFinal; //the final, "synthesized" list
 }
 

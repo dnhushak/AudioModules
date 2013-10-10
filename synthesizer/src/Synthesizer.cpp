@@ -7,7 +7,8 @@
  ** It may called at interrupt level on some machines so don't do anything
  ** that could mess up the system like calling malloc() or free().
  */
-static int paCallback( const void *inputBuffer, void *outputBuffer,
+static int paCallback( const void *inputBuffer, 
+                       void *outputBuffer,
                        unsigned long framesPerBuffer,
                        const PaStreamCallbackTimeInfo* timeInfo,
                        PaStreamCallbackFlags statusFlags,
@@ -32,7 +33,7 @@ int error(int err)
  */
 static void StreamFinished( void* userData )
 {
-   
+      
 }
 
 /*
@@ -103,11 +104,12 @@ int main(void)
     Pa_Terminate();
 }
 
-static int paCallback( const void *inputBuffer, void *outputBuffer,
-                                   unsigned long framesPerBuffer,
-                                   const PaStreamCallbackTimeInfo* timeInfo,
-                                   PaStreamCallbackFlags statusFlags,
-                                   void *userData )
+static int paCallback( const void *inputBuffer, 
+                       void *outputBuffer,
+                       unsigned long framesPerBuffer,
+                       const PaStreamCallbackTimeInfo* timeInfo,
+                       PaStreamCallbackFlags statusFlags,
+                       void *userData )
 {
     (void) inputBuffer;
     (void) timeInfo;
@@ -130,6 +132,7 @@ static int paCallback( const void *inputBuffer, void *outputBuffer,
       
     //AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
         
+    buffer.clear();
     return paContinue;
 }
 
