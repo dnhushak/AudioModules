@@ -23,7 +23,7 @@ namespace chip
 	    }
 	    else
 	    {
-	        (*modules)[0]->deactivatePolyVoice(note);
+	        (*modules)[0]->releasePolyVoice(note);
 	    }
 	    
 	    return;

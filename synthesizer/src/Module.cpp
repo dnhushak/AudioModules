@@ -32,11 +32,11 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
-	for(int i = 0; i < NUM_POLYVOICES; i++)
+	for(int i = 0; i < next; i++)
 	{
-	    if((*polyvoices)[i].getState() == OFF)
+	    if((*polyvoices)[i].getState() == CLEANUP)
 	    {
-	        break;
+	        cleanup();
 	    }
 	    
 	    //for each IAudio in audioList, advance
@@ -73,11 +73,11 @@ void chip::Module::activatePolyVoice(int note)
     next++;
 }
 
-void chip::Module::deactivatePolyVoice(int note)
+void chip::Module::releasePolyVoice(int note)
 {
-    // Find a matching note and "swap" it with the last active polyvoice (next - 1).
+    // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
-    // deactivating the last active polyvoice, we are "swapping" the two.
+    // deactivating the last active polyvoice, we are swapping the two.
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
         if((*polyvoices)[i].note == note)
@@ -91,6 +91,32 @@ void chip::Module::deactivatePolyVoice(int note)
             
             next--;
             
+            break;
+        }
+    }
+}
+
+
+void chip::Module::cleanup()
+{
+    for(int i = 0; i < NUM_POLYVOICES; i++)
+    {
+        // Find any note that is flagged for "clean up" and swap it with the
+        // last active polyvoice (next - 1).
+        if((*polyvoices)[i].state == CLEANUP)
+        {
+            (*polyvoices)[i].note = (*polyvoices)[next-1].note;
+            (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
+            (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
+            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
+            
+            (*polyvoices)[next-1].state = OFF;
+            
+            next--;
+        }
+        
+        if((*polyvoices)[i].state == OFF)
+        {
             break;
         }
     }

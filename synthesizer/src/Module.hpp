@@ -25,7 +25,11 @@ namespace chip
 			    void setVoice(int, int, float, int);
 			    
 			    void activatePolyVoice(int note);
-			    void deactivatePolyVoice(int note);
+			    void releasePolyVoice(int note);
+			    
+			    // Moves any polyvoices to be cleaned up to the end of the queue
+			    void cleanup();
+			    
 			    //Midi Note to Frequency
                 float MtoF(int note);
 			    
