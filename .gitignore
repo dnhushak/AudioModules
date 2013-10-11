@@ -1,3 +1,7 @@
+#Eclipse Nonsense
+.project
+
+
 #Chipophone Specifics
 chipophone
 printMidiDevices
