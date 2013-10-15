@@ -132,3 +132,21 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release)
     
     Rsamp = (release * SAMPLE_RATE) / 1000;
 }
+
+float PolyVoice::getEnvmult() {
+    return envmult;
+}
+
+void PolyVoice::setEnvmult(float newmult) {
+    envmult = newmult;
+}
+
+float PolyVoice::getEnvloc() {
+    return envloc;
+}
+
+void PolyVoice::setEnvloc(float newloc) {
+    envloc = newloc;
+}
+
+

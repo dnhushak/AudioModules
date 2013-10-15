@@ -11,6 +11,9 @@ chip::Module::Module()
 	//instantiates "bucket" of polyvoices
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
+	//instantiates the list of active polyvoices
+	activeNotes = new std::vector<int>(0, 0);
+	
 	// Create the voice for this module
 	setVoice(100, 1000, 0.5, 500);
 	
@@ -32,20 +35,21 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
-	for(int i = 0; i < NUM_POLYVOICES; i++)
-	{
-	    if((*polyvoices)[i].getState() == OFF)
-        {
-            break;
-        }
+	int note;
 	
-	    if((*polyvoices)[i].getState() == CLEANUP)
-	    {
-	        cleanup();
-	    }
+	//for(int i = 0; i < NUM_POLYVOICES; i++)
+	for(unsigned int i = 0; i < (*activeNotes).size(); i++)
+	{
+	    note = (*activeNotes)[i];
 	    
-	    //for each IAudio in audioList, advance
-	    *temp = (*polyvoices)[i].advance(numSamples);
+	    if((*polyvoices)[note].getState() == OFF)
+        {
+            releasePolyVoice(i);
+            continue;
+        }
+	    
+	    //for each active IAudio in audioList, advance
+	    *temp = (*polyvoices)[note].advance(numSamples);
 		for(int j = 0; j < numSamples; j++)
 		{
 		    //sum each advanced IAudio to the master mixed vector
@@ -66,7 +70,7 @@ void chip::Module::setVoice(int attack, int decay, float sustain, int release)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    (*polyvoices)[next].note = note;
+    /*(*polyvoices)[next].note = note;
     (*polyvoices)[next].phase = 0.0;
     (*polyvoices)[next].frequency = MtoF(note);
     (*polyvoices)[next].state = ATTACK;
@@ -75,15 +79,26 @@ void chip::Module::activatePolyVoice(int note)
                                  voice->getSustain(),
                                  voice->getRelease());
     
-    next++;
+    next++;*/
+    
+    (*polyvoices)[note].note = note;
+    (*polyvoices)[note].phase = 0.0;
+    (*polyvoices)[note].frequency = MtoF(note);
+    (*polyvoices)[note].state = ATTACK;
+    (*polyvoices)[note].setVoice(voice->getAttack(), 
+                                 voice->getDecay(), 
+                                 voice->getSustain(),
+                                 voice->getRelease());
+                                 
+    (*activeNotes).push_back(note);
 }
 
-void chip::Module::releasePolyVoice(int note)
+void chip::Module::releasePolyVoice(int index)
 {
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
     // deactivating the last active polyvoice, we are swapping the two.
-    for(int i = 0; i < NUM_POLYVOICES; i++)
+    /*for(int i = 0; i < NUM_POLYVOICES; i++)
     {
         if((*polyvoices)[i].note == note)
         {
@@ -91,6 +106,8 @@ void chip::Module::releasePolyVoice(int note)
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
             (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
+            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
+            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
             
             (*polyvoices)[next-1].releasePolyVoice();
             
@@ -98,6 +115,14 @@ void chip::Module::releasePolyVoice(int note)
             
             break;
         }
+    }*/
+    int temp;
+    
+    if((*activeNotes).size() > 0) { 
+        temp = (*activeNotes)[index];
+        (*activeNotes)[index] = (*activeNotes)[(*activeNotes).size() - 1];
+        (*activeNotes)[(*activeNotes).size() - 1] = temp;
+        (*activeNotes).pop_back();
     }
 }
 

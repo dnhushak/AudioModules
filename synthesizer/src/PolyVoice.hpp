@@ -31,6 +31,14 @@ namespace chip
             // Sets the ADSR parameters for this polyvoice
             void setVoice(int, int, float, int);
             
+            // Gets and sets the envelope multiplier
+            float getEnvmult();
+            void setEnvmult(float);
+            
+            // Gets and sets the envelope location
+            float getEnvloc();
+            void setEnvloc(float);
+            
         private:
             Wavetables* wavetable;
             
