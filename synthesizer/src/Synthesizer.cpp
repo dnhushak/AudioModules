@@ -40,8 +40,19 @@ static void StreamFinished( void* userData )
  * Sets up the PortAudio audio stream and then waits until the user presses
  * enter to terminate. During this time, audio callbacks are occurring.
  */
-int main(void)
+int main(int argc, char *argv[])
 {
+	//Grab midi device ID from arguments
+	int devID;
+	if (argc!=2){
+		printf("Enter MIDI Device ID: ./Synthesizer #\n");
+		return -1;
+	}
+	else{
+		devID = atoi(argv[1]);
+	}
+	
+	
     PaStreamParameters outputParameters;
     PaStream *stream;
     PaError err;
@@ -89,7 +100,7 @@ int main(void)
     err = Pa_StartStream( stream );
     if( err != paNoError ) error(err);
     
-    midiParser->readMIDI();
+    midiParser->readMIDI(devID);
     
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening

@@ -1,7 +1,12 @@
+#Eclipse Nonsense
+.project
+
+
 #Chipophone Specifics
 chipophone
 printMidiDevices
 readMidiData
+Synthesizer
 
 # Compiled source #
 ###################
