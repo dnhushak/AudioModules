@@ -44,7 +44,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 	    
 	    if((*polyvoices)[note].getState() == OFF)
         {
-            releasePolyVoice(i);
+            removeNote(i);
             continue;
         }
 	    
@@ -93,7 +93,7 @@ void chip::Module::activatePolyVoice(int note)
     (*activeNotes).push_back(note);
 }
 
-void chip::Module::releasePolyVoice(int index)
+void chip::Module::releasePolyVoice(int note)
 {
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
@@ -116,16 +116,31 @@ void chip::Module::releasePolyVoice(int index)
             break;
         }
     }*/
-    int temp;
+    /*int temp;
     
     if((*activeNotes).size() > 0) { 
         temp = (*activeNotes)[index];
         (*activeNotes)[index] = (*activeNotes)[(*activeNotes).size() - 1];
         (*activeNotes)[(*activeNotes).size() - 1] = temp;
         (*activeNotes).pop_back();
-    }
+    }*/
+    
+    (*polyvoices)[note].state = RELEASE;
 }
 
+void chip::Module::removeNote(int index)
+{
+    int temp;
+    
+    if((*activeNotes).size() > 0) { 
+        temp = (*activeNotes)[index];
+        (*activeNotes)[index] = (*activeNotes)[(*activeNotes).size() - 1];
+        (*activeNotes)[(*activeNotes).size() - 1] = temp;
+
+        (*activeNotes).pop_back();
+
+    }
+}
 
 void chip::Module::cleanup()
 {

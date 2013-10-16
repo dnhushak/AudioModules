@@ -28,6 +28,8 @@ namespace chip
 			    void activatePolyVoice(int note);
 			    void releasePolyVoice(int note);
 			    
+			    void removeNote(int index);
+			    
 			    // Moves any polyvoices to be cleaned up to the end of the queue
 			    void cleanup();
 			    
