@@ -15,7 +15,7 @@ chip::Module::Module()
 	activeNotes = new std::vector<int>(0, 0);
 	
 	// Create the voice for this module
-	setVoice(100, 1000, 0.5, 500);
+	setVoice(250, 100, 0.5, 250);
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
@@ -35,23 +35,21 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
-	//int note;
+	int note;
 	
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
-	for(int i = 0; i < NUM_POLYVOICES; i++)
+	for(unsigned int i = 0; i < (*activeNotes).size(); i++)
     {
-        if((*polyvoices)[i].getState() == OFF)
-        {
-            break;
-        }
+        note = (*activeNotes)[i];
         
-        if((*polyvoices)[i].getState() == CLEANUP)
+        if((*polyvoices)[note].getState() == OFF)
         {
-            cleanup();
+            removeNote(i);
+            continue;
         }
         
         //for each IAudio in audioList, advance
-        *temp = (*polyvoices)[i].advance(numSamples);
+        *temp = (*polyvoices)[note].advance(numSamples);
         for(int j = 0; j < numSamples; j++)
         {
             //sum each advanced IAudio to the master mixed vector
@@ -100,7 +98,7 @@ void chip::Module::releasePolyVoice(int note)
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
     // deactivating the last active polyvoice, we are swapping the two.
-    for(int i = 0; i < NUM_POLYVOICES; i++)
+    /*for(int i = 0; i < NUM_POLYVOICES; i++)
     {
         if((*polyvoices)[i].note == note)
         {
@@ -117,19 +115,15 @@ void chip::Module::releasePolyVoice(int note)
             
             break;
         }
-    }
+    }*/
     
-    //(*polyvoices)[note].releasePolyVoice();
+    (*polyvoices)[note].releasePolyVoice();
 }
 
 void chip::Module::removeNote(int index)
 {
-    int temp;
-    
     if((*activeNotes).size() > 0) { 
-        temp = (*activeNotes)[index];
         (*activeNotes)[index] = (*activeNotes)[(*activeNotes).size() - 1];
-        (*activeNotes)[(*activeNotes).size() - 1] = temp;
 
         (*activeNotes).pop_back();
 
