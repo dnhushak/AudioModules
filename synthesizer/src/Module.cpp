@@ -45,6 +45,9 @@ std::vector<float> chip::Module::advance(int numSamples)
         if((*polyvoices)[note].getState() == OFF)
         {
             removeNote(i);
+            
+            // Decrement i so we don't skip the note 
+            i--;
             continue;
         }
         
@@ -123,8 +126,11 @@ void chip::Module::releasePolyVoice(int note)
 void chip::Module::removeNote(int index)
 {
     if((*activeNotes).size() > 0) { 
+        // Copy the last element to overwrite the one which we are 'removing' 
+        // from list of active notes
         (*activeNotes)[index] = (*activeNotes)[(*activeNotes).size() - 1];
 
+        // Remove the last element, which is now a duplicate.
         (*activeNotes).pop_back();
 
     }
