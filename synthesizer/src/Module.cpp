@@ -70,7 +70,7 @@ void chip::Module::setVoice(int attack, int decay, float sustain, int release)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    (*polyvoices)[next].note = note;
+    /*(*polyvoices)[next].note = note;
     (*polyvoices)[next].phase = 0.0;
     (*polyvoices)[next].frequency = MtoF(note);
     (*polyvoices)[next].state = ATTACK;
@@ -79,9 +79,9 @@ void chip::Module::activatePolyVoice(int note)
                                  voice->getSustain(),
                                  voice->getRelease());
     
-    next++;
+    next++;*/
     
-    /*(*polyvoices)[note].note = note;
+    (*polyvoices)[note].note = note;
     (*polyvoices)[note].phase = 0.0;
     (*polyvoices)[note].frequency = MtoF(note);
     (*polyvoices)[note].state = ATTACK;
@@ -90,7 +90,7 @@ void chip::Module::activatePolyVoice(int note)
                                  voice->getSustain(),
                                  voice->getRelease());
                                  
-    (*activeNotes).push_back(note);*/
+    (*activeNotes).push_back(note);
 }
 
 void chip::Module::releasePolyVoice(int note)
