@@ -35,6 +35,25 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
+	
+	//for(int i = 0; i < NUM_POLYVOICES; i++)
+	for(int i = 0; i < next; i++)
+    {
+        if((*polyvoices)[i].getState() == OFF)
+        {
+            break;
+        }
+        
+        //for each IAudio in audioList, advance
+         *temp = (*polyvoices)[i].advance(numSamples);
+                for(int j = 0; j < numSamples; j++)
+                {
+                 //sum each advanced IAudio to the master mixed vector
+                        (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
+                }
+    }
+	
+	/*
 	int note;
 	
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
@@ -59,7 +78,7 @@ std::vector<float> chip::Module::advance(int numSamples)
             (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
         }
     }
-	
+	*/
 	temp->clear();
 	delete temp;
 	
@@ -73,7 +92,7 @@ void chip::Module::setVoice(int attack, int decay, float sustain, int release)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    /*(*polyvoices)[next].note = note;
+    (*polyvoices)[next].note = note;
     (*polyvoices)[next].phase = 0.0;
     (*polyvoices)[next].frequency = MtoF(note);
     (*polyvoices)[next].state = ATTACK;
@@ -82,9 +101,9 @@ void chip::Module::activatePolyVoice(int note)
                                  voice->getSustain(),
                                  voice->getRelease());
     
-    next++;*/
+    next++;
     
-    (*polyvoices)[note].note = note;
+    /*(*polyvoices)[note].note = note;
     (*polyvoices)[note].phase = 0.0;
     (*polyvoices)[note].frequency = MtoF(note);
     (*polyvoices)[note].state = ATTACK;
@@ -93,7 +112,7 @@ void chip::Module::activatePolyVoice(int note)
                                  voice->getSustain(),
                                  voice->getRelease());
                                  
-    (*activeNotes).push_back(note);
+    (*activeNotes).push_back(note);*/
 }
 
 void chip::Module::releasePolyVoice(int note)
@@ -101,7 +120,7 @@ void chip::Module::releasePolyVoice(int note)
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
     // deactivating the last active polyvoice, we are swapping the two.
-    /*for(int i = 0; i < NUM_POLYVOICES; i++)
+    for(int i = 0; i < NUM_POLYVOICES; i++)
     {
         if((*polyvoices)[i].note == note)
         {
@@ -118,9 +137,9 @@ void chip::Module::releasePolyVoice(int note)
             
             break;
         }
-    }*/
+    }
     
-    (*polyvoices)[note].releasePolyVoice();
+    //(*polyvoices)[note].releasePolyVoice();
 }
 
 void chip::Module::removeNote(int index)
