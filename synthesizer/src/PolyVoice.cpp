@@ -117,12 +117,13 @@ unsigned int PolyVoice::stepsize()
 	return step;
 }
 
-void PolyVoice::setVoice(int attack, int decay, float sustain, int release)
+void PolyVoice::setVoice(int attack, int decay, float sustain, int release, int waveType)
 {
     this->attack = attack;
     this->decay = decay;
     this->sustain = sustain;
     this->release = release;
+    this->waveType = waveType;
     
     envmult = 0;
     envloc = 0;

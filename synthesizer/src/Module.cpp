@@ -1,18 +1,23 @@
 #include "Module.hpp"
 
 chip::Module::Module()
+{
+    Module(new Voice(1, 1, 0.5, 1, SQUARE));
+}
+
+chip::Module::Module(Voice* voice)
 { 
 	//constructor
-	next = 0;
+	this->next = 0;
 	
 	//instantiates the mixer
-	mixer = new Mixer();
+	this->mixer = new Mixer();
 	
 	//instantiates "bucket" of polyvoices
-	polyvoices = new std::vector<chip::PolyVoice>();
+	this->polyvoices = new std::vector<chip::PolyVoice>();
 	
 	// Create the voice for this module
-	setVoice(50, 100, 0.5, 100);
+	this->voice = voice;
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
@@ -27,8 +32,17 @@ chip::Module::Module()
     std::cout << "Module created num polyvoices = " << NUM_POLYVOICES << "\n";
 }
 
+void chip::Module::setVoice(int attack, int decay, float sustain, int release, int waveType)
+{ 
+    voice->setAttack(attack);
+    voice->setDecay(decay);
+    voice->setSustain(sustain);
+    voice->setRelease(release);
+    voice->setWaveType(waveType);
+}
+
 std::vector<float> chip::Module::advance(int numSamples)
-{
+{ 
     //the 0th elements are all added together, the 1st elements, 2nd, all the way to the 
 	//nth elements and the result is returned (aka - move along the sound wave)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
@@ -58,11 +72,6 @@ std::vector<float> chip::Module::advance(int numSamples)
 	return *mixedFinal; //the final, "synthesized" list
 }
 
-void chip::Module::setVoice(int attack, int decay, float sustain, int release)
-{
-    voice = new Voice(attack, decay, sustain, release);
-}
-
 void chip::Module::activatePolyVoice(int note)
 {
     (*polyvoices)[next].note = note;
@@ -72,7 +81,8 @@ void chip::Module::activatePolyVoice(int note)
     (*polyvoices)[next].setVoice(voice->getAttack(), 
                                  voice->getDecay(), 
                                  voice->getSustain(),
-                                 voice->getRelease());
+                                 voice->getRelease(),
+                                 voice->getWaveType());
     
     next++;
     

@@ -8,8 +8,9 @@
 #include "portaudio.h"
 #include "Mixer.hpp"
 #include "Module.hpp"
-#include "Wavetables.hpp"
 #include "PolyVoice.hpp"
+#include "VoiceConfigReader.hpp"
+#include "Wavetables.hpp"
 
 
 //Pi, for generation of sine table

@@ -30,7 +30,7 @@ namespace chip
             void releasePolyVoice();
             
             // Sets the ADSR parameters for this polyvoice
-            void setVoice(int, int, float, int);
+            void setVoice(int, int, float, int, int);
             
             // Gets and sets the envelope multiplier
             float getEnvmult();
@@ -48,6 +48,7 @@ namespace chip
             int decay;
             float sustain;
             int release;
+            int waveType;
             
             // Function pointer to remove this polyvoice from the modules active polyvoices
             func* removeThis;

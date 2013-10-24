@@ -38,9 +38,7 @@ void Wavetables::wavetableGen(){
     //The triangle wave statement takes the current index of the for loop, casts it to a float (to do division), and scales it to do the correct math in triangle wave generation
 	for (i = 0; i < TABLE_SIZE; i++)
 	{    
-		// TODO: Add more than just square wave
-	    
-	    table[SAWTOOTH][i] = -16384 + (((float)i/TABLE_SIZE) * 16384);
+		table[SAWTOOTH][i] = -16384 + (((float)i/TABLE_SIZE) * 16384);
 	    
 	    table[NOISE][i] = rand() % (16384 * 2) - 16384;
 	    
