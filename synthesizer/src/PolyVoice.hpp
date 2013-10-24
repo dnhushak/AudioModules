@@ -11,6 +11,7 @@ namespace chip
     class PolyVoice: public IAudio
     {
         public:
+            //PolyVoice(func* fp);
             PolyVoice();
             ~PolyVoice() {}
             
@@ -47,6 +48,9 @@ namespace chip
             int decay;
             float sustain;
             int release;
+            
+            // Function pointer to remove this polyvoice from the modules active polyvoices
+            func* removeThis;
             
             float envmult;  // Envelope multiplier
             float envloc;   // Envelope location

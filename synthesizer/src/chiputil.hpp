@@ -36,3 +36,5 @@
 
 #define NUM_WAVES 5
 
+
+typedef void func(int);

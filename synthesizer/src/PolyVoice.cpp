@@ -2,6 +2,7 @@
 
 using namespace chip;
 
+//PolyVoice::PolyVoice(func* fp)
 PolyVoice::PolyVoice()
 {
 	note = 0;
@@ -10,6 +11,8 @@ PolyVoice::PolyVoice()
     state = 0;
     
     wavetable = Wavetables::getInstance();
+    
+    //removeThis = fp;
 }
 
 float PolyVoice::getSample()

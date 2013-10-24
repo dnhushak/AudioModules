@@ -11,15 +11,14 @@ chip::Module::Module()
 	//instantiates "bucket" of polyvoices
 	polyvoices = new std::vector<chip::PolyVoice>();
 	
-	//instantiates the list of active polyvoices
-	activeNotes = new std::vector<int>(0, 0);
-	
 	// Create the voice for this module
-	setVoice(250, 100, 0.5, 250);
+	setVoice(50, 100, 0.5, 100);
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
+        //void (*fptr)(int note) = removePolyVoice;
+        //chip::PolyVoice* polyvoice = new chip::PolyVoice(removePolyVoice);
         chip::PolyVoice* polyvoice = new chip::PolyVoice();
         mixer->addObjects((IAudio*)polyvoice);
         polyvoices->push_back(*polyvoice);
@@ -45,40 +44,14 @@ std::vector<float> chip::Module::advance(int numSamples)
         }
         
         //for each IAudio in audioList, advance
-         *temp = (*polyvoices)[i].advance(numSamples);
-                for(int j = 0; j < numSamples; j++)
-                {
-                 //sum each advanced IAudio to the master mixed vector
-                        (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
-                }
-    }
-	
-	/*
-	int note;
-	
-	//for(int i = 0; i < NUM_POLYVOICES; i++)
-	for(unsigned int i = 0; i < (*activeNotes).size(); i++)
-    {
-        note = (*activeNotes)[i];
-        
-        if((*polyvoices)[note].getState() == OFF)
-        {
-            removeNote(i);
-            
-            // Decrement i so we don't skip the note 
-            i--;
-            continue;
-        }
-        
-        //for each IAudio in audioList, advance
-        *temp = (*polyvoices)[note].advance(numSamples);
+        *temp = (*polyvoices)[i].advance(numSamples);
         for(int j = 0; j < numSamples; j++)
         {
             //sum each advanced IAudio to the master mixed vector
             (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
         }
     }
-	*/
+	
 	temp->clear();
 	delete temp;
 	
@@ -103,16 +76,6 @@ void chip::Module::activatePolyVoice(int note)
     
     next++;
     
-    /*(*polyvoices)[note].note = note;
-    (*polyvoices)[note].phase = 0.0;
-    (*polyvoices)[note].frequency = MtoF(note);
-    (*polyvoices)[note].state = ATTACK;
-    (*polyvoices)[note].setVoice(voice->getAttack(), 
-                                 voice->getDecay(), 
-                                 voice->getSustain(),
-                                 voice->getRelease());
-                                 
-    (*activeNotes).push_back(note);*/
 }
 
 void chip::Module::releasePolyVoice(int note)
@@ -138,20 +101,29 @@ void chip::Module::releasePolyVoice(int note)
             break;
         }
     }
-    
-    //(*polyvoices)[note].releasePolyVoice();
 }
 
-void chip::Module::removeNote(int index)
+void chip::Module::removePolyVoice(int note)
 {
-    if((*activeNotes).size() > 0) { 
-        // Copy the last element to overwrite the one which we are 'removing' 
-        // from list of active notes
-        (*activeNotes)[index] = (*activeNotes)[(*activeNotes).size() - 1];
-
-        // Remove the last element, which is now a duplicate.
-        (*activeNotes).pop_back();
-
+    // Find a matching note and swap it with the last active polyvoice (next - 1).
+    // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
+    // deactivating the last active polyvoice, we are swapping the two.
+    for(int i = 0; i < NUM_POLYVOICES; i++)
+    {
+        if((*polyvoices)[i].note == note)
+        {
+            (*polyvoices)[i].note = (*polyvoices)[next-1].note;
+            (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
+            (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
+            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
+            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
+            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
+            
+            (*polyvoices)[next-1].state = OFF;
+            
+            next--;
+            break;
+        }
     }
 }
 

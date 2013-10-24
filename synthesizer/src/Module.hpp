@@ -16,7 +16,6 @@ namespace chip
 				Mixer* mixer; // Mixes the module's polyvoices 
  				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
 				int next; // The next inactive polyvoice
-				std::vector<int>* activeNotes; // List of active notes
 				
 				Module();
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 
@@ -27,6 +26,7 @@ namespace chip
 			    
 			    void activatePolyVoice(int note);
 			    void releasePolyVoice(int note);
+			    void removePolyVoice(int note);
 			    
 			    void removeNote(int index);
 			    
