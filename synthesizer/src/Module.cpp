@@ -48,13 +48,15 @@ std::vector<float> chip::Module::advance(int numSamples)
 	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
 	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
 	
+	// Flag indicating if the inactive polyvoices need to be deactivated.
+	bool cleanupFlag = false;
 	
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
 	for(int i = 0; i < next; i++)
     {
-        if((*polyvoices)[i].getState() == OFF)
+        if((*polyvoices)[i].getState() == CLEANUP)
         {
-            break;
+            cleanupFlag = true;
         }
         
         //for each IAudio in audioList, advance
@@ -68,6 +70,12 @@ std::vector<float> chip::Module::advance(int numSamples)
 	
 	temp->clear();
 	delete temp;
+	
+	// Cleanup the polyvoices marked to be deactivated.
+	if(cleanupFlag)
+	{
+	    cleanup();
+	}
 	
 	return *mixedFinal; //the final, "synthesized" list
 }
@@ -85,7 +93,6 @@ void chip::Module::activatePolyVoice(int note)
                                  voice->getWaveType());
     
     next++;
-    
 }
 
 void chip::Module::releasePolyVoice(int note)
@@ -97,16 +104,16 @@ void chip::Module::releasePolyVoice(int note)
     {
         if((*polyvoices)[i].note == note)
         {
-            (*polyvoices)[i].note = (*polyvoices)[next-1].note;
+            /*(*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
             (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
             (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
             (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
-            
+            */
             (*polyvoices)[next-1].releasePolyVoice();
             
-            next--;
+            //next--;
             
             break;
         }
@@ -139,16 +146,18 @@ void chip::Module::removePolyVoice(int note)
 
 void chip::Module::cleanup()
 {
+    // Find any note that is flagged for "clean up" and swap it with the
+    // last active polyvoice (next - 1).
     for(int i = 0; i < next; i++)
     {
-        // Find any note that is flagged for "clean up" and swap it with the
-        // last active polyvoice (next - 1).
         if((*polyvoices)[i].state == CLEANUP)
         {
             (*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
             (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
+            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
+            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
             
             (*polyvoices)[next-1].state = OFF;
             

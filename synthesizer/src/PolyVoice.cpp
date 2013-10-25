@@ -58,12 +58,12 @@ float PolyVoice::getSample()
             
             if(envloc >= Rsamp)
             {
-                state = OFF;
+                state = CLEANUP;
             }
             break;
             
         default:
-            break;
+            return 0.0;
     }
     
     envloc++;
