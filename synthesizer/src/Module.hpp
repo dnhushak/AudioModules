@@ -27,7 +27,7 @@ namespace chip
 			    void releasePolyVoice(int note);
 			    
 			    // Moves any polyvoices to be cleaned up to the end of the queue
-			    void cleanup(int);
+			    void cleanup();
 			    
 			    //Midi Note to Frequency
                 float MtoF(int note);
