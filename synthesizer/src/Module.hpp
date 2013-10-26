@@ -25,9 +25,6 @@ namespace chip
 			    void setVoice(int attack, int decay, float sustain, int release, int waveType);
 			    void activatePolyVoice(int note);
 			    void releasePolyVoice(int note);
-			    void removePolyVoice(int note);
-			    
-			    void removeNote(int index);
 			    
 			    // Moves any polyvoices to be cleaned up to the end of the queue
 			    void cleanup();

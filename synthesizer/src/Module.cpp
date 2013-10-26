@@ -109,41 +109,8 @@ void chip::Module::releasePolyVoice(int note)
     {
         if((*polyvoices)[i].note == note)
         {
-            /*(*polyvoices)[i].note = (*polyvoices)[next-1].note;
-            (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
-            (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
-            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
-            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
-            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
-            */
-            (*polyvoices)[next-1].releasePolyVoice();
+            (*polyvoices)[i].releasePolyVoice();
             
-            //next--;
-            
-            break;
-        }
-    }
-}
-
-void chip::Module::removePolyVoice(int note)
-{
-    // Find a matching note and swap it with the last active polyvoice (next - 1).
-    // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
-    // deactivating the last active polyvoice, we are swapping the two.
-    for(int i = 0; i < NUM_POLYVOICES; i++)
-    {
-        if((*polyvoices)[i].note == note)
-        {
-            (*polyvoices)[i].note = (*polyvoices)[next-1].note;
-            (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
-            (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
-            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
-            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
-            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
-            
-            (*polyvoices)[next-1].state = OFF;
-            
-            next--;
             break;
         }
     }
