@@ -54,6 +54,11 @@ std::vector<float> chip::Module::advance(int numSamples)
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
 	for(int i = 0; i < next; i++)
     {
+        if((*polyvoices)[i].getState() == OFF)
+        {
+            break;
+        }
+        
         if((*polyvoices)[i].getState() == CLEANUP)
         {
             cleanupFlag = true;
@@ -152,6 +157,7 @@ void chip::Module::cleanup()
     {
         if((*polyvoices)[i].state == CLEANUP)
         {
+            std::cout << "CLEANUP\n";
             (*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;

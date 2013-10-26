@@ -17,7 +17,7 @@ PolyVoice::PolyVoice()
 
 float PolyVoice::getSample()
 {
-    if(state == OFF)
+    if(state == OFF || state == CLEANUP)
     {
         return 0.0;
     }
