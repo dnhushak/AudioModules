@@ -151,9 +151,13 @@ void chip::Module::removePolyVoice(int note)
 
 void chip::Module::cleanup()
 {
+    // Take a snapshot of next so when we modify it in the loop, polyvoices 
+    // aren't left hanging.
+    int currentNext = next;
+    
     // Find any note that is flagged for "clean up" and swap it with the
     // last active polyvoice (next - 1).
-    for(int i = 0; i < next; i++)
+    for(int i = 0; i < currentNext; i++)
     {
         if((*polyvoices)[i].state == CLEANUP)
         {
