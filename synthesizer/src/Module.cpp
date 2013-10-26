@@ -105,7 +105,7 @@ void chip::Module::releasePolyVoice(int note)
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
     // deactivating the last active polyvoice, we are swapping the two.
-    for(int i = 0; i < NUM_POLYVOICES; i++)
+    for(int i = 0; i < next; i++)
     {
         if((*polyvoices)[i].note == note)
         {
@@ -128,7 +128,6 @@ void chip::Module::cleanup()
     {
         if((*polyvoices)[i].state == CLEANUP)
         {
-            std::cout << "CLEANUP\n";
             (*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
@@ -141,7 +140,6 @@ void chip::Module::cleanup()
             next--;
         }
     }
-    printPolyVoices();
 }
 
 //Midi Note to Frequency
