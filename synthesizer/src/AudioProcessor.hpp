@@ -32,9 +32,6 @@ namespace chip
             std::vector<Module*>* modules;
             
             std::vector<float> advance(int);
-            
-            //void generateWavetables();
-            
     };
 
 } 

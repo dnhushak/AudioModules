@@ -28,8 +28,6 @@ chip::Module::Module(Voice* voice)
         mixer->addObjects((IAudio*)polyvoice);
         polyvoices->push_back(*polyvoice);
     }
-    
-    std::cout << "Module created num polyvoices = " << NUM_POLYVOICES << "\n";
 }
 
 void chip::Module::setVoice(int attack, int decay, float sustain, int release, int waveType)
@@ -53,12 +51,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 	
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
 	for(int i = 0; i < next; i++)
-    {
-        if((*polyvoices)[i].getState() == OFF)
-        {
-            break;
-        }
-        
+    {   
         if((*polyvoices)[i].getState() == CLEANUP)
         {
             cleanupFlag = true;

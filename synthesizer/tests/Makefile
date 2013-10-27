@@ -10,6 +10,10 @@ default: TestWavetables TestMixer TestPolyvoice
 	./TestMixer
 	./TestPolyvoice
 
+# Test for listing MIDI devices
+PrintMidiDevices:
+    gcc -o printMidiDevices printMidiDevices.c -lportmidi
+
 # Tests for the wavetables
 TestWavetables: WavetablesTest.o Wavetables.o
 	$(CC) WavetablesTest.o Wavetables.o -o TestWavetables $(LDFLAGS)
