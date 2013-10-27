@@ -2,7 +2,6 @@
 #include "MIDIParser.hpp"
 
 
-
 /* This routine will be called by the PortAudio engine when audio is needed.
  ** It may called at interrupt level on some machines so don't do anything
  ** that could mess up the system like calling malloc() or free().
@@ -19,7 +18,7 @@ static int paCallback( const void *inputBuffer,
  * This function gets called whenever an error occurred while setting up
  * PortAudio.
  */
-int error(int err) 
+int errorPortAudio(int err) 
 {
     Pa_Terminate();
     fprintf( stderr, "An error occured while using the portaudio stream\n" );
@@ -52,19 +51,14 @@ int main(int argc, char *argv[])
 		devID = atoi(argv[1]);
 	}
 	
-	
     PaStreamParameters outputParameters;
     PaStream *stream;
     PaError err;
-    //void data;
     
     chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
-    
-    std::cout << audioProcessor << "\n";
-    std::cout << "&: " << &audioProcessor << "\n";
-    
     chip::MIDIParser* midiParser = new chip::MIDIParser();
     
+    // TODO Instead of passing each of the modules, just pass the vector
     // Give the MIDIParser pointers to the modules
     for(int i = 0; i < 5; i++)
     {
@@ -72,12 +66,12 @@ int main(int argc, char *argv[])
     }
     
     err = Pa_Initialize();
-    if( err != paNoError ) error(err);
+    if( err != paNoError ) errorPortAudio(err);
     
     outputParameters.device = Pa_GetDefaultOutputDevice();
-    if (outputParameters.device == paNoDevice) error(err);
+    if (outputParameters.device == paNoDevice) errorPortAudio(err);
     
-    outputParameters.channelCount = 1;       /* mono output? */
+    outputParameters.channelCount = 1;       /* mono output? */ // TODO Shouldn't this be 5?
     outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
@@ -92,25 +86,26 @@ int main(int argc, char *argv[])
           paCallback,
           audioProcessor); // We want to pass a pointer to the AudioProcessor
           
-    if( err != paNoError ) error(err);
+    if( err != paNoError ) errorPortAudio(err);
     
     err = Pa_SetStreamFinishedCallback( stream, &StreamFinished );
-    if( err != paNoError ) error(err);
+    if( err != paNoError ) errorPortAudio(err);
     
     err = Pa_StartStream( stream );
-    if( err != paNoError ) error(err);
-    
-    midiParser->readMIDI(devID);
+    if( err != paNoError ) errorPortAudio(err);
+
+    // Connect to the MIDI stream and start reading
+    midiParser->connectToMIDIStream(devID);
     
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening
     std::cin.ignore(255, '\n');
     
     err = Pa_StopStream( stream );
-    if( err != paNoError ) error(err);
+    if( err != paNoError ) errorPortAudio(err);
 
     err = Pa_CloseStream( stream );
-    if( err != paNoError ) error(err);
+    if( err != paNoError ) errorPortAudio(err);
 
     Pa_Terminate();
 }

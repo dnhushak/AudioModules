@@ -4,7 +4,7 @@ namespace chip
 {
     AudioProcessor::AudioProcessor()
     {
-        int i;
+        unsigned int i;
         masterMixer = new Mixer();
         modules = new std::vector<Module*>();
         
@@ -25,20 +25,18 @@ namespace chip
         // Create the 5 modules for the synthesizer and add them to the mixer
         for(i = 0; i < 5; i++)
         {
-            Module* module = new Module();
+            Module* module;
             if (validFile)
             {
                 module = new Module(voiceReader->getVoiceAt(i));
             }
+            else
+            {
+                module = new Module();
+            }
             
             modules->push_back(module);
             masterMixer->addObjects((IAudio*)module);
-        }
-                
-        std::cout << "** TESTING **\n";
-        for (i=0; i<modules->size(); i++)
-        {
-            std::cout << (*modules)[i]->voice->getWaveType() << "\n";
         }
     }
     
