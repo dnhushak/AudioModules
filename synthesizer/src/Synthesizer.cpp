@@ -128,6 +128,7 @@ static int paCallback( const void *inputBuffer,
     chip::AudioProcessor* audio = (chip::AudioProcessor*)userData;
     float *out = (float*)outputBuffer;
     
+    // TODO make outside of callback
     std::vector<float> buffer = audio->advance(FRAMES_PER_BUFFER);
     if(buffer[0] == 0)
     {

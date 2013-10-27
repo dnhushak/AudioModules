@@ -11,6 +11,7 @@ namespace chip
     class PolyVoice: public IAudio
     {
         public:
+            //PolyVoice(func* fp);
             PolyVoice();
             ~PolyVoice() {}
             
@@ -29,7 +30,15 @@ namespace chip
             void releasePolyVoice();
             
             // Sets the ADSR parameters for this polyvoice
-            void setVoice(int, int, float, int);
+            void setVoice(int, int, float, int, int);
+            
+            // Gets and sets the envelope multiplier
+            float getEnvmult();
+            void setEnvmult(float);
+            
+            // Gets and sets the envelope location
+            float getEnvloc();
+            void setEnvloc(float);
             
         private:
             Wavetables* wavetable;
@@ -39,6 +48,10 @@ namespace chip
             int decay;
             float sustain;
             int release;
+            int waveType;
+            
+            // Function pointer to remove this polyvoice from the modules active polyvoices
+            func* removeThis;
             
             float envmult;  // Envelope multiplier
             float envloc;   // Envelope location

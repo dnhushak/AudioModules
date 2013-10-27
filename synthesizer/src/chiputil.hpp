@@ -22,12 +22,12 @@
 #define RELEASE 4
 #define CLEANUP 5
 
-// Number of polyvoices
+//Number of polyvoices
 #define NUM_POLYVOICES 127
 
 #define NUM_SECONDS (1)
 
-// Types of waves
+//Types of waves
 #define SQUARE   0
 #define PULSE    1
 #define TRIANGLE 2
@@ -36,3 +36,7 @@
 
 #define NUM_WAVES 5
 
+//Config filenames
+#define VOICE_CONFIG_FILE "../src/config/VoicesConfig.txt"
+
+typedef void func(int);

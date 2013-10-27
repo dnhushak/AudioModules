@@ -2,6 +2,7 @@
 
 using namespace chip;
 
+//PolyVoice::PolyVoice(func* fp)
 PolyVoice::PolyVoice()
 {
 	note = 0;
@@ -10,11 +11,13 @@ PolyVoice::PolyVoice()
     state = 0;
     
     wavetable = Wavetables::getInstance();
+    
+    //removeThis = fp;
 }
 
 float PolyVoice::getSample()
 {
-    if(state == OFF)
+    if(state == OFF || state == CLEANUP)
     {
         return 0.0;
     }
@@ -55,12 +58,12 @@ float PolyVoice::getSample()
             
             if(envloc >= Rsamp)
             {
-                state = OFF;
+                state = CLEANUP;
             }
             break;
             
         default:
-            break;
+            return 0.0;
     }
     
     envloc++;
@@ -114,12 +117,13 @@ unsigned int PolyVoice::stepsize()
 	return step;
 }
 
-void PolyVoice::setVoice(int attack, int decay, float sustain, int release)
+void PolyVoice::setVoice(int attack, int decay, float sustain, int release, int waveType)
 {
     this->attack = attack;
     this->decay = decay;
     this->sustain = sustain;
     this->release = release;
+    this->waveType = waveType;
     
     envmult = 0;
     envloc = 0;
@@ -132,3 +136,21 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release)
     
     Rsamp = (release * SAMPLE_RATE) / 1000;
 }
+
+float PolyVoice::getEnvmult() {
+    return envmult;
+}
+
+void PolyVoice::setEnvmult(float newmult) {
+    envmult = newmult;
+}
+
+float PolyVoice::getEnvloc() {
+    return envloc;
+}
+
+void PolyVoice::setEnvloc(float newloc) {
+    envloc = newloc;
+}
+
+

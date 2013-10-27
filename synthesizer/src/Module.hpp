@@ -18,12 +18,11 @@ namespace chip
 				int next; // The next inactive polyvoice
 				
 				Module();
+				Module(Voice* voice);
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 
 												 //polyvoice in this module (aka - move along the sound wave)
 			    
-			    // Creates a voice with an ADSR envelope
-			    void setVoice(int, int, float, int);
-			    
+			    void setVoice(int attack, int decay, float sustain, int release, int waveType);
 			    void activatePolyVoice(int note);
 			    void releasePolyVoice(int note);
 			    
