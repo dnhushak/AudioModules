@@ -52,7 +52,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
 	for(int i = 0; i < next; i++)
     {   
-        if((*polyvoices)[i].getState() == CLEANUP)
+        if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
         {
             cleanupFlag = true;
         }
@@ -64,6 +64,7 @@ std::vector<float> chip::Module::advance(int numSamples)
             //sum each advanced IAudio to the master mixed vector
             (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
         }
+        
     }
 	
 	temp->clear();
@@ -133,6 +134,8 @@ void chip::Module::cleanup()
             next--;
         }
     }
+    
+    printPolyVoices();
 }
 
 //Midi Note to Frequency
@@ -142,8 +145,10 @@ float chip::Module::MtoF(int note){
 
 void chip::Module::printPolyVoices()
 {
-    for(int i = 0; i <= next; i++)
+    for(int i = 0; i <= next + 12; i++)
     {
         std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].state << "\n";
     }
+    
+    std::cout << "DONE\n\n";
 }
