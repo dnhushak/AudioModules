@@ -92,6 +92,14 @@ void chip::Module::activatePolyVoice(int note)
             index = i;
             break;
         }
+        
+        // If the end of the loop is reached, a new polyvoice will be activated
+        // at next, and next will be incremented.
+        else if(i == (next - 1))
+        {
+            std::cout << "Incrementing next\n";
+            next++;
+        }
     }
     
     (*polyvoices)[index].note = note;
@@ -103,8 +111,6 @@ void chip::Module::activatePolyVoice(int note)
                                   voice->getSustain(),
                                   voice->getRelease(),
                                   voice->getWaveType());
-                                 
-     next++;    
 }
 
 void chip::Module::releasePolyVoice(int note)
