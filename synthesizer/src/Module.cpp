@@ -81,17 +81,27 @@ std::vector<float> chip::Module::advance(int numSamples)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    (*polyvoices)[next].note = note;
-    (*polyvoices)[next].phase = 0.0;
-    (*polyvoices)[next].frequency = MtoF(note);
-    (*polyvoices)[next].state = ATTACK;
-    (*polyvoices)[next].setVoice(voice->getAttack(), 
-                                 voice->getDecay(), 
-                                 voice->getSustain(),
-                                 voice->getRelease(),
-                                 voice->getWaveType());
+    // If there already exists a note in the active polyvoices, reset the
+    // PolyVoice to attack. Otherwise activate the polyvoice at the next index.
+    for(int i = 0; i <= next; i++)
+    {
+        if((i == next) || ((*polyvoices)[i].note == note))
+        {
+            (*polyvoices)[next].note = note;
+            (*polyvoices)[next].phase = 0.0;
+            (*polyvoices)[next].frequency = MtoF(note);
+            (*polyvoices)[next].state = ATTACK;
+            (*polyvoices)[next].setVoice(voice->getAttack(), 
+                                         voice->getDecay(), 
+                                         voice->getSustain(),
+                                         voice->getRelease(),
+                                         voice->getWaveType());
+            next++;
+            break;
+        }
+    }
     
-    next++;
+    
 }
 
 void chip::Module::releasePolyVoice(int note)
@@ -145,7 +155,7 @@ float chip::Module::MtoF(int note){
 
 void chip::Module::printPolyVoices()
 {
-    for(int i = 0; i <= next + 12; i++)
+    for(int i = 0; i <= next + 4; i++)
     {
         std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].state << "\n";
     }
