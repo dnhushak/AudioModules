@@ -1,13 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <portmidi.h>
 #include <porttime.h>
+#include <string>
 
 
 void readMIDI(int devID) {
 
 	int cnt, i;
 	PmError retval;
-	const PmDeviceInfo *info;
 	PmEvent msg[32];
 	PortMidiStream *mstream;
 	

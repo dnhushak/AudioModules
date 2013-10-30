@@ -19,4 +19,5 @@ int main(void){
         printf("%d: %s, %s", i, info->interf, info->name);
         printf("\n");
     }
+	return 0;
 }
