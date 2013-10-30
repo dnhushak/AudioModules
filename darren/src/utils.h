@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include "portmidi.h"
 #include "porttime.h"
