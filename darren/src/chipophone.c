@@ -1,24 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <unistd.h>
 #include "portaudio.h"
 #include "portmidi.h"
-
-//Sample rate of the soundcard
-#define SAMPLE_RATE   (32000)
-
-//Audio buffer size
-#define FRAMES_PER_BUFFER (512)
-
-//Number of Poly Voices per module
-#define NUM_MODULES (5)
-#define NUM_POLYVOICES (16)
-
-//Power of wavetable size (wavetable size = 2 ^ POWER)
-#define POWER (4)
-#define TABLE_SIZE  (1<<POWER)
-#define PHASESCALE ((1<<16)-1)
-#define NUM_SECONDS (1)
+#include "utils.h"
+#include "params.h"
 
 //PolyVoice struct
 typedef struct {
@@ -30,6 +17,11 @@ typedef struct {
 
 	//Indicates whether or not the polyVoice is occupied; 0 for free, nonzero for occupied
 	int isActive;
+
+	//ADSR Info
+	int env_mult;
+	int env_loc;
+	int env_state;
 
 	//MIDI note number of polyVoice
 	int note;
@@ -64,20 +56,18 @@ void polyVoice_init(polyVoice module[]) {
 }
 
 //Initialize Modules
-void module_init() {
+void module_init(int verbose) {
+	if (verbose) printf("Initializing Modules...\n");
 	int i;
 	for (i = 0; i < NUM_MODULES; i++) {
 		polyVoice_init(module[i]);
 	}
-}
-
-//Midi Note to Frequency
-double MtoF(int note) {
-	return pow(2, (((double) note - 69) / 12.0)) * 440.0;
+	if (verbose) printf("...Done\n");
 }
 
 //Generate Waves
-void wavetablegen(void) {
+void wavetablegen(int verbose) {
+	if (verbose) printf("Generating Wavetables...\n");
 
 	int i;
 
@@ -109,6 +99,7 @@ void wavetablegen(void) {
 		}
 		nse[i] = rand() % 16384 - 16384;
 	}
+	if (verbose) printf("...Done\n");
 }
 
 //Phase stepsize calculation from frequency
@@ -179,7 +170,7 @@ static void StreamFinished(void* userData) {
 }
 
 /*******************************************************************/
-void doAction(PmEvent data) {
+void doAction(PmEvent data, int verbose) {
 	int status = Pm_MessageStatus(data.message);
 
 	//Get the channel number out of status by masking the 4 most significant bits - the mod 4 is to just cycle down channels higher than 4
@@ -187,6 +178,13 @@ void doAction(PmEvent data) {
 	int message = status >> 4;
 	int note = Pm_MessageData1(data.message);
 	int velocity = Pm_MessageData2(data.message);
+
+	if (verbose) {
+		printf("status:%d, byte1=%d, byte2=%d, time=%.3f\n",
+				Pm_MessageStatus(data.message), Pm_MessageData1(data.message),
+				Pm_MessageData2(data.message), data.timestamp / 1000.0);
+	}
+
 	int i;
 	int j = 0;
 	for (i = 0; i < NUM_POLYVOICES; i++) {
@@ -216,7 +214,7 @@ void doAction(PmEvent data) {
 	return;
 }
 
-void interpretMIDI(int devID) {
+void interpretMIDI(int devID, int verbose) {
 	int i;
 	PmError retval;
 	const PmDeviceInfo *info;
@@ -226,15 +224,18 @@ void interpretMIDI(int devID) {
 	Pt_Start(devID, NULL, NULL);
 	retval = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
 
+
 	if (retval != pmNoError) {
 		printf("error: %s \n", Pm_GetErrorText(retval));
 	} else {
-		printf("Bound to port %d, awaiting input:\n", devID);
+		if (verbose) {
+			printf("Bound to port %d, awaiting input:\n", devID);
+		}
 		while (1) {
 			if (Pm_Poll(mstream)) {
 				int cnt = Pm_Read(mstream, msg, 32);
 				for (i = 0; i < cnt; i++) {
-					doAction(msg[i]);
+					doAction(msg[i], verbose);
 				}
 			}
 		}
@@ -243,7 +244,7 @@ void interpretMIDI(int devID) {
 	return;
 }
 
-void readMIDI(int devID) { // Reads the MIDI input stream
+void readMIDI(int devID, int verbose) { // Reads the MIDI input stream
 
 	int cnt;
 
@@ -252,7 +253,7 @@ void readMIDI(int devID) { // Reads the MIDI input stream
 	int i;
 
 	if (cnt) {
-		interpretMIDI(devID);
+		interpretMIDI(devID, verbose);
 	} else {
 		printf("No MIDI devices found\n");
 	}
@@ -263,20 +264,40 @@ void readMIDI(int devID) { // Reads the MIDI input stream
 /*******************************************************************/
 
 int main(int argc, char *argv[]) {
-	//Grab midi device ID from arguments - defaults to 0 if none given
-	int devID;
-	if (argc == 1) {
-		devID = 0;
-	} else if (argc > 2) {
-		printf("Enter MIDI Device ID\n");
-		return -1;
-	} else {
-		devID = atoi(argv[1]);
+	int i;
+	int devID = 0;
+	int verbose = 0;
+	extern char *optarg;
+	extern int optind, opterr;
+	int ch;
+	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
+	while ((ch = getopt(argc, argv, "dvp:")) != EOF) {
+		switch (ch) {
+		case 'p':
+			if (is_int(optarg)) {
+				devID = atoi(optarg);
+			} else {
+				fprintf(stderr,
+						"Port takes an integer argument. Specify MIDI Devices to be used");
+				exit(2);
+			}
+			break;
+		case 'v':
+			verbose = 1;
+			printf("Executing in verbose mode...\n");
+			break;
+		case 'd':
+			printMidiDevices();
+			exit(0);
+			break;
+		}
+
 	}
+	if (verbose) printf("Device ID is: %d\n", devID);
 
 	//Generate wavetables and initialize everything
-	wavetablegen();
-	module_init();
+	wavetablegen(verbose);
+	module_init(verbose);
 
 	PaStreamParameters outputParameters;
 	PaStream *stream;
@@ -299,8 +320,7 @@ int main(int argc, char *argv[]) {
 
 	//Open Audio Stream
 	err = Pa_OpenStream(&stream, NULL, /* no input */&outputParameters,
-			SAMPLE_RATE, FRAMES_PER_BUFFER, paClipOff, patestCallback,
-			module[0]);
+	SAMPLE_RATE, FRAMES_PER_BUFFER, paClipOff, patestCallback, module[0]);
 	if (err != paNoError)
 		goto error;
 
@@ -313,7 +333,7 @@ int main(int argc, char *argv[]) {
 	if (err != paNoError)
 		goto error;
 
-	readMIDI(devID);
+	readMIDI(devID, verbose);
 
 	//Stop stream
 	err = Pa_StopStream(stream);
