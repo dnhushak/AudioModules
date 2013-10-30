@@ -52,7 +52,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 	//for(int i = 0; i < NUM_POLYVOICES; i++)
 	for(int i = 0; i < next; i++)
     {   
-        if((*polyvoices)[i].getState() == CLEANUP)
+        if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
         {
             cleanupFlag = true;
         }

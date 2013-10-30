@@ -2,7 +2,6 @@
 
 using namespace chip;
 
-//PolyVoice::PolyVoice(func* fp)
 PolyVoice::PolyVoice()
 {
 	note = 0;
@@ -11,8 +10,6 @@ PolyVoice::PolyVoice()
     state = 0;
     
     wavetable = Wavetables::getInstance();
-    
-    //removeThis = fp;
 }
 
 float PolyVoice::getSample()
@@ -83,24 +80,17 @@ void PolyVoice::releasePolyVoice()
     Rslope = -envmult / Rsamp;
 }
 
-/*
- * 
- */
 std::vector<float> PolyVoice::advance(int numSamples) 
 {
     std::vector<float>* samples = new std::vector<float>(numSamples);
     float sample;
     
-    //int shifted = ((int)phase)>>(phase_truncated);
-    
-    //std::cout << "SHIFTED: " << shifted << "\n";
-    
+    // Obtain the sample from the wavetable and advance the phase register
     for(int i = 0; i < numSamples; i++)
     {
         sample = getSample();
         (*samples)[i] = (sample);
         
-        //std::cout << stepsize() << "\n";                  
         phase += stepsize();
     }
     
