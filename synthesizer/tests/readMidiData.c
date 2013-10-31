@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <portmidi.h>
 #include <porttime.h>
-#include <string>
+#include <string.h>
 
 
 void readMIDI(int devID) {
