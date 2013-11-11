@@ -81,7 +81,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    int index = next;    
+    int index = next;   
     
     // If there already exists a note in the active polyvoices, reset the
     // PolyVoice to attack. Otherwise activate the polyvoice at the next index.
@@ -91,14 +91,6 @@ void chip::Module::activatePolyVoice(int note)
         {
             index = i;
             break;
-        }
-        
-        // If the end of the loop is reached, a new polyvoice will be activated
-        // at next, and next will be incremented.
-        else if(i == (next - 1))
-        {
-            std::cout << "Incrementing next\n";
-            next++;
         }
     }
     
@@ -111,6 +103,11 @@ void chip::Module::activatePolyVoice(int note)
                                   voice->getSustain(),
                                   voice->getRelease(),
                                   voice->getWaveType());
+                                  
+    if(index == next)
+    {
+        next++;
+    }
 }
 
 void chip::Module::releasePolyVoice(int note)
