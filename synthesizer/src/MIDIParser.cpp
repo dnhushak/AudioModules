@@ -100,6 +100,7 @@ void MIDIParser::outputMIDI(int devID)
 	PmError retval;
 	PortMidiStream *mstream;
 	PmEvent msg[32];
+	int i = 0;
 
 	retval = Pm_OpenOutput(&mstream, devID, NULL, 512L, NULL, NULL, 0);
 
@@ -126,7 +127,7 @@ void MIDIParser::outputMIDI(int devID)
 				int cnt = Pm_Read(mstream, msg, 32); //CHANGE THIS
 		    		for(i=0; i<cnt; i++) 
 		    		{
-					doAction(msg[i]); //CHANGE THIS					
+					//doAction(msg[i]); //CHANGE THIS					
 		    		}
 	    		}
 		}
