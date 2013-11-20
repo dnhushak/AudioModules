@@ -95,6 +95,15 @@ void chip::Module::activatePolyVoice(int note)
             index = i;
             break;
         }
+        
+        // If the note is greater than this note, insert this note before 
+        // this index
+        if((*polyvoices)[i].note > note)
+        {
+            shiftAt(i);
+            index = i;
+            break;
+        }
     }
     
     (*polyvoices)[index].note = note;
@@ -158,6 +167,32 @@ void chip::Module::cleanup()
     }
     
     printPolyVoices();
+}
+
+void chip::Module::shiftAt(int index)
+{
+    if(next == 0) return;
+
+    int toSwap = next;
+    
+    /* If the index is 2, next is 4, and our array is:
+     * 
+     * [ 3 | 6 | 7 | 12 | - | - ]
+     *
+     * Then the result should look like:
+     * 
+     * [ 3 | 6 | - | 7 | 12 | - ]
+     *
+     * and next should be 5.
+     */
+    while(toSwap != index)
+    {
+        swap(toSwap, toSwap - 1);
+        
+        toSwap--;
+    }
+    
+    next++;
 }
 
 void chip::Module::swap(int a, int b)

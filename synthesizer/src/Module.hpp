@@ -37,6 +37,9 @@ namespace chip
 			    // Moves any polyvoices to be cleaned up to the end of the queue
 			    void cleanup();
 			    
+			    // Shifts all of the elements at and to the right of the index to the right
+                void shiftAt(int);
+			    
 			    //Midi Note to Frequency
                 float MtoF(int note);
 			    
