@@ -112,7 +112,6 @@ void chip::Module::activatePolyVoice(int note)
         next++;
     }
 }
-d
 
 
 void chip::Module::releasePolyVoice(int note)
