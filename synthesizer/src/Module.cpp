@@ -248,7 +248,7 @@ float chip::Module::MtoF(int note){
 
 void chip::Module::printPolyVoices()
 {
-    for(int i = 0; i <= next + 4; i++)
+    for(int i = 0; i <= next; i++)
     {
         std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].note << "\n";
     }
