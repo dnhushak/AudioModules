@@ -152,12 +152,18 @@ void chip::Module::cleanup()
         if((*polyvoices)[i].state == CLEANUP)
         {   
             shiftLeftAt(i);
+            i--;
             
             (*polyvoices)[next].state = OFF;
         }
     }
     
     printPolyVoices();
+}
+
+void chip::Module::sortPolyVoices()
+{
+    
 }
 
 void chip::Module::shiftRightAt(int index)
@@ -201,7 +207,7 @@ void chip::Module::shiftLeftAt(int index)
      *
      * and next should be 4.
      */
-    while((toSwap + 1) <= next)
+    while((toSwap + 1) < next)
     {
         swap(toSwap, toSwap + 1);
         toSwap++;
