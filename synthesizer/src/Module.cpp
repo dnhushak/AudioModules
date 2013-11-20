@@ -19,6 +19,9 @@ chip::Module::Module(Voice* voice)
 	// Create the voice for this module
 	this->voice = voice;
 	
+	// Set arpeggiation and glissando
+	this->arpeggio = 50;
+	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
@@ -109,6 +112,8 @@ void chip::Module::activatePolyVoice(int note)
         next++;
     }
 }
+d
+
 
 void chip::Module::releasePolyVoice(int note)
 {
@@ -138,12 +143,14 @@ void chip::Module::cleanup()
     {
         if((*polyvoices)[i].state == CLEANUP)
         {
-            (*polyvoices)[i].note = (*polyvoices)[next-1].note;
+            /*(*polyvoices)[i].note = (*polyvoices)[next-1].note;
             (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
             (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
             (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
             (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
-            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
+            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());*/
+            
+            swap(i, next-1);
             
             (*polyvoices)[next-1].state = OFF;
             
@@ -152,6 +159,37 @@ void chip::Module::cleanup()
     }
     
     printPolyVoices();
+}
+
+void chip::Module::swap(int a, int b)
+{
+    chip::PolyVoice* temp = new chip::PolyVoice();
+    
+    // temp = a
+    temp->note = (*polyvoices)[a].note;
+    temp->phase = (*polyvoices)[a].phase;
+    temp->frequency = (*polyvoices)[a].frequency;
+    temp->state = (*polyvoices)[a].getState();
+    temp->setEnvmult((*polyvoices)[a].getEnvmult());
+    temp->setEnvloc((*polyvoices)[a].getEnvloc());
+    
+    // a = b
+    (*polyvoices)[a].note = (*polyvoices)[b].note;
+    (*polyvoices)[a].phase = (*polyvoices)[b].phase;
+    (*polyvoices)[a].frequency = (*polyvoices)[b].frequency;
+    (*polyvoices)[a].state = (*polyvoices)[b].getState();
+    (*polyvoices)[a].setEnvmult((*polyvoices)[b].getEnvmult());
+    (*polyvoices)[a].setEnvloc((*polyvoices)[b].getEnvloc());
+    
+    // b = temp
+    (*polyvoices)[b].note = temp->note;
+    (*polyvoices)[b].phase = temp->phase;
+    (*polyvoices)[b].frequency = temp->frequency;
+    (*polyvoices)[b].state = temp->getState();
+    (*polyvoices)[b].setEnvmult(temp->getEnvmult());
+    (*polyvoices)[b].setEnvloc(temp->getEnvloc());
+    
+    delete temp;
 }
 
 //Midi Note to Frequency

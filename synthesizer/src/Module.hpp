@@ -17,6 +17,8 @@ namespace chip
  				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
 				int next; // The next inactive polyvoice
 				
+				int arpeggio; // Indicates if this module is in arpeggiation mode and the speed of arpeggiation.
+				
 				Module();
 				Module(Voice* voice);
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 
@@ -25,6 +27,12 @@ namespace chip
 			    void setVoice(int attack, int decay, float sustain, int release, int waveType);
 			    void activatePolyVoice(int note);
 			    void releasePolyVoice(int note);
+			    
+			    // Sort the notes according to note number
+			    void sortPolyVoices();  
+			    
+			    // Swaps the polyvoices at two locations
+			    void swap(int, int);
 			    
 			    // Moves any polyvoices to be cleaned up to the end of the queue
 			    void cleanup();
