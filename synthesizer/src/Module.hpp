@@ -38,7 +38,10 @@ namespace chip
 			    void cleanup();
 			    
 			    // Shifts all of the elements at and to the right of the index to the right
-                void shiftAt(int);
+                void shiftRightAt(int);
+                
+                // Shifts all of the elements to the right of the index left one
+                void shiftLeftAt(int);
 			    
 			    //Midi Note to Frequency
                 float MtoF(int note);
