@@ -201,7 +201,7 @@ void chip::Module::shiftLeftAt(int index)
      *
      * and next should be 4.
      */
-    while((toSwap + 1) >= next)
+    while((toSwap + 1) <= next)
     {
         swap(toSwap, toSwap + 1);
         toSwap++;
