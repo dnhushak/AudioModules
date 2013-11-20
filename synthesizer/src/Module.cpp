@@ -100,7 +100,7 @@ void chip::Module::activatePolyVoice(int note)
         // this index
         if((*polyvoices)[i].note > note)
         {
-            shiftAt(i);
+            shiftRightAt(i);
             index = i;
             break;
         }
@@ -150,26 +150,23 @@ void chip::Module::cleanup()
     for(int i = 0; i < currentNext; i++)
     {
         if((*polyvoices)[i].state == CLEANUP)
-        {
-            /*(*polyvoices)[i].note = (*polyvoices)[next-1].note;
-            (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
-            (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
-            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
-            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
-            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());*/
+        {   
+            shiftLeftAt(i);
+            i--;
             
-            swap(i, next-1);
-            
-            (*polyvoices)[next-1].state = OFF;
-            
-            next--;
+            (*polyvoices)[next].state = OFF;
         }
     }
     
     printPolyVoices();
 }
 
-void chip::Module::shiftAt(int index)
+void chip::Module::sortPolyVoices()
+{
+    
+}
+
+void chip::Module::shiftRightAt(int index)
 {
     if(next == 0) return;
 
@@ -188,11 +185,35 @@ void chip::Module::shiftAt(int index)
     while(toSwap != index)
     {
         swap(toSwap, toSwap - 1);
-        
         toSwap--;
     }
     
     next++;
+}
+
+void chip::Module::shiftLeftAt(int index)
+{
+    if(next == 0) return;
+    
+    int toSwap = index;
+    
+    /* If the index is 2, next is 5, and our array is:
+     * 
+     * [ 3 | 6 | - | 7 | 12 | - ]
+     *
+     * Then the result should look like:
+     * 
+     * [ 3 | 6 | 7 | 12 | - | - ]
+     *
+     * and next should be 4.
+     */
+    while((toSwap + 1) < next)
+    {
+        swap(toSwap, toSwap + 1);
+        toSwap++;
+    }
+    
+    next--;
 }
 
 void chip::Module::swap(int a, int b)
@@ -233,9 +254,9 @@ float chip::Module::MtoF(int note){
 
 void chip::Module::printPolyVoices()
 {
-    for(int i = 0; i <= next + 4; i++)
+    for(int i = 0; i <= next; i++)
     {
-        std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].state << "\n";
+        std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].note << "\n";
     }
     
     std::cout << "DONE\n\n";
