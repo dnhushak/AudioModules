@@ -113,7 +113,10 @@ std::vector<float> chip::Module::advance(int numSamples)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    int index = next;   
+    int index = next;  
+    
+    // Reset the arpeggio
+    arpnote = 0; 
     
     // If there already exists a note in the active polyvoices, reset the
     // PolyVoice to attack. Otherwise activate the polyvoice at the next index.
@@ -154,6 +157,9 @@ void chip::Module::activatePolyVoice(int note)
 
 void chip::Module::releasePolyVoice(int note)
 {
+    // Reset the arpeggio
+    arpnote = 0;
+    
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
     // deactivating the last active polyvoice, we are swapping the two.
