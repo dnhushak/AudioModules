@@ -20,7 +20,10 @@ chip::Module::Module(Voice* voice)
 	this->voice = voice;
 	
 	// Set arpeggiation and glissando
-	this->arpeggio = 50;
+	this->arpeggio = true;
+	this->arpsamples = 50;
+	this->arpcount = 0;
+	this->arpnote = 0;
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
@@ -52,22 +55,48 @@ std::vector<float> chip::Module::advance(int numSamples)
 	// Flag indicating if the inactive polyvoices need to be deactivated.
 	bool cleanupFlag = false;
 	
-	//for(int i = 0; i < NUM_POLYVOICES; i++)
-	for(int i = 0; i < next; i++)
-    {   
-        if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
-        {
-            cleanupFlag = true;
+	if(!arpeggio)
+	{
+	    for(int i = 0; i < next; i++)
+        {   
+            if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
+            {
+                cleanupFlag = true;
+            }
+            
+            //for each IAudio in audioList, advance
+            *temp = (*polyvoices)[i].advance(numSamples);
+            for(int j = 0; j < numSamples; j++)
+            {
+                //sum each advanced IAudio to the master mixed vector
+                (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
+            }
+            
         }
-        
-        //for each IAudio in audioList, advance
-        *temp = (*polyvoices)[i].advance(numSamples);
-        for(int j = 0; j < numSamples; j++)
+    }
+    
+    else if(arpeggio)
+    {
+        // Grab samples only from the current note in the arpeggio.
+        // If the arpeggio count reaches the arpeggio sample number, reset the 
+        // count.
+        for(int i = 0; i < numSamples; i++, arpcount++)
         {
-            //sum each advanced IAudio to the master mixed vector
-            (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
+            if(arpcount >= arpsamples)
+            {
+                arpcount = 0;
+                arpnote = (arpnote + 1) % next;
+                
+                // If the next arpeggio note is off, get the next note
+                while(((*polyvoices)[arpnote].state == OFF) ||
+                    ((*polyvoices)[arpnote].state == CLEANUP))
+                {
+                    arpnote = (arpnote + 1) % next;
+                }
+            }
+            
+            (*mixedFinal)[i] = (*polyvoices)[arpnote].getSample();
         }
-        
     }
 	
 	temp->clear();
@@ -132,7 +161,14 @@ void chip::Module::releasePolyVoice(int note)
     {
         if((*polyvoices)[i].note == note)
         {
-            (*polyvoices)[i].releasePolyVoice();
+            if(!arpeggio)
+            {
+                (*polyvoices)[i].releasePolyVoice();
+            }
+            else
+            {
+                (*polyvoices)[i].state = OFF;
+            }
             
             break;
         }
@@ -159,11 +195,6 @@ void chip::Module::cleanup()
     }
     
     printPolyVoices();
-}
-
-void chip::Module::sortPolyVoices()
-{
-    
 }
 
 void chip::Module::shiftRightAt(int index)

@@ -17,7 +17,10 @@ namespace chip
  				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
 				int next; // The next inactive polyvoice
 				
-				int arpeggio; // Indicates if this module is in arpeggiation mode and the speed of arpeggiation.
+				bool arpeggio;
+				int arpsamples; // Indicates the speed of arpeggiation
+				int arpcount; // The amount of samples this note has been playing in an arpeggio
+				int arpnote; // The current note being played in the arpeggio
 				
 				Module();
 				Module(Voice* voice);
