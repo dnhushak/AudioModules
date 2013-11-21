@@ -85,20 +85,26 @@ std::vector<float> chip::Module::advance(int numSamples)
             if(arpcount >= arpsamples)
             {
                 arpcount = 0;
-                arpnote = (arpnote + 1) % next;
                 
-                // If the next arpeggio note is off, get the next note
-                while(((*polyvoices)[arpnote].state == OFF) ||
-                    ((*polyvoices)[arpnote].state == CLEANUP))
+                if(next > 0)
                 {
                     arpnote = (arpnote + 1) % next;
                 }
+                
+                if((*polyvoices)[arpnote].state == CLEANUP)
+                {
+                    cleanup();
+                }
             }
             
-            (*mixedFinal)[i] = (*polyvoices)[arpnote].getSample();
+            // Sample if there are active polyvoices
+            if(next > 0)
+            {
+                (*mixedFinal)[i] = (*polyvoices)[arpnote].getSample();
+            }
         }
     }
-	
+    
 	temp->clear();
 	delete temp;
 	
@@ -157,9 +163,6 @@ void chip::Module::activatePolyVoice(int note)
 
 void chip::Module::releasePolyVoice(int note)
 {
-    // Reset the arpeggio
-    arpnote = 0;
-    
     // Find a matching note and swap it with the last active polyvoice (next - 1).
     // By setting the to-be-deactivated polyvoice to the last active polyvoice and 
     // deactivating the last active polyvoice, we are swapping the two.
@@ -173,7 +176,7 @@ void chip::Module::releasePolyVoice(int note)
             }
             else
             {
-                (*polyvoices)[i].state = OFF;
+                (*polyvoices)[i].state = CLEANUP;
             }
             
             break;
@@ -186,6 +189,9 @@ void chip::Module::cleanup()
 	// Take a snapshot of next so when we modify it in the loop, polyvoices 
     // aren't left hanging.
     int currentNext = next;
+    
+    // Reset arpeggio
+    arpnote = 0;
     
     // Find any note that is flagged for "clean up" and swap it with the
     // last active polyvoice (next - 1).
