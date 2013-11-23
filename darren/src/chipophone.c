@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <unistd.h>
+#include <string.h>
 #include "portaudio.h"
 #include "portmidi.h"
 #include "utils.h"
@@ -221,7 +222,7 @@ void interpretMIDI(int devID, int verbose) {
 	PmEvent msg[32];
 	PortMidiStream *mstream;
 
-	Pt_Start(devID, NULL, NULL);
+	//Pt_Start(devID, NULL, NULL);
 	retval = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
 
 
