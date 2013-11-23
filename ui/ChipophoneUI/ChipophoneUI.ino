@@ -97,12 +97,13 @@ void loop()
     } 
   }
   int rgb[3] = {
-    LOW, LOW, LOW      };
+    LOW, LOW, LOW        };
   stateDecode(state, rgb);
   digitalWrite(redPin, !rgb[0]);
   digitalWrite(grnPin, !rgb[1]);
   digitalWrite(bluPin, !rgb[2]);
 }
+
 
 
 
