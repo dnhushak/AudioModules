@@ -23,6 +23,7 @@ float PolyVoice::getSample()
     int phase_truncated = 16-POWER;
     float sample;
     sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
+    phase += stepsize();
     
     switch(state)
     {
@@ -90,8 +91,6 @@ std::vector<float> PolyVoice::advance(int numSamples)
     {
         sample = getSample();
         (*samples)[i] = (sample);
-        
-        phase += stepsize();
     }
     
     return *samples;

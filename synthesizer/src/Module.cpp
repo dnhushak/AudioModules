@@ -19,6 +19,12 @@ chip::Module::Module(Voice* voice)
 	// Create the voice for this module
 	this->voice = voice;
 	
+	// Set arpeggiation and glissando
+	this->arpeggio = true;
+	this->arpsamples = 50;
+	this->arpcount = 0;
+	this->arpnote = 0;
+	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
@@ -49,24 +55,56 @@ std::vector<float> chip::Module::advance(int numSamples)
 	// Flag indicating if the inactive polyvoices need to be deactivated.
 	bool cleanupFlag = false;
 	
-	//for(int i = 0; i < NUM_POLYVOICES; i++)
-	for(int i = 0; i < next; i++)
-    {   
-        if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
-        {
-            cleanupFlag = true;
+	if(!arpeggio)
+	{
+	    for(int i = 0; i < next; i++)
+        {   
+            if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
+            {
+                cleanupFlag = true;
+            }
+            
+            //for each IAudio in audioList, advance
+            *temp = (*polyvoices)[i].advance(numSamples);
+            for(int j = 0; j < numSamples; j++)
+            {
+                //sum each advanced IAudio to the master mixed vector
+                (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
+            }
+            
         }
-        
-        //for each IAudio in audioList, advance
-        *temp = (*polyvoices)[i].advance(numSamples);
-        for(int j = 0; j < numSamples; j++)
-        {
-            //sum each advanced IAudio to the master mixed vector
-            (*mixedFinal)[j] = (*mixedFinal)[j] + (*temp)[j];
-        }
-        
     }
-	
+    
+    else if(arpeggio)
+    {
+        // Grab samples only from the current note in the arpeggio.
+        // If the arpeggio count reaches the arpeggio sample number, reset the 
+        // count.
+        for(int i = 0; i < numSamples; i++, arpcount++)
+        {
+            if(arpcount >= arpsamples)
+            {
+                arpcount = 0;
+                
+                if(next > 0)
+                {
+                    arpnote = (arpnote + 1) % next;
+                }
+                
+                if((*polyvoices)[arpnote].state == CLEANUP)
+                {
+                    cleanup();
+                }
+            }
+            
+            // Sample if there are active polyvoices
+            if(next > 0)
+            {
+                (*mixedFinal)[i] = (*polyvoices)[arpnote].getSample();
+            }
+        }
+    }
+    
 	temp->clear();
 	delete temp;
 	
@@ -81,7 +119,10 @@ std::vector<float> chip::Module::advance(int numSamples)
 
 void chip::Module::activatePolyVoice(int note)
 {
-    int index = next;    
+    int index = next;  
+    
+    // Reset the arpeggio
+    arpnote = 0; 
     
     // If there already exists a note in the active polyvoices, reset the
     // PolyVoice to attack. Otherwise activate the polyvoice at the next index.
@@ -93,12 +134,13 @@ void chip::Module::activatePolyVoice(int note)
             break;
         }
         
-        // If the end of the loop is reached, a new polyvoice will be activated
-        // at next, and next will be incremented.
-        else if(i == (next - 1))
+        // If the note is greater than this note, insert this note before 
+        // this index
+        if((*polyvoices)[i].note > note)
         {
-            std::cout << "Incrementing next\n";
-            next++;
+            shiftRightAt(i);
+            index = i;
+            break;
         }
     }
     
@@ -111,7 +153,13 @@ void chip::Module::activatePolyVoice(int note)
                                   voice->getSustain(),
                                   voice->getRelease(),
                                   voice->getWaveType());
+                                  
+    if(index == next)
+    {
+        next++;
+    }
 }
+
 
 void chip::Module::releasePolyVoice(int note)
 {
@@ -122,7 +170,14 @@ void chip::Module::releasePolyVoice(int note)
     {
         if((*polyvoices)[i].note == note)
         {
-            (*polyvoices)[i].releasePolyVoice();
+            if(!arpeggio)
+            {
+                (*polyvoices)[i].releasePolyVoice();
+            }
+            else
+            {
+                (*polyvoices)[i].state = CLEANUP;
+            }
             
             break;
         }
@@ -135,26 +190,104 @@ void chip::Module::cleanup()
     // aren't left hanging.
     int currentNext = next;
     
+    // Reset arpeggio
+    arpnote = 0;
+    
     // Find any note that is flagged for "clean up" and swap it with the
     // last active polyvoice (next - 1).
     for(int i = 0; i < currentNext; i++)
     {
         if((*polyvoices)[i].state == CLEANUP)
-        {
-            (*polyvoices)[i].note = (*polyvoices)[next-1].note;
-            (*polyvoices)[i].phase = (*polyvoices)[next-1].phase;
-            (*polyvoices)[i].frequency = (*polyvoices)[next-1].frequency;
-            (*polyvoices)[i].state = (*polyvoices)[next-1].getState();
-            (*polyvoices)[i].setEnvmult((*polyvoices)[next-1].getEnvmult());
-            (*polyvoices)[i].setEnvloc((*polyvoices)[next-1].getEnvloc());
+        {   
+            shiftLeftAt(i);
+            i--;
             
-            (*polyvoices)[next-1].state = OFF;
-            
-            next--;
+            (*polyvoices)[next].state = OFF;
         }
     }
     
     printPolyVoices();
+}
+
+void chip::Module::shiftRightAt(int index)
+{
+    if(next == 0) return;
+
+    int toSwap = next;
+    
+    /* If the index is 2, next is 4, and our array is:
+     * 
+     * [ 3 | 6 | 7 | 12 | - | - ]
+     *
+     * Then the result should look like:
+     * 
+     * [ 3 | 6 | - | 7 | 12 | - ]
+     *
+     * and next should be 5.
+     */
+    while(toSwap != index)
+    {
+        swap(toSwap, toSwap - 1);
+        toSwap--;
+    }
+    
+    next++;
+}
+
+void chip::Module::shiftLeftAt(int index)
+{
+    if(next == 0) return;
+    
+    int toSwap = index;
+    
+    /* If the index is 2, next is 5, and our array is:
+     * 
+     * [ 3 | 6 | - | 7 | 12 | - ]
+     *
+     * Then the result should look like:
+     * 
+     * [ 3 | 6 | 7 | 12 | - | - ]
+     *
+     * and next should be 4.
+     */
+    while((toSwap + 1) < next)
+    {
+        swap(toSwap, toSwap + 1);
+        toSwap++;
+    }
+    
+    next--;
+}
+
+void chip::Module::swap(int a, int b)
+{
+    chip::PolyVoice* temp = new chip::PolyVoice();
+    
+    // temp = a
+    temp->note = (*polyvoices)[a].note;
+    temp->phase = (*polyvoices)[a].phase;
+    temp->frequency = (*polyvoices)[a].frequency;
+    temp->state = (*polyvoices)[a].getState();
+    temp->setEnvmult((*polyvoices)[a].getEnvmult());
+    temp->setEnvloc((*polyvoices)[a].getEnvloc());
+    
+    // a = b
+    (*polyvoices)[a].note = (*polyvoices)[b].note;
+    (*polyvoices)[a].phase = (*polyvoices)[b].phase;
+    (*polyvoices)[a].frequency = (*polyvoices)[b].frequency;
+    (*polyvoices)[a].state = (*polyvoices)[b].getState();
+    (*polyvoices)[a].setEnvmult((*polyvoices)[b].getEnvmult());
+    (*polyvoices)[a].setEnvloc((*polyvoices)[b].getEnvloc());
+    
+    // b = temp
+    (*polyvoices)[b].note = temp->note;
+    (*polyvoices)[b].phase = temp->phase;
+    (*polyvoices)[b].frequency = temp->frequency;
+    (*polyvoices)[b].state = temp->getState();
+    (*polyvoices)[b].setEnvmult(temp->getEnvmult());
+    (*polyvoices)[b].setEnvloc(temp->getEnvloc());
+    
+    delete temp;
 }
 
 //Midi Note to Frequency
@@ -164,9 +297,9 @@ float chip::Module::MtoF(int note){
 
 void chip::Module::printPolyVoices()
 {
-    for(int i = 0; i <= next + 4; i++)
+    for(int i = 0; i <= next; i++)
     {
-        std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].state << "\n";
+        std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].note << "\n";
     }
     
     std::cout << "DONE\n\n";

@@ -40,6 +40,8 @@ namespace chip
             float getEnvloc();
             void setEnvloc(float);
             
+            float getSample();
+            
         private:
             Wavetables* wavetable;
             
@@ -64,8 +66,6 @@ namespace chip
             
             int Rsamp; // Length (in samples) of the release
             float Rslope; // Slope of the release curve
-            
-            float getSample();
     };
     
 }
