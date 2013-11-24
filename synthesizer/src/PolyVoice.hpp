@@ -17,7 +17,7 @@ namespace chip
             
             int note;
 			unsigned short phase;
-            int frequency;
+            float frequency;
             
             // State of the polyvoice
             int state;

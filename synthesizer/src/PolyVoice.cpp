@@ -6,7 +6,7 @@ PolyVoice::PolyVoice()
 {
 	note = 0;
 	phase = 0;
-    frequency = 0;
+    frequency = 0.0;
     state = 0;
     
     wavetable = Wavetables::getInstance();

@@ -22,6 +22,14 @@ namespace chip
 				int arpcount; // The amount of samples this note has been playing in an arpeggio
 				int arpnote; // The current note being played in the arpeggio
 				
+				bool glissando;
+				int glissSamples;
+				PolyVoice* glissNote;
+				
+				float firstRecentFreq; // Frequency of the most recent note pressed
+				float secondRecentFreq; // Frequency of the second most recent note pressed
+				
+				
 				Module();
 				Module(Voice* voice);
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 
