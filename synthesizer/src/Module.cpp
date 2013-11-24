@@ -36,7 +36,7 @@ chip::Module::Module(Voice* voice)
     }
     
     // Set the glissando PolyVoice
-    glissando = false;
+    glissando = true;
     glissSamples = 100000;
     glissNote = new chip::PolyVoice();
     glissNote->state = SUSTAIN;
