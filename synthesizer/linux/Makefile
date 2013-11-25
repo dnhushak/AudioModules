@@ -43,7 +43,7 @@ Voice.o: $(SRC)Voice.cpp $(HEADERS)
 VoiceConfigReader.o: $(SRC)VoiceConfigReader.cpp $(HEADERS)
 	$(CC) -c $(SRC)VoiceConfigReader.cpp $(LDFLAGS)
 
-MidiFileNameReader.o $(SRC)MidiFileNameReader.cpp &(HEADERS)
+MidiFileNameReader.o: $(SRC)MidiFileNameReader.cpp $(HEADERS)
 	$(CC) -c $(SRC)MidiFileNameReader.cpp $(LDFLAGS)
 
 clean:
