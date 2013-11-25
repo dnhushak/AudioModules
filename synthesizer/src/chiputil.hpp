@@ -39,4 +39,7 @@
 //Config filenames
 #define VOICE_CONFIG_FILE "../src/config/VoicesConfig.txt"
 
+//MIDI file list
+#define MIDI_FILE_NAMES "../src/config/MidiFileList.txt"
+
 typedef void func(int);

@@ -8,25 +8,25 @@ void chip::VoiceConfigReader::readFile()
     
 	if (file.is_open())
 	{
-	    while (file.good())
+	    	while (file.good())
 		{
-		    getline(file,line);
+		    	getline(file,line);
 			
 			int attack, decay, release;
-            float sustain;
-            std::string waveTypeString;
-            int waveType;
+            		float sustain;
+            		std::string waveTypeString;
+            		int waveType;
         
-            std::stringstream ss(line);
-            ss >> attack >> decay >> sustain >> release >> waveTypeString;
+            		std::stringstream ss(line);
+            		ss >> attack >> decay >> sustain >> release >> waveTypeString;
             
-            waveType = this->convertWaveType(waveTypeString);
-            Voice* newVoice = new Voice(
-                attack, decay, sustain, release, waveType);
+            		waveType = this->convertWaveType(waveTypeString);
+            		Voice* newVoice = new Voice(
+                		attack, decay, sustain, release, waveType);
                 
-            this->voices->push_back(*newVoice);
+            		this->voices->push_back(*newVoice);
 		}
-		file.close();
+	    	file.close();
 	}
 	else
 	{
