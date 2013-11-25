@@ -1,10 +1,10 @@
 #pragma once
 
 #include "chiputil.hpp"
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <vector>
-
 namespace chip
 {
 class MidiFileNameReader
@@ -18,7 +18,7 @@ class MidiFileNameReader
         
         void readFile(); // Reads chiputil::MIDI_FILE_NAMES
         
-        std::string getFileNameAt(int index)
+        std::string* getFileNameAt(int index)
         {
             return &midiFileList->at(index);
         }

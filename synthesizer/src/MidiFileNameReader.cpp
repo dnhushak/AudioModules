@@ -17,7 +17,7 @@ void chip::MidiFileNameReader::readFile()
             		std::stringstream ss(line);
             		ss >> fileName;
                 
-            		this->midiFileList->push_back(*fileName);
+            		this->midiFileList->push_back(fileName);
 		}
 	    	file.close();
 	}
