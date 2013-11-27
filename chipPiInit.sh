@@ -2,9 +2,6 @@
 # Install packages
 ####################
 
-# Install git
-sudo apt-get install git
-
 # Get the git
 git clone https://github.com/dnhushak/chipophone
 
