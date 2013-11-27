@@ -1,14 +1,14 @@
-#include "MIDIParser.hpp"
+#include "SongboxMidiParser.hpp"
 
 namespace chip 
 {
 
-MIDIParser::MIDIParser()
+SongboxMidiParser::SongboxMidiParser()
 {
     modules = new std::vector<Module*>(0);
 }
 
-int MIDIParser::errorPortMIDI(PmError err)
+int SongboxMidiParser::errorPortMIDI(PmError err)
 {
     int i;
     fprintf(stderr, "error: %s \nValid ports:\n", Pm_GetErrorText(err));
@@ -26,20 +26,63 @@ int MIDIParser::errorPortMIDI(PmError err)
 /* Refer to MIDI spec 
  * http://www.midi.org/techspecs/midimessages.php
  */
-void MIDIParser::interpretMIDI(PmEvent data) 
+void SongboxMidiParser::interpretMIDI(PmEvent data) 
 {
     int status = Pm_MessageStatus(data.message);
     
     //Finds channel. %4 is in there currently to fold everything down to the first four channels
-    //TODO: Handle more channels
     int message = status >> 4;
-    int channel = (status & CHANNEL_MASK); //(status & CHANNEL_MASK) %4;
+    int channel = 16; //will need more channels later for recording -> playback
 	
     int data1 = Pm_MessageData1(data.message); // between 0 and 127 inclusive
     int data2 = Pm_MessageData2(data.message); // between 0 and 127 inclusive
     
-    MIDIController::interpretMIDI(message, data1, data2, (*modules)[channel]);
-    return;
+    if(message==NOTE_ON)
+    {
+        int note = data1;
+        int velocity = data2;
+        
+    	if(velocity != 0)
+    	{
+    	    (*modules)[channel]->activatePolyVoice(note);
+    	}
+    	else
+    	{
+    	    // NOTE_ON and velocity == 0 means turn note off
+       		(*modules)[channel]->releasePolyVoice(note);
+    	}
+    	return;
+    }
+    
+    if(message==NOTE_OFF)
+    {
+        int note = data1;
+        (*modules)[channel]->releasePolyVoice(note);
+    	return;
+    }
+    
+    if(message==CONTROL_CHANGE)
+    {
+        if(data1==TOGGLE_GLISSANDO)
+        {
+            return; // TODO toggle glissando
+        }
+        
+        if(data1==TOGGLE_ARPEGGIO)
+        {
+            return; // TODO toggle arpeggio
+        }
+        
+        // TODO and so on...
+        
+        return;
+    }
+    
+    if(message==PROGRAM_CHANGE)
+    {
+        // TODO process program changes
+        return;
+    }
 }
 
 /*
@@ -51,7 +94,7 @@ PmTimeProcPtr time_proc,
 void *time_info,
 int32_t latency ); 
 */
-void MIDIParser::outputMIDI(int devID)
+void SongboxMidiParser::outputMIDI(int devID)
 {
 	PmError retval;
 	PortMidiStream *mstream;
@@ -95,7 +138,7 @@ void MIDIParser::outputMIDI(int devID)
 	return;
 }
 
-void MIDIParser::readMIDI(PortMidiStream* mstream, PmEvent* msg) 
+void SongboxMidiParser::readMIDI(PortMidiStream* mstream, PmEvent* msg) 
 {
     while(1) 
     {
