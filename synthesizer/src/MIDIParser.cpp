@@ -32,58 +32,14 @@ void MIDIParser::interpretMIDI(PmEvent data)
     
     //Finds channel. %4 is in there currently to fold everything down to the first four channels
     //TODO: Handle more channels
-	int message = status >> 4;
+    int message = status >> 4;
     int channel = (status & CHANNEL_MASK); //(status & CHANNEL_MASK) %4;
 	
     int data1 = Pm_MessageData1(data.message); // between 0 and 127 inclusive
     int data2 = Pm_MessageData2(data.message); // between 0 and 127 inclusive
     
-    if(message==NOTE_ON)
-    {
-        int note = data1;
-        int velocity = data2;
-        
-    	if(velocity != 0)
-    	{
-    	    (*modules)[channel]->activatePolyVoice(note);
-    	}
-    	else
-    	{
-    	    // NOTE_ON and velocity == 0 means turn note off
-       		(*modules)[channel]->releasePolyVoice(note);
-    	}
-    	return;
-    }
-    
-    if(message==NOTE_OFF)
-    {
-        int note = data1;
-        (*modules)[channel]->releasePolyVoice(note);
-    	return;
-    }
-    
-    if(message==CONTROL_CHANGE)
-    {
-        if(data1==TOGGLE_GLISSANDO)
-        {
-            return; // TODO toggle glissando
-        }
-        
-        if(data1==TOGGLE_ARPEGGIO)
-        {
-            return; // TODO toggle arpeggio
-        }
-        
-        // TODO and so on...
-        
-        return;
-    }
-    
-    if(message==PROGRAM_CHANGE)
-    {
-        // TODO process program changes
-        return;
-    }
+    MIDIController::interpretMIDI(message, data1, data2, (*modules)[channel]);
+    return;
 }
 
 /*
