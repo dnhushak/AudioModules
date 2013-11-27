@@ -33,6 +33,8 @@ class SongboxMidiParser
 
 		void readMIDI(PortMidiStream* mstream, PmEvent* msg);
 
+		void interpretMIDI(PmEvent data);
+
 		void outputMIDI(int devID);
 
 		int connectToMIDIStream(int devID);

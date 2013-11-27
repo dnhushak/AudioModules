@@ -31,9 +31,8 @@ void SongboxMidiParser::interpretMIDI(PmEvent data)
     int status = Pm_MessageStatus(data.message);
     
     //Finds channel. %4 is in there currently to fold everything down to the first four channels
-    //TODO: Handle more channels
-	int message = status >> 4;
-    int channel = (status & CHANNEL_MASK); //(status & CHANNEL_MASK) %4;
+    int message = status >> 4;
+    int channel = 16; //will need more channels later for recording -> playback
 	
     int data1 = Pm_MessageData1(data.message); // between 0 and 127 inclusive
     int data2 = Pm_MessageData2(data.message); // between 0 and 127 inclusive
