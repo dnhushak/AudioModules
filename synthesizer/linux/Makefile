@@ -5,10 +5,10 @@ LDFLAGS = -lportaudio -lportmidi -Wall
 
 SRC = ../src/
 EXE = Synthesizer
-HEADERS = $(SRC)AudioProcessor.hpp $(SRC)MIDIParser.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp $(SRC)Voice.hpp $(SRC)VoiceConfigReader.hpp $(SRC)chiputil.hpp $(SRC)MidiFileNameReader.hpp $(SRC)MIDIController.hpp
-SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)MIDIParser.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp $(SRC)Voice.cpp $(SRC)VoiceConfigReader.cpp $(SRC)MidiFileNameReader.cpp $(SRC)MIDIController.cpp
+HEADERS = $(SRC)AudioProcessor.hpp $(SRC)MIDIParser.hpp $(SRC)Mixer.hpp $(SRC)Module.hpp $(SRC)IAudio.hpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp $(SRC)Voice.hpp $(SRC)VoiceConfigReader.hpp $(SRC)chiputil.hpp $(SRC)MIDIController.hpp
+SRCS = $(SRC)Synthesizer.cpp $(SRC)AudioProcessor.cpp $(SRC)MIDIParser.cpp $(SRC)Mixer.cpp $(SRC)Module.cpp $(SRC)IAudio.cpp $(SRC)PolyVoice.cpp $(SRC)Wavetables.cpp $(SRC)Voice.cpp $(SRC)VoiceConfigReader.cpp $(SRC)MIDIController.cpp
 
-OBJECTS = Synthesizer.o AudioProcessor.o MIDIParser.o Mixer.o Module.o PolyVoice.o Wavetables.o IAudio.o Voice.o VoiceConfigReader.o MidiFileNameReader.o MIDIController.o
+OBJECTS = Synthesizer.o AudioProcessor.o MIDIParser.o Mixer.o Module.o PolyVoice.o Wavetables.o IAudio.o Voice.o VoiceConfigReader.o  MIDIController.o
 
 Synthesizer: $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXE) $(LDFLAGS)
@@ -42,9 +42,6 @@ Voice.o: $(SRC)Voice.cpp $(HEADERS)
 
 VoiceConfigReader.o: $(SRC)VoiceConfigReader.cpp $(HEADERS)
 	$(CC) -c $(SRC)VoiceConfigReader.cpp $(LDFLAGS)
-
-MidiFileNameReader.o: $(SRC)MidiFileNameReader.cpp $(HEADERS)
-	$(CC) -c $(SRC)MidiFileNameReader.cpp $(LDFLAGS)
 
 MIDIController.o: $(SRC)MIDIController.cpp $(HEADERS)
 	$(CC) -c $(SRC)MIDIController.cpp $(LDFLAGS)
