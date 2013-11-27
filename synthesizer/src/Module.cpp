@@ -105,10 +105,13 @@ std::vector<float> chip::Module::advance(int numSamples)
             int freqSlope = 
                 (secondRecentFreq - firstRecentFreq) / glissSamples;
             
+            // We want to interpolate the frequency only if the next iteration
+            // will not go past the most recent note played
             if( ((glissNote->frequency > firstRecentFreq) && 
                 (glissNote->frequency + freqSlope <= firstRecentFreq)) ||
                 ((glissNote->frequency < firstRecentFreq) && 
-                (glissNote->frequency + freqSlope >= firstRecentFreq)))
+                (glissNote->frequency + freqSlope >= firstRecentFreq)) &&
+                (secondRecentFreq != 0))
             {
                 glissNote->frequency += freqSlope;
             }
@@ -252,7 +255,7 @@ void chip::Module::cleanup()
         }
     }
     
-    printPolyVoices();
+    //printPolyVoices();
 }
 
 void chip::Module::shiftRightAt(int index)

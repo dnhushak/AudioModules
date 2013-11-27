@@ -2,6 +2,9 @@
 #include "MIDIParser.hpp"
 
 
+// Buffer for sound data to be sent off through the audio callback
+static std::vector<float> buffer;
+
 /* This routine will be called by the PortAudio engine when audio is needed.
  ** It may called at interrupt level on some machines so don't do anything
  ** that could mess up the system like calling malloc() or free().
@@ -124,7 +127,7 @@ static int paCallback( const void *inputBuffer,
     float *out = (float*)outputBuffer;
     
     // TODO make outside of callback
-    std::vector<float> buffer = audio->advance(FRAMES_PER_BUFFER);
+    buffer = audio->advance(FRAMES_PER_BUFFER);
     if(buffer[0] == 0)
     {
         (void) buffer;
