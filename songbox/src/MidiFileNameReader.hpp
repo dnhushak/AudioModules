@@ -1,6 +1,6 @@
 #pragma once
 
-#include "chiputil.hpp"
+#include "../../synthesizer/src/chiputil.hpp"
 #include <sstream>
 #include <fstream>
 #include <iostream>
