@@ -52,8 +52,10 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         }
         else
         {
-            MIDIController::arpeggioSpeed(data1, module);
             //error(message, data1, data2, module);
+            
+            // TODO remove this when finished with testing. This is the +/- buttons on Jack's keyboard
+            MIDIController::arpeggioSpeed(data1, module); 
         }
     }
     else
@@ -114,7 +116,7 @@ void MIDIController::arpeggioSpeed(int scale, chip::Module* module)
     int samples = MIDIController::scaleValue(scale, ARPEGGIO_MIN, ARPEGGIO_MAX);
     module->arpsamples = samples;
     
-    std::cout << scale << " = " << samples << " (min=" << ARPEGGIO_MIN << ", max=" << ARPEGGIO_MAX << ")\n";
+    //std::cout << scale << " = " << samples << " (min=" << ARPEGGIO_MIN << ", max=" << ARPEGGIO_MAX << ")\n";
 }
 
 int MIDIController::scaleValue(int value, int min, int max)
