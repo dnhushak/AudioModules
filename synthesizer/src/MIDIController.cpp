@@ -35,6 +35,14 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         {
             MIDIController::channelVolume(data2, module);
         }
+        else if(data1==64) // TODO remove this when finished with testing. This is the sustain button on Jack's keyboard
+        {
+            MIDIController::arpeggioToggle(module);
+        }
+        else
+        {
+            error(message, data1, data2, module);
+        }
     }
     else if(message==PROGRAM_CHANGE)
     {
@@ -42,16 +50,27 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         {
             MIDIController::selectVoice(data2, module);
         }
+        else
+        {
+            MIDIController::arpeggioSpeed(data1, module);
+            //error(message, data1, data2, module);
+        }
     }
     else
     {
-        std::cerr << "ERROR: Unrecognized MIDI message. " <<
-                "Message = " << message <<
-                "Data1 = " << data1 <<
-                "Data2 = " << data2 <<
-                "\n";
+        error(message, data1, data2, module);
     }
 
+    return;
+}
+
+void MIDIController::error(int message, int data1, int data2, chip::Module* module)
+{
+    std::cout << "ERROR: Unrecognized MIDI message. " <<
+                " Message = " << message <<
+                " Data1 = " << data1 <<
+                " Data2 = " << data2 <<
+                "\n";
     return;
 }
 
@@ -94,6 +113,8 @@ void MIDIController::arpeggioSpeed(int scale, chip::Module* module)
 {
     int samples = MIDIController::scaleValue(scale, ARPEGGIO_MIN, ARPEGGIO_MAX);
     module->arpsamples = samples;
+    
+    std::cout << scale << " = " << samples << " (min=" << ARPEGGIO_MIN << ", max=" << ARPEGGIO_MAX << ")\n";
 }
 
 int MIDIController::scaleValue(int value, int min, int max)
@@ -101,7 +122,7 @@ int MIDIController::scaleValue(int value, int min, int max)
     // Value = 0 results in returning the min
     // Value = 127 results in returning the max
     // Value between 0 and 127 returns a value scaled between min and max
-    return (value*(max - min))/max + min;
+    return value * (max - min)/127 + min;
 }
 
 void MIDIController::channelVolume(int intensity, chip::Module* module)
