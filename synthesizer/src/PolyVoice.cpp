@@ -8,6 +8,7 @@ PolyVoice::PolyVoice()
 	phase = 0;
     frequency = 0.0;
     state = 0;
+    waveType = SQUARE;
     
     wavetable = Wavetables::getInstance();
 }
@@ -19,7 +20,6 @@ float PolyVoice::getSample()
         return 0.0;
     }
 
-    int waveType = SQUARE;
     int phase_truncated = 16-POWER;
     float sample;
     sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));

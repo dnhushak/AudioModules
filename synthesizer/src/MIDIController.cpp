@@ -33,11 +33,17 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         }
         else if(data1==CHANNEL_VOLUME)
         {
-            MIDIController::channelVolume(data2, module);
+            //MIDIController::channelVolume(data2, module);
+            
+            MIDIController::selectVoice(data2, module); // TODO remove this when finished testing.
         }
         else if(data1==64) // TODO remove this when finished with testing. This is the sustain button on Jack's keyboard
         {
             MIDIController::arpeggioToggle(module);
+        }
+        else if(data1==1) // TODO remove this when finished with testing. This is the mod button on Jack's keyboard
+        {
+            //MIDIController::arpeggioToggle(module);
         }
         else
         {
@@ -62,6 +68,7 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
     {
         error(message, data1, data2, module);
     }
+    //error(message, data1, data2, module);
 
     return;
 }
@@ -98,25 +105,27 @@ void MIDIController::noteOff(int note, chip::Module* module)
 void MIDIController::glissandoToggle(chip::Module* module)
 {
     module->glissando = !module->glissando;
+    std::cout << "Glissando = " << module->glissando << "\n";
 }
 
 void MIDIController::glissandoSpeed(int scale, chip::Module* module)
 {
     int samples = MIDIController::scaleValue(scale, GLISSANDO_MIN, GLISSANDO_MAX);
     module->glissSamples = samples;
+    std::cout << "Glissando speed = " << scale << "/127 => " << samples << " (min=" << GLISSANDO_MIN << ", max=" << GLISSANDO_MAX << ")\n";
 }
 
 void MIDIController::arpeggioToggle(chip::Module* module)
 {
     module->arpeggio = !module->arpeggio;
+    std::cout << "Arpeggio = " << module->arpeggio << "\n";
 }
 
 void MIDIController::arpeggioSpeed(int scale, chip::Module* module)
 {
     int samples = MIDIController::scaleValue(scale, ARPEGGIO_MIN, ARPEGGIO_MAX);
     module->arpsamples = samples;
-    
-    //std::cout << scale << " = " << samples << " (min=" << ARPEGGIO_MIN << ", max=" << ARPEGGIO_MAX << ")\n";
+    std::cout << "Arpeggio speed = " << scale << "/127 => " << samples << " (min=" << ARPEGGIO_MIN << ", max=" << ARPEGGIO_MAX << ")\n";
 }
 
 int MIDIController::scaleValue(int value, int min, int max)
@@ -130,12 +139,30 @@ int MIDIController::scaleValue(int value, int min, int max)
 void MIDIController::channelVolume(int intensity, chip::Module* module)
 {
     // TODO not implemented in Module yet.
+    std::cout << "WARNING: channel volume not implemented yet. ";
+    std::cout << "Channel volume = " << intensity << "\n";
 }
 
 void MIDIController::selectVoice(int voiceIndex, chip::Module* module)
 {
-    // TODO Get voice info from the Voice configuration file reader
-    // TODO module->setVoice(int attack, int decay, float sustain, int release, int waveType);
+    VoiceConfigReader* voices = VoiceConfigReader::getInstance();
+    int index =  voiceIndex % voices->numVoices(); // To prevent out of bounds error
+    
+    Voice* voice = voices->getVoiceAt(index);
+    
+    module->setVoice(
+        voice->getAttack(), 
+        voice->getDecay(),
+        voice->getSustain(), 
+        voice->getRelease(), 
+        voice->getWaveType() );
+   
+   std::cout << "Change to voice #" << index << " of " << voices->numVoices() << ":" <<
+    " A=" << voice->getAttack() <<
+    " D=" << voice->getDecay() <<
+    " S=" << voice->getSustain() <<
+    " R=" << voice->getRelease() <<
+    " Wave=" << voice->getWaveType() << "\n";
 }
 
 }

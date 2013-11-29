@@ -1,5 +1,8 @@
 #include "VoiceConfigReader.hpp"
 
+bool chip::VoiceConfigReader::instanceFlag = false;
+chip::VoiceConfigReader *chip::VoiceConfigReader::single = NULL;
+
 void chip::VoiceConfigReader::readFile()
 {
     this->voices = new std::vector<chip::Voice>();
@@ -8,25 +11,25 @@ void chip::VoiceConfigReader::readFile()
     
 	if (file.is_open())
 	{
-	    	while (file.good())
+	    while (file.good())
 		{
-		    	getline(file,line);
-			
-			int attack, decay, release;
-            		float sustain;
-            		std::string waveTypeString;
-            		int waveType;
+	    	getline(file,line);
+		
+	        int attack, decay, release;
+    		float sustain;
+    		std::string waveTypeString;
+    		int waveType;
+
+    		std::stringstream ss(line);
+    		ss >> attack >> decay >> sustain >> release >> waveTypeString;
+    
+    		waveType = this->convertWaveType(waveTypeString);
+    		Voice* newVoice = new Voice(
+        		attack, decay, sustain, release, waveType);
         
-            		std::stringstream ss(line);
-            		ss >> attack >> decay >> sustain >> release >> waveTypeString;
-            
-            		waveType = this->convertWaveType(waveTypeString);
-            		Voice* newVoice = new Voice(
-                		attack, decay, sustain, release, waveType);
-                
-            		this->voices->push_back(*newVoice);
+    		this->voices->push_back(*newVoice);
 		}
-	    	file.close();
+	    file.close();
 	}
 	else
 	{

@@ -18,9 +18,7 @@ class Wavetables
         Wavetables()
         {
             //private constructor
-            instanceFlag = false;
-            single = NULL;
-            
+            instanceFlag = true;
             wavetableGen();
         }
         
@@ -32,7 +30,6 @@ class Wavetables
             if(!instanceFlag)
             {
                 single = new Wavetables();
-                instanceFlag = true;
                 return single;
             }
             else

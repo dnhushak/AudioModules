@@ -21,7 +21,7 @@ chip::Module::Module(Voice* voice)
 	
 	// Set arpeggiation and glissando
 	this->arpeggio = false;
-	this->arpsamples = 50;
+	this->arpsamples = 1000;
 	this->arpcount = 0;
 	this->arpnote = 0;
 	
@@ -39,7 +39,14 @@ chip::Module::Module(Voice* voice)
     glissando = false;
     glissSamples = 100000;
     glissNote = new chip::PolyVoice();
+    glissNote->phase = 0.0;
+    glissNote->frequency = 0.0;
     glissNote->state = SUSTAIN;
+    glissNote->setVoice(voice->getAttack(), 
+                                  voice->getDecay(), 
+                                  voice->getSustain(),
+                                  voice->getRelease(),
+                                  voice->getWaveType());
     firstRecentFreq = 0.0;
     secondRecentFreq = 0.0;
 }
@@ -92,7 +99,8 @@ std::vector<float> chip::Module::advance(int numSamples)
             }
         }
     }
-    else if(glissando && 
+    else if(glissando && next == 2)
+    /*else if(glissando && 
            (next > 0) && 
            (secondRecentFreq != 0.0))/* &&
            (firstRecent->getState() != OFF) && 
@@ -110,8 +118,8 @@ std::vector<float> chip::Module::advance(int numSamples)
             if( ((glissNote->frequency > firstRecentFreq) && 
                 (glissNote->frequency + freqSlope <= firstRecentFreq)) ||
                 ((glissNote->frequency < firstRecentFreq) && 
-                (glissNote->frequency + freqSlope >= firstRecentFreq)) &&
-                (secondRecentFreq != 0))
+                ((glissNote->frequency + freqSlope >= firstRecentFreq)) &&
+                (secondRecentFreq != 0)))
             {
                 glissNote->frequency += freqSlope;
             }
@@ -123,7 +131,7 @@ std::vector<float> chip::Module::advance(int numSamples)
 	{
 	    for(int i = 0; i < next; i++)
         {   
-            if(((*polyvoices)[i].getState() == CLEANUP) && (next > 8))
+            if(((*polyvoices)[i].getState() == CLEANUP))
             {
                 cleanupFlag = true;
             }
@@ -190,7 +198,6 @@ void chip::Module::activatePolyVoice(int note)
         glissNote->frequency = secondRecentFreq;
     }
     
-    
     (*polyvoices)[index].note = note;
     (*polyvoices)[index].phase = 0.0;
     (*polyvoices)[index].frequency = MtoF(note);
@@ -205,6 +212,8 @@ void chip::Module::activatePolyVoice(int note)
     {
         next++;
     }
+    
+    //std::cout << next << "\n";
 }
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Module.hpp"
+#include "VoiceConfigReader.hpp"
 
 // MIDI parsing constants 
 // MIDI spec: http://www.midi.org/techspecs/midimessages.php

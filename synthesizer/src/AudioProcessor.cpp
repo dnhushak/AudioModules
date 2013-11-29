@@ -11,11 +11,10 @@ namespace chip
         std::cout << "Creating audio processor!\n";
         
         // Create the first and only instance of the Wavetables.
-        chip::Wavetables* wavetable = chip::Wavetables::getInstance();
+        Wavetables* wavetable = Wavetables::getInstance();
         
         // Read from VoiceConfig file.
-	    VoiceConfigReader* voiceReader = new VoiceConfigReader();
-	    voiceReader->readFile();
+	    VoiceConfigReader* voiceReader = VoiceConfigReader::getInstance();
 	    bool validFile = voiceReader->numVoices() >= 5;
 	    if (!validFile)
 	    {
