@@ -14,7 +14,7 @@
 // Control changes
 #define GLISSANDO_TOGGLE 0x41   // "Portamento On/Off" data2 <=63 off, data2 >=64 on 
 #define GLISSANDO_SPEED 0x05    // "Portamento Time"
-#define ARPEGGIO_TOGGLE 0x50   // "General Purpose Controller 5" data2 <=63 off, data2 >=64 on
+#define ARPEGGIO_TOGGLE 0x50    // "General Purpose Controller 5" data2 <=63 off, data2 >=64 on
 #define ARPEGGIO_SPEED 0x51     // "General Purpose Controller 6"
 #define CHANNEL_VOLUME 0x07     // "Channel Volume"
 #define SELECT_VOICE 0x00       // "Bank Select." Used to select the new voice

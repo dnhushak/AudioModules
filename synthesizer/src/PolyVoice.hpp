@@ -1,10 +1,10 @@
 #pragma once
 #include "Wavetables.hpp"
 #include "IAudio.hpp"
+#include "chiputil.hpp"
 #include <vector>
 #include <iostream>
-#include "chiputil.hpp"
-
+#include <math.h>
 
 namespace chip
 {
@@ -14,6 +14,8 @@ namespace chip
             //PolyVoice(func* fp);
             PolyVoice();
             ~PolyVoice() {}
+            
+            int count;
             
             int note;
 			unsigned short phase;
@@ -30,7 +32,7 @@ namespace chip
             void releasePolyVoice();
             
             // Sets the ADSR parameters for this polyvoice
-            void setVoice(int, int, float, int, int);
+            void setVoice(int, int, float, int, int, float, int, int);
             
             // Gets and sets the envelope multiplier
             float getEnvmult();
@@ -51,6 +53,12 @@ namespace chip
             float sustain;
             int release;
             int waveType;
+            
+            float vibAmp;
+            int vibPeriod;
+            int vibDelay;
+            float vibCount;
+            float vibFreq;
             
             // Function pointer to remove this polyvoice from the modules active polyvoices
             func* removeThis;

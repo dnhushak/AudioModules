@@ -34,7 +34,6 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         else if(data1==CHANNEL_VOLUME)
         {
             //MIDIController::channelVolume(data2, module);
-            
             MIDIController::selectVoice(data2, module); // TODO remove this when finished testing.
         }
         else if(data1==64) // TODO remove this when finished with testing. This is the sustain button on Jack's keyboard
@@ -58,7 +57,7 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         }
         else
         {
-            //error(message, data1, data2, module);
+            error(message, data1, data2, module);
             
             // TODO remove this when finished with testing. This is the +/- buttons on Jack's keyboard
             MIDIController::arpeggioSpeed(data1, module); 
@@ -138,9 +137,9 @@ int MIDIController::scaleValue(int value, int min, int max)
 
 void MIDIController::channelVolume(int intensity, chip::Module* module)
 {
-    // TODO not implemented in Module yet.
-    std::cout << "WARNING: channel volume not implemented yet. ";
-    std::cout << "Channel volume = " << intensity << "\n";
+    float volume = intensity / 127.0;
+    std::cout << "Channel volume = " << volume << " (from 0 to 1)\n";
+    module->setVolume(volume);
 }
 
 void MIDIController::selectVoice(int voiceIndex, chip::Module* module)
@@ -155,14 +154,20 @@ void MIDIController::selectVoice(int voiceIndex, chip::Module* module)
         voice->getDecay(),
         voice->getSustain(), 
         voice->getRelease(), 
-        voice->getWaveType() );
+        voice->getWaveType(),
+        voice->getVibAmp(),
+        voice->getVibPeriod(),
+        voice->getVibDelay() );
    
    std::cout << "Change to voice #" << index << " of " << voices->numVoices() << ":" <<
     " A=" << voice->getAttack() <<
     " D=" << voice->getDecay() <<
     " S=" << voice->getSustain() <<
     " R=" << voice->getRelease() <<
-    " Wave=" << voice->getWaveType() << "\n";
+    " Wave=" << voice->getWaveType() << 
+    " VibAmp=" << voice->getVibAmp() <<
+    " VibPeriod= " << voice->getVibPeriod() <<
+    " VibDelay= " << voice->getVibDelay() << "\n";
 }
 
 }

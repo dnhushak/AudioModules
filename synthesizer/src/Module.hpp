@@ -3,9 +3,10 @@
 #include "Mixer.hpp"
 #include "IAudio.hpp"
 #include "Voice.hpp"
+#include "chiputil.hpp"
 #include <vector>
 #include <iostream>
-#include "chiputil.hpp"
+#include <math.h>
 
 namespace chip
 {
@@ -24,18 +25,24 @@ namespace chip
 				
 				bool glissando;
 				int glissSamples;
+				int glissCount;
 				PolyVoice* glissNote;
+				float freqSlope;
 				
 				float firstRecentFreq; // Frequency of the most recent note pressed
 				float secondRecentFreq; // Frequency of the second most recent note pressed
 				
+				// Volume control
+				float volume;
+				void setVolume(float);
 				
 				Module();
 				Module(Voice* voice);
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 
 												 //polyvoice in this module (aka - move along the sound wave)
 			    
-			    void setVoice(int attack, int decay, float sustain, int release, int waveType);
+			    void setVoice(int attack, int decay, float sustain, int release, int waveType,
+			                  float vibAmp, int vibPeriod, int vibDelay);
 			    void activatePolyVoice(int note);
 			    void releasePolyVoice(int note);
 			    

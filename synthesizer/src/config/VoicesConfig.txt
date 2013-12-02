@@ -1,10 +1,10 @@
-1 1 0.5 1 SQUARE // default voice for first module
-1 1 0.5 1 PULSE  // default voice for second module
-1 1 0.5 1 TRIANGLE // default voice for third module
-1 1 0.5 1 SAWTOOTH // default voice for fourth module
-1 1 0.5 1 NOISE // default voice for fifth module
-25 25 0.8 50 SQUARE
-100 100 0.5 50 TRIANGLE
-100 100 0.5 50 SQUARE
-100 25 0.0 50 NOISE
+1 1 0.5 1 SQUARE 0.005 25 10000 // default voice for first module
+1 1 0.5 1 PULSE 0.005 25 5000 // default voice for second module
+1 1 0.5 1 TRIANGLE 0.005 25 5000 // default voice for third module
+1 1 0.5 1 SAWTOOTH 0.005 25 5000 // default voice for fourth module
+1 1 0.5 1 NOISE 0.005 25 5000 // default voice for fifth module
+25 25 0.8 50 SQUARE 0.005 25 5000
+100 100 0.5 50 TRIANGLE 0.005 25 5000
+100 100 0.5 50 SQUARE 0.005 25 5000
+100 25 0.0 50 NOISE 0.005 25 5000
 

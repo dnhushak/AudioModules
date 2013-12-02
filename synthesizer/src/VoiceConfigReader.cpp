@@ -19,13 +19,18 @@ void chip::VoiceConfigReader::readFile()
     		float sustain;
     		std::string waveTypeString;
     		int waveType;
+    		float vibratoAmplitude;
+    		int vibratoPeriod;
+    		int vibratoDelay;
 
     		std::stringstream ss(line);
-    		ss >> attack >> decay >> sustain >> release >> waveTypeString;
+    		ss >> attack >> decay >> sustain >> release >> waveTypeString >> 
+    		   vibratoAmplitude >> vibratoPeriod >> vibratoDelay;
     
     		waveType = this->convertWaveType(waveTypeString);
     		Voice* newVoice = new Voice(
-        		attack, decay, sustain, release, waveType);
+        		attack, decay, sustain, release, waveType, 
+        		vibratoAmplitude, vibratoPeriod, vibratoDelay);
         
     		this->voices->push_back(*newVoice);
 		}

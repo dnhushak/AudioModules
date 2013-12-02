@@ -18,12 +18,17 @@ namespace chip
             // The wave type
             int waveType;
             
+            // Vibrato variables
+            float vibAmp; // Amplitude of the vibrato (percentage of the original frequency)
+            int vibPeriod; // Period of the vibrato (how fast it is)
+            int vibDelay; // Samples in the sustain until vibrato activates
+            
         public:
             // Creates a neutral ADSR envelope with a square wave
             Voice();
             
             // Creates an ADSR envelope of the given values and the wavetype
-            Voice(int, int, float, int, int);
+            Voice(int, int, float, int, int, float, int, int);
             
             // Getters
             int getAttack();
@@ -31,6 +36,9 @@ namespace chip
             float getSustain();
             int getRelease();
             int getWaveType();
+            float getVibAmp();
+            int getVibPeriod();
+            int getVibDelay();
             
             // Setters
             void setAttack(int);
@@ -38,6 +46,9 @@ namespace chip
             void setSustain(float);
             void setRelease(int);
             void setWaveType(int);
+            void setVibAmp(float);
+            void setVibPeriod(int);
+            void setVibDelay(int);
             
             std::string toString();
     };
