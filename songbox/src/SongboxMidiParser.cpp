@@ -3,11 +3,6 @@
 namespace chip 
 {
 
-SongboxMidiParser::SongboxMidiParser()
-{
-    modules = new std::vector<Module*>(0);
-}
-
 int SongboxMidiParser::errorPortMIDI(PmError err)
 {
     int i;
@@ -23,6 +18,16 @@ int SongboxMidiParser::errorPortMIDI(PmError err)
     return i;
 }
 
+void SongboxMidiParser::printMIDI(int message, int data1, int data2)
+{
+    std::cout << "MIDI message: " <<
+                " Message = " << message <<
+                " Data1 = " << data1 <<
+                " Data2 = " << data2 <<
+                "\n";
+    return;
+}
+
 /* Refer to MIDI spec 
  * http://www.midi.org/techspecs/midimessages.php
  */
@@ -32,110 +37,55 @@ void SongboxMidiParser::interpretMIDI(PmEvent data)
     
     //Finds channel. %4 is in there currently to fold everything down to the first four channels
     int message = status >> 4;
-    int channel = 16; //will need more channels later for recording -> playback
+    //int channel = (status & CHANNEL_MASK); //(status & CHANNEL_MASK) %4;
 	
     int data1 = Pm_MessageData1(data.message); // between 0 and 127 inclusive
     int data2 = Pm_MessageData2(data.message); // between 0 and 127 inclusive
     
+    printMIDI(message, data1, data2); // TODO remove this after testing
+
     if(message==NOTE_ON)
     {
-        int note = data1;
-        int velocity = data2;
-        
-    	if(velocity != 0)
-    	{
-    	    (*modules)[channel]->activatePolyVoice(note);
-    	}
-    	else
-    	{
-    	    // NOTE_ON and velocity == 0 means turn note off
-       		(*modules)[channel]->releasePolyVoice(note);
-    	}
-    	return;
+        // TODO If recording, record note and time
     }
-    
-    if(message==NOTE_OFF)
+    else if(message==NOTE_OFF)
     {
-        int note = data1;
-        (*modules)[channel]->releasePolyVoice(note);
-    	return;
+        // TODO If recording, record note and time
     }
-    
-    if(message==CONTROL_CHANGE)
+    else if(message==SONG_SELECT)
     {
-        if(data1==TOGGLE_GLISSANDO)
-        {
-            return; // TODO toggle glissando
-        }
-        
-        if(data1==TOGGLE_ARPEGGIO)
-        {
-            return; // TODO toggle arpeggio
-        }
-        
-        // TODO and so on...
-        
-        return;
+        // TODO 
     }
-    
-    if(message==PROGRAM_CHANGE)
+    else if(message==PLAY)
     {
-        // TODO process program changes
-        return;
+        // TODO Start playing the recorded song or the default song (if there is one)
+        // TODO If playing a song, do nothing
+        // TODO If recording a song, stop the recording and play the recording from the beginning
     }
-}
+    else if(message==PAUSE)
+    {
+        // TODO If playing a song, pause the playback
+    }
+    else if(message==STOP)
+    {
+        // TODO If playing a song, stop the playback
+        // TODO If recording, stop the recording
+    }
+    else if(message==RECORD)
+    {
+        // TODO If recording, stop recording
+        // TODO If playing a song, record over the current recording? Figure this out
+    }
+    else if(message==CHANGE_TEMPO)
+    {
+        // TODO If playing a song, adjust tempo
+    }
+    else
+    {
+        //printMIDI(message, data1, data2);
+    }
 
-/*
-PMEXPORT PmError Pm_OpenOutput( PortMidiStream** stream,
-PmDeviceID outputDevice,
-void *outputDriverInfo,
-int32_t bufferSize,
-PmTimeProcPtr time_proc,
-void *time_info,
-int32_t latency ); 
-*/
-void SongboxMidiParser::outputMIDI(int devID)
-{
-	PmError retval;
-	PortMidiStream *mstream;
-	PmEvent msg[32];
-	int i = 0;
-
-	retval = Pm_OpenOutput(&mstream, devID, NULL, 512L, NULL, NULL, 0);
-
-	if(retval != pmNoError)
-	{
-		printf("error: %s \nValid ports:\n", Pm_GetErrorText(retval));
-		int i;
-		for (i = 0; i < Pm_CountDevices(); i++) 
-		{
-			const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-			if (info->input)
-			{
-				printf("Input:  %d: %s, %s\n", i, info->interf, info->name);
-			}
-		}
-	}
-	else 
-	{
-		printf("Bound to port %d\n", devID);
-		while(1) 
-		{
-			if(Pm_Poll(mstream)) //CHANGE THIS
-	    		{
-				int cnt = Pm_Read(mstream, msg, 32); //CHANGE THIS
-		    		for(i=0; i<cnt; i++) 
-		    		{
-					//doAction(msg[i]); //CHANGE THIS					
-		    		}
-	    		}
-		}
-	}
-
-	retval = Pm_Write( &mstream, msg, 32 );
-
-	Pm_Close(mstream);
-	return;
+    return;
 }
 
 void SongboxMidiParser::readMIDI(PortMidiStream* mstream, PmEvent* msg) 
@@ -155,7 +105,7 @@ void SongboxMidiParser::readMIDI(PortMidiStream* mstream, PmEvent* msg)
     return;
 }
 
-int MIDIParser::connectToMIDIStream(int devID)
+int SongboxMidiParser::connectToMIDIStream(int devID)
 {
     PmError err = Pm_Initialize();
     if( err != pmNoError ) this->errorPortMIDI(err);
@@ -178,10 +128,4 @@ int MIDIParser::connectToMIDIStream(int devID)
     Pm_Terminate();
     return err;
 }
-
-void MIDIParser::addObject(Module* module)
-{
-    modules->push_back(module);
-}
-
 }

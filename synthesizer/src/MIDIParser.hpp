@@ -16,8 +16,6 @@ namespace chip
             
             void readMIDI(PortMidiStream* mstream, PmEvent* msg);
             
-            void outputMIDI(int devID);
-
             int connectToMIDIStream(int devID);
             
             void addObject(Module* audioObject);

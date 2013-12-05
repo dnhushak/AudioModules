@@ -23,13 +23,6 @@
 // TODO React to change of 5 position switches
 // TODO React to changing the currently selected module/channel
 
-// Song box
-#define SONG_SELECT 0xF3        // Song select (song #) or "Tune Request"? 0xF6
-#define PLAY 0xFA               // "Start" according to MIDI spec
-#define PAUSE 0xFB              // "Continue" according to MIDI spec
-#define STOP 0xFC               // "Stop"
-#define CHANGE_TEMPO 0xF2       // "Song Position Pointer" according to spec or "Timing clock"? oxF8
-
 // Other
 #define RESET 0xFF              // "Reset." Reboot the system. Use sparingly.
 #define GLISSANDO_MIN  5000
