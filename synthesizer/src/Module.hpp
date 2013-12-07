@@ -29,8 +29,8 @@ namespace chip
 				PolyVoice* glissNote;
 				float freqSlope;
 				
-				float firstRecentFreq; // Frequency of the most recent note pressed
-				float secondRecentFreq; // Frequency of the second most recent note pressed
+				float glissEnd; // Frequency of the most recent note pressed. Where we are glissing to.
+				float glissStart; // Frequency of the second most recent note pressed. Where we are glissing from.
 				
 				// Volume control
 				float volume;

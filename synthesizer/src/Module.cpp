@@ -39,7 +39,7 @@ chip::Module::Module(Voice* voice)
     }
     
     // Set the glissando PolyVoice
-    glissando = false;
+    glissando = true;
     glissSamples = 10000;
     glissCount = 0;
     freqSlope = 0.0;
@@ -56,8 +56,8 @@ chip::Module::Module(Voice* voice)
                         voice->getVibPeriod(),
                         voice->getVibDelay());
                         
-    firstRecentFreq = 0.0;
-    secondRecentFreq = 0.0;
+    glissEnd = 0.0;
+    glissStart = 0.0;
 }
 
 void chip::Module::setVoice(int attack, int decay, float sustain, int release, int waveType,
@@ -71,6 +71,15 @@ void chip::Module::setVoice(int attack, int decay, float sustain, int release, i
     voice->setVibAmp(vibAmp);
     voice->setVibPeriod(vibPeriod);
     voice->setVibDelay(vibDelay);
+    
+    glissNote->setVoice(voice->getAttack(), 
+                        voice->getDecay(), 
+                        voice->getSustain(),
+                        voice->getRelease(),
+                        voice->getWaveType(),
+                        voice->getVibAmp(),
+                        voice->getVibPeriod(),
+                        voice->getVibDelay());
 }
 
 void chip::Module::setVolume(float newVolume)
@@ -131,25 +140,25 @@ std::vector<float> chip::Module::advance(int numSamples)
     else if(glissando && next == 2)
     {
         for(int i = 0; i < numSamples; i++)
-        {            
+        {    
+            //if(glissCount < glissSamples)
+            //if((glissNote->frequency > (*polyvoices)[0].frequency) ||
+               //(glissNote->frequency < (*polyvoices)[1].frequency)        
             // We want to interpolate the frequency only if the next iteration
             // will not go past the most recent note played
-            //if( ((glissNote->frequency > firstRecentFreq) && 
-            //    (glissNote->frequency + freqSlope <= firstRecentFreq)))// ||
-                //((glissNote->frequency < firstRecentFreq) && 
-                //(glissNote->frequency + freqSlope >= firstRecentFreq)))
-            
-            
-            if(glissCount < glissSamples)
-            //if((glissNote->frequency > (*polyvoices)[0].frequency) &&
-            //   (glissNote->frequency < (*polyvoices)[1].frequency))
+            if( ((glissNote->frequency > glissEnd) && 
+                (glissNote->frequency + freqSlope >= glissEnd)) ||
+                ((glissNote->frequency < glissEnd) && 
+                (glissNote->frequency + freqSlope <= glissEnd)))
             {
                 glissNote->frequency += freqSlope;
                 
                 glissCount++;
             }
             
-            //std::cout << freqSlope << "\n";
+            /*std::cout << freqSlope << "\n";
+            std::cout << glissEnd << "\n";
+            std::cout << glissStart << "\n";*/
             
             (*mixedFinal)[i] = glissNote->getSample() * volume;
         }
@@ -226,22 +235,22 @@ void chip::Module::activatePolyVoice(int note)
                                   voice->getVibDelay());
     
     // Update the recent note queue
-    secondRecentFreq = firstRecentFreq;
-    firstRecentFreq = (*polyvoices)[index].frequency;
+    glissStart = glissEnd;
+    glissEnd = (*polyvoices)[index].frequency;
     
     // Set where glissando will start
-    glissNote->frequency = firstRecentFreq;
+    glissNote->frequency = glissStart;
     
     // Set glissando note only when no notes were pressed before
     /*if(next == 0)
     {
 
-        glissNote->frequency = secondRecentFreq;
+        glissNote->frequency = glissStart;
 
     }*/
     
-    //std::cout << "Second: " << secondRecentFreq << "\n";
-    //std::cout << "First: " << firstRecentFreq << "\n";
+    //std::cout << "Second: " << glissStart << "\n";
+    //std::cout << "First: " << glissEnd << "\n";
     
     if(index == next)
     {
@@ -250,7 +259,7 @@ void chip::Module::activatePolyVoice(int note)
     
     if(next == 2)
     {
-        freqSlope = (firstRecentFreq - secondRecentFreq) / glissSamples;
+        freqSlope = (glissEnd - glissStart) / glissSamples;
     }
     
     //std::cout << next << "\n";
