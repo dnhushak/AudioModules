@@ -31,7 +31,6 @@ void MIDIParser::interpretMIDI(PmEvent data)
     int status = Pm_MessageStatus(data.message);
     
     //Finds channel. %4 is in there currently to fold everything down to the first four channels
-    //TODO: Handle more channels
     int message = status >> 4;
     int channel = (status & CHANNEL_MASK); //(status & CHANNEL_MASK) %4;
 	
@@ -40,59 +39,6 @@ void MIDIParser::interpretMIDI(PmEvent data)
     
     MIDIController::interpretMIDI(message, data1, data2, (*modules)[channel]);
     return;
-}
-
-/*
-PMEXPORT PmError Pm_OpenOutput( PortMidiStream** stream,
-PmDeviceID outputDevice,
-void *outputDriverInfo,
-int32_t bufferSize,
-PmTimeProcPtr time_proc,
-void *time_info,
-int32_t latency ); 
-*/
-void MIDIParser::outputMIDI(int devID)
-{
-	PmError retval;
-	PortMidiStream *mstream;
-	PmEvent msg[32];
-	int i = 0;
-
-	retval = Pm_OpenOutput(&mstream, devID, NULL, 512L, NULL, NULL, 0);
-
-	if(retval != pmNoError)
-	{
-		printf("error: %s \nValid ports:\n", Pm_GetErrorText(retval));
-		int i;
-		for (i = 0; i < Pm_CountDevices(); i++) 
-		{
-			const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-			if (info->input)
-			{
-				printf("Input:  %d: %s, %s\n", i, info->interf, info->name);
-			}
-		}
-	}
-	else 
-	{
-		printf("Bound to port %d\n", devID);
-		while(1) 
-		{
-			if(Pm_Poll(mstream)) //CHANGE THIS
-	    		{
-				int cnt = Pm_Read(mstream, msg, 32); //CHANGE THIS
-		    		for(i=0; i<cnt; i++) 
-		    		{
-					//doAction(msg[i]); //CHANGE THIS					
-		    		}
-	    		}
-		}
-	}
-
-	retval = Pm_Write( &mstream, msg, 32 );
-
-	Pm_Close(mstream);
-	return;
 }
 
 void MIDIParser::readMIDI(PortMidiStream* mstream, PmEvent* msg) 
