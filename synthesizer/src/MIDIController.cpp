@@ -145,8 +145,11 @@ void MIDIController::channelVolume(int intensity, chip::Module* module)
 void MIDIController::selectVoice(int voiceIndex, chip::Module* module)
 {
     VoiceConfigReader* voices = VoiceConfigReader::getInstance();
-    int index =  voiceIndex % voices->numVoices(); // To prevent out of bounds error
     
+    // TODO REMOVE - temp for Jack's keyboard
+    int index = voices->numVoices() * voiceIndex / 127;
+        
+    //int index =  voiceIndex % voices->numVoices(); // To prevent out of bounds error
     Voice* voice = voices->getVoiceAt(index);
     
     module->setVoice(

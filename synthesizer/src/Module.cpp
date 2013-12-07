@@ -96,6 +96,12 @@ std::vector<float> chip::Module::advance(int numSamples)
             cleanupFlag = true;
         }
     }
+    
+    // Cleanup the polyvoices marked to be deactivated.
+	if(cleanupFlag)
+	{
+	    cleanup();
+	}
 	
 	if(arpeggio)
     {
@@ -123,28 +129,20 @@ std::vector<float> chip::Module::advance(int numSamples)
         }
     }
     else if(glissando && next == 2)
-    /*else if(glissando && 
-           (next > 0) && 
-           (secondRecentFreq != 0.0))/* &&
-           (firstRecent->getState() != OFF) && 
-           (firstRecent->getState() != CLEANUP) &&
-           (secondRecent->getState() != OFF) &&
-           (secondRecent->getState() != CLEANUP))*/
     {
         for(int i = 0; i < numSamples; i++)
-        {
-            //int freqSlope = ((*polyvoices)[1].frequency - (*polyvoices)[0].frequency) / glissSamples; 
-                //(secondRecentFreq - firstRecentFreq) / glissSamples;
-            
-            
+        {            
             // We want to interpolate the frequency only if the next iteration
             // will not go past the most recent note played
-            /*if( (secondRecentFreq != 0))((glissNote->frequency > firstRecentFreq) && 
-                (glissNote->frequency + freqSlope <= firstRecentFreq)) ||
-                ((glissNote->frequency < firstRecentFreq) && 
-                ((glissNote->frequency + freqSlope >= firstRecentFreq)) &&*/
+            //if( ((glissNote->frequency > firstRecentFreq) && 
+            //    (glissNote->frequency + freqSlope <= firstRecentFreq)))// ||
+                //((glissNote->frequency < firstRecentFreq) && 
+                //(glissNote->frequency + freqSlope >= firstRecentFreq)))
+            
             
             if(glissCount < glissSamples)
+            //if((glissNote->frequency > (*polyvoices)[0].frequency) &&
+            //   (glissNote->frequency < (*polyvoices)[1].frequency))
             {
                 glissNote->frequency += freqSlope;
                 
@@ -173,12 +171,6 @@ std::vector<float> chip::Module::advance(int numSamples)
     
 	temp->clear();
 	delete temp;
-	
-	// Cleanup the polyvoices marked to be deactivated.
-	if(cleanupFlag)
-	{
-	    cleanup();
-	}
 	
 	return *mixedFinal; //the final, "synthesized" list
 }
@@ -220,16 +212,6 @@ void chip::Module::activatePolyVoice(int note)
         }
     }
     
-    // Update the recent note queue
-    secondRecentFreq = firstRecentFreq;
-    firstRecentFreq = (*polyvoices)[index].frequency;
-    
-    // Set glissando note only when no notes were pressed before
-    /*if(next == 0)
-    {
-        glissNote->frequency = secondRecentFreq;
-    }*/
-    
     (*polyvoices)[index].note = note;
     (*polyvoices)[index].phase = 0.0;
     (*polyvoices)[index].frequency = MtoF(note);
@@ -243,8 +225,23 @@ void chip::Module::activatePolyVoice(int note)
                                   voice->getVibPeriod(),
                                   voice->getVibDelay());
     
+    // Update the recent note queue
+    secondRecentFreq = firstRecentFreq;
+    firstRecentFreq = (*polyvoices)[index].frequency;
+    
     // Set where glissando will start
-    glissNote->frequency = (*polyvoices)[0].frequency;
+    glissNote->frequency = firstRecentFreq;
+    
+    // Set glissando note only when no notes were pressed before
+    /*if(next == 0)
+    {
+
+        glissNote->frequency = secondRecentFreq;
+
+    }*/
+    
+    //std::cout << "Second: " << secondRecentFreq << "\n";
+    //std::cout << "First: " << firstRecentFreq << "\n";
     
     if(index == next)
     {
@@ -254,10 +251,9 @@ void chip::Module::activatePolyVoice(int note)
     if(next == 2)
     {
         freqSlope = (firstRecentFreq - secondRecentFreq) / glissSamples;
-        //freqSlope = ((*polyvoices)[1].frequency - (*polyvoices)[0].frequency) / glissSamples;
     }
     
-    std::cout << next << "\n";
+    //std::cout << next << "\n";
 }
 
 
@@ -270,13 +266,13 @@ void chip::Module::releasePolyVoice(int note)
     {
         if((*polyvoices)[i].note == note)
         {
-            if(!arpeggio || !glissando)
+            if(arpeggio || glissando)
             {
-                (*polyvoices)[i].releasePolyVoice();
+                (*polyvoices)[i].state = CLEANUP;
             }
             else
             {
-                (*polyvoices)[i].state = CLEANUP;
+                (*polyvoices)[i].releasePolyVoice();
             }
             
             break;
@@ -308,7 +304,7 @@ void chip::Module::cleanup()
         }
     }
     
-    std::cout << next << "\n";
+    //std::cout << next << "\n";
     //printPolyVoices();
 }
 
