@@ -26,7 +26,7 @@ chip::Module::Module(Voice* voice)
 	this->arpnote = 0;
 	
 	// Set the volume
-	this->volume = 1.0;
+	this->volume = 0.2;
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
@@ -72,6 +72,7 @@ void chip::Module::setVoice(int attack, int decay, float sustain, int release, i
     voice->setVibPeriod(vibPeriod);
     voice->setVibDelay(vibDelay);
     
+    // Set the glissando voice
     glissNote->setVoice(voice->getAttack(), 
                         voice->getDecay(), 
                         voice->getSustain(),
