@@ -23,7 +23,7 @@
 #define CLEANUP 5
 
 //Number of polyvoices
-#define NUM_POLYVOICES 64
+#define NUM_POLYVOICES 18
 
 // Maximum number of active polyvoices
 #define MAX_POLYVOICES 16

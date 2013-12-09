@@ -39,7 +39,7 @@ chip::Module::Module(Voice* voice)
     }
     
     // Set the glissando PolyVoice
-    glissando = true;
+    glissando = false;
     glissSamples = 10000;
     glissCount = 0;
     freqSlope = 0.0;
@@ -89,29 +89,13 @@ void chip::Module::setVolume(float newVolume)
 }
 
 std::vector<float> chip::Module::advance(int numSamples)
-{ 
-    //the 0th elements are all added together, the 1st elements, 2nd, all the way to the 
-	//nth elements and the result is returned (aka - move along the sound wave)
-	std::vector<float>* mixedFinal = new std::vector<float>(numSamples, 0.0);
-	std::vector<float>* temp = new std::vector<float>(numSamples, 0.0);
+{
+	// Initailize the audio buffers
+	std::vector<float>* mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+	std::vector<float>* temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 	
-	// Flag indicating if the inactive polyvoices need to be deactivated.
-	bool cleanupFlag = false;
-	
-	// Perform a cleanup check
-	for(int i = 0; i < next + 4; i++)
-    {   
-        if(((*polyvoices)[i].getState() == CLEANUP))
-        {
-            cleanupFlag = true;
-        }
-    }
-    
-    // Cleanup the polyvoices marked to be deactivated.
-	if(cleanupFlag)
-	{
-	    cleanup();
-	}
+	// Perform a cleanup of the polyvoices
+	cleanup();
 	
 	if(arpeggio)
     {
@@ -175,12 +159,15 @@ std::vector<float> chip::Module::advance(int numSamples)
             {
                 //sum each advanced IAudio to the master mixed vector
                 (*mixedFinal)[j] = (*mixedFinal)[j] + ((*temp)[j] * volume);
+                
+                // Reset the temp
+                (*temp)[j] = 0.0;
             }
         }
     }
     
-	temp->clear();
-	delete temp;
+	//temp->clear();
+	//delete temp;
 	
 	return *mixedFinal; //the final, "synthesized" list
 }
@@ -298,9 +285,6 @@ void chip::Module::cleanup()
     // aren't left hanging.
     int currentNext = next;
     
-    // Reset arpeggio
-    arpnote = 0;
-    
     // Find any note that is flagged for "clean up" and swap it with the
     // last active polyvoice (next - 1).
     for(int i = 0; i < currentNext; i++)
@@ -311,11 +295,11 @@ void chip::Module::cleanup()
             i--;
             
             (*polyvoices)[next].state = OFF;
+            
+            // Reset arpeggio
+            arpnote = 0;
         }
     }
-    
-    //std::cout << next << "\n";
-    //printPolyVoices();
 }
 
 void chip::Module::shiftRightAt(int index)
