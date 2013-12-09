@@ -25,7 +25,6 @@ float PolyVoice::getSample()
     
     int phase_truncated = 16-POWER;
     float sample;
-    int incrementVib;
     sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
     phase += stepsize();
     
@@ -105,21 +104,6 @@ void PolyVoice::releasePolyVoice()
     state = RELEASE;
     envloc = 0;
     Rslope = -envmult / Rsamp;
-}
-
-std::vector<float> PolyVoice::advance(int numSamples) 
-{
-    std::vector<float>* samples = new std::vector<float>(numSamples);
-    float sample;
-    
-    // Obtain the sample from the wavetable and advance the phase register
-    for(int i = 0; i < numSamples; i++)
-    {
-        sample = getSample();
-        (*samples)[i] = (sample);
-    }
-    
-    return *samples;
 }
 
 unsigned int PolyVoice::stepsize()

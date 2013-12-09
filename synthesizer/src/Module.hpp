@@ -36,6 +36,9 @@ namespace chip
 				float volume;
 				void setVolume(float);
 				
+				// Audio buffer
+				std::vector<float>* mixedFinal;
+				
 				Module();
 				Module(Voice* voice);
 				std::vector<float> advance(int); //create a mixer advance the phase registers of every 

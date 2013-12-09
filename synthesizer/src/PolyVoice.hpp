@@ -1,6 +1,5 @@
 #pragma once
 #include "Wavetables.hpp"
-#include "IAudio.hpp"
 #include "chiputil.hpp"
 #include <vector>
 #include <iostream>
@@ -8,7 +7,7 @@
 
 namespace chip
 {
-    class PolyVoice: public IAudio
+    class PolyVoice
     {
         public:
             //PolyVoice(func* fp);
@@ -25,7 +24,6 @@ namespace chip
             int state;
             int getState();
             
-            std::vector<float> advance(int);
             unsigned int stepsize();
             
             // Sets the state of the polyvoice to release

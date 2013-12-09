@@ -3,12 +3,16 @@
 chip::Module::Module()
 {
     Module(new Voice(1, 1, 0.5, 1, SQUARE, 0, 0, 0));
+    mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 }
 
 chip::Module::Module(Voice* voice)
 { 
 	//constructor
 	this->next = 0;
+	
+	//initializes the audio buffer
+	mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 	
 	//instantiates the mixer
 	this->mixer = new Mixer();
@@ -91,8 +95,14 @@ void chip::Module::setVolume(float newVolume)
 std::vector<float> chip::Module::advance(int numSamples)
 {
 	// Initailize the audio buffers
-	std::vector<float>* mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 	std::vector<float>* temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+	
+	float sample;
+	
+	for(int i = 0; i < numSamples; i++)
+	{
+        (*mixedFinal)[i] = 0.0;
+    }
 	
 	// Perform a cleanup of the polyvoices
 	cleanup();
@@ -126,11 +136,6 @@ std::vector<float> chip::Module::advance(int numSamples)
     {
         for(int i = 0; i < numSamples; i++)
         {    
-            //if(glissCount < glissSamples)
-            //if((glissNote->frequency > (*polyvoices)[0].frequency) ||
-               //(glissNote->frequency < (*polyvoices)[1].frequency)        
-            // We want to interpolate the frequency only if the next iteration
-            // will not go past the most recent note played
             if( ((glissNote->frequency > glissEnd) && 
                 (glissNote->frequency + freqSlope >= glissEnd)) ||
                 ((glissNote->frequency < glissEnd) && 
@@ -141,24 +146,17 @@ std::vector<float> chip::Module::advance(int numSamples)
                 glissCount++;
             }
             
-            /*std::cout << freqSlope << "\n";
-            std::cout << glissEnd << "\n";
-            std::cout << glissStart << "\n";*/
-            
             (*mixedFinal)[i] = glissNote->getSample() * volume;
         }
     }
     else
     {
         for(int i = 0; i < next; i++)
-        {   
-            //for each IAudio in audioList, advance
-            *temp = (*polyvoices)[i].advance(numSamples);
-            
+        {
             for(int j = 0; j < numSamples; j++)
             {
                 //sum each advanced IAudio to the master mixed vector
-                (*mixedFinal)[j] = (*mixedFinal)[j] + ((*temp)[j] * volume);
+                (*mixedFinal)[j] = (*mixedFinal)[j] + ((*polyvoices)[i].getSample() * volume);
                 
                 // Reset the temp
                 (*temp)[j] = 0.0;
@@ -166,8 +164,8 @@ std::vector<float> chip::Module::advance(int numSamples)
         }
     }
     
-	//temp->clear();
-	//delete temp;
+	temp->clear();
+    delete temp;
 	
 	return *mixedFinal; //the final, "synthesized" list
 }
