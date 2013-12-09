@@ -4,6 +4,7 @@ chip::Module::Module()
 {
     Module(new Voice(1, 1, 0.5, 1, SQUARE, 0, 0, 0));
     mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+    temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 }
 
 chip::Module::Module(Voice* voice)
@@ -13,6 +14,7 @@ chip::Module::Module(Voice* voice)
 	
 	//initializes the audio buffer
 	mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+	temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 	
 	//instantiates the mixer
 	this->mixer = new Mixer();
@@ -93,12 +95,11 @@ void chip::Module::setVolume(float newVolume)
 }
 
 std::vector<float> chip::Module::advance(int numSamples)
-{
-	// Initailize the audio buffers
-	std::vector<float>* temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
-	
+{	
 	float sample;
 	
+	// Clear the audio buffer
+	// TODO Trying to find a way to integrate this into the rest of the loop
 	for(int i = 0; i < numSamples; i++)
 	{
         (*mixedFinal)[i] = 0.0;
@@ -155,18 +156,21 @@ std::vector<float> chip::Module::advance(int numSamples)
         {
             for(int j = 0; j < numSamples; j++)
             {
-                //sum each advanced IAudio to the master mixed vector
-                (*mixedFinal)[j] = (*mixedFinal)[j] + ((*polyvoices)[i].getSample() * volume);
+                // Zero out our audio buffer on the first iteration so the previous
+		        // audio data is cleared.
+		        //if(i == 0)
+		        //{
+                    //(*mixedFinal)[j] = 0.0;
+                //}
                 
-                // Reset the temp
-                (*temp)[j] = 0.0;
+                sample = (*polyvoices)[i].getSample();
+                
+                //sum each advanced IAudio to the master mixed vector
+                (*mixedFinal)[j] = (*mixedFinal)[j] + (sample * volume);
             }
         }
     }
-    
-	temp->clear();
-    delete temp;
-	
+
 	return *mixedFinal; //the final, "synthesized" list
 }
 

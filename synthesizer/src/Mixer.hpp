@@ -9,7 +9,10 @@ namespace chip
 	class Mixer: public IAudio
 	{
 		public:
+		
+		    // Audio buffers
 		    std::vector<float>* mixedFinal;
+		    std::vector<float>* temp;
 		
 			std::vector<IAudio*>* audioList; // each of the IAudio objects that will be added together
 			Mixer(); //empty constructor

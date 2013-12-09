@@ -38,6 +38,7 @@ namespace chip
 				
 				// Audio buffer
 				std::vector<float>* mixedFinal;
+				std::vector<float>* temp;
 				
 				Module();
 				Module(Voice* voice);
