@@ -60,12 +60,12 @@ float PolyVoice::getSample()
             {
             
                 // This is the frequency that will be added to the notes frequency to cause a vibrato.
-                vibFreq = frequency * (vibAmp * sin(vibCount * (PI / 180.0)));
+                vibFreq = frequency * wavetable->getVibrato(vibCount);
                 
                 // This is really ghetto rigged to work... should probably fix this later.
                 if(count > vibPeriod)
                 {
-                    vibCount++;
+                    vibCount = (vibCount + 1) % 360;
                     count = 0;
                 }
                 
@@ -139,7 +139,7 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release,
     
     Rsamp = (release * SAMPLE_RATE) / 1000;
     
-    vibCount = 0.0;
+    vibCount = 0;
     vibFreq = 0.0;
 }
 

@@ -15,6 +15,8 @@ class Wavetables
         
         float table[NUM_WAVES][TABLE_SIZE];
         
+        float vibrato[360];
+        
         Wavetables()
         {
             //private constructor
@@ -49,5 +51,7 @@ class Wavetables
          * indices from the wavetable.
          */
         float getSample(int waveType, int phase);
+        
+        float getVibrato(int i);
 };  
 }

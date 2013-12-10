@@ -3,7 +3,6 @@
 #include "chiputil.hpp"
 #include <vector>
 #include <iostream>
-#include <math.h>
 
 namespace chip
 {
@@ -55,7 +54,7 @@ namespace chip
             float vibAmp;
             int vibPeriod;
             int vibDelay;
-            float vibCount;
+            int vibCount;
             float vibFreq;
             
             // Function pointer to remove this polyvoice from the modules active polyvoices
