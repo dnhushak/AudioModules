@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     if( err != paNoError ) errorPortAudio(err);
     
     //outputParameters.device = Pa_GetDefaultOutputDevice();
-    outputParameters.device = 0;
+    outputParameters.device = Pa_GetDefaultOutputDevice();
     std::cout << Pa_GetDeviceInfo(outputParameters.device)->name;
     if (outputParameters.device == paNoDevice) errorPortAudio(err);
     
@@ -109,7 +109,7 @@ print cpu usage every some seconds
 */
     while(1)
     {
-            std::cout << "\r" << int(100.0f*Pa_GetStreamCpuLoad(stream)) << "% CPU         " << std::flush;
+       std::cout << "\r" << int(100.0f*Pa_GetStreamCpuLoad(stream)) << "% CPU         " << std::flush;
        usleep(20000);
     }
 
@@ -142,12 +142,17 @@ static int paCallback( const void *inputBuffer,
     chip::AudioProcessor* audio = (chip::AudioProcessor*)userData;
     float *out = (float*)outputBuffer;
     
-    // TODO make outside of callback
+    if(framesPerBuffer >= FRAMES_PER_BUFFER)
+    {
+        std::cout << "ERROR: Ran out of buffer space. ";
+        std::cout << framesPerBuffer << " is too big.";
+    }
+    
     buffer = audio->advance(framesPerBuffer);
-    if(buffer[0] == 0)
+    /*if(buffer[0] == 0)
     {
         (void) buffer;
-    }
+    }*/
     
     for(int i = 0; i < framesPerBuffer; i++)
     {

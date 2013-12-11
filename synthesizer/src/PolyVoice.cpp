@@ -21,6 +21,7 @@ PolyVoice::PolyVoice()
     this->vibAmp = 0;
     this->vibPeriod = 0;
     this->vibDelay = 0;
+    this->state = OFF;
     
     envmult = 0;
     envloc = 0;

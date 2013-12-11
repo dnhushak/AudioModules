@@ -57,9 +57,6 @@ namespace chip
             int vibCount;
             float vibFreq;
             
-            // Function pointer to remove this polyvoice from the modules active polyvoices
-            func* removeThis;
-            
             float envmult;  // Envelope multiplier
             float envloc;   // Envelope location
             
