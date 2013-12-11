@@ -2,6 +2,8 @@
 #include "MIDIParser.hpp"
 
 
+static chip::MIDIParser* midiParser;
+
 // Buffer for sound data to be sent off through the audio callback
 static std::vector<float> buffer;
 
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
     PaError err;
     
     chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
-    chip::MIDIParser* midiParser = new chip::MIDIParser();
+    midiParser = new chip::MIDIParser();
     
     // TODO Instead of passing each of the modules, just pass the vector
     // Give the MIDIParser pointers to the modules
@@ -94,11 +96,11 @@ int main(int argc, char *argv[])
     err = Pa_SetStreamFinishedCallback( stream, &StreamFinished );
     if( err != paNoError ) errorPortAudio(err);
     
-    err = Pa_StartStream( stream );
-    if( err != paNoError ) errorPortAudio(err);
-
     // Connect to the MIDI stream and start reading
     midiParser->connectToMIDIStream(devID);
+    
+    err = Pa_StartStream( stream );
+    if( err != paNoError ) errorPortAudio(err);
     
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening
@@ -106,6 +108,8 @@ int main(int argc, char *argv[])
     
     err = Pa_StopStream( stream );
     if( err != paNoError ) errorPortAudio(err);
+
+    midiParser->disconnectMIDIStream();
 
     err = Pa_CloseStream( stream );
     if( err != paNoError ) errorPortAudio(err);
@@ -120,6 +124,7 @@ static int paCallback( const void *inputBuffer,
                        PaStreamCallbackFlags statusFlags,
                        void *userData )
 {
+    midiParser->readMIDI();
     (void) inputBuffer;
     (void) timeInfo;
     (void) statusFlags;

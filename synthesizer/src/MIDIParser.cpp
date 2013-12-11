@@ -41,21 +41,16 @@ void MIDIParser::interpretMIDI(PmEvent data)
     return;
 }
 
-void MIDIParser::readMIDI(PortMidiStream* mstream, PmEvent* msg) 
+void MIDIParser::readMIDI() 
 {
-    while(1) 
+    while(Pm_Poll(mstream)) 
     {
-	    if(Pm_Poll(mstream)) 
-	    {
-	        int i;
-		    int cnt = Pm_Read(mstream, msg, 32);
-		    for(i=0; i<cnt; i++) 
-		    {
-			    interpretMIDI(msg[i]);					
-		    }
+	    int i;
+		int cnt = Pm_Read(mstream, msg, 32);
+		for(i=0; i<cnt; i++) 
+        {
+            interpretMIDI(msg[i]);							 
 	    }
-	    
-	    usleep(1000);
     }
     return;
 }
@@ -68,19 +63,26 @@ int MIDIParser::connectToMIDIStream(int devID)
     int count = Pm_CountDevices();
     if(count == 0) fprintf(stderr, "No MIDI devices found\n");
     
-    PmEvent msg[32];
-    PortMidiStream *mstream;
-    
     err = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
     if(err != pmNoError) this->errorPortMIDI(err);
     
     printf("Bound to port %d\n", devID);
-    this->readMIDI(mstream, msg);
+    /*this->readMIDI(mstream, msg);
 
     Pm_Close(mstream);
     if( err != pmNoError ) this->errorPortMIDI(err);
     
+    Pm_Terminate();*/
+    return err;
+}
+
+int MIDIParser::disconnectMIDIStream()
+{
+    PmError err = Pm_Close(mstream);
+    if( err != pmNoError ) this->errorPortMIDI(err);
+    
     Pm_Terminate();
+    
     return err;
 }
 

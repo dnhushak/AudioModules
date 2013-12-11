@@ -15,13 +15,18 @@ namespace chip
         public:
             MIDIParser();
             
-            void readMIDI(PortMidiStream* mstream, PmEvent* msg);
+            void readMIDI();
             
             int connectToMIDIStream(int devID);
+            
+            int disconnectMIDIStream();
             
             void addObject(Module* audioObject);
 
         private:
+            PortMidiStream *mstream;
+            PmEvent msg[32];
+        
             std::vector<Module*>* modules;
             
             int errorPortMIDI(PmError err);
