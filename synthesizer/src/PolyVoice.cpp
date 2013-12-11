@@ -13,6 +13,25 @@ PolyVoice::PolyVoice()
     
     count = 0;
     
+    this->attack = 0;
+    this->decay = 0;
+    this->sustain = 0;
+    this->release = 0;
+    this->waveType = 0;
+    this->vibAmp = 0;
+    this->vibPeriod = 0;
+    this->vibDelay = 0;
+    
+    envmult = 0;
+    envloc = 0;
+    Asamp = 0;
+    Aslope = 0;
+    Dsamp = 0;
+    Dslope = 0;
+    Rsamp = 0;   
+    vibCount = 0;
+    vibFreq = 0.0;
+    
     wavetable = Wavetables::getInstance();
 }
 
