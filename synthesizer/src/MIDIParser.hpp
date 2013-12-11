@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 #include "portmidi.h"
 #include "Module.hpp"
 #include "MIDIController.hpp"

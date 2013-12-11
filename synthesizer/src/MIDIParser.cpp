@@ -54,6 +54,8 @@ void MIDIParser::readMIDI(PortMidiStream* mstream, PmEvent* msg)
 			    interpretMIDI(msg[i]);					
 		    }
 	    }
+	    
+	    usleep(1000);
     }
     return;
 }
