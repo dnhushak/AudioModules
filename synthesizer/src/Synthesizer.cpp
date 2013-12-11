@@ -104,6 +104,15 @@ int main(int argc, char *argv[])
     err = Pa_StartStream( stream );
     if( err != paNoError ) errorPortAudio(err);
     
+	/*
+print cpu usage every some seconds
+*/
+    while(1)
+    {
+            std::cout << "\r" << int(100.0f*Pa_GetStreamCpuLoad(stream)) << "% CPU         " << std::flush;
+       usleep(20000);
+    }
+
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening
     std::cin.ignore(255, '\n');
