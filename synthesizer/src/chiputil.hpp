@@ -4,10 +4,10 @@
 #define NUM_SECONDS   (1)
 
 //Sample rate of the soundcard
-#define SAMPLE_RATE   (32000)
+#define SAMPLE_RATE   (22050)
 
 //Audio buffer size
-#define FRAMES_PER_BUFFER  (1024)
+#define FRAMES_PER_BUFFER  (512)
 #define PHASESCALE ((1<<17)-1)
 
 //Power of wavetable size (wavetable size = 2 ^ POWER)

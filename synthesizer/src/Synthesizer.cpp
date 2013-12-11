@@ -71,7 +71,9 @@ int main(int argc, char *argv[])
     err = Pa_Initialize();
     if( err != paNoError ) errorPortAudio(err);
     
-    outputParameters.device = Pa_GetDefaultOutputDevice();
+    //outputParameters.device = Pa_GetDefaultOutputDevice();
+    outputParameters.device = 0;
+    std::cout << Pa_GetDeviceInfo(outputParameters.device)->name;
     if (outputParameters.device == paNoDevice) errorPortAudio(err);
     
     outputParameters.channelCount = 1;       /* mono output? */ // TODO Shouldn't this be 5?
@@ -84,7 +86,7 @@ int main(int argc, char *argv[])
           NULL, /* no input */
           &outputParameters,
           SAMPLE_RATE,
-          FRAMES_PER_BUFFER,
+          paFramesPerBufferUnspecified,
           paClipOff,      /* we won't output out of range samples so don't bother clipping them */
           paCallback,
           audioProcessor); // We want to pass a pointer to the AudioProcessor
@@ -100,6 +102,14 @@ int main(int argc, char *argv[])
     // Connect to the MIDI stream and start reading
     midiParser->connectToMIDIStream(devID);
     
+	/*
+print cpu usage every some seconds
+*/
+   // while(1)
+    //{
+       // std::cout << "\r" << int(100.0f*Pa_GetStreamCpuLoad(stream)) << "% CPU         " << std::flush;
+        //usleep(20000);
+    //}
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening
     std::cin.ignore(255, '\n');
@@ -127,13 +137,13 @@ static int paCallback( const void *inputBuffer,
     float *out = (float*)outputBuffer;
     
     // TODO make outside of callback
-    buffer = audio->advance(FRAMES_PER_BUFFER);
+    buffer = audio->advance(framesPerBuffer);
     if(buffer[0] == 0)
     {
         (void) buffer;
     }
     
-    for(int i = 0; i < FRAMES_PER_BUFFER; i++)
+    for(int i = 0; i < framesPerBuffer; i++)
     {
         //std::cout << buffer[i] / 65536 << "\n";
         *out++ = buffer[i] / 65536;
