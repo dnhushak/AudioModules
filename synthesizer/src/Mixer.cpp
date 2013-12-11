@@ -50,9 +50,4 @@ void chip::Mixer::addObjects(IAudio* audioObject)
 {
 	audioList->push_back(audioObject);
 }
-
-void chip::Mixer::removeObjects(IAudio* audioObject)
-{
-    //TODO
-}
 	
