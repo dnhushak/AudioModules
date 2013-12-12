@@ -14,7 +14,6 @@ namespace chip
 	{
 			public:
 				Voice* voice; // Defines the module's current instrument
-				Mixer* mixer; // Mixes the module's polyvoices 
  				std::vector<PolyVoice>* polyvoices; //each element represents one note being played
 				int next; // The next inactive polyvoice
 				

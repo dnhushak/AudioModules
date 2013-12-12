@@ -4,6 +4,8 @@ using namespace chip;
 
 PolyVoice::PolyVoice()
 {
+
+    // Initialize everything to 0 so there are no chances of scary sounds
 	note = 0;
 	phase = 0;
     frequency = 0.0;
@@ -13,15 +15,20 @@ PolyVoice::PolyVoice()
     
     count = 0;
     
-    this->attack = 0;
-    this->decay = 0;
-    this->sustain = 0;
-    this->release = 0;
-    this->waveType = 0;
-    this->vibAmp = 0;
-    this->vibPeriod = 0;
-    this->vibDelay = 0;
-    this->state = OFF;
+    attack = 0;
+    decay = 0;
+    sustain = 0;
+    release = 0;
+    
+    waveType = SQUARE;
+    
+    vibAmp = 0;
+    vibPeriod = 0;
+    vibDelay = 0;
+    vibCount = 0;
+    vibFreq = 0.0;
+    
+    state = OFF;
     
     envmult = 0;
     envloc = 0;
@@ -29,9 +36,8 @@ PolyVoice::PolyVoice()
     Aslope = 0;
     Dsamp = 0;
     Dslope = 0;
-    Rsamp = 0;   
-    vibCount = 0;
-    vibFreq = 0.0;
+    Rsamp = 0;
+    Rslope = 0;
     
     wavetable = Wavetables::getInstance();
 }
@@ -48,6 +54,19 @@ float PolyVoice::getSample()
     sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
     phase += stepsize();
     
+    // This is the ADSR "state machine"
+    // Attack goes from 0 volume to 1
+    // Decay goes from 1 to the Sustain volume
+    // Release goes from the Sustain volume to 0
+    // Below is a graph of a notes volume going through the states of ADSR   
+    //
+    //     /\
+    //    /  \__________
+    //   /              \
+    //  /                \
+    // /                  \
+    // 
+    // | A |D|    S    | R | 
     switch(state)
     {
         case ATTACK:

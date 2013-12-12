@@ -9,7 +9,6 @@ namespace chip
     class PolyVoice
     {
         public:
-            //PolyVoice(func* fp);
             PolyVoice();
             ~PolyVoice() {}
             

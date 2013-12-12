@@ -16,9 +16,6 @@ chip::Module::Module(Voice* voice)
 	mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 	temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
 	
-	//instantiates the mixer
-	this->mixer = new Mixer();
-	
 	//instantiates "bucket" of polyvoices
 	this->polyvoices = new std::vector<chip::PolyVoice>();
 	
@@ -32,15 +29,12 @@ chip::Module::Module(Voice* voice)
 	this->arpnote = 0;
 	
 	// Set the volume
-	this->volume = 0.2;
+	this->volume = 0.4;
 	
 	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
     for(int i = 0; i < NUM_POLYVOICES; i++)
     {
-        //void (*fptr)(int note) = removePolyVoice;
-        //chip::PolyVoice* polyvoice = new chip::PolyVoice(removePolyVoice);
         chip::PolyVoice* polyvoice = new chip::PolyVoice();
-        mixer->addObjects((IAudio*)polyvoice);
         polyvoices->push_back(*polyvoice);
     }
     
@@ -99,7 +93,6 @@ std::vector<float> chip::Module::advance(int numSamples)
 	float sample;
 	
 	// Clear the audio buffer
-	// TODO Trying to find a way to integrate this into the rest of the loop
 	for(int i = 0; i < numSamples; i++)
 	{
         (*mixedFinal)[i] = 0.0;
@@ -133,36 +126,33 @@ std::vector<float> chip::Module::advance(int numSamples)
             }
         }
     }
+    // Glissando only happens if glissando is on and two notes are pressed
     else if(glissando && next == 2)
     {
         for(int i = 0; i < numSamples; i++)
-        {    
+        {   
+            // Make sure gliss happens only if the next gliss frequency won't go 
+            // past the glissEnd frequency 
             if( ((glissNote->frequency > glissEnd) && 
                 (glissNote->frequency + freqSlope >= glissEnd)) ||
                 ((glissNote->frequency < glissEnd) && 
                 (glissNote->frequency + freqSlope <= glissEnd)))
             {
                 glissNote->frequency += freqSlope;
-                
                 glissCount++;
             }
             
+            // Sample the gliss note
             (*mixedFinal)[i] = glissNote->getSample() * volume;
         }
     }
     else
     {
+        // Loop through the notes being played and sample from them
         for(int i = 0; i < next; i++)
         {
             for(int j = 0; j < numSamples; j++)
-            {
-                // Zero out our audio buffer on the first iteration so the previous
-		        // audio data is cleared.
-		        //if(i == 0)
-		        //{
-                    //(*mixedFinal)[j] = 0.0;
-                //}
-                
+            {   
                 sample = (*polyvoices)[i].getSample();
                 
                 //sum each advanced IAudio to the master mixed vector
@@ -231,28 +221,17 @@ void chip::Module::activatePolyVoice(int note)
     // Set where glissando will start
     glissNote->frequency = glissStart;
     
-    // Set glissando note only when no notes were pressed before
-    /*if(next == 0)
-    {
-
-        glissNote->frequency = glissStart;
-
-    }*/
-    
-    //std::cout << "Second: " << glissStart << "\n";
-    //std::cout << "First: " << glissEnd << "\n";
-    
+    // If the index got to next, it means there is an additional keypress
     if(index == next)
     {
         next++;
     }
     
+    // Update the frequency slope for gliss if glissando state will be entered
     if(next == 2)
     {
         freqSlope = (glissEnd - glissStart) / glissSamples;
     }
-    
-    //std::cout << next << "\n";
 }
 
 
