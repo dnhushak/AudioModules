@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 #include "portmidi.h"
 #include "Module.hpp"
 #include "MIDIController.hpp"
@@ -14,15 +15,18 @@ namespace chip
         public:
             MIDIParser();
             
-            void readMIDI(PortMidiStream* mstream, PmEvent* msg);
+            void readMIDI();
             
-            void outputMIDI(int devID);
-
             int connectToMIDIStream(int devID);
+            
+            int disconnectMIDIStream();
             
             void addObject(Module* audioObject);
 
         private:
+            PortMidiStream *mstream;
+            PmEvent msg[32];
+        
             std::vector<Module*>* modules;
             
             int errorPortMIDI(PmError err);

@@ -7,7 +7,31 @@ PolyVoice::PolyVoice()
 	note = 0;
 	phase = 0;
     frequency = 0.0;
+    vibFreq = 0.0; // The vibrato frequency to add to the wave
     state = 0;
+    waveType = SQUARE;
+    
+    count = 0;
+    
+    this->attack = 0;
+    this->decay = 0;
+    this->sustain = 0;
+    this->release = 0;
+    this->waveType = 0;
+    this->vibAmp = 0;
+    this->vibPeriod = 0;
+    this->vibDelay = 0;
+    this->state = OFF;
+    
+    envmult = 0;
+    envloc = 0;
+    Asamp = 0;
+    Aslope = 0;
+    Dsamp = 0;
+    Dslope = 0;
+    Rsamp = 0;   
+    vibCount = 0;
+    vibFreq = 0.0;
     
     wavetable = Wavetables::getInstance();
 }
@@ -18,8 +42,7 @@ float PolyVoice::getSample()
     {
         return 0.0;
     }
-
-    int waveType = SQUARE;
+    
     int phase_truncated = 16-POWER;
     float sample;
     sample = wavetable->getSample(waveType, ((int)phase)>>(phase_truncated));
@@ -30,6 +53,7 @@ float PolyVoice::getSample()
         case ATTACK:
             envmult += Aslope;
             
+            // When the evelope location has hit the number of samples, do a state transition
             if(envloc >= Asamp) 
             {
                 state = DECAY;
@@ -40,6 +64,7 @@ float PolyVoice::getSample()
         case DECAY:
             envmult += Dslope;
             
+            // When the evelope location has hit the number of samples, do a state transition
             if(envloc >= Dsamp) 
             {
                 state = SUSTAIN;
@@ -48,12 +73,32 @@ float PolyVoice::getSample()
             break;
             
         case SUSTAIN:
+            
+            // Sustain won't automatically transition the state. The state will change on note release.
+            // Once the envelope location has reached the vibrato delay, start vibrato.
+            if(envloc > vibDelay)
+            {
+            
+                // This is the frequency that will be added to the notes frequency to cause a vibrato.
+                vibFreq = frequency * wavetable->getVibrato(vibCount);
+                
+                // This is really ghetto rigged to work... should probably fix this later.
+                if(count > vibPeriod)
+                {
+                    vibCount = (vibCount + 1) % 360;
+                    count = 0;
+                }
+                
+                count++;
+            }
+            
             envmult = sustain;
             break;
             
         case RELEASE:
             envmult += Rslope;
             
+            // When the evelope location has hit the number of samples, do a state transition
             if(envloc >= Rsamp)
             {
                 state = CLEANUP;
@@ -81,38 +126,27 @@ void PolyVoice::releasePolyVoice()
     Rslope = -envmult / Rsamp;
 }
 
-std::vector<float> PolyVoice::advance(int numSamples) 
-{
-    std::vector<float>* samples = new std::vector<float>(numSamples);
-    float sample;
-    
-    // Obtain the sample from the wavetable and advance the phase register
-    for(int i = 0; i < numSamples; i++)
-    {
-        sample = getSample();
-        (*samples)[i] = (sample);
-    }
-    
-    return *samples;
-}
-
 unsigned int PolyVoice::stepsize()
 {
     //Maximum value of phase scale (16^4 in this case)
 	int step;
 
 	//Our equation!
-	step = (frequency*PHASESCALE)/SAMPLE_RATE;
+	step = ((frequency + vibFreq) * PHASESCALE) / SAMPLE_RATE;
 	return step;
 }
 
-void PolyVoice::setVoice(int attack, int decay, float sustain, int release, int waveType)
+void PolyVoice::setVoice(int attack, int decay, float sustain, int release, 
+                         int waveType, float vibAmp, int vibPeriod, int vibDelay)
 {
     this->attack = attack;
     this->decay = decay;
     this->sustain = sustain;
     this->release = release;
     this->waveType = waveType;
+    this->vibAmp = vibAmp;
+    this->vibPeriod = vibPeriod;
+    this->vibDelay = vibDelay;
     
     envmult = 0;
     envloc = 0;
@@ -124,6 +158,9 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release, int 
     Dslope = (sustain - 1.0) / Dsamp;
     
     Rsamp = (release * SAMPLE_RATE) / 1000;
+    
+    vibCount = 0;
+    vibFreq = 0.0;
 }
 
 float PolyVoice::getEnvmult() {

@@ -23,7 +23,10 @@
 #define CLEANUP 5
 
 //Number of polyvoices
-#define NUM_POLYVOICES 127
+#define NUM_POLYVOICES 18
+
+// Maximum number of active polyvoices
+#define MAX_POLYVOICES 16
 
 #define NUM_SECONDS (1)
 
@@ -41,5 +44,8 @@
 
 //MIDI file list
 #define MIDI_FILE_NAMES "../src/config/MidiFileList.txt"
+
+// PI
+#define PI 3.14159265
 
 typedef void func(int);

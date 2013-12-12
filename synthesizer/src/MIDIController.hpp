@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Module.hpp"
+#include "VoiceConfigReader.hpp"
 
 // MIDI parsing constants 
 // MIDI spec: http://www.midi.org/techspecs/midimessages.php
@@ -13,7 +14,7 @@
 // Control changes
 #define GLISSANDO_TOGGLE 0x41   // "Portamento On/Off" data2 <=63 off, data2 >=64 on 
 #define GLISSANDO_SPEED 0x05    // "Portamento Time"
-#define ARPEGGIO_TOGGLE  0x50   // "General Purpose Controller 5" data2 <=63 off, data2 >=64 on
+#define ARPEGGIO_TOGGLE 0x50    // "General Purpose Controller 5" data2 <=63 off, data2 >=64 on
 #define ARPEGGIO_SPEED 0x51     // "General Purpose Controller 6"
 #define CHANNEL_VOLUME 0x07     // "Channel Volume"
 #define SELECT_VOICE 0x00       // "Bank Select." Used to select the new voice
@@ -22,19 +23,12 @@
 // TODO React to change of 5 position switches
 // TODO React to changing the currently selected module/channel
 
-// Song box
-#define SONG_SELECT 0xF3        // Song select (song #) or "Tune Request"? 0xF6
-#define PLAY 0xFA               // "Start" according to MIDI spec
-#define PAUSE 0xFB              // "Continue" according to MIDI spec
-#define STOP 0xFC               // "Stop"
-#define CHANGE_TEMPO 0xF2       // "Song Position Pointer" according to spec or "Timing clock"? oxF8
-
 // Other
 #define RESET 0xFF              // "Reset." Reboot the system. Use sparingly.
 #define GLISSANDO_MIN  5000
 #define GLISSANDO_MAX 50000
-#define ARPEGGIO_MIN 500
-#define ARPEGGIO_MAX 50000
+#define ARPEGGIO_MIN 300
+#define ARPEGGIO_MAX 3600
 
 namespace chip
 {
@@ -44,6 +38,8 @@ namespace chip
             static void interpretMIDI(int message, int data1, int data2, chip::Module* module);
 
         private:
+            static void error(int message, int data1, int data2, chip::Module* module);
+        
             static void noteOn(int note, int velocity, chip::Module* module);
             static void noteOff(int note, chip::Module* module);
 

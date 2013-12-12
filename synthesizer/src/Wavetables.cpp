@@ -24,6 +24,18 @@ float Wavetables::getSample(int waveType, int phase)
     return table[waveType][phase];
 }
 
+// Vibrato is basically a multiplier that ranges from -0.005 to 0.005.
+// This multiplier adds a percentage of the frequency to itself.
+float Wavetables::getVibrato(int i)
+{
+    if(i > 359)
+    {
+        return 0.0;
+    }
+    
+    return vibrato[i];
+}
+
 //Generate Waves
 void Wavetables::wavetableGen(){
 
@@ -63,5 +75,12 @@ void Wavetables::wavetableGen(){
 			table[PULSE][i] = 16384;
 			table[TRIANGLE][i] = 16383 - ((((float)i-half)/quarter) * 16384);
 		}
+		
+		// Create the vibrato wave table
+		for(int i = 0; i < 360; i++)
+		{
+		    vibrato[i] = 0.005 * sin(i * (PI / 180.0));
+		}
+		
 	}
 }

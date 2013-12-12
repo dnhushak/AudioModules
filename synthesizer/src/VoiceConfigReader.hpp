@@ -10,13 +10,23 @@ namespace chip
 class VoiceConfigReader
 {
     public:
-        std::vector<Voice>* voices;
-    
-        VoiceConfigReader()
+        static VoiceConfigReader* getInstance() 
         {
+            if(!instanceFlag)
+            {
+                single = new VoiceConfigReader();
+                return single;
+            }
+            else
+            {
+                return single;
+            }
         }
         
-        void readFile(); // Reads chiputil::VOICE_CONFIG_FILE
+        ~VoiceConfigReader()
+        {
+            instanceFlag = false;
+        }
         
         Voice* getVoiceAt(int index)
         {
@@ -29,6 +39,19 @@ class VoiceConfigReader
         }
         
     private:
+        static bool instanceFlag;
+        static VoiceConfigReader *single;
+        std::vector<Voice>* voices;
+        
         int convertWaveType(std::string waveTypeString);
+        
+        void readFile(); // Reads chiputil::VOICE_CONFIG_FILE
+        
+        VoiceConfigReader()
+        {
+            //private constructor
+            instanceFlag = true;
+            readFile();
+        }
 };  
 }

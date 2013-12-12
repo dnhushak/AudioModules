@@ -1,19 +1,19 @@
 #pragma once
 #include "Wavetables.hpp"
-#include "IAudio.hpp"
+#include "chiputil.hpp"
 #include <vector>
 #include <iostream>
-#include "chiputil.hpp"
-
 
 namespace chip
 {
-    class PolyVoice: public IAudio
+    class PolyVoice
     {
         public:
             //PolyVoice(func* fp);
             PolyVoice();
             ~PolyVoice() {}
+            
+            int count;
             
             int note;
 			unsigned short phase;
@@ -23,14 +23,13 @@ namespace chip
             int state;
             int getState();
             
-            std::vector<float> advance(int);
             unsigned int stepsize();
             
             // Sets the state of the polyvoice to release
             void releasePolyVoice();
             
             // Sets the ADSR parameters for this polyvoice
-            void setVoice(int, int, float, int, int);
+            void setVoice(int, int, float, int, int, float, int, int);
             
             // Gets and sets the envelope multiplier
             float getEnvmult();
@@ -52,8 +51,11 @@ namespace chip
             int release;
             int waveType;
             
-            // Function pointer to remove this polyvoice from the modules active polyvoices
-            func* removeThis;
+            float vibAmp;
+            int vibPeriod;
+            int vibDelay;
+            int vibCount;
+            float vibFreq;
             
             float envmult;  // Envelope multiplier
             float envloc;   // Envelope location

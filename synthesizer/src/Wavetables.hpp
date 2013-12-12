@@ -15,12 +15,12 @@ class Wavetables
         
         float table[NUM_WAVES][TABLE_SIZE];
         
+        float vibrato[360];
+        
         Wavetables()
         {
             //private constructor
-            instanceFlag = false;
-            single = NULL;
-            
+            instanceFlag = true;
             wavetableGen();
         }
         
@@ -32,7 +32,6 @@ class Wavetables
             if(!instanceFlag)
             {
                 single = new Wavetables();
-                instanceFlag = true;
                 return single;
             }
             else
@@ -52,5 +51,7 @@ class Wavetables
          * indices from the wavetable.
          */
         float getSample(int waveType, int phase);
+        
+        float getVibrato(int i);
 };  
 }
