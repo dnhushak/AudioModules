@@ -9,6 +9,7 @@
 8 8 0.0 1 NOISE 0.000 0 0 // Zelda noise
 1 1 1 0 TRIANGLE 0.000 0 0 // Super Mario bass
 16 116 0.866 0 PULSE 0.000 0 0// Megaman Melody
+16 116 0.866 0 PULSE 0.950 5 0// Megaman Melody
 1 1 1 0 TRIANGLE 0.000 0 0// Megaman Tri Bass
 25 25 0.8 50 SQUARE 0.005 25 5000
 100 100 0.5 50 TRIANGLE 0.005 25 5000
