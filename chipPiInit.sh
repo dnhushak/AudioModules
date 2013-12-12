@@ -8,15 +8,15 @@ git clone https://github.com/dnhushak/chipophone
 # Install portMedia
 sudo apt-get uninstall remove jackd1 jackd2
 sudo apt-get install libasound2-dev libportmidi-dev libportmidi0
-wget http://www.portaudio.com/archives/pa_stable_v19_20111121.tgz
-tar -xvf pa_stable_v19_20111121.tgz
+wget http://www.portaudio.com/archives/pa_stable_v19_20110326.tgz
+tar -xvf pa_stable_v19_20110326.tgz
 cd portaudio
 ./configure
 make
 sudo make install
 cd ..
 rm -r portaudio
-rm pa_stable_v19_20111121.tgz
+rm pa_stable_v19_20110326.tgz
 sudo mv /usr/local/lib/libportaudio.* /usr/lib/
 
 #wget http://downloads.sourceforge.net/project/portmedia/portmidi/217/portmidi-src-217.zip
