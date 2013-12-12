@@ -73,8 +73,8 @@ int main(int argc, char *argv[])
     err = Pa_Initialize();
     if( err != paNoError ) errorPortAudio(err);
     
-    //outputParameters.device = Pa_GetDefaultOutputDevice();
     outputParameters.device = Pa_GetDefaultOutputDevice();
+    //outputParameters.device = 0;
     std::cout << Pa_GetDeviceInfo(outputParameters.device)->name;
     if (outputParameters.device == paNoDevice) errorPortAudio(err);
     
@@ -107,11 +107,12 @@ int main(int argc, char *argv[])
 	/*
 print cpu usage every some seconds
 */
-    while(1)
+    /*while(1)
     {
        std::cout << "\r" << int(100.0f*Pa_GetStreamCpuLoad(stream)) << "% CPU         " << std::flush;
        usleep(20000);
     }
+*/
 
     // Block the front end until someone hits enter
     // We are getting audio callbacks while this is happening
