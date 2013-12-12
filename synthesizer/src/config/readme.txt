@@ -3,6 +3,8 @@
 *******************************************************************************
 
 The first five values are the defaults for the 5 modules. 
+Comments must be at the end of the line.
+All values must be positive, except Sustain which may be zero.
 Each line contains a set of values in the following order:
 
 DESCRIPTION         TYPE    COMMENT
