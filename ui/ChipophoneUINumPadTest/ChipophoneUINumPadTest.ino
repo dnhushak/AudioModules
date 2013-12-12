@@ -1,7 +1,7 @@
 #include <Keypad.h>
 #include <MIDI.h>
 #define VOICE (0)
-#define SONG (1)
+#define SONG (1)  
 
 //From other code
 byte state = 0;
@@ -23,9 +23,9 @@ char keys[rows][cols] = {
     '*','0','#'                                }
 };
 byte rowPins[rows] = {
-  5, 6, 7, 8}; //connect to the row pinouts of the keypad
+  41, 46, 45, 43}; //connect to the row pinouts of the keypad
 byte colPins[cols] = {
-  2, 3, 4}; //connect to the column pinouts of the keypad
+ 42, 40, 44}; //connect to the column pinouts of the keypad
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
 
 //Key state setup
@@ -82,7 +82,7 @@ void loop()
   char key = keypad.getKey();
 
   if (key != NO_KEY){
-
+    Serial.write(key);
     //Check for # or *
     if (key == '#' || key == '*'){
       //If no keys pressed, change state to reflect voice or song (* for voice, # for song)

@@ -1,29 +1,79 @@
 // constants won't change. Used here to 
 // set pin numbers:
-const int redPin = 8;      // the number of the LED pin
-const int grnPin = 9;
-const int bluPin = 10;
+
 const int numModules = 5;
-const int moduleStartPin = 2;
-const int encoderAPin = 11;
+const int moduleStartPin = 25;
+
+/******************************************************************************/
+/* Buttons                                                                    */
+/******************************************************************************/
+
+const int LEDArpeggioRedPin = 30;      // the number of the LED pin
+const int LEDArpeggioGrnPin = 31;
+const int LEDArpeggioBluPin = 32;
+
+const int LEDGlissandoRedPin = 33;      // the number of the LED pin
+const int LEDGlissandoGrnPin = 34;
+const int LEDGlissandoBluPin = 35;
+
+/******************************************************************************/
+/* Encoders                                                                   */
+/******************************************************************************/
+
+const int encoderAChannelVolumeAPin = 2;
+const int encoderAChannelVolumeBPin = 3;
+const int encoderBArpeggioAPin = 4;
+const int encoderBArpeggioBPin = 5;
+const int encoderCGlissandoAPin = 6;
+const int encoderCGlissandoBPin = 7;
+const int encoderDTempoAPin = 8;
+const int encoderDTempoBPin = 9;
+
+/******************************************************************************/
+/* End constants                                                              */
+/******************************************************************************/
 
 // Variables will change:
 int state;
 int moduleState[numModules];
 int modulePin[numModules]; //State switch pins
 
-int encoder0Pos = 0;
-int encoder0PinALast = LOW;
+int encoderAPos = 0;
+int encoderBPos = 0;
+int encoderCPos = 0;
+int encoderDPos = 0;
+
+int encoderAChannelVolumeAPinLast = LOW;
+int encoderAChannelVolumeBPinLast = LOW;
+int encoderBArpeggioAPinLast = LOW;
+int encoderBArpeggioBPinLast = LOW;
+int encoderCGlissandoAPinLast = LOW;
+int encoderCGlissandoBPinLast = LOW;
+int encoderDTempoAPinLast = LOW;
+int encoderDTempoBPinLast = LOW;
+
 int n = LOW;
 
 
 void setup() {
   // set the digital pin as output:
-  pinMode(redPin, OUTPUT);  
-  pinMode(grnPin, OUTPUT);     
-  pinMode(bluPin, OUTPUT);    
-  pinMode(encoderAPin, INPUT);
-  pinMode(encoderAPin + 1, INPUT);
+  pinMode(LEDArpeggioRedPin, OUTPUT);  
+  pinMode(LEDArpeggioGrnPin, OUTPUT);     
+  pinMode(LEDArpeggioBluPin, OUTPUT);
+  pinMode(LEDGlissandoRedPin, OUTPUT);  
+  pinMode(LEDGlissandoGrnPin, OUTPUT);     
+  pinMode(LEDGlissandoBluPin, OUTPUT);
+
+  /* Encoders */
+  pinMode(encoderAChannelVolumeAPin, INPUT);
+  pinMode(encoderAChannelVolumeBPin, INPUT);
+  pinMode(encoderBArpeggioAPin, INPUT);
+  pinMode(encoderBArpeggioBPin, INPUT);
+  pinMode(encoderCGlissandoAPin, INPUT);
+  pinMode(encoderCGlissandoBPin, INPUT);
+  pinMode(encoderDTempoAPin, INPUT);
+  pinMode(encoderDTempoBPin, INPUT);
+  
   int i;
   for (i = 0; i< numModules; i++){
     modulePin[i] = moduleStartPin + i;
@@ -67,6 +117,10 @@ int readEncoder(int encoderPin){
     }
   } 
   encoder0PinALast = n;
+  if(ret != 0){
+    Serial.print(ret);
+    Serial.print("\n");
+  }
   return ret;
 }
 
