@@ -46,6 +46,9 @@ const int buttonWhtSelectorPin = A4;
 const int buttonArpeggioPin = A5;
 const int buttonGlissandoPin = A6;
 
+int buttonStateArpeggioLast = HIGH;
+int buttonStateGlissandoLast = HIGH;
+
 const int buttonPlayPin = A7;
 const int buttonPausPin = A8;
 const int buttonStopPin = A9;
@@ -94,6 +97,13 @@ int encoderDTempoBPinLast = LOW;
 
 int n = LOW;
 
+//  plays a MIDI note.  Doesn't check to see that
+//  cmd is greater than 127, or that data values are  less than 127:
+void sendMidi(int message, int data1, int data2) {
+  Serial1.write(message);
+  Serial1.write(data1);
+  Serial1.write(data2);
+}
 
 void setup() {
   // set the digital pin as output:
@@ -166,8 +176,12 @@ void setup() {
       glissandoOn[i] = 0;
       pinMode(glissandoOn[i], INPUT);
   }
+  
+  Serial1.begin(31250);
+  
+  //sendMidi(controlChange, arpeggio, toggle);
+  
 
-  Serial.begin (9600);
 }
 
 void stateDecode(int state, int *rgb){
@@ -192,7 +206,7 @@ void stateDecode(int state, int *rgb){
 
 int readEncoder(int encoderPin){
   int ret = 0;
-  int encoderPinA = encoderPin;
+  /*int encoderPinA = encoderPin;
   int encoderPinB = encoderPin + 1;
   n = digitalRead(encoderPinA);
   if ((encoder0PinALast == LOW) && (n == HIGH)) {
@@ -208,17 +222,55 @@ int readEncoder(int encoderPin){
     Serial.print(ret);
     Serial.print("\n");
   }
+  */
   return ret;
 }
 
+
+
 void loop()
 {
-
+  int controlChange = 0xB0;
+  int noteOn = 0x90;
+  int note = 5;
+  int arpeggio = 0x50;
+  int toggle = 127;
+  int value = 1;
+  
+  int currentButtonState = digitalRead(buttonArpeggioPin);
+  
+  if(currentButtonState == LOW &&
+     buttonStateArpeggioLast == HIGH)
+     {
+        buttonStateArpeggioLast = currentButtonState;
+        
+        if(!arpeggioOn[0])
+        {
+            // Toggle LED
+            digitalWrite(LEDArpeggioRedPin, LOW);
+            digitalWrite(LEDArpeggioRedPin, LOW);
+            digitalWrite(LEDArpeggioRedPin, LOW);
+        }
+        else
+        {
+            // Toggle LED
+            digitalWrite(LEDArpeggioRedPin, HIGH);
+            digitalWrite(LEDArpeggioRedPin, HIGH);
+            digitalWrite(LEDArpeggioRedPin, HIGH);
+        }
+        // Toggle Arpeggio
+        arpeggioOn[0] = !arpeggioOn[0];
+        sendMidi(controlChange, arpeggio, toggle);
+       
+     }
+  //sendMidi(noteOn, note, 0);
+  //delay(100);
+  
   // check to see if it's time to blink the LED; that is, if the 
   // difference between the current time and last time you blinked 
   // the LED is bigger than the interval at which you want to 
   // blink the LED.
-  state += readEncoder(encoderAPin);
+  /*state += readEncoder(encoderAPin);
   state %= 5;
   if (state<0){
     state = 4;
@@ -232,7 +284,7 @@ void loop()
    
    state = 3;
    }*/
-  for (i = 0; i< numModules; i++){
+  /*for (i = 0; i< numModules; i++){
     if (moduleState[i] == HIGH){
       state = i;
     } 
@@ -243,6 +295,7 @@ void loop()
   digitalWrite(redPin, !rgb[0]);
   digitalWrite(grnPin, !rgb[1]);
   digitalWrite(bluPin, !rgb[2]);
+  */
 }
 
 
