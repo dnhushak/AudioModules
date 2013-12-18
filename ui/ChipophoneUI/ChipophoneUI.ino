@@ -8,57 +8,80 @@ const int moduleStartPin = 25;
 const int midiInPin = 18;
 const int midiOutPin = 19;
 
-/******************************************************************************/
-/* LEDs                                                                    */
-/******************************************************************************/
-
-// Channel Selector LEDs
-const int LEDRedSelectorPin = 25;
-const int LEDYelSelectorPin = 26;
-const int LEDGrnSelectorPin = 27;
-const int LEDBluSelectorPin = 28;
-const int LEDWhtSelectorPin = 29;
-
-const int LEDArpeggioRedPin = 30;      // the number of the LED pin
-const int LEDArpeggioGrnPin = 31;
-const int LEDArpeggioBluPin = 32;
-
-const int LEDGlissandoRedPin = 33;      // the number of the LED pin
-const int LEDGlissandoGrnPin = 34;
-const int LEDGlissandoBluPin = 35;
-
-const int LEDPlayPin = 36;
-const int LEDStopPin = 37;
-const int LEDPausPin = 38;
-const int LEDRecdPin = 39;
-
 
 /******************************************************************************/
-/* Buttons                                                                    */
+/* Channel Selection Buttons and LEDs                                                                    */
 /******************************************************************************/
 
-const int buttonRedSelectorPin = A0;
-const int buttonYelSelectorPin = A1;
-const int buttonGrnSelectorPin = A2;
-const int buttonBluSelectorPin = A3;
-const int buttonWhtSelectorPin = A4;
+const int redSelectorButton = A1;
+const int redSelectorLED = 39;
 
-const int buttonArpeggioPin = A5;
-const int buttonGlissandoPin = A6;
+const int yelSelectorButton = A0;
+const int yelSelectorLED = 38;
+
+const int grnSelectorButton = A3;
+const int grnSelectorLED = 37;
+
+const int bluSelectorButton = A2;
+const int bluSelectorLED = 36;
+
+const int whtSelectorButton = A5;
+const int whtSelectorLED = 35;
+
+int channelSelectorButtons[] = {
+  redSelectorButton, 
+  yelSelectorButton, 
+  grnSelectorButton,
+  bluSelectorButton,
+  whtSelectorButton };
+  
+int channelSelectorLEDs[] = {
+  redSelectorLED, 
+  yelSelectorLED, 
+  grnSelectorLED,
+  bluSelectorLED,
+  whtSelectorLED };
+
+/******************************************************************************/
+/* Edit Channel Buttons and LEDs                                                                    */
+/******************************************************************************/
+/*
+const int arpeggioButton = A4;
+const int arpeggioRedLED = 34;      // the number of the LED pin
+const int arpeggioGrnLED = 33;
+const int arpeggioBluLED = 32;
 
 int buttonStateArpeggioLast = HIGH;
+
+const int glissButton = A7;
+const int glissRedLED = 31;      // the number of the LED pin
+const int glissGrnLED = 30;
+const int glissBluLED = 29;
+
 int buttonStateGlissandoLast = HIGH;
+*/
 
-const int buttonPlayPin = A7;
-const int buttonPausPin = A8;
-const int buttonStopPin = A9;
-const int buttonRecdPin = A10;
+/******************************************************************************/
+/* Songbox Buttons and LEDs                                                                    */
+/******************************************************************************/
+/*
+const int playButton = A9;
+const int playLED = 26;
 
+const int pausButton = A8;
+const int pausLED = 25;
+
+const int stopButton = A6;
+const int stopLED = 27;
+
+const int recdButton = A10;
+const int recdLED = 28;
+*/
 
 /******************************************************************************/
 /* Encoders                                                                   */
 /******************************************************************************/
-
+// TODO Test correct pins for encoders
 const int encoderAChannelVolumeAPin = 2;
 const int encoderAChannelVolumeBPin = 3;
 const int encoderBArpeggioAPin = 4;
@@ -108,40 +131,39 @@ void sendMidi(int message, int data1, int data2) {
 void setup() {
   // set the digital pin as output:
   
-  // LEDs
+  // Select Channel to Edit
+  for(int i=0; i<numModules; i++)
+  {
+     pinMode(channelSelectorButtons[i], INPUT);
+     digitalWrite(channelSelectorButtons[i], HIGH); // RELEASED
+     
+     pinMode(channelSelectorLEDs[i], OUTPUT);
+     digitalWrite(channelSelectorLEDs[i], HIGH); // OFF
+  }
+  /*
+  // Arpeggio
+  pinMode(buttonArpeggioPin, INPUT);
   pinMode(LEDArpeggioRedPin, OUTPUT);  
   pinMode(LEDArpeggioGrnPin, OUTPUT);     
   pinMode(LEDArpeggioBluPin, OUTPUT);
+  
+  // Glissando
+  pinMode(buttonGlissandoPin, INPUT);
   pinMode(LEDGlissandoRedPin, OUTPUT);  
   pinMode(LEDGlissandoGrnPin, OUTPUT);     
   pinMode(LEDGlissandoBluPin, OUTPUT);
 
-  pinMode(LEDRedSelectorPin, OUTPUT);     
-  pinMode(LEDYelSelectorPin, OUTPUT);     
-  pinMode(LEDGrnSelectorPin, OUTPUT);     
-  pinMode(LEDBluSelectorPin, OUTPUT);     
-  pinMode(LEDWhtSelectorPin, OUTPUT);     
-  
-  pinMode(LEDPlayPin, OUTPUT);     
-  pinMode(LEDStopPin, OUTPUT);     
-  pinMode(LEDPausPin, OUTPUT);     
-  pinMode(LEDRecdPin, OUTPUT);     
-  
-  // Buttons 
-  pinMode(buttonRedSelectorPin, INPUT);
-  pinMode(buttonYelSelectorPin, INPUT);
-  pinMode(buttonGrnSelectorPin, INPUT);
-  pinMode(buttonBluSelectorPin, INPUT);
-  pinMode(buttonWhtSelectorPin, INPUT);
-  
-  pinMode(buttonArpeggioPin, INPUT);
-  pinMode(buttonGlissandoPin, INPUT);
-  
+  // Songbox 
   pinMode(buttonPlayPin, INPUT);
   pinMode(buttonPausPin, INPUT);
   pinMode(buttonStopPin, INPUT);
   pinMode(buttonRecdPin, INPUT);
   
+  pinMode(LEDPlayPin, OUTPUT);     
+  pinMode(LEDStopPin, OUTPUT);     
+  pinMode(LEDPausPin, OUTPUT);     
+  pinMode(LEDRecdPin, OUTPUT);     
+  */
   // MIDI I/O
   pinMode(midiInPin, INPUT);
   pinMode(midiOutPin, OUTPUT);
@@ -178,6 +200,8 @@ void setup() {
   }
   
   Serial1.begin(31250);
+  Serial.begin(9600);
+  Serial.println("Start");
   
   //sendMidi(controlChange, arpeggio, toggle);
   
@@ -227,9 +251,39 @@ int readEncoder(int encoderPin){
 }
 
 
+void selectChannelToEdit()
+{
+    int i=0;
+    
+    for(i=0; i<numModules; i++)
+    {
+       int button = channelSelectorButtons[i];
+       int led = channelSelectorLEDs[i];
+       
+       if(digitalRead(button) == LOW)
+       {
+         Serial.print("LED on ");
+         Serial.println(led);
+         digitalWrite(led, LOW); //on
+       }  
+       else
+       {  
+         digitalWrite(led, HIGH); //off
+       }  
+    } 
+}
 
 void loop()
 {
+  // Check status of  Channel Selector buttons
+  selectChannelToEdit();
+  
+  
+  
+  
+  
+  
+  /*
   int controlChange = 0xB0;
   int noteOn = 0x90;
   int note = 5;
@@ -263,6 +317,7 @@ void loop()
         sendMidi(controlChange, arpeggio, toggle);
        
      }
+  */
   //sendMidi(noteOn, note, 0);
   //delay(100);
   

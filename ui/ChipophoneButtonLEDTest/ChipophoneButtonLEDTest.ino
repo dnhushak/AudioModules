@@ -1,4 +1,4 @@
-
+int currentLED = 25;
 
 void setup(){
   int i;
@@ -7,6 +7,8 @@ void setup(){
     digitalWrite(i, HIGH);
   }
   Serial.begin(9600);
+  Serial.println("Start");
+  
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
@@ -32,7 +34,7 @@ void setup(){
 }
 
 void loop(){
-  int i;
+  //int i;
   //  for (i=25; i<40; i++){
   //    digitalWrite(i,LOW);
   //    delay(500);
@@ -41,9 +43,34 @@ void loop(){
   //    digitalWrite(i,HIGH);
   //    delay(500);
   //  }
+  
+  //BRITTANY 
+  int i;
+  int a[] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10};
+  
+  for (i=0; i<11; i++){
+    
+    int led = 28;
+    
+    if(digitalRead(a[i]) == LOW)
+    {
+      Serial.print("LED on ");
+      Serial.println(led);
+      digitalWrite(led, LOW); //on
+    }  
+    else
+    {  
+      digitalWrite(led, HIGH); //off
+    }
+  }
+  
+  
+  
+  // END BRITTANY
+  /*
   if(digitalRead(A1) == LOW){
     digitalWrite(25,LOW);
-    Serial.print("Button 1\n");
+    Serial.print("LED 25\n");
   }
   else
   { 
@@ -52,7 +79,7 @@ void loop(){
 
 
   if(digitalRead(A0) == LOW){
-    Serial.print("Button 0\n");
+    Serial.print("LED 27\n");
     digitalWrite(27,LOW);
   }
   else
@@ -61,7 +88,7 @@ void loop(){
   }
 
   if(digitalRead(A2) == LOW){
-    Serial.print("Button 2\n");
+    Serial.print("LED 28\n");
     digitalWrite(28,LOW);
   }
   else
@@ -70,7 +97,7 @@ void loop(){
   }
 
   if(digitalRead(A3) == LOW){
-    Serial.print("Button 3\n");
+    Serial.print("LED 29\n");
     digitalWrite(29,LOW);
   }
   else
@@ -79,7 +106,7 @@ void loop(){
   }  
   
   if(digitalRead(A4) == LOW){
-    Serial.print("Button 4\n");
+    Serial.print("LED 30\n");
     digitalWrite(30,LOW);
   }    
   else
@@ -89,7 +116,7 @@ void loop(){
   
   
   if(digitalRead(A5) == LOW){
-    Serial.print("Button 5\n");
+    Serial.print("LED 31\n");
     digitalWrite(31,LOW);
   }    
   else
@@ -99,7 +126,7 @@ void loop(){
   
   
   if(digitalRead(A6) == LOW){
-    Serial.print("Button 6\n");
+    Serial.print("LED 32\n");
     digitalWrite(32,LOW);
   }    
   else
@@ -108,7 +135,7 @@ void loop(){
   }
   
   if(digitalRead(A7) == LOW){
-    Serial.print("Button 7\n");
+    Serial.print("LED 33\n");
 
     digitalWrite(33,LOW);
   } 
@@ -119,7 +146,7 @@ void loop(){
   
   
   if(digitalRead(A8) == LOW){
-    Serial.print("Button 8\n");
+    Serial.print("LED 34\n");
 
     digitalWrite(34,LOW);
   }
@@ -129,7 +156,7 @@ void loop(){
   }
   
   if(digitalRead(A9) == LOW){
-    Serial.print("Button 9\n");
+    Serial.print("LED 35\n");
 
     digitalWrite(35,LOW);
   }
@@ -139,9 +166,14 @@ void loop(){
   }
 
   if(digitalRead(A10) == LOW){
-    Serial.print("Button 10\n");
+    Serial.print("LED 36\n");
+
+    digitalWrite(36,LOW);
   }
- 
+  else
+  { 
+    digitalWrite(37,HIGH);
+  } */
 
 }
 
