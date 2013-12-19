@@ -45,21 +45,21 @@ int channelSelectorLEDs[] = {
 /******************************************************************************/
 /* Edit Channel Buttons and LEDs                                                                    */
 /******************************************************************************/
-/*
+
 const int arpeggioButton = A4;
 const int arpeggioRedLED = 34;      // the number of the LED pin
 const int arpeggioGrnLED = 33;
 const int arpeggioBluLED = 32;
 
-int buttonStateArpeggioLast = HIGH;
+int lastArpeggioState = HIGH;
 
 const int glissButton = A7;
 const int glissRedLED = 31;      // the number of the LED pin
 const int glissGrnLED = 30;
 const int glissBluLED = 29;
 
-int buttonStateGlissandoLast = HIGH;
-*/
+int lastGlissState = HIGH;
+
 
 /******************************************************************************/
 /* Songbox Buttons and LEDs                                                                    */
@@ -97,6 +97,7 @@ const int encoderDTempoBPin = 9;
 /******************************************************************************/
 
 // Variables will change:
+int currentlySelectedModule = 0;
 int state;
 int moduleState[numModules];
 int modulePin[numModules]; //State switch pins
@@ -120,6 +121,11 @@ int encoderDTempoBPinLast = LOW;
 
 int n = LOW;
 
+boolean isPressed(int button)
+{
+  return digitalRead(button) == LOW; 
+}
+
 //  plays a MIDI note.  Doesn't check to see that
 //  cmd is greater than 127, or that data values are  less than 127:
 void sendMidi(int message, int data1, int data2) {
@@ -140,6 +146,14 @@ void setup() {
      pinMode(channelSelectorLEDs[i], OUTPUT);
      digitalWrite(channelSelectorLEDs[i], HIGH); // OFF
   }
+  
+  pinMode(arpeggioButton, INPUT);
+  digitalWrite(arpeggioButton, HIGH);
+  
+  // Initialize the module to 0
+  digitalWrite(channelSelectorLEDs[0], LOW); //on
+  currentlySelectedModule = 0;
+  
   /*
   // Arpeggio
   pinMode(buttonArpeggioPin, INPUT);
@@ -260,97 +274,43 @@ void selectChannelToEdit()
        int button = channelSelectorButtons[i];
        int led = channelSelectorLEDs[i];
        
-       if(digitalRead(button) == LOW)
+       //if(digitalRead(button) == LOW) //pressed
+       if(isPressed(button))
        {
          Serial.print("LED on ");
          Serial.println(led);
+         
+         // Turn off the previous module LED
+         digitalWrite(channelSelectorLEDs[currentlySelectedModule], HIGH);
+         
+         // Update the currently selected module
+         currentlySelectedModule = i;
+         
+         // Turn on the currently selected module LED
          digitalWrite(led, LOW); //on
-       }  
-       else
-       {  
-         digitalWrite(led, HIGH); //off
+         break;
        }  
     } 
+}
+
+void toggleArpeggio()
+{ 
+  if(isPressed(arpeggioButton) && (lastArpeggioState != LOW))
+  {
+    Serial.println("Arpeggio toggle");
+    lastArpeggioState = LOW;
+  }
+  else if(!isPressed(arpeggioButton))
+  {                                                                                                                                                                                             ");
+    lastArpeggioState = HIGH; 
+  }
 }
 
 void loop()
 {
   // Check status of  Channel Selector buttons
   selectChannelToEdit();
-  
-  
-  
-  
-  
-  
-  /*
-  int controlChange = 0xB0;
-  int noteOn = 0x90;
-  int note = 5;
-  int arpeggio = 0x50;
-  int toggle = 127;
-  int value = 1;
-  
-  int currentButtonState = digitalRead(buttonArpeggioPin);
-  
-  if(currentButtonState == LOW &&
-     buttonStateArpeggioLast == HIGH)
-     {
-        buttonStateArpeggioLast = currentButtonState;
-        
-        if(!arpeggioOn[0])
-        {
-            // Toggle LED
-            digitalWrite(LEDArpeggioRedPin, LOW);
-            digitalWrite(LEDArpeggioRedPin, LOW);
-            digitalWrite(LEDArpeggioRedPin, LOW);
-        }
-        else
-        {
-            // Toggle LED
-            digitalWrite(LEDArpeggioRedPin, HIGH);
-            digitalWrite(LEDArpeggioRedPin, HIGH);
-            digitalWrite(LEDArpeggioRedPin, HIGH);
-        }
-        // Toggle Arpeggio
-        arpeggioOn[0] = !arpeggioOn[0];
-        sendMidi(controlChange, arpeggio, toggle);
-       
-     }
-  */
-  //sendMidi(noteOn, note, 0);
-  //delay(100);
-  
-  // check to see if it's time to blink the LED; that is, if the 
-  // difference between the current time and last time you blinked 
-  // the LED is bigger than the interval at which you want to 
-  // blink the LED.
-  /*state += readEncoder(encoderAPin);
-  state %= 5;
-  if (state<0){
-    state = 4;
-  }
-  int i;
-  for (i = 0; i < numModules; i++){
-    moduleState[i] = digitalRead(modulePin[i]);
-
-  }
-  /*if (moduleState[5] == HIGH){
-   
-   state = 3;
-   }*/
-  /*for (i = 0; i< numModules; i++){
-    if (moduleState[i] == HIGH){
-      state = i;
-    } 
-  }
-  int rgb[3] = {
-    LOW, LOW, LOW        };
-  stateDecode(state, rgb);
-  digitalWrite(redPin, !rgb[0]);
-  digitalWrite(grnPin, !rgb[1]);
-  digitalWrite(bluPin, !rgb[2]);
-  */
+  toggleArpeggio();
 }
 
 
