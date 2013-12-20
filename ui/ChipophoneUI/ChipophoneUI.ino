@@ -58,6 +58,7 @@ const int arpeggioBluLED = 32;
 int arpeggioLEDs[] = {
     arpeggioRedLED, arpeggioGrnLED, arpeggioBluLED };
 
+//int *lastArpeggioState;
 int lastArpeggioState = HIGH;
 boolean arpeggioOn[numModules];
 
@@ -70,7 +71,7 @@ int glissLEDs[] = {
     glissRedLED, glissGrnLED, glissBluLED };
 
 int lastGlissState = HIGH;
-boolean glissandoOn[numModules];
+boolean glissOn[numModules];
 
 /******************************************************************************/
 /* Songbox Buttons and LEDs                                                                    */
@@ -154,6 +155,7 @@ void sendMidi(int message, int data1, int data2) {
 
 void setup() {
   int i;
+
   
   // Select Channel to Edit
   for(i=0; i<numModules; i++)
@@ -198,7 +200,7 @@ void setup() {
   for(i = 0; i < numModules; i++)
   {
     // Initially all modules have arpeggio off
-    glissandoOn[i] = false;
+    glissOn[i] = false;
   }
 /*
   // Songbox 
@@ -345,7 +347,7 @@ void selectChannelToEdit()
            changeLEDColor(arpeggioLEDs, OFF);
          }
          
-         if(glissandoOn[currentlySelectedModule])
+         if(glissOn[currentlySelectedModule])
          {
            changeLEDColor(glissLEDs, currentlySelectedModule);
          }  
@@ -358,23 +360,12 @@ void selectChannelToEdit()
     } 
 }
 
-void updateChannelProps(int button, int lastState, int* rgbPins, boolean* moduleState )
+void updateChannelProps(int button, int* lastState, int* rgbPins, boolean* moduleState )
 { 
-  // WHAT HAPPEN?
-  Serial.println((lastState == HIGH) && isPressed(button));
-  if((lastState == HIGH) && isPressed(button))
+  if((*lastState == HIGH) && isPressed(button))
   {
-    // SOMEONE SET UP US THE BOMB!
-    /*Serial.print("wtf if statement: ");
-    Serial.println((lastState == HIGH) && isPressed(button));
-    Serial.print("Last State: ");
-  Serial.println(lastState == HIGH);
-  Serial.print("Button Pressed: ");
-  Serial.println(isPressed(button));
-  Serial.println("\n");*/
-    lastState = LOW;
-    delay(10);
-    Serial.println(currentlySelectedModule);
+    *lastState = LOW;
+    delay(5);
     
     // Toggle the property
     if(moduleState[currentlySelectedModule])
@@ -397,10 +388,8 @@ void updateChannelProps(int button, int lastState, int* rgbPins, boolean* module
   }
   else if(!isPressed(button))
   {
-    Serial.println("Button not pressed.");
-    lastState = HIGH; 
-  } 
-   
+    *lastState = HIGH; 
+  }
 }
 
 void loop()
@@ -409,8 +398,8 @@ void loop()
   selectChannelToEdit();
   
   // Argeggio and glissando have similar logic
-  updateChannelProps(arpeggioButton, lastArpeggioState, arpeggioLEDs, arpeggioOn);
-  //updateChannelProps(glissButton, lastGlissState, glissLEDs, glissandoOn);
+  updateChannelProps(arpeggioButton, &lastArpeggioState, arpeggioLEDs, arpeggioOn);
+  updateChannelProps(glissButton, &lastGlissState, glissLEDs, glissOn);
 }
 
 
