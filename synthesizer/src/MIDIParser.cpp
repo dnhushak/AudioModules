@@ -37,7 +37,7 @@ void MIDIParser::interpretMIDI(PmEvent data)
     int data1 = Pm_MessageData1(data.message); // between 0 and 127 inclusive
     int data2 = Pm_MessageData2(data.message); // between 0 and 127 inclusive
     
-    MIDIController::interpretMIDI(message, data1, data2, (*modules)[channel]);
+    MIDIController::interpretMIDI(message, data1, data2, (*modules)[channel], channel);
     return;
 }
 
