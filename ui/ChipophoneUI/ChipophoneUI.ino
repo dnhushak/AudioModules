@@ -554,9 +554,9 @@ void mushroom(){
       data1 = 82;
       break;
     } 
-    sendMidi(message,data1,MIDION);  
+    sendMidi(message,data1+12,MIDION);  
     delay(35);           
-    sendMidi(message,data1,MIDIOFF); 
+    sendMidi(message,data1+12,MIDIOFF); 
 
   }
 }
