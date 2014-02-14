@@ -46,6 +46,9 @@ VoiceConfigReader.o: $(SRC)VoiceConfigReader.cpp $(HEADERS)
 MIDIController.o: $(SRC)MIDIController.cpp $(HEADERS)
 	$(CC) -c $(SRC)MIDIController.cpp $(LDFLAGS)
 
+install:
+	cp $(EXE) /usr/bin/$(EXE)
+
 clean:
 	rm -rf $(EXE) *.o
 	
