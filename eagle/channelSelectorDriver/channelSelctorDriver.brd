@@ -122,6 +122,25 @@
 <hole x="67.31" y="3.81" drill="3.2"/>
 <hole x="67.31" y="54.61" drill="3.2"/>
 <hole x="24.13" y="13.97" drill="3.2"/>
+<text x="21.59" y="5.08" size="1.016" layer="25" rot="R90">VCC</text>
+<text x="24.13" y="5.08" size="1.016" layer="25" rot="R90">GND</text>
+<text x="11.43" y="2.54" size="1.27" layer="25" rot="R90">Keyboard 1 Control</text>
+<text x="11.43" y="21.59" size="1.27" layer="25" rot="R90">Keyboard 2 Control</text>
+<text x="11.43" y="40.64" size="1.27" layer="25" rot="R90">Keyboard 3 Control</text>
+<text x="73.66" y="40.64" size="1.016" layer="25">VCC</text>
+<text x="73.66" y="21.59" size="1.016" layer="25">VCC</text>
+<text x="73.66" y="2.54" size="1.016" layer="25">VCC</text>
+<text x="76.2" y="17.78" size="1.016" layer="25" rot="R180">GND</text>
+<text x="76.2" y="36.83" size="1.016" layer="25" rot="R180">GND</text>
+<text x="76.2" y="55.88" size="1.016" layer="25" rot="R180">GND</text>
+<text x="71.12" y="41.91" size="1.27" layer="25" rot="R90">Keyboard 3 Out</text>
+<text x="71.12" y="22.86" size="1.27" layer="25" rot="R90">Keyboard 2 Out</text>
+<text x="71.12" y="3.81" size="1.27" layer="25" rot="R90">Keyboard 1 Out</text>
+<text x="8.89" y="1.27" size="1.27" layer="25" rot="R90">VCC   A    B     C     D</text>
+<text x="8.89" y="20.32" size="1.27" layer="25" rot="R90">VCC   A    B     C     D</text>
+<text x="8.89" y="39.37" size="1.27" layer="25" rot="R90">VCC   A    B     C     D</text>
+<text x="19.05" y="54.61" size="1.27" layer="25">Chipophone Channel
+Selector Logic</text>
 </plain>
 <libraries>
 <library name="adafruit">
@@ -452,31 +471,42 @@ Please make sure your boards conform to these design rules.</description>
 </pass>
 </autorouter>
 <elements>
-<element name="KBD1_S" library="con-lstb" package="MA05-1" value="" x="74.93" y="10.16" rot="R90">
+<element name="KBD1_S" library="con-lstb" package="MA05-1" value="" x="74.93" y="10.16" smashed="yes" rot="R90">
 <attribute name="OC_NEWARK" value="unknown" x="74.93" y="10.16" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MPN" value="" x="74.93" y="10.16" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MF" value="" x="74.93" y="10.16" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="74.93" y="10.16" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="77.851" y="7.62" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="KBD2_S" library="con-lstb" package="MA05-1" value="" x="74.93" y="29.21" rot="R90">
+<element name="KBD2_S" library="con-lstb" package="MA05-1" value="" x="74.93" y="29.21" smashed="yes" rot="R90">
 <attribute name="OC_NEWARK" value="unknown" x="74.93" y="29.21" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MPN" value="" x="74.93" y="29.21" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MF" value="" x="74.93" y="29.21" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="74.93" y="29.21" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="77.851" y="26.67" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="FTPDL_S" library="con-lstb" package="MA05-1" value="" x="74.93" y="48.26" rot="R90">
+<element name="FTPDL_S" library="con-lstb" package="MA05-1" value="" x="74.93" y="48.26" smashed="yes" rot="R90">
 <attribute name="OC_NEWARK" value="unknown" x="74.93" y="48.26" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MPN" value="" x="74.93" y="48.26" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MF" value="" x="74.93" y="48.26" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="74.93" y="48.26" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="VALUE" x="77.851" y="45.72" size="1.27" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="IC1" library="40xx" package="DIL14" value="4025N" x="39.37" y="29.21" rot="R180"/>
-<element name="IC2" library="40xx" package="DIL14" value="4071N" x="39.37" y="48.26"/>
-<element name="IC3" library="40xx" package="DIL14" value="4071N" x="39.37" y="10.16"/>
-<element name="JP1" library="pinhead" package="1X02" value="" x="16.51" y="2.54"/>
-<element name="KBD1_C" library="adafruit" package="1X05-3.5MM" value="1X5" x="3.81" y="10.16" rot="R270"/>
-<element name="KBD2_C" library="adafruit" package="1X05-3.5MM" value="1X5" x="3.81" y="29.21" rot="R270"/>
-<element name="KBD3_C" library="adafruit" package="1X05-3.5MM" value="1X5" x="3.81" y="48.26" rot="R270"/>
+<element name="IC1" library="40xx" package="DIL14" value="4025N" x="39.37" y="29.21" smashed="yes" rot="R180">
+<attribute name="VALUE" x="46.101" y="29.845" size="1.27" layer="27" ratio="10" rot="R180"/>
+</element>
+<element name="IC2" library="40xx" package="DIL14" value="4071N" x="39.37" y="48.26" smashed="yes">
+<attribute name="VALUE" x="32.639" y="47.625" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="IC3" library="40xx" package="DIL14" value="4071N" x="39.37" y="10.16" smashed="yes">
+<attribute name="VALUE" x="32.639" y="9.525" size="1.27" layer="27" ratio="10"/>
+</element>
+<element name="JP1" library="pinhead" package="1X02" value="" x="22.86" y="2.54" smashed="yes">
+<attribute name="VALUE" x="20.32" y="-0.635" size="1.27" layer="27"/>
+</element>
+<element name="KBD1_C" library="adafruit" package="1X05-3.5MM" value="1X5" x="3.81" y="10.16" smashed="yes" rot="R270"/>
+<element name="KBD2_C" library="adafruit" package="1X05-3.5MM" value="1X5" x="3.81" y="29.21" smashed="yes" rot="R270"/>
+<element name="KBD3_C" library="adafruit" package="1X05-3.5MM" value="1X5" x="3.81" y="48.26" smashed="yes" rot="R270"/>
 </elements>
 <signals>
 <signal name="VCC">
@@ -779,4 +809,10 @@ Please make sure your boards conform to these design rules.</description>
 </signals>
 </board>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>
