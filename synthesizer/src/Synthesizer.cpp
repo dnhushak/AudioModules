@@ -61,8 +61,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	err = Pa_Initialize();
-	if (err != paNoError)
-		errorPortAudio(err);
+	if (err != paNoError){
+		printf ( "%s \n", Pa_GetErrorText(err) ) ;
+	}
 
 	outputParameters.device = Pa_GetDefaultOutputDevice();
 	//outputParameters.device = 0;

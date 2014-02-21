@@ -19,10 +19,6 @@
 #define CHANNEL_VOLUME 0x07     // "Channel Volume"
 #define SELECT_VOICE 0x00       // "Bank Select." Used to select the new voice
 
-// Program changes
-// TODO React to change of 5 position switches
-// TODO React to changing the currently selected module/channel
-
 // Other
 #define RESET 0xFF              // "Reset." Reboot the system. Use sparingly.
 #define GLISSANDO_MIN  5000

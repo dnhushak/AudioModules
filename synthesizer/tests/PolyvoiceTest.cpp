@@ -46,7 +46,7 @@ void TestAdvanceSimple() {
 	expected->push_back(-16384);
 	expected->push_back(-16384);
 
-	std::vector<float> actual = polyVoice->advance(2);
+	//std::vector<float> actual = polyVoice->advance(2);
 
 	Assert::areNotEqual(80, polyVoice->phase,
 			"TestAdvanceSimple: Phase should advance\n");
