@@ -1,0 +1,19 @@
+1 16 0.888 116 PULSE 0.000 0 0// Super Mario melody
+100 100 0.5 50 SQUARE 0.000 25 10000 // default voice for first module
+1 1 0.5 1 PULSE 0.005 25 5000 // default voice for second module
+1 1 0.5 1 TRIANGLE 0.005 25 5000 // default voice for third module
+1 1 0.5 1 SAWTOOTH 0.005 25 5000 // default voice for fourth module
+1 1 0.5 1 NOISE 0.005 25 5000 // default voice for fifth module
+100 250 0.333 266 SQUARE 0.000 0 0 // Zelda melody
+100 250 0.333 266 SQUARE 0.000 0 0 // Zelda harmony
+8 8 0.0 1 NOISE 0.000 0 0 // Zelda noise
+1 1 1 0 TRIANGLE 0.000 0 0 // Super Mario bass
+16 116 0.866 1 PULSE 0.000 0 0// Megaman Melody
+16 116 0.866 1 PULSE 0.950 20 0// Megaman Melody
+1 1 1 0 TRIANGLE 0.000 0 0// Megaman Tri Bass
+25 25 0.8 50 SQUARE 0.005 25 5000
+100 100 0.5 50 TRIANGLE 0.005 25 5000
+100 100 0.5 50 SQUARE 0.005 25 5000
+10 10 0.0 1 NOISE 0.005 25 5000
+25 50 0.0 1 NOISE 0.005 25 5000
+

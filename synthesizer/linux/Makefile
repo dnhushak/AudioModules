@@ -48,7 +48,7 @@ MIDIController.o: $(SRC)MIDIController.cpp $(HEADERS)
 
 install:
 	cp $(EXE) /usr/bin/$(EXE)
-	cp ../src/config/VoicesConfig.txt /usr/bin/VoicesConfig.txt
+	cp ./VoicesConfig.txt /usr/bin/VoicesConfig.txt
 
 clean:
 	rm -rf $(EXE) *.o
