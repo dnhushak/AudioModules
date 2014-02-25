@@ -40,7 +40,7 @@
 #define NUM_WAVES 5
 
 //Config filenames
-#define VOICE_CONFIG_FILE "../src/config/VoicesConfig.txt"
+#define VOICE_CONFIG_FILE "./VoicesConfig.txt"
 
 //MIDI file list
 #define MIDI_FILE_NAMES "../src/config/MidiFileList.txt"
