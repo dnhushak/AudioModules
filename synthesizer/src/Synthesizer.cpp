@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 	outputParameters.hostApiSpecificStreamInfo = NULL;
 
 	err = Pa_OpenStream(&stream, NULL /* no input */, &outputParameters,
-			SAMPLE_RATE,
+	SAMPLE_RATE,
 	BUFFER_SIZE,
 	paNoFlag, /* we won't output out of range samples so don't bother clipping them */
 	paCallback, audioProcessor); // We want to pass a pointer to the AudioProcessor
@@ -122,10 +122,6 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 	chip::AudioProcessor* audio = (chip::AudioProcessor*) userData;
 	float *out = (float*) outputBuffer;
 
-	if (framesPerBuffer >= BUFFER_SIZE) {
-		std::cout << "ERROR: Ran out of buffer space. ";
-		std::cout << framesPerBuffer << " is too big.";
-	}
 
 	buffer = audio->advance(framesPerBuffer);
 
