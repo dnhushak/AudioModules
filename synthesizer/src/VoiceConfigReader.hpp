@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <stdlib.h>
 namespace chip
 {
 class VoiceConfigReader

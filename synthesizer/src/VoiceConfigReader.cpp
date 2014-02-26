@@ -1,4 +1,5 @@
 #include "VoiceConfigReader.hpp"
+#include <stdlib.h>
 
 bool chip::VoiceConfigReader::instanceFlag = false;
 chip::VoiceConfigReader *chip::VoiceConfigReader::single = NULL;
