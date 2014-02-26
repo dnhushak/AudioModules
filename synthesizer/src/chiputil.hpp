@@ -1,18 +1,16 @@
 #pragma once
 
-//NUM-SECONDS is simply a playback mechanism
-#define NUM_SECONDS   (1)
-
-//Sample rate of the soundcard
-#define SAMPLE_RATE   (32000)
+//Audio Hardware Definitions
+#define NUM_AUDIO_CHANNELS (2)
+#define SAMPLE_RATE (32000)
 
 //Audio buffer size
-#define FRAMES_PER_BUFFER  (1024)
+#define BUFFER_SIZE  (1024)
 #define PHASESCALE ((1<<17)-1)
 
 //Power of wavetable size (wavetable size = 2 ^ POWER)
 #define POWER (4)
-#define TABLE_SIZE   (1<<POWER)
+#define TABLE_SIZE (1<<POWER)
 
 //State that the polyvoice is in
 #define OFF 0
@@ -22,13 +20,14 @@
 #define RELEASE 4
 #define CLEANUP 5
 
+//Number of audio modules
+#define NUM_MODULES 5
+
 //Number of polyvoices
 #define NUM_POLYVOICES 18
 
 // Maximum number of active polyvoices
 #define MAX_POLYVOICES 16
-
-#define NUM_SECONDS (1)
 
 //Types of waves
 #define SQUARE   0

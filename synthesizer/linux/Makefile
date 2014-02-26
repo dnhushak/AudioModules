@@ -1,7 +1,7 @@
 
 # x86-Linux-specific makefile
 CC = g++
-LDFLAGS = -lportaudio -lportmidi -Wall
+LDFLAGS = -lportaudio -lportmidi -Wall -g
 
 SRC = ../src/
 EXE = Synthesizer

@@ -6,8 +6,8 @@ chip::Mixer::Mixer()
 	audioList = new std::vector<IAudio*>(0);
 	
 	// Initialize the audio buffer
-	mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
-	temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+	mixedFinal = new std::vector<float>(BUFFER_SIZE, 0.0);
+	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
 }
 
 std::vector<float> chip::Mixer::advance(int numSamples)
