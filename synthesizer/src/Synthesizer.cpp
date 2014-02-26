@@ -54,60 +54,46 @@ int main(int argc, char *argv[]) {
 	chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
 	midiParser = new chip::MIDIParser();
 
-	// TODO Instead of passing each of the modules, just pass the vector
 	// Give the MIDIParser pointers to the modules
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < NUM_MODULES; i++) {
 		midiParser->addObject((*(audioProcessor->modules))[i]);
 	}
 
 	err = Pa_Initialize();
-	if (err != paNoError){
-		printf ( "%s \n", Pa_GetErrorText(err) ) ;
-	}
+	if (err != paNoError)
+		return errorPortAudio(err);
 
 	outputParameters.device = Pa_GetDefaultOutputDevice();
 	//outputParameters.device = 0;
 	std::cout << Pa_GetDeviceInfo(outputParameters.device)->name;
 	if (outputParameters.device == paNoDevice)
-		errorPortAudio(err);
+		return errorPortAudio(err);
 
-	outputParameters.channelCount = 1; /* mono output */
+	outputParameters.channelCount = NUM_AUDIO_CHANNELS; /* mono output */
 	outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
 	outputParameters.suggestedLatency = Pa_GetDeviceInfo(
 			outputParameters.device)->defaultLowOutputLatency;
 	outputParameters.hostApiSpecificStreamInfo = NULL;
 
-	err = Pa_OpenStream(&stream,
-	NULL, /* no input */
-	&outputParameters,
-	SAMPLE_RATE,
-	paFramesPerBufferUnspecified,
-	paClipOff, /* we won't output out of range samples so don't bother clipping them */
+	err = Pa_OpenStream(&stream, NULL /* no input */, &outputParameters,
+			SAMPLE_RATE,
+	BUFFER_SIZE,
+	paNoFlag, /* we won't output out of range samples so don't bother clipping them */
 	paCallback, audioProcessor); // We want to pass a pointer to the AudioProcessor
 
 	if (err != paNoError)
-		errorPortAudio(err);
+		return errorPortAudio(err);
 
 	err = Pa_SetStreamFinishedCallback(stream, &StreamFinished);
 	if (err != paNoError)
-		errorPortAudio(err);
+		return errorPortAudio(err);
 
 	// Connect to the MIDI stream and start reading
 	midiParser->connectToMIDIStream(devID);
 
 	err = Pa_StartStream(stream);
 	if (err != paNoError)
-		errorPortAudio(err);
-
-	/*
-	 print cpu usage every some seconds
-	 */
-	/*while(1)
-	 {
-	 std::cout << "\r" << int(100.0f*Pa_GetStreamCpuLoad(stream)) << "% CPU         " << std::flush;
-	 usleep(20000);
-	 }
-	 */
+		return errorPortAudio(err);
 
 	// Block the front end until someone hits enter
 	// We are getting audio callbacks while this is happening
@@ -136,24 +122,18 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 	chip::AudioProcessor* audio = (chip::AudioProcessor*) userData;
 	float *out = (float*) outputBuffer;
 
-	if (framesPerBuffer >= FRAMES_PER_BUFFER) {
+	if (framesPerBuffer >= BUFFER_SIZE) {
 		std::cout << "ERROR: Ran out of buffer space. ";
 		std::cout << framesPerBuffer << " is too big.";
 	}
 
 	buffer = audio->advance(framesPerBuffer);
-	/*if(buffer[0] == 0)
-	 {
-	 (void) buffer;
-	 }*/
 
 	for (int i = 0; i < framesPerBuffer; i++) {
-		//std::cout << buffer[i] / 65536 << "\n";
-		*out++ = buffer[i] / 65536;
-		//std::cout << buffer[i];
+		for (int j = 0; j < NUM_AUDIO_CHANNELS; j++) {
+			*out++ = buffer[i] / 65536;
+		}
 	}
-
-	//AudioProcessor::masterMixer.advance(FRAMES_PER_BUFFER);
 
 	buffer.clear();
 	return paContinue;

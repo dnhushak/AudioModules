@@ -3,8 +3,8 @@
 chip::Module::Module()
 {
     Module(new Voice(1, 1, 0.5, 1, SQUARE, 0, 0, 0));
-    mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
-    temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+    mixedFinal = new std::vector<float>(BUFFER_SIZE, 0.0);
+    temp = new std::vector<float>(BUFFER_SIZE, 0.0);
 }
 
 chip::Module::Module(Voice* voice)
@@ -13,8 +13,8 @@ chip::Module::Module(Voice* voice)
 	this->next = 0;
 	
 	//initializes the audio buffer
-	mixedFinal = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
-	temp = new std::vector<float>(FRAMES_PER_BUFFER, 0.0);
+	mixedFinal = new std::vector<float>(BUFFER_SIZE, 0.0);
+	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
 	
 	//instantiates "bucket" of polyvoices
 	this->polyvoices = new std::vector<chip::PolyVoice>();

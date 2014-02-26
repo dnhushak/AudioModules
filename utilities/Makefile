@@ -1,8 +1,13 @@
 CC = g++
-LDFLAGS = -lportaudio
+LDFLAGS = -lportaudio -Wall -ggdb -g
+SRCS = PATest.cpp
+EXE = PATest
 
 PATest:
-	$(CC) PATest PATest.cpp $(LDFLAGS)
+	$(CC) -o $(EXE) $(SRCS) $(LDFLAGS)
 
 clean:
-	rm -rf PATest printAudioDevices
+	rm -rf $(EXE)
+
+depend:
+	gccmakedep -- $(LDFLAGS) -- $(SRCS)
