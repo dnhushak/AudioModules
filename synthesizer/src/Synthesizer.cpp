@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
 	outputParameters.device = Pa_GetDefaultOutputDevice();
 	//outputParameters.device = 0;
 	std::cout << Pa_GetDeviceInfo(outputParameters.device)->name;
+	std::cout << "\n";
 	if (outputParameters.device == paNoDevice)
 		return errorPortAudio(err);
 

@@ -69,7 +69,7 @@ void MIDIController::interpretMIDI(int message, int data1, int data2, chip::Modu
         std::cout << "ERROR: Unrecognized MIDI message. ";
     }
 
-    printMIDI(message, moduleID, data1, data2);
+    //printMIDI(message, moduleID, data1, data2);
 
     return;
 }
