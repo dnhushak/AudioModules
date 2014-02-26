@@ -46,7 +46,6 @@ int main(int argc, char *argv[]) {
 	} else {
 		devID = atoi(argv[1]);
 	}
-
 	PaStreamParameters outputParameters;
 	PaStream *stream;
 	PaError err;
@@ -122,7 +121,6 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 	(void) statusFlags;
 	chip::AudioProcessor* audio = (chip::AudioProcessor*) userData;
 	float *out = (float*) outputBuffer;
-
 
 	buffer = audio->advance(framesPerBuffer);
 
