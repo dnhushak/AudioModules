@@ -1,5 +1,5 @@
-1 16 0.888 1 PULSE 0.000 0 0// Super Mario melody
-100 100 0.5 1 SQUARE 0.000 25 10000 // default voice for first module
+1 16 0.888 116 PULSE 0.000 0 0// Super Mario melody
+100 100 0.5 50 SQUARE 0.000 25 10000 // default voice for first module
 1 1 0.5 1 PULSE 0.005 25 5000 // default voice for second module
 1 1 0.5 1 TRIANGLE 0.005 25 5000 // default voice for third module
 1 1 0.5 1 SAWTOOTH 0.005 25 5000 // default voice for fourth module

@@ -6,6 +6,7 @@ namespace chip
 MIDIParser::MIDIParser()
 {
     modules = new std::vector<Module*>(0);
+    mstream = malloc(sizeof(PortMidiStream));
 }
 
 int MIDIParser::errorPortMIDI(PmError err)

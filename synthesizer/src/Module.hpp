@@ -15,7 +15,6 @@ public:
 	/*** Voice ***/
 	Voice * voice; // Defines the module's current instrument
 	std::vector<PolyVoice> * polyvoices; //each element represents one note being played
-	int next; // The next inactive polyvoice
 
 	/*** Arpeggiation ***/
 	bool arpeggio;
@@ -70,5 +69,7 @@ public:
 	float MtoF(int note);
 
 	void printPolyVoices();
+
+	virtual ~Module();
 };
 }
