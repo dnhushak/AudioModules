@@ -124,7 +124,7 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 
 	buffer = audio->advance(framesPerBuffer);
 
-	for (int i = 0; i < framesPerBuffer; i++) {
+	for (int i = 0; i < (int)framesPerBuffer; i++) {
 		for (int j = 0; j < NUM_AUDIO_CHANNELS; j++) {
 			*out++ = buffer[i] / 65536;
 		}

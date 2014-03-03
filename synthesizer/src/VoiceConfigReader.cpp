@@ -1,5 +1,4 @@
 #include "VoiceConfigReader.hpp"
-#include <stdlib.h>
 
 bool chip::VoiceConfigReader::instanceFlag = false;
 chip::VoiceConfigReader *chip::VoiceConfigReader::single = NULL;
@@ -14,7 +13,7 @@ void chip::VoiceConfigReader::readFile()
 		printf("Reading from config file: %s\n",filepath);
 	}
 	else{
-		printf("Please define the CHIPCONFIG environment variable to point to the absolute path of the configuration text file");
+		printf("Please define the CHIPCONFIG environment variable to point to the absolute path of the configuration text file\n");
 		exit(1);
 	}
     this->voices = new std::vector<chip::Voice>();

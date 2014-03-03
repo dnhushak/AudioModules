@@ -124,3 +124,12 @@ sudo sed -i '/pcm.dmix cards.pcm.dmix/ s/^/# /' /usr/share/alsa/alsa.conf
 sudo sed -i '/pcm.dsnoop cards.pcm.dsnoop/ s/^/# /' /usr/share/alsa/alsa.conf
 sudo sed -i '/pcm.modem cards.pcm.modem/ s/^/# /' /usr/share/alsa/alsa.conf
 sudo sed -i '/pcm.phoneline cards.pcm.phoneline/ s/^/# /' /usr/share/alsa/alsa.conf
+
+#######################
+# PULSEAUDIO settings
+#######################
+#Open etc/pulse/default.pa and try commenting out all these lines:
+
+#.ifexists module-jackdbus-detect.so
+#load-module module-jackdbus-detect
+#.endif
