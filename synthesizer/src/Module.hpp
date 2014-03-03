@@ -11,31 +11,35 @@
 namespace chip {
 class Module: public IAudio {
 public:
-	Voice* voice; // Defines the module's current instrument
-	std::vector<PolyVoice>* polyvoices; //each element represents one note being played
+
+	/*** Voice ***/
+	Voice * voice; // Defines the module's current instrument
+	std::vector<PolyVoice> * polyvoices; //each element represents one note being played
 	int next; // The next inactive polyvoice
 
+	/*** Arpeggiation ***/
 	bool arpeggio;
 	int arpsamples; // Indicates the speed of arpeggiation
 	int arpcount; // The amount of samples this note has been playing in an arpeggio
 	int arpnote; // The current note being played in the arpeggio
 
+	/*** Glissando ***/
 	bool glissando;
 	int glissSamples;
 	int glissCount;
 	PolyVoice* glissNote;
 	float freqSlope;
-
 	float glissEnd; // Frequency of the most recent note pressed. Where we are glissing to.
 	float glissStart; // Frequency of the second most recent note pressed. Where we are glissing from.
 
-	// Volume control
+	/*** Volume ***/
 	float volume;
 	void setVolume(float);
 
-	// Audio buffer
-	std::vector<float>* mixedFinal;
-	std::vector<float>* temp;
+	/*** Buffer ***/
+	std::vector<float> * mixedFinal;
+	std::vector<float> * temp;
+
 
 	Module();
 	Module(Voice* voice);

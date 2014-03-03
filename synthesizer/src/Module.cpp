@@ -4,6 +4,7 @@ chip::Module::Module() {
 	Module(new Voice(1, 1, 0.5, 1, SQUARE, 0, 0, 0));
 	mixedFinal = new std::vector<float>(BUFFER_SIZE, 0.0);
 	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
+	polyvoices = new std::vector<chip::PolyVoice>(0);
 }
 
 chip::Module::Module(Voice* voice) {
@@ -15,7 +16,7 @@ chip::Module::Module(Voice* voice) {
 	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
 
 	//instantiates "bucket" of polyvoices
-	this->polyvoices = new std::vector<chip::PolyVoice>();
+	this->polyvoices = new std::vector<chip::PolyVoice>(0);
 
 	// Create the voice for this module
 	this->voice = voice;
@@ -29,13 +30,13 @@ chip::Module::Module(Voice* voice) {
 	// Set the volume
 	this->volume = 0.4;
 
-	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
-	for (int i = 0; i < NUM_POLYVOICES; i++) {
-		chip::PolyVoice* polyvoice = new chip::PolyVoice();
-		polyvoices->push_back(*polyvoice);
-	}
+//	// Create the 127 polyvoices for the specific module and adds them to the bucket of polyvoices for that module
+//	for (int i = 0; i < NUM_POLYVOICES; i++) {
+//		chip::PolyVoice* polyvoice = new chip::PolyVoice();
+//		polyvoices->push_back(*polyvoice);
+//	}
 
-	// Set the glissando PolyVoice
+// Set the glissando PolyVoice
 	glissando = false;
 	glissSamples = 10000;
 	glissCount = 0;
@@ -75,7 +76,6 @@ void chip::Module::setVolume(float newVolume) {
 
 std::vector<float> * chip::Module::advance(int numSamples) {
 	float sample;
-
 	// Clear the audio buffer
 	for (int i = 0; i < numSamples; i++) {
 		(*mixedFinal)[i] = 0.0;
@@ -93,7 +93,7 @@ std::vector<float> * chip::Module::advance(int numSamples) {
 				arpcount = 0;
 
 				if (next > 0) {
-					arpnote = (arpnote + 1) % next;
+					arpnote = (arpnote + 1) % polyvoices->size();
 				}
 
 			}
@@ -122,7 +122,7 @@ std::vector<float> * chip::Module::advance(int numSamples) {
 		}
 	} else {
 		// Loop through the notes being played and sample from them
-		for (int i = 0; i < next; i++) {
+		for (int i = 0; i < polyvoices->size(); i++) {
 			for (int j = 0; j < numSamples; j++) {
 				sample = (*polyvoices)[i].getSample();
 
@@ -136,13 +136,6 @@ std::vector<float> * chip::Module::advance(int numSamples) {
 }
 
 void chip::Module::activatePolyVoice(int note) {
-	int index = next;
-
-	// Limit the number of active polyvoices to 16
-	if (next > MAX_POLYVOICES) {
-		std::cout << "Ran out of polyvoices.\n";
-		return;
-	}
 
 	// Reset the arpeggio
 	arpnote = 0;
@@ -152,43 +145,36 @@ void chip::Module::activatePolyVoice(int note) {
 
 	// If there already exists a note in the active polyvoices, reset the
 	// PolyVoice to attack. Otherwise activate the polyvoice at the next index.
-	for (int i = 0; i < next; i++) {
+	for (int i = 0; i < polyvoices->size(); i++) {
 		if ((*polyvoices)[i].note == note) {
-			index = i;
-			break;
-		}
-
-		// If the note is greater than this note, insert this note before
-		// this index
-		if ((*polyvoices)[i].note > note) {
-			shiftRightAt(i);
-			index = i;
-			break;
+			(*polyvoices)[i].phase = 0.0;
+			(*polyvoices)[i].state = ATTACK;
+			return;
 		}
 	}
 
-	(*polyvoices)[index].note = note;
-	(*polyvoices)[index].phase = 0.0;
-	(*polyvoices)[index].frequency = MtoF(note);
-	(*polyvoices)[index].state = ATTACK;
-	(*polyvoices)[index].setVoice(voice->getAttack(), voice->getDecay(),
+	// Create new polyvoice, and set its parameters
+	PolyVoice * newPolyVoice = new PolyVoice();
+	(*newPolyVoice).note = note;
+	(*newPolyVoice).phase = 0.0;
+	(*newPolyVoice).frequency = MtoF(note);
+	(*newPolyVoice).state = ATTACK;
+	(*newPolyVoice).setVoice(voice->getAttack(), voice->getDecay(),
 			voice->getSustain(), voice->getRelease(), voice->getWaveType(),
 			voice->getVibAmp(), voice->getVibPeriod(), voice->getVibDelay());
 
+	//Insert the new polyvoice
+	polyvoices->push_back(*newPolyVoice);
+
 	// Update the recent note queue
 	glissStart = glissEnd;
-	glissEnd = (*polyvoices)[index].frequency;
+	glissEnd = (*newPolyVoice).frequency;
 
 	// Set where glissando will start
 	glissNote->frequency = glissStart;
 
-	// If the index got to next, it means there is an additional keypress
-	if (index == next) {
-		next++;
-	}
-
 	// Update the frequency slope for gliss if glissando state will be entered
-	if (next == 2) {
+	if (polyvoices->size() == 2) {
 		freqSlope = (glissEnd - glissStart) / glissSamples;
 	}
 }
@@ -198,7 +184,7 @@ void chip::Module::releasePolyVoice(int note) {
 	// By setting the to-be-deactivated polyvoice to the last active polyvoice and
 	// deactivating the last active polyvoice, we are swapping the two.
 
-	for (int i = 0; i < next; i++) {
+	for (int i = 0; i < polyvoices->size(); i++) {
 		if ((*polyvoices)[i].note == note) {
 			if (arpeggio || glissando) {
 				(*polyvoices)[i].state = CLEANUP;
@@ -213,101 +199,14 @@ void chip::Module::releasePolyVoice(int note) {
 }
 
 void chip::Module::cleanup() {
-	// Take a snapshot of next so when we modify it in the loop, polyvoices 
-	// aren't left hanging.
-	int currentNext = next;
-
-	// Find any note that is flagged for "clean up" and swap it with the
-	// last active polyvoice (next - 1).
-	for (int i = 0; i < currentNext; i++) {
+	// Remove all polyvoices in cleanup state
+	for (int i = 0; i < polyvoices->size(); i++) {
 		if ((*polyvoices)[i].state == CLEANUP) {
-			shiftLeftAt(i);
-			i--;
 
-			(*polyvoices)[next].state = OFF;
-
-			// Reset arpeggio
+			polyvoices->erase(polyvoices->begin() + i);
 			arpnote = 0;
 		}
 	}
-}
-
-void chip::Module::shiftRightAt(int index) {
-	if (next == 0)
-		return;
-
-	int toSwap = next;
-
-	/* If the index is 2, next is 4, and our array is:
-	 *
-	 * [ 3 | 6 | 7 | 12 | - | - ]
-	 *
-	 * Then the result should look like:
-	 *
-	 * [ 3 | 6 | - | 7 | 12 | - ]
-	 *
-	 * and next should be 5.
-	 */
-	while (toSwap != index) {
-		swap(toSwap, toSwap - 1);
-		toSwap--;
-	}
-
-	next++;
-}
-
-void chip::Module::shiftLeftAt(int index) {
-	if (next == 0)
-		return;
-
-	int toSwap = index;
-
-	/* If the index is 2, next is 5, and our array is:
-	 *
-	 * [ 3 | 6 | - | 7 | 12 | - ]
-	 *
-	 * Then the result should look like:
-	 *
-	 * [ 3 | 6 | 7 | 12 | - | - ]
-	 *
-	 * and next should be 4.
-	 */
-	while ((toSwap + 1) < next) {
-		swap(toSwap, toSwap + 1);
-		toSwap++;
-	}
-
-	next--;
-}
-
-void chip::Module::swap(int a, int b) {
-	chip::PolyVoice* temp = new chip::PolyVoice();
-
-	// temp = a
-	temp->note = (*polyvoices)[a].note;
-	temp->phase = (*polyvoices)[a].phase;
-	temp->frequency = (*polyvoices)[a].frequency;
-	temp->state = (*polyvoices)[a].getState();
-	temp->setEnvmult((*polyvoices)[a].getEnvmult());
-	temp->setEnvloc((*polyvoices)[a].getEnvloc());
-
-	// a = b
-	(*polyvoices)[a].note = (*polyvoices)[b].note;
-	(*polyvoices)[a].phase = (*polyvoices)[b].phase;
-	(*polyvoices)[a].frequency = (*polyvoices)[b].frequency;
-	(*polyvoices)[a].state = (*polyvoices)[b].getState();
-	(*polyvoices)[a].setEnvmult((*polyvoices)[b].getEnvmult());
-	(*polyvoices)[a].setEnvloc((*polyvoices)[b].getEnvloc());
-
-	// b = temp
-	(*polyvoices)[b].note = temp->note;
-	(*polyvoices)[b].phase = temp->phase;
-	(*polyvoices)[b].frequency = temp->frequency;
-	(*polyvoices)[b].state = temp->getState();
-	(*polyvoices)[b].setEnvmult(temp->getEnvmult());
-	(*polyvoices)[b].setEnvloc(temp->getEnvloc());
-
-	delete temp;
 }
 
 //Midi Note to Frequency
@@ -316,7 +215,7 @@ float chip::Module::MtoF(int note) {
 }
 
 void chip::Module::printPolyVoices() {
-	for (int i = 0; i < next; i++) {
+	for (int i = 0; i < polyvoices->size(); i++) {
 		std::cout << "polyvoice" << i << ": " << (*polyvoices)[i].note << "\n";
 	}
 

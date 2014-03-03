@@ -95,6 +95,11 @@ int main(int argc, char *argv[]) {
 	if (err != paNoError)
 		return errorPortAudio(err);
 
+//	while(1){
+//		Pa_Sleep(2000);
+//		std::cout << "============\n";
+//		audioProcessor->advance(1);
+//	}
 	// Block the front end until someone hits enter
 	// We are getting audio callbacks while this is happening
 	std::cin.ignore(255, '\n');
@@ -119,18 +124,19 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 	(void) inputBuffer;
 	(void) timeInfo;
 	(void) statusFlags;
-	chip::AudioProcessor* audio = (chip::AudioProcessor*) userData;
+	chip::AudioProcessor * audio = (chip::AudioProcessor*) userData;
 	float *out = (float*) outputBuffer;
-
-	buffer = audio->advance(framesPerBuffer);
-
-	for (int i = 0; i < (int)framesPerBuffer; i++) {
-		for (int j = 0; j < NUM_AUDIO_CHANNELS; j++) {
+	audio->advance(framesPerBuffer);
+	//out = (float*) audio->advance(framesPerBuffer);
+	for (int i = 0; i < (int) framesPerBuffer; i++) {
+		/*for (int j = 0; j < NUM_AUDIO_CHANNELS; j++) {
 			*out++ = buffer[i] / 65536;
-		}
+			*out++ = audio->advance(framesPerBuffer);
+		}*/
+		*out++ = 0;
 	}
 
-	buffer.clear();
+	//buffer.clear();
 	return paContinue;
 }
 

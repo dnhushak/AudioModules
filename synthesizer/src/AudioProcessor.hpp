@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <stdio.h>
@@ -12,27 +11,23 @@
 #include "VoiceConfigReader.hpp"
 #include "Wavetables.hpp"
 
-
 //Pi, for generation of sine table
 #ifndef M_PI
 #define M_PI  (3.14159265)
 #endif
 
+namespace chip {
 
-namespace chip
-{
+class AudioProcessor {
+public:
+	AudioProcessor();
+	~AudioProcessor();
 
-    class AudioProcessor
-    {
-        public:
-            AudioProcessor();
-            ~AudioProcessor();
-            
-            Mixer* masterMixer;
-            std::vector<Module*>* modules;
-            
-            std::vector<float> advance(int);
-    };
+	Mixer* masterMixer;
+	std::vector<Module*> * modules;
 
-} 
+	std::vector<float> * advance(int);
+};
+
+}
 

@@ -59,13 +59,13 @@ namespace chip
             float envmult;  // Envelope multiplier
             float envloc;   // Envelope location
             
-            int Asamp; // Length (in samples) of the attack
+            int AsampCount; // Length (in samples) of the attack
             float Aslope; // Slope of the attack curve
             
-            int Dsamp; // Length (in samples) of the decay
+            int DsampCount; // Length (in samples) of the decay
             float Dslope; // Slope of the decay curve
             
-            int Rsamp; // Length (in samples) of the release
+            int RsampCount; // Length (in samples) of the release
             float Rslope; // Slope of the release curve
     };
     
