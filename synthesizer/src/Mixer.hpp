@@ -8,7 +8,7 @@ namespace chip {
 class Mixer: public IAudio {
 public:
 	// Audio buffers
-	std::vector<float> * mixedFinal;
+	std::vector<float> * mixed;
 	std::vector<float> * temp;
 
 	// List of Audio items to mix together
