@@ -5,34 +5,43 @@
 #include <iostream>
 
 namespace chip {
-class Mixer: public IAudio {
-public:
-	// Audio buffers
-	std::vector<float> * mixed;
-	std::vector<float> * temp;
+	class Mixer: public IAudio {
+		public:
+			// Constructor
+			Mixer(int);
 
-	// List of Audio items to mix together
-	std::vector<IAudio*> * audioList; // each of the IAudio objects that will be added together
+			// Advance by a given number of samples (in this case summing all in the AudioList
+			float * advance(int);
 
-	// Constructor
-	Mixer(int);
+			// Adds audio object to mixer list
+			void addObjects(IAudio *);
 
-	// Advance by a certian number of samples (in this case summing all in the AudioList
-	std::vector<float> * advance(int);
+			// Removes audio object from mixer list based on audio object reference
+			void removeObjects(IAudio*);
 
-	// Adds audio object to mixer list
-	void addObjects(IAudio *);
+			// Removes audio object from mixer based on vector index
+			void removeObjects(int);
 
-	// Removes audio object from mixer list based on audio object reference
-	void removeObjects(IAudio*);
+			// Resizes the mixer buffer size
+			void resizeBuffer(int);
 
-	// Removes audio object from mixer based on vector index
-	void removeObjects(int);
+			// Set every value in the buffer to 0
+			void zeroBuffer();
 
-	// Resizes the mixer buffer size
-	void resizeBuffer(int);
+			// Remove all objects from the mixer
+			void clearMixer();
 
-	// Destructor
-	virtual ~Mixer();
-};
+			// Returns the number of objects in this mixer
+			int getNumObjects();
+
+		private:
+
+			// Audio buffers
+			float * mixed;
+			float * temp;
+			int bufferSize;
+
+			// List of Audio items to mix together
+			std::vector<IAudio*> * audioList;
+	};
 }

@@ -1,28 +1,29 @@
 #include "Mixer.hpp"
 
-chip::Mixer::Mixer(int bufferSize) {
+chip::Mixer::Mixer(int initSize) {
 	//constructor
 	audioList = new std::vector<IAudio*>(0);
 
+	bufferSize = initSize;
 	// Initialize the audio buffer
-	mixed = new std::vector<float>(bufferSize, 0.0);
-	temp = new std::vector<float>(bufferSize, 0.0);
+	mixed = new float[bufferSize];
+	temp = new float[bufferSize];
 }
 
-std::vector<float> * chip::Mixer::advance(int numSamples) {
+float * chip::Mixer::advance(int numSamples) {
+
+	// Zero out the buffer
+	zeroBuffer();
 
 	// Vector sum each element of the list of IAudio compatible objects
-
 	for (unsigned int i = 0; i < audioList->size(); i++) {
-		// For each IAudio in audioList, advance
+		// Fill up a temp buffer for one IAudio object
 		temp = (*audioList)[i]->advance(numSamples);
-		for (int j = 0; j < numSamples; j++) {
+
+		// Add each element into the mixdown buffer
+		for (int j = 0; j < bufferSize; j++) {
 			// Sum each advanced IAudio to the master mixed vector
-			if (i == 0) {
-				*mixed[j] = (*temp)[j];
-			} else {
-				(*mixed)[j] += (*temp)[j];
-			}
+			mixed[j] += temp[j];
 		}
 	}
 
@@ -30,10 +31,12 @@ std::vector<float> * chip::Mixer::advance(int numSamples) {
 	return mixed;
 }
 
+// Add another IAudio object to be mixed
 void chip::Mixer::addObjects(IAudio* audioObject) {
 	audioList->push_back(audioObject);
 }
 
+// Remove IAudio objects from the list of the mixer (by object reference)
 void chip::Mixer::removeObjects(IAudio* audioObject) {
 	for (int i = 0; i < audioList->size(); i++) {
 		if (audioList->at(i) == audioObject) {
@@ -42,12 +45,36 @@ void chip::Mixer::removeObjects(IAudio* audioObject) {
 	}
 }
 
+// Remove IAudio objects from the list of the mixer (by location)
 void chip::Mixer::removeObjects(int loc) {
 	audioList->erase(audioList->begin() + loc);
 }
 
-void chip::Mixer::resizeBuffer(int bufferSize){
-	temp->resize(bufferSize);
-	mixed->resize(bufferSize);
+// Resize the buffer of the mixer
+void chip::Mixer::resizeBuffer(int newSize) {
+	free(temp);
+	free(mixed);
+	bufferSize = newSize;
+	mixed = new float[bufferSize];
+	temp = new float[bufferSize];
+}
+
+// Set every value in buffer to 0
+void chip::Mixer::zeroBuffer() {
+	for (int i = 0; i < bufferSize; i++) {
+		mixed[i] = 0.0;
+	}
+}
+
+// Set every value in buffer to 0
+void chip::Mixer::clearMixer() {
+	while (getNumObjects()>0){
+		removeObjects(0);
+	}
+}
+
+// Returns the number of objects in this mixer
+int chip::Mixer::getNumObjects(){
+	return audioList->size();
 }
 
