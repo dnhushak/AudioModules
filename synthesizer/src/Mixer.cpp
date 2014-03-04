@@ -10,18 +10,19 @@ chip::Mixer::Mixer() {
 }
 
 std::vector<float> * chip::Mixer::advance(int numSamples) {
-	//the 0th elements are all added together, the 1st elements, 2nd, all the way to the 
-	//nth elements and the result is returned (aka - move along the sound wave)
 
-	mixed->clear();
+	// Vector sum each element of the list of IAudio compatible objects
+
 	for (unsigned int i = 0; i < audioList->size(); i++) {
 		// For each IAudio in audioList, advance
 		temp = (*audioList)[i]->advance(numSamples);
 		for (int j = 0; j < numSamples; j++) {
-
 			// Sum each advanced IAudio to the master mixed vector
-			(*mixed)[j] += (*temp)[j];
-
+			if (i == 0) {
+				*mixed[j] = (*temp)[j];
+			} else {
+				(*mixed)[j] += (*temp)[j];
+			}
 		}
 	}
 
