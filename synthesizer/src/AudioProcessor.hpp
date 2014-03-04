@@ -17,17 +17,17 @@
 #endif
 
 namespace chip {
+	class AudioProcessor {
+		public:
+			Mixer * masterMixer;
+			std::vector<Module*> * modules;
 
-class AudioProcessor {
-public:
-	AudioProcessor();
-	~AudioProcessor();
 
-	Mixer* masterMixer;
-	std::vector<Module*> * modules;
-
-	std::vector<float> * advance(int);
-};
+			AudioProcessor(int, int);
+			std::vector<float> * advance(int);
+			void cleanup();
+			~AudioProcessor();
+	};
 
 }
 

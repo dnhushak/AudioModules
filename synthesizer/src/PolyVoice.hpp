@@ -42,7 +42,7 @@ namespace chip {
 			void setSustain(float);
 			void setRelease(int);
 
-			virtual std::vector<float> * advance(int);
+			float * advance(int);
 
 		private:
 			Wavetables* wavetable;

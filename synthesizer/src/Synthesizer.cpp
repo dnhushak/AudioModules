@@ -1,5 +1,6 @@
 #include "AudioProcessor.hpp"
 #include "MIDIParser.hpp"
+#include <algorithm>
 #include "utils.h"
 
 static chip::MIDIParser* midiParser;
@@ -31,7 +32,6 @@ int errorPortAudio(int err) {
  * This routine is called by portaudio when playback is done.
  */
 static void StreamFinished(void* userData) {
-
 }
 
 /*
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 	if (outputParameters.device == paNoDevice)
 		return errorPortAudio(err);
 
-	outputParameters.channelCount = NUM_AUDIO_CHANNELS; /* mono output */
+	outputParameters.channelCount = NUM_AUDIO_CHANNELS;
 	outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
 	outputParameters.suggestedLatency = Pa_GetDeviceInfo(
 			outputParameters.device)->defaultLowOutputLatency;
@@ -121,11 +121,13 @@ int main(int argc, char *argv[]) {
 		return errorPortAudio(err);
 
 	while (1) {
-		Pa_Sleep(1000);
-		std::cout << "============\n";
-		for (int i = 0; i < audioProcessor->modules->size(); i++) {
-			audioProcessor->modules->at(i)->printPolyVoices();
-		}
+		/*Pa_Sleep(1000);
+		 std::cout << "============\n";
+		 for (int i = 0; i < audioProcessor->modules->size(); i++) {
+		 audioProcessor->modules->at(i)->printPolyVoices();
+		 }*/
+		midiParser->readMIDI();
+		audioProcessor->cleanup();
 	}
 
 // Block the front end until someone hits enter
@@ -148,7 +150,7 @@ int main(int argc, char *argv[]) {
 static int paCallback(const void *inputBuffer, void *outputBuffer,
 		unsigned long framesPerBuffer, const PaStreamCallbackTimeInfo* timeInfo,
 		PaStreamCallbackFlags statusFlags, void *userData) {
-	midiParser->readMIDI();
+
 	(void) inputBuffer;
 	(void) timeInfo;
 	(void) statusFlags;
