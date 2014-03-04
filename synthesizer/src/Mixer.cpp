@@ -1,12 +1,12 @@
 #include "Mixer.hpp"
 
-chip::Mixer::Mixer() {
+chip::Mixer::Mixer(int bufferSize) {
 	//constructor
 	audioList = new std::vector<IAudio*>(0);
 
 	// Initialize the audio buffer
-	mixed = new std::vector<float>(BUFFER_SIZE, 0.0);
-	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
+	mixed = new std::vector<float>(bufferSize, 0.0);
+	temp = new std::vector<float>(bufferSize, 0.0);
 }
 
 std::vector<float> * chip::Mixer::advance(int numSamples) {
@@ -44,5 +44,10 @@ void chip::Mixer::removeObjects(IAudio* audioObject) {
 
 void chip::Mixer::removeObjects(int loc) {
 	audioList->erase(audioList->begin() + loc);
+}
+
+void chip::Mixer::resizeBuffer(int bufferSize){
+	temp->resize(bufferSize);
+	mixed->resize(bufferSize);
 }
 

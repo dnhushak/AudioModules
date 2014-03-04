@@ -15,7 +15,7 @@ public:
 	std::vector<IAudio*> * audioList; // each of the IAudio objects that will be added together
 
 	// Constructor
-	Mixer();
+	Mixer(int);
 
 	// Advance by a certian number of samples (in this case summing all in the AudioList
 	std::vector<float> * advance(int);
@@ -28,6 +28,9 @@ public:
 
 	// Removes audio object from mixer based on vector index
 	void removeObjects(int);
+
+	// Resizes the mixer buffer size
+	void resizeBuffer(int);
 
 	// Destructor
 	virtual ~Mixer();
