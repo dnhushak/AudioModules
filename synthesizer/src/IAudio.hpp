@@ -1,6 +1,5 @@
 //Audio Object Interface
 #pragma once
-
 #include <vector>
 
 namespace chip {

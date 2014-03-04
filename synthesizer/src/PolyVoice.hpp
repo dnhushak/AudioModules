@@ -5,69 +5,74 @@
 #include <iostream>
 
 namespace chip {
-class PolyVoice: public IAudio {
-public:
-	PolyVoice();
-	~PolyVoice() {
-	}
+	class PolyVoice: public IAudio {
+		public:
+			PolyVoice();
+			~PolyVoice() {
+			}
 
-	int count;
+			int count;
 
-	int note;
-	unsigned short phase;
-	float frequency;
+			int note;
+			unsigned short phase;
+			float frequency;
 
-	// State of the polyvoice
-	int state;
-	int getState();
+			// State of the polyvoice (ADSR)
+			int state;
+			int getState();
 
-	unsigned int stepsize();
+			unsigned int stepsize();
 
-	// Sets the state of the polyvoice to release
-	void releasePolyVoice();
+			// Sets the state of the polyvoice to release
+			void releasePolyVoice();
 
-	// Sets the ADSR parameters for this polyvoice
-	void setVoice(int, int, float, int, int, float, int, int);
+			// Sets the ADSR parameters for this polyvoice
+			void setVoice(int, int, float, int, int, float, int, int);
 
-	// Gets and sets the envelope multiplier
-	float getEnvmult();
-	void setEnvmult(float);
+			// Gets and sets the envelope multiplier
+			float getEnvmult();
+			void setEnvmult(float);
 
-	// Gets and sets the envelope location
-	float getEnvloc();
-	void setEnvloc(float);
+			// Gets and sets the envelope location
+			float getEnvloc();
+			void setEnvloc(float);
 
-	virtual std::vector<float> * advance(int);
+			void setAttack(int);
+			void setDecay(int);
+			void setSustain(float);
+			void setRelease(int);
 
-private:
-	Wavetables* wavetable;
+			virtual std::vector<float> * advance(int);
 
-	// ADSR envelope parameters
-	int attack;
-	int decay;
-	float sustain;
-	int release;
-	int waveType;
+		private:
+			Wavetables* wavetable;
 
-	float vibAmp;
-	int vibPeriod;
-	int vibDelay;
-	int vibCount;
-	float vibFreq;
+			// ADSR envelope parameters
+			int attack;
+			int decay;
+			float sustain;
+			int release;
+			int waveType;
 
-	float envmult;  // Envelope multiplier
-	float envloc;   // Envelope location
+			float vibAmp;
+			int vibPeriod;
+			int vibDelay;
+			int vibCount;
+			float vibFreq;
 
-	int AsampCount; // Length (in samples) of the attack
-	float Aslope; // Slope of the attack curve
+			float envmult;  // Envelope multiplier
+			float envloc;   // Envelope location
 
-	int DsampCount; // Length (in samples) of the decay
-	float Dslope; // Slope of the decay curve
+			int AsampCount; // Length (in samples) of the attack
+			float Aslope; // Slope of the attack curve
 
-	int RsampCount; // Length (in samples) of the release
-	float Rslope; // Slope of the release curve
+			int DsampCount; // Length (in samples) of the decay
+			float Dslope; // Slope of the decay curve
 
-	virtual ~PolyVoice();
-};
+			int RsampCount; // Length (in samples) of the release
+			float Rslope; // Slope of the release curve
+
+			virtual ~PolyVoice();
+	};
 
 }

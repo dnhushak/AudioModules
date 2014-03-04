@@ -1,29 +1,7 @@
 #include "Module.hpp"
 
-chip::Module::Module() {
-	Module(new Voice(1, 1, 0.5, 1, SQUARE, 0, 0, 0));
-	mixedFinal = new std::vector<float>(BUFFER_SIZE, 0.0);
-	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
-	polyvoices = new std::vector<chip::PolyVoice>(0);
-	arpcount = 0;
-	arpsamples = 1000;
-	arpnote = 0;
-	arpeggio = false;
-	freqSlope = 0.0;
-	glissCount = 0;
-	glissando = false;
-	glissEnd = 0.0;
-	glissNote = new chip::PolyVoice();
-	glissSamples = 10000;
-	glissStart = 0.0;
-	voice = new Voice(1, 1, 0.5, 1, SQUARE, 0, 0, 0);
-	volume = 0.4;
-}
-
-chip::Module::Module(Voice* voice) {
-	//initializes the audio buffer
-	mixedFinal = new std::vector<float>(BUFFER_SIZE, 0.0);
-	temp = new std::vector<float>(BUFFER_SIZE, 0.0);
+chip::Module::Module(Voice* voice, int bufferSize) {
+	polyMixer = new Mixer(bufferSize);
 
 	//instantiates "bucket" of polyvoices
 	this->polyvoices = new std::vector<chip::PolyVoice>(0);
@@ -78,12 +56,7 @@ void chip::Module::setVolume(float newVolume) {
 	this->volume = newVolume;
 }
 
-std::vector<float> * chip::Module::advance(int numSamples) {
-	float sample;
-	// Clear the audio buffer
-	for (int i = 0; i < numSamples; i++) {
-		(*mixedFinal)[i] = 0.0;
-	}
+float * chip::Module::advance(int numSamples) {
 
 	// Perform a cleanup of the polyvoices
 	cleanup();
@@ -167,8 +140,9 @@ void chip::Module::activatePolyVoice(int note) {
 			voice->getSustain(), voice->getRelease(), voice->getWaveType(),
 			voice->getVibAmp(), voice->getVibPeriod(), voice->getVibDelay());
 
-	//Insert the new polyvoice
+	//Insert the new polyvoice, and add it to the mixer
 	polyvoices->push_back(*newPolyVoice);
+	polyMixer->addObjects(newPolyVoice);
 
 	// Update the recent note queue
 	glissStart = glissEnd;
@@ -204,6 +178,7 @@ void chip::Module::cleanup() {
 	for (int i = 0; i < polyvoices->size(); i++) {
 		if ((*polyvoices)[i].state == CLEANUP) {
 			polyvoices->erase(polyvoices->begin() + i);
+			mixer->removeObjects(&((*polyvoices)[i]));
 			arpnote = 0;
 		}
 	}

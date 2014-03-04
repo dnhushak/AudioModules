@@ -47,7 +47,7 @@ PolyVoice::PolyVoice() {
 	wavetable = Wavetables::getInstance();
 }
 
-virtual std::vector<float> * chip::PolyVoice::advance(int) {
+float * chip::PolyVoice::advance(int numSamples) {
 	if (state == OFF || state == CLEANUP) {
 		return 0.0;
 	}
@@ -72,58 +72,57 @@ virtual std::vector<float> * chip::PolyVoice::advance(int) {
 	// | A |D|    S    | R |
 
 	switch (state) {
-	case ATTACK:
-		envmult += Aslope;
+		case ATTACK:
+			envmult += Aslope;
+			// When the evelope location has hit the number of samples, do a state transition
+			if (envloc >= AsampCount) {
+				state = DECAY;
+				envloc = 0;
+			}
+			break;
 
-		// When the evelope location has hit the number of samples, do a state transition
-		if (envloc >= AsampCount) {
-			state = DECAY;
-			envloc = 0;
-		}
-		break;
+		case DECAY:
+			envmult += Dslope;
 
-	case DECAY:
-		envmult += Dslope;
+			// When the evelope location has hit the number of samples, do a state transition
+			if (envloc >= DsampCount) {
+				state = SUSTAIN;
+				envloc = 0;
+			}
+			break;
 
-		// When the evelope location has hit the number of samples, do a state transition
-		if (envloc >= DsampCount) {
-			state = SUSTAIN;
-			envloc = 0;
-		}
-		break;
+		case SUSTAIN:
 
-	case SUSTAIN:
+			// Sustain won't automatically transition the state. The state will change on note release.
+			// Once the envelope location has reached the vibrato delay, start vibrato.
+			if (envloc > vibDelay) {
 
-		// Sustain won't automatically transition the state. The state will change on note release.
-		// Once the envelope location has reached the vibrato delay, start vibrato.
-		if (envloc > vibDelay) {
+				// This is the frequency that will be added to the notes frequency to cause a vibrato.
+				vibFreq = frequency * wavetable->getVibrato(vibCount);
 
-			// This is the frequency that will be added to the notes frequency to cause a vibrato.
-			vibFreq = frequency * wavetable->getVibrato(vibCount);
+				// This is really ghetto rigged to work... should probably fix this later.
+				if (count > vibPeriod) {
+					vibCount = (vibCount + 1) % 360;
+					count = 0;
+				}
 
-			// This is really ghetto rigged to work... should probably fix this later.
-			if (count > vibPeriod) {
-				vibCount = (vibCount + 1) % 360;
-				count = 0;
+				count++;
 			}
 
-			count++;
-		}
+			envmult = sustain;
+			break;
 
-		envmult = sustain;
-		break;
+		case RELEASE:
+			envmult += Rslope;
 
-	case RELEASE:
-		envmult += Rslope;
+			// When the evelope location has hit the number of samples, do a state transition
+			if (envloc >= RsampCount) {
+				state = CLEANUP;
+			}
+			break;
 
-		// When the evelope location has hit the number of samples, do a state transition
-		if (envloc >= RsampCount) {
-			state = CLEANUP;
-		}
-		break;
-
-	default:
-		return 0.0;
+		default:
+			return 0.0;
 	}
 
 	envloc++;
@@ -152,10 +151,7 @@ unsigned int PolyVoice::stepsize() {
 
 void PolyVoice::setVoice(int attack, int decay, float sustain, int release,
 		int waveType, float vibAmp, int vibPeriod, int vibDelay) {
-	this->attack = attack;
-	this->decay = decay;
-	this->sustain = sustain;
-	this->release = release;
+
 	this->waveType = waveType;
 	this->vibAmp = vibAmp;
 	this->vibPeriod = vibPeriod;
@@ -164,23 +160,11 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release,
 	envmult = 0;
 	envloc = 0;
 
-	// Attack - ms, SAMPLE_RATE - sample/s, 1000 ms/s
-
-	// msec * sample   sec
-	// -----  ------ ---------  = # of samples
-	//         sec    1k msec
-
-	AsampCount = (attack * SAMPLE_RATE) / 1000;
-	Aslope = 1.0 / AsampCount;
-
-	DsampCount = (decay * SAMPLE_RATE) / 1000;
-	Dslope = (sustain - 1.0) / DsampCount;
-
-	RsampCount = (release * SAMPLE_RATE) / 1000;
-
 	vibCount = 0;
 	vibFreq = 0.0;
 }
+
+/*** Getters and setters ***/
 
 float PolyVoice::getEnvmult() {
 	return envmult;
@@ -198,3 +182,31 @@ void PolyVoice::setEnvloc(float newloc) {
 	envloc = newloc;
 }
 
+void PolyVoice::setAttack(int newAttack) {
+	attack = newAttack;
+	AsampCount = (attack * SAMPLE_RATE) / 1000;
+	Aslope = 1.0 / AsampCount;
+
+	// Calculation explanation:
+	// Attack - ms, SAMPLE_RATE - sample/s, 1000 ms/s
+
+	// msec * sample   sec
+	// -----  ------ ---------  = # of samples
+	//         sec    1k msec
+
+}
+
+void PolyVoice::setDecay(int newDecay) {
+	decay = newDecay;
+	DsampCount = (decay * SAMPLE_RATE) / 1000;
+	Dslope = (sustain - 1.0) / DsampCount;
+}
+
+void PolyVoice::setSustain(float newSustain) {
+	sustain = newSustain;
+}
+
+void PolyVoice::setRelease(int newRelease) {
+	release = newRelease;
+	RsampCount = (release * SAMPLE_RATE) / 1000;
+}

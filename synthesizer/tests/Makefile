@@ -25,8 +25,11 @@ Wavetables.o: $(SRC)Wavetables.cpp $(SRC)Wavetables.hpp
 	$(CC) -c $(SRC)Wavetables.cpp $(LDFLAGS)
 
 # Tests for the mixer
-TestMixer: MixerTest.o Mixer.o MockIAudio.o
-	$(CC) MixerTest.o Mixer.o MockIAudio.o -o TestMixer $(LDFLAGS)
+TestMixer: IAudio.o MixerTest.o Mixer.o MockIAudio.o
+	$(CC) MixerTest.o Mixer.o MockIAudio.o IAudio.o -o TestMixer $(LDFLAGS)
+	
+IAudio.o: $(SRC)IAudio.cpp $(SRC)IAudio.hpp
+	$(CC) -c $(SRC)IAudio.cpp $(LDFLAGS)
 
 MixerTest.o: MixerTest.cpp $(SRC)Mixer.hpp MockIAudio.hpp Assert.hpp
 	$(CC) -c MixerTest.cpp $(LDFLAGS)

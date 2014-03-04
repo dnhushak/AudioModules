@@ -66,7 +66,7 @@ void chip::Mixer::zeroBuffer() {
 	}
 }
 
-// Set every value in buffer to 0
+// Remove all objects from mixer
 void chip::Mixer::clearMixer() {
 	while (getNumObjects()>0){
 		removeObjects(0);
