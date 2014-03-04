@@ -14,7 +14,7 @@ std::vector<float> * chip::Mixer::advance(int numSamples) {
 	//nth elements and the result is returned (aka - move along the sound wave)
 
 	for (unsigned int i = 0; i < audioList->size(); i++) {
-		//for each IAudio in audioList, advance
+		// For each IAudio in audioList, advance
 		temp = (*audioList)[i]->advance(numSamples);
 		for (int j = 0; j < numSamples; j++) {
 
@@ -24,7 +24,7 @@ std::vector<float> * chip::Mixer::advance(int numSamples) {
 				(*mixedFinal)[j] = 0.0;
 			}
 
-			//sum each advanced IAudio to the master mixed vector
+			// Sum each advanced IAudio to the master mixed vector
 			(*mixedFinal)[j] += (*temp)[j];
 
 			// Clear the temp variable
@@ -39,5 +39,17 @@ std::vector<float> * chip::Mixer::advance(int numSamples) {
 
 void chip::Mixer::addObjects(IAudio* audioObject) {
 	audioList->push_back(audioObject);
+}
+
+void chip::Mixer::removeObjects(IAudio* audioObject) {
+	for (int i = 0; i < audioList->size(); i++) {
+		if (audioList->at(i) == audioObject) {
+			audioList->erase(audioList->begin() + i);
+		}
+	}
+}
+
+void chip::Mixer::removeObjects(int loc) {
+	audioList->erase(audioList->begin() + loc);
 }
 

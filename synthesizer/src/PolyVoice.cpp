@@ -47,7 +47,7 @@ PolyVoice::PolyVoice() {
 	wavetable = Wavetables::getInstance();
 }
 
-float PolyVoice::getSample() {
+virtual std::vector<float> * chip::PolyVoice::advance(int) {
 	if (state == OFF || state == CLEANUP) {
 		return 0.0;
 	}
@@ -116,7 +116,6 @@ float PolyVoice::getSample() {
 	case RELEASE:
 		envmult += Rslope;
 
-
 		// When the evelope location has hit the number of samples, do a state transition
 		if (envloc >= RsampCount) {
 			state = CLEANUP;
@@ -139,7 +138,7 @@ int PolyVoice::getState() {
 void PolyVoice::releasePolyVoice() {
 	state = RELEASE;
 	envloc = 0;
-	Rslope = -envmult / RsampCount;
+	Rslope = -(envmult / RsampCount);
 }
 
 unsigned int PolyVoice::stepsize() {

@@ -7,17 +7,29 @@
 namespace chip {
 class Mixer: public IAudio {
 public:
-
 	// Audio buffers
-	std::vector<float>* mixedFinal;
-	std::vector<float>* temp;
+	std::vector<float> * mixedFinal;
+	std::vector<float> * temp;
 
+	// List of Audio items to mix together
 	std::vector<IAudio*> * audioList; // each of the IAudio objects that will be added together
-	Mixer(); //empty constructor
-	std::vector<float> * advance(int); //the 0th elements are all added together, the 1st elements, 2nd, all the way to the
-	//nth elements and the result is returned -- aka move along the sound wave
-	void addObjects(IAudio *); //used in construction, adds an IAudio object to audioList
 
+	// Constructor
+	Mixer();
+
+	// Advance by a certian number of samples (in this case summing all in the AudioList
+	std::vector<float> * advance(int);
+
+	// Adds audio object to mixer list
+	void addObjects(IAudio *);
+
+	// Removes audio object from mixer list based on audio object reference
+	void removeObjects(IAudio*);
+
+	// Removes audio object from mixer based on vector index
+	void removeObjects(int);
+
+	// Destructor
 	virtual ~Mixer();
 };
 }
