@@ -1,5 +1,6 @@
 #include "AudioProcessor.hpp"
 #include "MIDIParser.hpp"
+#include "utils.h"
 
 static chip::MIDIParser* midiParser;
 
@@ -38,13 +39,37 @@ static void StreamFinished(void* userData) {
  * enter to terminate. During this time, audio callbacks are occurring.
  */
 int main(int argc, char *argv[]) {
-	//Grab midi device ID from arguments
-	int devID;
-	if (argc != 2) {
-		printf("Enter MIDI Device ID: ./Synthesizer #\n");
-		return -1;
-	} else {
-		devID = atoi(argv[1]);
+	int i;
+	int devID = 0;
+	int verbose = 0;
+	extern char *optarg;
+	extern int optind, opterr;
+	int ch;
+	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
+	while ((ch = getopt(argc, argv, "dvp:")) != EOF) {
+		switch (ch) {
+			case 'p':
+				if (is_int(optarg)) {
+					devID = atoi(optarg);
+				} else {
+					fprintf(stderr,
+							"Port takes an integer argument. Specify MIDI Devices to be used");
+					exit(2);
+				}
+				break;
+			case 'v':
+				verbose = 1;
+				printf("Executing in verbose mode...\n");
+				break;
+			case 'd':
+				printMidiDevices();
+				exit(0);
+				break;
+		}
+
+	}
+	if (verbose) {
+		printf("Device ID is: %d\n", devID);
 	}
 	PaStreamParameters outputParameters;
 	PaStream *stream;
