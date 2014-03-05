@@ -2,7 +2,10 @@
 
 using namespace chip;
 
-PolyVoice::PolyVoice() {
+PolyVoice::PolyVoice(int initSize) {
+
+	bufferSize = initSize;
+	buffer = new float[bufferSize];
 
 	// These values mirror those of the Voice type values, but are also included here,
 	// should any multitimbral sort of syntheseis be needed (future-proofing)
@@ -14,6 +17,7 @@ PolyVoice::PolyVoice() {
 	vibFreq = 0.0; // The vibrato frequency to add to the wave
 	state = 0;
 	waveType = SQUARE;
+	envelope = true;
 
 	count = 0;
 
@@ -48,14 +52,28 @@ PolyVoice::PolyVoice() {
 }
 
 float * chip::PolyVoice::advance(int numSamples) {
+
 	if (state == OFF || state == CLEANUP) {
-		return 0.0;
+		zeroBuffer();
+		return buffer;
 	}
 
 	int phase_truncated = 16 - POWER;
-	float sample;
-	sample = wavetable->getSample(waveType, ((int) phase) >> (phase_truncated));
-	phase += stepsize();
+	for (int i = 0; i < bufferSize; i++) {
+		buffer[i] = wavetable->getSample(waveType,
+				((int) phase) >> (phase_truncated));
+
+		phase += stepsize();
+		if (envelope) {
+			advanceEnvelope();
+			buffer[i] *= envmult;
+		}
+	}
+
+	return buffer;
+}
+
+void PolyVoice::advanceEnvelope() {
 
 	// This is the ADSR "state machine"
 	// Attack goes from 0 volume to 1
@@ -64,11 +82,11 @@ float * chip::PolyVoice::advance(int numSamples) {
 	// Below is a graph of a notes volume going through the states of ADSR
 	//
 	//     /\
-    //    /  \__________
+	//    /  \__________
 	//   /              \
-    //  /                \
-    // /                  \
-    // 
+	//  /                \
+	// /                  \
+	//
 	// | A |D|    S    | R |
 
 	switch (state) {
@@ -94,20 +112,6 @@ float * chip::PolyVoice::advance(int numSamples) {
 		case SUSTAIN:
 
 			// Sustain won't automatically transition the state. The state will change on note release.
-			// Once the envelope location has reached the vibrato delay, start vibrato.
-			if (envloc > vibDelay) {
-
-				// This is the frequency that will be added to the notes frequency to cause a vibrato.
-				vibFreq = frequency * wavetable->getVibrato(vibCount);
-
-				// This is really ghetto rigged to work... should probably fix this later.
-				if (count > vibPeriod) {
-					vibCount = (vibCount + 1) % 360;
-					count = 0;
-				}
-
-				count++;
-			}
 
 			envmult = sustain;
 			break;
@@ -118,16 +122,11 @@ float * chip::PolyVoice::advance(int numSamples) {
 			// When the evelope location has hit the number of samples, do a state transition
 			if (envloc >= RsampCount) {
 				state = CLEANUP;
+
+				break;
 			}
-			break;
-
-		default:
-			return 0.0;
 	}
-
 	envloc++;
-
-	return sample * envmult;
 }
 
 int PolyVoice::getState() {
@@ -141,10 +140,10 @@ void PolyVoice::releasePolyVoice() {
 }
 
 unsigned int PolyVoice::stepsize() {
-	//Maximum value of phase scale (16^4 in this case)
+//Maximum value of phase scale (16^4 in this case)
 	int step;
 
-	//Our equation!
+//Our equation!
 	step = ((frequency + vibFreq) * PHASESCALE) / SAMPLE_RATE;
 	return step;
 }
@@ -174,11 +173,11 @@ void PolyVoice::setEnvmult(float newmult) {
 	envmult = newmult;
 }
 
-float PolyVoice::getEnvloc() {
+int PolyVoice::getEnvloc() {
 	return envloc;
 }
 
-void PolyVoice::setEnvloc(float newloc) {
+void PolyVoice::setEnvloc(int newloc) {
 	envloc = newloc;
 }
 
@@ -187,12 +186,12 @@ void PolyVoice::setAttack(int newAttack) {
 	AsampCount = (attack * SAMPLE_RATE) / 1000;
 	Aslope = 1.0 / AsampCount;
 
-	// Calculation explanation:
-	// Attack - ms, SAMPLE_RATE - sample/s, 1000 ms/s
+// Calculation explanation:
+// Attack - ms, SAMPLE_RATE - sample/s, 1000 ms/s
 
-	// msec * sample   sec
-	// -----  ------ ---------  = # of samples
-	//         sec    1k msec
+// msec * sample   sec
+// -----  ------ ---------  = # of samples
+//         sec    1k msec
 
 }
 
@@ -209,4 +208,10 @@ void PolyVoice::setSustain(float newSustain) {
 void PolyVoice::setRelease(int newRelease) {
 	release = newRelease;
 	RsampCount = (release * SAMPLE_RATE) / 1000;
+}
+
+void PolyVoice::zeroBuffer() {
+	for (int i = 0; i < bufferSize; i++) {
+		buffer[i] = 0.0;
+	}
 }

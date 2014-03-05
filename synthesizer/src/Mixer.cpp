@@ -52,9 +52,14 @@ void chip::Mixer::removeObjects(int loc) {
 
 // Resize the buffer of the mixer
 void chip::Mixer::resizeBuffer(int newSize) {
+	// Free the current buffer memories
 	free(temp);
 	free(mixed);
+
+	// Reset the buffer size
 	bufferSize = newSize;
+
+	// reallocate memory
 	mixed = new float[bufferSize];
 	temp = new float[bufferSize];
 }

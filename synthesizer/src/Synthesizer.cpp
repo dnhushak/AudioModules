@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
 	PaStream *stream;
 	PaError err;
 
-	chip::AudioProcessor* audioProcessor = new chip::AudioProcessor();
+	chip::AudioProcessor* audioProcessor = new chip::AudioProcessor(BUFFER_SIZE, NUM_MODULES);
 	midiParser = new chip::MIDIParser();
 
 	// Give the MIDIParser pointers to the modules
@@ -157,16 +157,11 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 	chip::AudioProcessor * audio = (chip::AudioProcessor*) userData;
 	float *out = (float*) outputBuffer;
 	audio->advance(framesPerBuffer);
-//out = (float*) audio->advance(framesPerBuffer);
+//out = audio->advance(framesPerBuffer);
 	for (int i = 0; i < (int) framesPerBuffer; i++) {
-		/*for (int j = 0; j < NUM_AUDIO_CHANNELS; j++) {
-		 *out++ = buffer[i] / 65536;
-		 *out++ = audio->advance(framesPerBuffer);
-		 }*/
 		*out++ = 0;
 	}
 
-//buffer.clear();
 	return paContinue;
 }
 

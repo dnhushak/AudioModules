@@ -7,9 +7,12 @@
 namespace chip {
 	class PolyVoice: public IAudio {
 		public:
-			PolyVoice();
+			PolyVoice(int);
 			~PolyVoice() {
 			}
+
+			float * buffer;
+			int bufferSize;
 
 			int count;
 
@@ -34,8 +37,8 @@ namespace chip {
 			void setEnvmult(float);
 
 			// Gets and sets the envelope location
-			float getEnvloc();
-			void setEnvloc(float);
+			int getEnvloc();
+			void setEnvloc(int);
 
 			void setAttack(int);
 			void setDecay(int);
@@ -43,11 +46,14 @@ namespace chip {
 			void setRelease(int);
 
 			float * advance(int);
+			void advanceEnvelope();
+			void zeroBuffer();
 
 		private:
 			Wavetables* wavetable;
 
 			// ADSR envelope parameters
+			bool envelope;
 			int attack;
 			int decay;
 			float sustain;
@@ -61,7 +67,7 @@ namespace chip {
 			float vibFreq;
 
 			float envmult;  // Envelope multiplier
-			float envloc;   // Envelope location
+			int envloc;   // Envelope location
 
 			int AsampCount; // Length (in samples) of the attack
 			float Aslope; // Slope of the attack curve
