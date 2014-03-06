@@ -73,13 +73,13 @@ void chip::Mixer::zeroBuffer() {
 
 // Remove all objects from mixer
 void chip::Mixer::clearMixer() {
-	while (getNumObjects()>0){
+	while (getNumObjects() > 0) {
 		removeObjects(0);
 	}
 }
 
 // Returns the number of objects in this mixer
-int chip::Mixer::getNumObjects(){
+int chip::Mixer::getNumObjects() {
 	return audioList->size();
 }
 

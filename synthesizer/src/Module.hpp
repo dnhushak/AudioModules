@@ -36,10 +36,9 @@ namespace chip {
 			float volume;
 			void setVolume(float);
 
-
 			Module(Voice*, int);
 			float * advance(int); //create a mixer advance the phase registers of every
-											   //polyvoice in this module (aka - move along the sound wave)
+								  //polyvoice in this module (aka - move along the sound wave)
 
 			void setVoice(int attack, int decay, float sustain, int release,
 					int waveType, float vibAmp, int vibPeriod, int vibDelay);

@@ -23,7 +23,7 @@ chip::Module::Module(Voice* voice, int bufferSize) {
 	glissSamples = 10000;
 	glissCount = 0;
 	freqSlope = 0.0;
-	glissNote = new chip::PolyVoice();
+	glissNote = new chip::PolyVoice(bufferSize);
 	glissNote->phase = 0.0;
 	glissNote->frequency = 0.0;
 	glissNote->state = SUSTAIN;
@@ -58,54 +58,54 @@ void chip::Module::setVolume(float newVolume) {
 
 float * chip::Module::advance(int numSamples) {
 
-	/*if (arpeggio) {
-	 // Grab samples only from the current note in the arpeggio.
-	 // If the arpeggio count reaches the arpeggio sample number, reset the
-	 // count.
-	 for (int i = 0; i < numSamples; i++, arpcount++) {
-	 if (arpcount >= arpsamples) {
-	 arpcount = 0;
-
-	 if (polyvoices->size() > 0) {
-	 arpnote = (arpnote + 1) % polyvoices->size();
-	 }
-
-	 }
-
-	 // Sample if there are active polyvoices
-	 if (polyvoices->size() > 0) {
-	 (*mixedFinal)[i] = (*polyvoices)[arpnote].getSample() * volume;
-	 }
-	 }
-	 }
-	 // Glissando only happens if glissando is on and two notes are pressed
-	 else if (glissando && polyvoices->size() == 2) {
-	 for (int i = 0; i < numSamples; i++) {
-	 // Make sure gliss happens only if the next gliss frequency won't go
-	 // past the glissEnd frequency
-	 if (((glissNote->frequency > glissEnd)
-	 && (glissNote->frequency + freqSlope >= glissEnd))
-	 || ((glissNote->frequency < glissEnd)
-	 && (glissNote->frequency + freqSlope <= glissEnd))) {
-	 glissNote->frequency += freqSlope;
-	 glissCount++;
-	 }
-
-	 // Sample the gliss note
-	 (*mixedFinal)[i] = glissNote->getSample() * volume;
-	 }
-	 } else {
-	 // Loop through the notes being played and sample from them
-	 for (int i = 0; i < polyvoices->size(); i++) {
-	 for (int j = 0; j < numSamples; j++) {
-	 sample = (*polyvoices)[i].getSample();
-
-	 //sum each advanced IAudio to the master mixed vector
-	 (*mixedFinal)[j] = (*mixedFinal)[j] + (sample * volume);
-	 }
-	 }
-	 }*/
-
+//	if (arpeggio) {
+//		// Grab samples only from the current note in the arpeggio.
+//		// If the arpeggio count reaches the arpeggio sample number, reset the
+//		// count.
+//		for (int i = 0; i < numSamples; i++, arpcount++) {
+//			if (arpcount >= arpsamples) {
+//				arpcount = 0;
+//
+//				if (polyvoices->size() > 0) {
+//					arpnote = (arpnote + 1) % polyvoices->size();
+//				}
+//
+//			}
+//
+//			// Sample if there are active polyvoices
+//			if (polyvoices->size() > 0) {
+//				(*mixedFinal)[i] = (*polyvoices)[arpnote].getSample() * volume;
+//			}
+//		}
+//	}
+//	// Glissando only happens if glissando is on and two notes are pressed
+//	else if (glissando && polyvoices->size() == 2) {
+//		for (int i = 0; i < numSamples; i++) {
+//			// Make sure gliss happens only if the next gliss frequency won't go
+//			// past the glissEnd frequency
+//			if (((glissNote->frequency > glissEnd)
+//					&& (glissNote->frequency + freqSlope >= glissEnd))
+//					|| ((glissNote->frequency < glissEnd)
+//							&& (glissNote->frequency + freqSlope <= glissEnd))) {
+//				glissNote->frequency += freqSlope;
+//				glissCount++;
+//			}
+//
+//			// Sample the gliss note
+//			(*mixedFinal)[i] = glissNote->getSample() * volume;
+//		}
+//	} else {
+//		// Loop through the notes being played and sample from them
+//		for (int i = 0; i < polyvoices->size(); i++) {
+//			for (int j = 0; j < numSamples; j++) {
+//				sample = (*polyvoices)[i].getSample();
+//
+//				//sum each advanced IAudio to the master mixed vector
+//				(*mixedFinal)[j] = (*mixedFinal)[j] + (sample * volume);
+//			}
+//		}
+//	}
+//
 	return polyMixer->advance(numSamples);
 }
 
@@ -128,7 +128,7 @@ void chip::Module::activatePolyVoice(int note) {
 	}
 
 	// Create new polyvoice, and set its parameters
-	PolyVoice * newPolyVoice = new PolyVoice();
+	PolyVoice * newPolyVoice = new PolyVoice(bufferSize);
 	(*newPolyVoice).note = note;
 	(*newPolyVoice).phase = 0.0;
 	(*newPolyVoice).frequency = MtoF(note);

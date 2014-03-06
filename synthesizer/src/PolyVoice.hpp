@@ -11,19 +11,6 @@ namespace chip {
 			~PolyVoice() {
 			}
 
-			float * buffer;
-			int bufferSize;
-
-			int count;
-
-			int note;
-			unsigned short phase;
-			float frequency;
-
-			// State of the polyvoice (ADSR)
-			int state;
-			int getState();
-
 			unsigned int stepsize();
 
 			// Sets the state of the polyvoice to release
@@ -32,32 +19,24 @@ namespace chip {
 			// Sets the ADSR parameters for this polyvoice
 			void setVoice(int, int, float, int, int, float, int, int);
 
-			// Gets and sets the envelope multiplier
-			float getEnvmult();
-			void setEnvmult(float);
-
-			// Gets and sets the envelope location
-			int getEnvloc();
-			void setEnvloc(int);
-
-			void setAttack(int);
-			void setDecay(int);
-			void setSustain(float);
-			void setRelease(int);
-
 			float * advance(int);
-			void advanceEnvelope();
 			void zeroBuffer();
 
 		private:
+
+			float * buffer;
+			int bufferSize;
+
+			int state;
+
+			int note;
+			unsigned short phase;
+			float frequency;
+
 			Wavetables* wavetable;
 
 			// ADSR envelope parameters
 			bool envelope;
-			int attack;
-			int decay;
-			float sustain;
-			int release;
 			int waveType;
 
 			float vibAmp;
@@ -65,18 +44,6 @@ namespace chip {
 			int vibDelay;
 			int vibCount;
 			float vibFreq;
-
-			float envmult;  // Envelope multiplier
-			int envloc;   // Envelope location
-
-			int AsampCount; // Length (in samples) of the attack
-			float Aslope; // Slope of the attack curve
-
-			int DsampCount; // Length (in samples) of the decay
-			float Dslope; // Slope of the decay curve
-
-			int RsampCount; // Length (in samples) of the release
-			float Rslope; // Slope of the release curve
 
 			virtual ~PolyVoice();
 	};

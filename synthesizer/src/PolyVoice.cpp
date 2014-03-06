@@ -15,16 +15,8 @@ PolyVoice::PolyVoice(int initSize) {
 	phase = 0;
 	frequency = 0.0;
 	vibFreq = 0.0; // The vibrato frequency to add to the wave
-	state = 0;
 	waveType = SQUARE;
 	envelope = true;
-
-	count = 0;
-
-	attack = 0;
-	decay = 0;
-	sustain = 0;
-	release = 0;
 
 	waveType = SQUARE;
 
@@ -34,26 +26,12 @@ PolyVoice::PolyVoice(int initSize) {
 	vibCount = 0;
 	vibFreq = 0.0;
 
-	state = OFF;
-
-	// The end result multiplier for the envelope
-	envmult = 0;
-	// The location of the envelope (in samples)
-	envloc = 0;
-
-	AsampCount = 0;
-	Aslope = 0;
-	DsampCount = 0;
-	Dslope = 0;
-	RsampCount = 0;
-	Rslope = 0;
-
 	wavetable = Wavetables::getInstance();
 }
 
 float * chip::PolyVoice::advance(int numSamples) {
 
-	if (state == OFF || state == CLEANUP) {
+	if (state == OFF || state == ON) {
 		zeroBuffer();
 		return buffer;
 	}
@@ -73,61 +51,6 @@ float * chip::PolyVoice::advance(int numSamples) {
 	return buffer;
 }
 
-void PolyVoice::advanceEnvelope() {
-
-	// This is the ADSR "state machine"
-	// Attack goes from 0 volume to 1
-	// Decay goes from 1 to the Sustain volume
-	// Release goes from the Sustain volume to 0
-	// Below is a graph of a notes volume going through the states of ADSR
-	//
-	//     /\
-	//    /  \__________
-	//   /              \
-	//  /                \
-	// /                  \
-	//
-	// | A |D|    S    | R |
-
-	switch (state) {
-		case ATTACK:
-			envmult += Aslope;
-			// When the evelope location has hit the number of samples, do a state transition
-			if (envloc >= AsampCount) {
-				state = DECAY;
-				envloc = 0;
-			}
-			break;
-
-		case DECAY:
-			envmult += Dslope;
-
-			// When the evelope location has hit the number of samples, do a state transition
-			if (envloc >= DsampCount) {
-				state = SUSTAIN;
-				envloc = 0;
-			}
-			break;
-
-		case SUSTAIN:
-
-			// Sustain won't automatically transition the state. The state will change on note release.
-
-			envmult = sustain;
-			break;
-
-		case RELEASE:
-			envmult += Rslope;
-
-			// When the evelope location has hit the number of samples, do a state transition
-			if (envloc >= RsampCount) {
-				state = CLEANUP;
-
-				break;
-			}
-	}
-	envloc++;
-}
 
 int PolyVoice::getState() {
 	return state;
