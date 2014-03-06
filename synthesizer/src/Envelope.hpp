@@ -1,5 +1,5 @@
 #pragma once
-#include "IAudio.hpp"
+#include "AudioDevice.hpp"
 #include "chiputil.hpp"
 #include <vector>
 #include <iostream>
@@ -9,29 +9,22 @@ namespace chip {
 	typedef enum envState_t {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE,
 	} envState_t;
-	class Envelope: public IAudio {
+	class Envelope: public AudioDevice {
 		public:
 			// Constructor
-			void Envelope(int);
+			void Envelope(int, int);
 
 			// Advance/fill the buffer
 			float * advance(int);
 
-			// Necessary?
-//			// Gets/sets the current state
+			// Gets the current state
 			envState_t getState();
-//			void setState(envState_t);
 
-// Starts the Envelope
+			// Starts the Envelope
 			void startEnv();
 
 			// Releases the Envelope
 			void releaseEnv();
-
-			// Necessary?
-			// Gets and sets the envelope location
-//			int getEnvloc();
-//			void setEnvloc(int);
 
 			// Sets/gets the envelope properties
 			void setAttack(int);
@@ -47,12 +40,6 @@ namespace chip {
 			int getRelease();
 
 		private:
-			// Sampling rate of soundcard/ audio process
-			int sampFreq;
-			int bufferSize;
-
-			// Envelope multiplier buffer
-			float * buffer;
 
 			// Current state of envelope
 			envState_t state;

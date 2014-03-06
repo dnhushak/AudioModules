@@ -29,7 +29,7 @@ namespace chip {
 			}
 
 			modules->push_back(module);
-			masterMixer->addObjects((IAudio*) module);
+			masterMixer->addObjects((AudioClass*) module);
 		}
 	}
 

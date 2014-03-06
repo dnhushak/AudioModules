@@ -6,9 +6,9 @@
 chipophone
 printMidiDevices
 readMidiData
-Synthesizer
 *.save
 readmidi
+/synthesizer/linux/Synthesizer
 
 # Compiled source #
 ###################
@@ -47,7 +47,5 @@ readmidi
 .Trashes
 ehthumbs.db
 Thumbs.db
-*.cpp~
-*.hpp~
 Makefile~
 .gitignore~

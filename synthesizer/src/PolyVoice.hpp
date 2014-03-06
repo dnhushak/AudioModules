@@ -5,7 +5,7 @@
 #include <iostream>
 
 namespace chip {
-	class PolyVoice: public IAudio {
+	class PolyVoice: public AudioClass {
 		public:
 			PolyVoice(int);
 			~PolyVoice() {

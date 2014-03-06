@@ -9,7 +9,7 @@
 #include <math.h>
 
 namespace chip {
-	class Module: public IAudio {
+	class Module: public AudioClass {
 		public:
 
 			/*** Voice ***/

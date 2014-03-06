@@ -1,9 +1,12 @@
 #include "Envelope.hpp"
 
-void chip::Envelope::Envelope(int initSize) {
+void chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 	// Initialize the output buffer
-	bufferSize = initSize;
+	bufferSize = initBufferSize;
 	buffer = new float[bufferSize];
+
+	// Initialize the sample rate
+	sampleRate = initSampleRate;
 
 	// Initialize state to INIT
 	state = INIT;
@@ -71,7 +74,8 @@ float * chip::Envelope::advance(int numSamples) {
 	return buffer;
 }
 
-envState_t chip::Envelope::getState(){
+// Gets the state of the envelope (generally for cleanup purposes)
+chip::envState_t chip::Envelope::getState() {
 	return state;
 }
 
@@ -80,37 +84,46 @@ void chip::Envelope::startEnv() {
 	state = ATTACK;
 	envmult = 0.0;
 	envloc = 0;
+	Aslope = (1.0 - envmult) / AsampCount;
 }
 
 // Releases the envelope
 void chip::Envelope::releaseEnv() {
 	state = RELEASE;
 	envloc = 0;
+	Rslope = -(envmult / RsampCount);
 }
 
-void chip::Envelope::setAttack(int) {
-
+/*** Getters and setters ***/
+void chip::Envelope::setAttack(int newAttack) {
+	attack = newAttack;
+	AsampCount = (attack * sampleRate) / 1000;
 }
 
 int chip::Envelope::getAttack() {
 	return attack;
 }
 
-void chip::Envelope::setDecay(int) {
+void chip::Envelope::setDecay(int newDecay) {
+	decay = newDecay;
+	DsampCount = (decay * sampleRate) / 1000;
+	Dslope = (sustain - 1.0) / DsampCount;
 
 }
 int chip::Envelope::getDecay() {
 	return decay;
 }
 
-void chip::Envelope::setSustain(float) {
-
+void chip::Envelope::setSustain(float newSustain) {
+	sustain = newSustain;
 }
 float chip::Envelope::getSustain() {
 	return sustain;
 }
 
-void chip::Envelope::setRelease(int) {
+void chip::Envelope::setRelease(int newRelease) {
+	release = newRelease;
+	RsampCount = (release * sampleRate) / 1000;
 
 }
 int chip::Envelope::getRelease() {

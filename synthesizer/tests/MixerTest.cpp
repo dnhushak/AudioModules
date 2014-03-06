@@ -7,7 +7,7 @@
 #define TEST_BUFFER_SIZE_2 20
 #define TEST_ADVANCE_2 20
 
-chip::Mixer* mixer;
+chip::Mixer * mixer;
 
 void TestAdvanceWithZeroAdditions(int, int);
 void TestAdvanceWithOneAddition(int, int);
@@ -28,11 +28,11 @@ int main(void) {
 	mixer->removeObjects(0);
 	std::cout << "============= Two IAudio Devices=============\n";
 	TestAdvanceWithTwoAdditions(TEST_ADVANCE, TEST_BUFFER_SIZE);
-	mixer->clearMixer();
+	mixer->removeAllObjects();
 	mixer->resizeBuffer(TEST_BUFFER_SIZE_2);
 	std::cout << "=============   Resized Buffer  =============\n";
 	TestAdvanceWithTwoAdditions(TEST_ADVANCE_2, TEST_BUFFER_SIZE_2);
-	mixer->clearMixer();
+	mixer->removeAllObjects();
 	std::cout << "=============    Two Advances   =============\n";
 	TestTwoAdvancesWithTwoAdditions(TEST_ADVANCE_2, TEST_BUFFER_SIZE_2);
 
@@ -56,7 +56,7 @@ void TestAdvanceWithZeroAdditions(int advance, int bufferSize) {
 void TestAdvanceWithOneAddition(int advance, int bufferSize) {
 
 	chip::MockIAudio * mock = new chip::MockIAudio(bufferSize); // Start at 5 and increment by 0
-	mixer->addObjects((chip::IAudio*) mock);
+	mixer->addObjects((chip::AudioDevice*) mock);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {
@@ -75,8 +75,8 @@ void TestAdvanceWithTwoAdditions(int advance, int bufferSize) {
 
 	chip::MockIAudio * mock1 = new chip::MockIAudio(bufferSize);
 	chip::MockIAudio * mock2 = new chip::MockIAudio(bufferSize);
-	mixer->addObjects((chip::IAudio*) mock1);
-	mixer->addObjects((chip::IAudio*) mock2);
+	mixer->addObjects((chip::AudioDevice*) mock1);
+	mixer->addObjects((chip::AudioDevice*) mock2);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {
@@ -97,8 +97,8 @@ void TestTwoAdvancesWithTwoAdditions(int advance, int bufferSize) {
 
 	chip::MockIAudio * mock1 = new chip::MockIAudio(bufferSize);
 	chip::MockIAudio * mock2 = new chip::MockIAudio(bufferSize);
-	mixer->addObjects((chip::IAudio*) mock1);
-	mixer->addObjects((chip::IAudio*) mock2);
+	mixer->addObjects((chip::AudioDevice*) mock1);
+	mixer->addObjects((chip::AudioDevice*) mock2);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {

@@ -3,7 +3,7 @@
 CC = g++
 LDFLAGS = -lportaudio -Wall
 SRC = ../src/
-OBJECTS = Wavetables.o WavetablesTest.o Mixer.o MixerTest.o MockIAudio.o PolyvoiceTest.o PolyVoice.o
+OBJECTS = Wavetables.o WavetablesTest.o Mixer.o MixerTest.o MockIAudio.o PolyvoiceTest.o PolyVoice.o AudioDevice.o
 
 default: TestWavetables TestMixer TestPolyvoice
 	./TestWavetables
@@ -25,11 +25,14 @@ Wavetables.o: $(SRC)Wavetables.cpp $(SRC)Wavetables.hpp
 	$(CC) -c $(SRC)Wavetables.cpp $(LDFLAGS)
 
 # Tests for the mixer
-TestMixer: IAudio.o MixerTest.o Mixer.o MockIAudio.o
-	$(CC) MixerTest.o Mixer.o MockIAudio.o IAudio.o -o TestMixer $(LDFLAGS)
+TestMixer: AudioDevice.o AudioEffect.o MixerTest.o Mixer.o MockIAudio.o
+	$(CC) MixerTest.o Mixer.o MockIAudio.o AudioDevice.o AudioEffect.o -o TestMixer $(LDFLAGS)
 	
-IAudio.o: $(SRC)IAudio.cpp $(SRC)IAudio.hpp
-	$(CC) -c $(SRC)IAudio.cpp $(LDFLAGS)
+AudioDevice.o: $(SRC)AudioDevice.cpp $(SRC)AudioDevice.hpp
+	$(CC) -c $(SRC)AudioDevice.cpp $(LDFLAGS)
+	
+AudioEffect.o: $(SRC)AudioEffect.cpp $(SRC)AudioEffect.hpp
+	$(CC) -c $(SRC)AudioEffect.cpp $(LDFLAGS)
 
 MixerTest.o: MixerTest.cpp $(SRC)Mixer.hpp MockIAudio.hpp Assert.hpp
 	$(CC) -c MixerTest.cpp $(LDFLAGS)
@@ -54,5 +57,4 @@ PolyVoice.o: $(SRC)PolyVoice.cpp $(SRC)PolyVoice.hpp $(SRC)Wavetables.hpp
 clean:
 	rm -rf $(EXE) *.o
 	rm *~
-	rm TestWavetables
 	rm TestMixer
