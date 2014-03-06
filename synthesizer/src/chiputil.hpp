@@ -12,22 +12,8 @@
 #define POWER (4)
 #define TABLE_SIZE (1<<POWER)
 
-//State that the polyvoice is in
-#define OFF 0
-#define ATTACK 1
-#define DECAY 2
-#define SUSTAIN 3
-#define RELEASE 4
-#define CLEANUP 5
-
 //Number of audio modules
 #define NUM_MODULES 5
-
-//Number of polyvoices
-#define NUM_POLYVOICES 18
-
-// Maximum number of active polyvoices
-#define MAX_POLYVOICES 16
 
 //Types of waves
 #define SQUARE   0

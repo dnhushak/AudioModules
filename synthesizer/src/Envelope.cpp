@@ -1,4 +1,17 @@
-float * Envelope::advance() {
+#include "Envelope.hpp"
+
+void chip::Envelope::Envelope(int initSize) {
+	// Initialize the output buffer
+	bufferSize = initSize;
+	buffer = new float[bufferSize];
+
+	// Initialize state to INIT
+	state = INIT;
+
+}
+
+// Advance the envelope. Returns a buffer holding the envelope multiplier values
+float * chip::Envelope::advance(int numSamples) {
 
 	// This is the ADSR "state machine"
 	// Attack goes from 0 volume to 1
@@ -14,37 +27,92 @@ float * Envelope::advance() {
 	//
 	// | A |D|    S    | R |
 
-	switch (state) {
-		case ATTACK:
-			envmult += Aslope;
-			// When the evelope location has hit the number of samples, do a state transition
-			if (envloc >= AsampCount) {
-				state = DECAY;
-				envloc = 0;
-			}
-			break;
-
-		case DECAY:
-			envmult += Dslope;
-			// When the evelope location has hit the number of samples, do a state transition
-			if (envloc >= DsampCount) {
-				state = SUSTAIN;
-				envloc = 0;
-			}
-			break;
-
-		case SUSTAIN:
-			// Sustain won't automatically transition the state. The state will change on note release.
-			envmult = sustain;
-			break;
-
-		case RELEASE:
-			envmult += Rslope;
-			// When the evelope location has hit the number of samples, do a state transition
-			if (envloc >= RsampCount) {
-				state = CLEANUP;
+	for (int i = 0; i < numSamples; i++) {
+		switch (state) {
+			case ATTACK:
+				envmult += Aslope;
+				// When the evelope location has hit the number of samples, do a state transition
+				if (envloc >= AsampCount) {
+					state = DECAY;
+					envloc = 0;
+				}
 				break;
-			}
+
+			case DECAY:
+				envmult += Dslope;
+				// When the evelope location has hit the number of samples, do a state transition
+				if (envloc >= DsampCount) {
+					state = SUSTAIN;
+					envloc = 0;
+				}
+				break;
+
+			case SUSTAIN:
+				// Sustain won't automatically transition the state. The state will change on note release.
+				envmult = sustain;
+				break;
+
+			case RELEASE:
+				envmult += Rslope;
+				// When the evelope location has hit the number of samples, do a state transition
+				if (envloc >= RsampCount) {
+					state = DONE;
+				}
+				break;
+
+			default:
+				envmult = 0.0;
+				break;
+
+		}
+		buffer[i] = envmult;
+		envloc++;
 	}
-	envloc++;
+	return buffer;
+}
+
+envState_t chip::Envelope::getState(){
+	return state;
+}
+
+// Starts the envelope
+void chip::Envelope::startEnv() {
+	state = ATTACK;
+	envmult = 0.0;
+	envloc = 0;
+}
+
+// Releases the envelope
+void chip::Envelope::releaseEnv() {
+	state = RELEASE;
+	envloc = 0;
+}
+
+void chip::Envelope::setAttack(int) {
+
+}
+
+int chip::Envelope::getAttack() {
+	return attack;
+}
+
+void chip::Envelope::setDecay(int) {
+
+}
+int chip::Envelope::getDecay() {
+	return decay;
+}
+
+void chip::Envelope::setSustain(float) {
+
+}
+float chip::Envelope::getSustain() {
+	return sustain;
+}
+
+void chip::Envelope::setRelease(int) {
+
+}
+int chip::Envelope::getRelease() {
+	return release;
 }
