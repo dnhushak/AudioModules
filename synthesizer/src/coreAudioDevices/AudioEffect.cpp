@@ -7,7 +7,14 @@ void chip::AudioEffect::addObject(AudioDevice* audioObject) {
 
 // Add a vector of AudioDevices to be mixed
 void chip::AudioEffect::addObjects(std::vector<AudioDevice*> * audioObjects) {
-		audioDeviceList->insert(audioDeviceList->end(),audioObjects->begin(), audioObjects->end());
+	audioDeviceList->insert(audioDeviceList->end(), audioObjects->begin(),
+			audioObjects->end());
+}
+
+// Add a vector of AudioDevices to be mixed
+void chip::AudioEffect::setDeviceList(
+		std::vector<AudioDevice*> * audioObjects) {
+	audioDeviceList = audioObjects;
 }
 
 // Remove IAudio objects from the list of the mixer (by object reference)
@@ -48,7 +55,7 @@ void chip::AudioEffect::resizeBuffer(int newSize) {
 	buffer = new float[bufferSize];
 
 	// Resize all child buffer sizes
-	for (int i = 0; i< audioDeviceList->size(); i++){
+	for (int i = 0; i < audioDeviceList->size(); i++) {
 		(*audioDeviceList)[i]->resizeBuffer(newSize);
 	}
 }

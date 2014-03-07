@@ -1,7 +1,7 @@
 #pragma once
 #include "PolyVoice.hpp"
 #include "Mixer.hpp"
-#include "IAudio.hpp"
+#include "AudioEffect.hpp"
 #include "Voice.hpp"
 #include "chiputil.hpp"
 #include <vector>
@@ -9,62 +9,41 @@
 #include <math.h>
 
 namespace chip {
-	class Module: public AudioClass {
+	class Module: public AudioEffect {
 		public:
+			Module(int, int);
 
-			/*** Voice ***/
-			Voice * voice; // Defines the module's current instrument
-			std::vector<PolyVoice> * polyvoices; //each element represents one note being played
-			Mixer * polyMixer;
+			float * advance(int);
 
-			/*** Arpeggiation ***/
-			bool arpeggio;
-			int arpsamples; // Indicates the speed of arpeggiation
-			int arpcount; // The amount of samples this note has been playing in an arpeggio
-			int arpnote; // The current note being played in the arpeggio
+			void setVoice(Voice * voice);
 
-			/*** Glissando ***/
-			bool glissando;
-			int glissSamples;
-			int glissCount;
-			PolyVoice* glissNote;
-			float freqSlope;
-			float glissEnd; // Frequency of the most recent note pressed. Where we are glissing to.
-			float glissStart; // Frequency of the second most recent note pressed. Where we are glissing from.
-
-			/*** Volume ***/
-			float volume;
-			void setVolume(float);
-
-			Module(Voice*, int);
-			float * advance(int); //create a mixer advance the phase registers of every
-								  //polyvoice in this module (aka - move along the sound wave)
-
-			void setVoice(int attack, int decay, float sustain, int release,
-					int waveType, float vibAmp, int vibPeriod, int vibDelay);
+			// Activate and release PolyVoices
 			void activatePolyVoice(int note);
 			void releasePolyVoice(int note);
 
-			// Sort the notes according to note number
-			void sortPolyVoices();
-
-			// Swaps the polyvoices at two locations
-			void swap(int, int);
-
-			// Moves any polyvoices to be cleaned up to the end of the queue
+			// Removes any inactive polyVoices
 			void cleanup();
-
-			// Shifts all of the elements at and to the right of the index to the right
-			void shiftRightAt(int);
-
-			// Shifts all of the elements to the right of the index left one
-			void shiftLeftAt(int);
 
 			//Midi Note to Frequency
 			float MtoF(int note);
 
 			void printPolyVoices();
 
-			virtual ~Module();
+		private:
+
+			/*** Voice ***/
+			Voice * voice;
+
+			bool arp_en;
+			bool gliss_en;
+			int arpTime;
+			int glissTime;
+			float volume;
+
+			// List of active notes
+			std::vector<PolyVoice *> * audioDeviceList;
+
+			Mixer * polyMixer;
+
 	};
 }

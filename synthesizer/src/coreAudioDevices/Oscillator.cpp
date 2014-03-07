@@ -23,10 +23,14 @@ float chip::Oscillator::getFrequency() {
 
 // Set the oscillator's frequency (recalculates phase stepsize)
 void chip::Oscillator::setFrequency(float newFrequency) {
-	frequency = newFrequency;
+	if (newFrequency < 0) {
+		frequency = -newFrequency;
+	} else {
+		frequency = newFrequency;
+	}
 
 	// Step size calculation
-	stepSize = (int)((frequency) * (float)phaseMax) / sampleRate;
+	stepSize = (int) ((frequency) * (float) phaseMax) / sampleRate;
 
 	/* Step size is an advancement of phase once every sample
 	 * So, its units are technically cycles per sample

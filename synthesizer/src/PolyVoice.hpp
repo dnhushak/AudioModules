@@ -34,8 +34,11 @@ namespace chip {
 			// Sets the parameters of the polyvoice
 			void setVoice(Voice *);
 
+			// Gets the MIDI note number tied to this polyVoice
+			int getNote();
+
 		private:
-			// Current state of polyvoices
+			// Current state of polyvoice
 			devState_t state = ACTIVE;
 
 			// Main oscillator

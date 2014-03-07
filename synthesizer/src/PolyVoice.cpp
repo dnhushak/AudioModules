@@ -28,7 +28,7 @@ float * chip::PolyVoice::advance(int numSamples) {
 		// Apply the oscillator envelope
 		buffer[i] *= osc_env->advance(1);
 
-		if (vib_en){
+		if (vib_en) {
 			vibmult = vib->advance(1);
 			vibmult *= vib_env->advance(1);
 			osc->setFrequency(baseFrequency * vibmult);
@@ -36,7 +36,7 @@ float * chip::PolyVoice::advance(int numSamples) {
 	}
 
 	// Check whether or not to deactivate the polyVoice
-	if (osc_env->getState() == DONE){
+	if (osc_env->getState() == DONE) {
 		state = INACTIVE;
 	}
 	return buffer;
@@ -47,30 +47,45 @@ devState_t PolyVoice::getState() {
 }
 
 // Enable vibrato
-void PolyVoice::enableVibrato(){
+void PolyVoice::enableVibrato() {
 	vib_en = true;
 }
 
 // Disable vibrato
-void PolyVoice::disableVibrato(){
+void PolyVoice::disableVibrato() {
 	vib_en = false;
 }
 
 // Start the polyvoice
-void PolyVoice::startPolyVoice(int newNote){
-	state = ACTIVE;
-	note = newNote;
-	baseFrequency = MtoF(note);
-	osc_env->startEnv();
-	vib_env->startEnv();
-
+void PolyVoice::startPolyVoice(int newNote) {
+	if (note > 0 && note <= 127) {
+		state = ACTIVE;
+		note = newNote;
+		baseFrequency = MtoF(note);
+		osc_env->startEnv();
+		vib_env->startEnv();
+	}
 }
 
 // Release the polyvoice (with envelopes, doesn't necessarily deactivate it)
-void PolyVoice::releasePolyVoice(){
+void PolyVoice::releasePolyVoice() {
 	osc_env->releaseEnv();
 }
 
-void PolyVoice::setVoice(Voice * newVoice){
+void PolyVoice::setVoice(Voice * voice) {
+	// Oscillator settings
+	osc->setWavetable(voice->osc_table);
+	osc_env->setAttack(voice->osc_attack);
+	osc_env->setDecay(voice->osc_decay);
+	osc_env->setSustain(voice->osc_sustain);
+	osc_env->setRelease(voice->osc_release);
+
+	// Vibrato settings
+	vib->setWavetable(voice->vib_table);
+	vib_env->setAttack(voice->osc_attack);
+	vib_env->setDecay(voice->osc_decay);
+	vib_env->setSustain(voice->osc_sustain);
+	vib_env->setRelease(voice->osc_release);
+	vib_en = voice->vib_en;
 
 }

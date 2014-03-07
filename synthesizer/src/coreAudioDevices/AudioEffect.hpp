@@ -17,6 +17,9 @@ namespace chip {
 			// Adds a vector of audio objects to mixer list
 			void addObjects(std::vector<AudioDevice *> *);
 
+			// Changes the device list by pointing to a different one
+			void setDeviceList(std::vector<AudioDevice *> *);
+
 			// Removes audio object from mixer list based on audio object reference
 			void removeObject(AudioDevice *);
 
