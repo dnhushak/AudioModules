@@ -43,7 +43,7 @@ namespace chip {
 					unsigned char channel;
 					unsigned char data1;
 					unsigned char data2;
-					PmTimestamp time;
+					int32_t time;
 			};
 		public:
 

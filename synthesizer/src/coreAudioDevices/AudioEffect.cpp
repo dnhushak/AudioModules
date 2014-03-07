@@ -4,7 +4,7 @@
 void chip::AudioEffect::addAudioDevice(AudioDevice* audioObject) {
 	// Replace the maximum index valued device if full
 	if (numAudioDevices == maxNumAudioDevices) {
-		removeObject(maxNumAudioDevices - 1);
+		removeAudioDevice(maxNumAudioDevices - 1);
 	}
 	audioDeviceList->push_back(audioObject);
 	numAudioDevices = audioDeviceList->size();
@@ -19,7 +19,7 @@ void chip::AudioEffect::addAudioDevices(
 }
 
 // Switch pointer to a new audioDeviceList
-void chip::AudioEffect::setDeviceList(
+void chip::AudioEffect::setAudioDeviceList(
 		std::vector<AudioDevice*> * audioObjects) {
 
 	// Re-reference
@@ -37,7 +37,7 @@ void chip::AudioEffect::setDeviceList(
 }
 
 // Remove IAudio objects from the list of the mixer (by object reference)
-void chip::AudioEffect::removeObject(AudioDevice* audioObject) {
+void chip::AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
 	for (int i = 0; i < numAudioDevices; i++) {
 		if (audioDeviceList->at(i) == audioObject) {
 			audioDeviceList->erase(audioDeviceList->begin() + i);
@@ -47,15 +47,15 @@ void chip::AudioEffect::removeObject(AudioDevice* audioObject) {
 }
 
 // Remove IAudio objects from the list of the mixer (by location)
-void chip::AudioEffect::removeObject(int loc) {
+void chip::AudioEffect::removeAudioDevice(int loc) {
 	audioDeviceList->erase(audioDeviceList->begin() + loc);
 	numAudioDevices = audioDeviceList->size();
 }
 
 // Remove all objects from mixer
-void chip::AudioEffect::removeAllObjects() {
+void chip::AudioEffect::removeAllAudioDevices() {
 	while (numAudioDevices() > 0) {
-		removeObject(0);
+		removeAudioDevice(0);
 	}
 }
 

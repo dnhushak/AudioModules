@@ -33,22 +33,22 @@ namespace chip {
 			void addAudioDevices(std::vector<AudioDevice *> *);
 
 			// Changes the device list by pointing to a different one
-			void setDeviceList(std::vector<AudioDevice *> *);
+			void setAudioDeviceList(std::vector<AudioDevice *> *);
 
 			// Removes audio object from mixer list based on audio object reference
-			void removeObject(AudioDevice *);
+			void removeAudioDevice(AudioDevice *);
 
 			// Removes audio object from mixer based on vector index
-			void removeObject(int);
+			void removeAudioDevice(int);
 
 			// Remove all objects from the mixer
-			void removeAllObjects();
+			void removeAllAudioDevices();
 
 			// Returns the number of objects in this mixer
 			int getNumAudioDevices();
 
 			// Sets the maximum number of devices
-			int setMaximumNumDevices();
+			int setMaxNumAudioDevices();
 		protected:
 
 			// List of Audio items to mix together

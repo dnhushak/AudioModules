@@ -25,14 +25,14 @@ int main(void) {
 	TestAdvanceWithZeroAdditions(TEST_ADVANCE, TEST_BUFFER_SIZE);
 	std::cout << "=============  1 IAudio Device  =============\n";
 	TestAdvanceWithOneAddition(TEST_ADVANCE, TEST_BUFFER_SIZE);
-	mixer->removeObject(0);
+	mixer->removeAudioDevice(0);
 	std::cout << "============= Two IAudio Devices=============\n";
 	TestAdvanceWithTwoAdditions(TEST_ADVANCE, TEST_BUFFER_SIZE);
-	mixer->removeAllObjects();
+	mixer->removeAllAudioDevices();
 	mixer->resizeBuffer(TEST_BUFFER_SIZE_2);
 	std::cout << "=============   Resized Buffer  =============\n";
 	TestAdvanceWithTwoAdditions(TEST_ADVANCE_2, TEST_BUFFER_SIZE_2);
-	mixer->removeAllObjects();
+	mixer->removeAllAudioDevices();
 	std::cout << "=============    Two Advances   =============\n";
 	TestTwoAdvancesWithTwoAdditions(TEST_ADVANCE_2, TEST_BUFFER_SIZE_2);
 

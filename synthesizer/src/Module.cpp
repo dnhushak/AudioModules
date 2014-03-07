@@ -16,7 +16,7 @@ void chip::Module::Module(int initBufferSize, int initSampleRate) {
 
 	// Point the polyMixer device list to the module's device list
 	// Allows to update/erase only once, and use only one memory space for all the pointers
-	polyMixer->setDeviceList(
+	polyMixer->setAudioDeviceList(
 			(std::vector<chip::AudioDevice *> *) audioDeviceList);
 
 	// Inputs the polyMixer into the gain module

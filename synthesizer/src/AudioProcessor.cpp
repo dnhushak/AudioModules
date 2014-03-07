@@ -5,7 +5,7 @@ namespace chip {
 			int numModules) {
 		masterMixer = new chip::Mixer(bufferSize, sampleRate);
 		audioDeviceList = new std::vector<Module*>(0);
-		masterMixer->setDeviceList(
+		masterMixer->setAudioDeviceList(
 				(std::vector<AudioDevice *> *) audioDeviceList);
 
 		// Create the 5 modules for the synthesizer and add them to the mixer
