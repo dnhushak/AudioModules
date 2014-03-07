@@ -1,18 +1,23 @@
 #include "Module.hpp"
 
-chip::Module::Module(int initBufferSize, int initSampleRate) {
+void chip::Module::Module(int initBufferSize, int initSampleRate) {
 
 	bufferSize = initBufferSize;
 	sampleRate = initSampleRate;
+	buffer = new float[bufferSize];
 
 	//instantiates "bucket" of polyvoices
 	audioDeviceList = new std::vector<chip::PolyVoice *>(0);
-	polyMixer = new Mixer(bufferSize);
+	polyMixer = new Mixer(bufferSize, sampleRate);
+	moduleGain = new Gain(bufferSize, sampleRate);
 
 	// Point the polyMixer device list to the module's device list
 	// Allows to update/erase only once, and use only one memory space for all the pointers
 	polyMixer->setDeviceList(
 			(std::vector<chip::AudioDevice *> *) audioDeviceList);
+
+	// Inputs the polyMixer into the gain module
+	moduleGain->addObject(polyMixer);
 
 }
 
@@ -26,7 +31,7 @@ void chip::Module::setVoice(Voice * newVoice) {
 }
 
 float * chip::Module::advance(int numSamples) {
-	return polyMixer->advance(numSamples);
+	return moduleGain->advance(numSamples);
 }
 
 void chip::Module::activatePolyVoice(int note) {
@@ -56,13 +61,12 @@ void chip::Module::releasePolyVoice(int note) {
 			break;
 		}
 	}
-
 }
 
 void chip::Module::cleanup() {
 	// Remove all polyvoices in cleanup state
 	for (int i = 0; i < audioDeviceList->size(); i++) {
-		if ((*audioDeviceList)[i]->getState == DONE) {
+		if ((*audioDeviceList)[i]->getState == INACTIVE) {
 			audioDeviceList->erase(audioDeviceList->begin() + i);
 		}
 	}

@@ -3,6 +3,7 @@
 #include "Mixer.hpp"
 #include "AudioEffect.hpp"
 #include "Voice.hpp"
+#include "Gain.hpp"
 #include "chiputil.hpp"
 #include <vector>
 #include <iostream>
@@ -34,16 +35,17 @@ namespace chip {
 			/*** Voice ***/
 			Voice * voice;
 
-			bool arp_en;
-			bool gliss_en;
-			int arpTime;
-			int glissTime;
-			float volume;
+			bool arp_en = false;
+			bool gliss_en = false;
+			int arpTime = 100;
+			int glissTime = 1000;
+			float volume = -6;
 
 			// List of active notes
 			std::vector<PolyVoice *> * audioDeviceList;
 
 			Mixer * polyMixer;
+			Gain * moduleGain;
 
 	};
 }

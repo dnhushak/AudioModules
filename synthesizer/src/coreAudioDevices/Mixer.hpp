@@ -8,7 +8,7 @@ namespace chip {
 	class Mixer: public AudioEffect {
 		public:
 			// Constructor
-			Mixer(int);
+			Mixer(int, int);
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			float * advance(int);
 

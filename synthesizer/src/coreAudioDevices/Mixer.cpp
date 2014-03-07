@@ -1,10 +1,11 @@
 #include "Mixer.hpp"
 
-chip::Mixer::Mixer(int initSize) {
+void chip::Mixer::Mixer(int initBufferSize, int initSampleRate) {
 	//constructor
 	audioDeviceList = new std::vector<AudioDevice*>(0);
 
-	bufferSize = initSize;
+	bufferSize = initBufferSize;
+	sampleRate = initSampleRate;
 
 	// Initialize the audio buffer
 	buffer = new float[bufferSize];
