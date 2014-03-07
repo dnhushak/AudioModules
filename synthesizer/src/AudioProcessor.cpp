@@ -1,15 +1,16 @@
 #include "AudioProcessor.hpp"
 
 namespace chip {
-	AudioProcessor::AudioProcessor(int bufferSize, int sampleRate,
+	void AudioProcessor::AudioProcessor(int bufferSize, int sampleRate,
 			int numModules) {
 		masterMixer = new chip::Mixer(bufferSize, sampleRate);
-		modules = new std::vector<Module*>(0);
-		masterMixer->setDeviceList((std::vector<AudioDevice *> *) modules);
+		audioDeviceList = new std::vector<Module*>(0);
+		masterMixer->setDeviceList(
+				(std::vector<AudioDevice *> *) audioDeviceList);
 
 		// Create the 5 modules for the synthesizer and add them to the mixer
 		for (int i = 0; i < numModules; i++) {
-			modules->push_back(new Module(bufferSize, sampleRate));
+			addObject(new Module(bufferSize, sampleRate));
 		}
 	}
 
@@ -18,9 +19,32 @@ namespace chip {
 	}
 
 	void AudioProcessor::cleanup() {
-		for (int i = 0; i < modules->size(); i++) {
-			(*modules)[i]->cleanup();
+		for (int i = 0; i < audioDeviceList->size(); i++) {
+			(*audioDeviceList)[i]->cleanup();
 		}
 	}
 
+	void AudioProcessor::setVoice(Voice * newVoice, int moduleNum) {
+		if (moduleNum < 0 || moduleNum > getNumObjects()) {
+			return;
+		} else {
+			(*audioDeviceList)[moduleNum]->setVoice(newVoice);
+		}
+	}
+
+	void AudioProcessor::activatePolyVoice(int moduleNum, int note) {
+		if (moduleNum < 0 || moduleNum > getNumObjects()) {
+			return;
+		} else {
+			(*audioDeviceList)[moduleNum]->activatePolyVoice(note);
+		}
+	}
+
+	void AudioProcessor::releasePolyVoice(int moduleNum, int note) {
+		if (moduleNum < 0 || moduleNum > getNumObjects()) {
+			return;
+		} else {
+			(*audioDeviceList)[moduleNum]->releasePolyVoice(note);
+		}
+	}
 }

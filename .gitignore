@@ -49,3 +49,4 @@ ehthumbs.db
 Thumbs.db
 Makefile~
 .gitignore~
+/Debug

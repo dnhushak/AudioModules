@@ -12,7 +12,7 @@
 #include "Wavetables.hpp"
 
 namespace chip {
-	class AudioProcessor: public AudioDevice {
+	class AudioProcessor: public AudioEffect {
 		public:
 
 			AudioProcessor(int, int, int);
@@ -21,9 +21,27 @@ namespace chip {
 
 			void cleanup();
 
+			void setVoice(Voice *, int);
+
+			// PortAudio Connection
+			int connectToAudioStream();
+
+			int disconnectAudioStream();
+
+			// Activate and release PolyVoices
+			void activatePolyVoice(int moduleNum, int note);
+			void releasePolyVoice(int moduleNum, int note);
+
+			// PortAudio Callback
+			static int paCallback(const void *inputBuffer, void *outputBuffer,
+					unsigned long framesPerBuffer,
+					const PaStreamCallbackTimeInfo* timeInfo,
+					PaStreamCallbackFlags statusFlags, void *userData);
+
 		private:
+			PaStream * stream;
 			Mixer * masterMixer;
-			std::vector<Module*> * modules;
+			std::vector<Module*> * audioDeviceList;
 	};
 
 }
