@@ -3,7 +3,6 @@
 void chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 	// Initialize the output buffer
 	bufferSize = initBufferSize;
-	buffer = new float[bufferSize];
 
 	// Initialize the sample rate
 	sampleRate = initSampleRate;

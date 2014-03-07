@@ -28,7 +28,7 @@ namespace chip {
 			// Size of buffer
 			int bufferSize;
 			// The buffer itself
-			float * buffer;
+			float * buffer = new float[bufferSize];;
 
 			// Sampling rate of the device
 			int sampleRate;

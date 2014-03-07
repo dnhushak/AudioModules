@@ -1,51 +1,65 @@
 #pragma once
+#include "AudioDevice.hpp"
 #include "Wavetables.hpp"
 #include "chiputil.hpp"
+#include "Oscillator.hpp"
+#include "Envelope.hpp"
 #include <vector>
 #include <iostream>
 
 namespace chip {
-	class PolyVoice: public AudioClass {
+	enum polyVoiceState_t {
+		ACTIVE, INACTIVE
+	};
+	class PolyVoice: public AudioDevice {
 		public:
-			PolyVoice(int);
-			~PolyVoice() {
-			}
+			// Constructor
+			PolyVoice(int, int);
 
-			unsigned int stepsize();
+			// Advance for callback
+			float * advance(int);
 
-			// Sets the state of the polyvoice to release
+			// Return the current state of the polyvoice
+			polyVoiceState_t getState();
+
+
+			// Enable vibrato
+			void enableVibrato();
+
+			// Disable vibrato
+			void disableVibrato();
+
+			// Start the polyvoice
+			void startPolyVoice(int);
+
+			// Release the polyvoice (with envelopes, doesn't necessarily deactivate it)
 			void releasePolyVoice();
 
-			// Sets the ADSR parameters for this polyvoice
-			void setVoice(int, int, float, int, int, float, int, int);
-
-			float * advance(int);
-			void zeroBuffer();
-
 		private:
+			// Current state of polyvoices
+			int state = ACTIVE;
 
-			float * buffer;
-			int bufferSize;
+			// Main oscillator
+			Oscillator * osc;
+			// Vibrato oscillator
+			Oscillator * vib;
+			// Main Envelope
+			Envelope * osc_env;
+			// Vibrato Envelope
+			Envelope * vib_env;
+			// Vibrato multiplier
+			float vibmult;
+			// Base frequency
+			//(also stored in oscillator, but used in the PolyVoice for vibrato calculations)
+			float baseFrequency;
 
-			int state;
-
+			// Current MIDI note of polyVoice
 			int note;
-			unsigned short phase;
-			float frequency;
 
-			Wavetables* wavetable;
+			/*** Feature activation/deactivation ***/
 
-			// ADSR envelope parameters
-			bool envelope;
-			int waveType;
-
-			float vibAmp;
-			int vibPeriod;
-			int vibDelay;
-			int vibCount;
-			float vibFreq;
-
-			virtual ~PolyVoice();
+			// Vibrato
+			bool vib_en = true;
 	};
 
 }

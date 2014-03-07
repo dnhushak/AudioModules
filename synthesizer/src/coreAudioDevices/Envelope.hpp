@@ -6,9 +6,10 @@
 
 namespace chip {
 
-	typedef enum envState_t {
+	enum envState_t {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE,
-	} envState_t;
+	};
+
 	class Envelope: public AudioDevice {
 		public:
 			// Constructor
