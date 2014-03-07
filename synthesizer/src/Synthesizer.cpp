@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 	chip::AudioProcessor * audioProcessor = new chip::AudioProcessor(bufferSize,
 			sampleRate, numModules);
 
-	chip::MIDIProcessor * midiParser = new chip::MIDIProcessor();
+	chip::MIDIProcessor * midiProcessor = new chip::MIDIProcessor();
 
 	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
 	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioDevID, NULL, 1,
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
 	PMHandler->connectMIDIStream(MIDIDevID);
 
 	while (1) {
-		midiParser->readMIDI();
+		midiProcessor->readMIDI();
 		audioProcessor->cleanup();
 	}
 

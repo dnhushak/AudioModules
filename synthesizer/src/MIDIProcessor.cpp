@@ -5,8 +5,7 @@ namespace chip
 
 MIDIProcessor::MIDIProcessor()
 {
-    modules = new std::vector<Module*>(0);
-    mstream = malloc(sizeof(PortMidiStream));
+
 }
 
 /* Refer to MIDI spec 
@@ -42,7 +41,7 @@ void MIDIProcessor::readMIDI(PortMidiStream * mstream)
 }
 
 
-void MIDIProcessor::addObject(Module* module)
+void MIDIProcessor::addObject(AudioProcessor* module)
 {
     modules->push_back(module);
 }
