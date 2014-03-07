@@ -1,55 +1,45 @@
 #include "MIDIProcessor.hpp"
 
-namespace chip
-{
+namespace chip {
 
-void MIDIProcessor::MIDIProcessor()
-{
+	void MIDIProcessor::MIDIProcessor() {
 
-}
+	}
 
+	/* Refer to MIDI spec
+	 * http://www.midi.org/techspecs/midimessages.php
+	 */
+	chip::MIDIProcessor::MIDIMessage * MIDIProcessor::parseMIDI(
+			PmEvent * data) {
 
-//TODO: Combine this class with the MidiController Class - they serve the same function.. maybe?
-// Perhaps separate files, one for interpretation, another for generation? Try to do it in a similar
-// vein to all of the audio processing pipeline
+		// MIDIMessage struct to be returned
+		MIDIMessage * message = new MIDIMessage;
 
+		// Grab status
+		int status = Pm_MessageStatus(data->message);
 
-/* Refer to MIDI spec 
- * http://www.midi.org/techspecs/midimessages.php
- */
-void MIDIProcessor::interpretMIDI(PmEvent data)
-{
-    int status = Pm_MessageStatus(data.message);
+		// Top four bits is message type
+		message->type = status >> 4;
+		// Bottom four bits is MIDI Channel
+		int channel = (status & 0x0F);
 
-    //Finds channel. %4 is in there currently to fold everything down to the first four channels
-    int message = status >> 4;
-    int channel = (status & CHANNEL_MASK) % 5; //(status & CHANNEL_MASK) %4;
+		// Grab the data bits
+		message->data1 = Pm_MessageData1(data->message);
+		message->data2 = Pm_MessageData2(data->message);
 
-    int data1 = Pm_MessageData1(data.message); // between 0 and 127 inclusive
-    int data2 = Pm_MessageData2(data.message); // between 0 and 127 inclusive
+		// Grab the timestamp
+		message->time = data->timestamp;
+		return message;
+	}
 
-    MIDIController::interpretMIDI(message, data1, data2, (*modules)[channel], channel);
-    return;
-}
-
-void MIDIProcessor::readMIDI(PortMidiStream * mstream)
-{
-    while(Pm_Poll(mstream))
-    {
-	    int i;
-		int cnt = Pm_Read(mstream, msg, 32);
-		for(i=0; i<cnt; i++)
-        {
-            interpretMIDI(msg[i]);
-	    }
-    }
-    return;
-}
-
-
-void MIDIProcessor::addObject(AudioDevice * AudioDevice)
-{
-    modules->push_back(module);
-}
+	void MIDIProcessor::readMIDI(PortMidiStream * mstream) {
+		while (Pm_Poll(mstream)) {
+			int cnt = Pm_Read(mstream, msg, 32);
+			for (int i = 0; i < cnt; i++) {
+				interpretMIDI(msg[i]);
+			}
+		}
+		return;
+	}
 
 }

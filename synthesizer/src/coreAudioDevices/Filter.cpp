@@ -12,7 +12,7 @@ Filter::Filter() {
 }
 
 float * Filter::advance(int numSamples) {
-	if (getNumObjects() > 0) {
+	if (getNumAudioDevices() > 0) {
 		return (*audioDeviceList)[0]->advance(numSamples);
 	} else {
 		zeroBuffer();

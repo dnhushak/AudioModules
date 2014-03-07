@@ -10,7 +10,7 @@ namespace chip {
 
 		// Create the 5 modules for the synthesizer and add them to the mixer
 		for (int i = 0; i < numModules; i++) {
-			addObject(new Module(bufferSize, sampleRate));
+			addAudioDevice(new Module(bufferSize, sampleRate));
 		}
 	}
 
@@ -25,7 +25,7 @@ namespace chip {
 	}
 
 	void AudioProcessor::setVoice(Voice * newVoice, int moduleNum) {
-		if (moduleNum < 0 || moduleNum > getNumObjects()) {
+		if (moduleNum < 0 || moduleNum > getNumAudioDevices()) {
 			return;
 		} else {
 			(*audioDeviceList)[moduleNum]->setVoice(newVoice);
@@ -33,7 +33,7 @@ namespace chip {
 	}
 
 	void AudioProcessor::activatePolyVoice(int moduleNum, int note) {
-		if (moduleNum < 0 || moduleNum > getNumObjects()) {
+		if (moduleNum < 0 || moduleNum > getNumAudioDevices()) {
 			return;
 		} else {
 			(*audioDeviceList)[moduleNum]->activatePolyVoice(note);
@@ -41,7 +41,7 @@ namespace chip {
 	}
 
 	void AudioProcessor::releasePolyVoice(int moduleNum, int note) {
-		if (moduleNum < 0 || moduleNum > getNumObjects()) {
+		if (moduleNum < 0 || moduleNum > getNumAudioDevices()) {
 			return;
 		} else {
 			(*audioDeviceList)[moduleNum]->releasePolyVoice(note);

@@ -13,4 +13,3 @@
 #include "porttime.h"
 
 int is_int(char const* p);
-int printMidiDevices(void);

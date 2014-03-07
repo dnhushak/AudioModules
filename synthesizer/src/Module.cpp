@@ -20,7 +20,7 @@ void chip::Module::Module(int initBufferSize, int initSampleRate) {
 			(std::vector<chip::AudioDevice *> *) audioDeviceList);
 
 	// Inputs the polyMixer into the gain module
-	moduleGain->addObject(polyMixer);
+	moduleGain->addAudioDevice(polyMixer);
 
 }
 

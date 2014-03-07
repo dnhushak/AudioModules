@@ -12,11 +12,14 @@ namespace chip {
 	}
 
 	float * chip::Gain::advance(int numSamples) {
-		if (getNumObjects() > 0) {
+		if (getNumAudioDevices() > 0) {
 			for (int i = 0; i < numSamples; i++) {
 				buffer[i] = (*audioDeviceList)[0]->advance(1);
 				buffer[i] *= gain;
 			}
+		}
+		else{
+			zeroBuffer();
 		}
 		return buffer;
 	}

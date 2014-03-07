@@ -18,7 +18,7 @@ float * chip::Mixer::advance(int numSamples) {
 	zeroBuffer();
 
 	// Vector sum each element of the list of IAudio compatible objects
-	for (unsigned int i = 0; i < audioDeviceList->size(); i++) {
+	for (unsigned int i = 0; i < numAudioDevices; i++) {
 		// Fill up a temp buffer for one IAudio object
 		temp = (*audioDeviceList)[i]->advance(numSamples);
 
