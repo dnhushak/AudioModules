@@ -11,8 +11,10 @@ namespace chip {
 
 			void static printMIDIDevices();
 
+			PmStream * getStream();
+
 		private:
-			PortMidiStream *mstream;
+			PmStream * mstream;
 
 			PmError errorPortMIDI(PmError err);
 	};

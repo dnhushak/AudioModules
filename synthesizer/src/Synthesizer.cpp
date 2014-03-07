@@ -4,28 +4,37 @@
 #include "PortMIDIHandler.hpp"
 #include "utils.h"
 
-static chip::MIDIProcessor* midiParser;
-
 // Main
 int main(int argc, char *argv[]) {
 	int bufferSize = BUFFER_SIZE;
 	int sampleRate = SAMPLE_RATE;
 	int numChannels = NUM_AUDIO_CHANNELS;
 	int numModules = NUM_MODULES;
-	int devID = 0;
+	int MIDIDevID = 0;
+	int AudioDevID = 0;
 	int verbose = 0;
 	extern char *optarg;
 	int ch;
 	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
-	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:")) != EOF) {
+	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a")) != EOF) {
 		switch (ch) {
 			case 'p':
-				// Port argument
+				// MIDI Port argument
 				if (is_int(optarg)) {
-					devID = atoi(optarg);
+					MIDIDevID = atoi(optarg);
 				} else {
 					fprintf(stderr,
-							"Port takes an integer argument. Specify MIDI Devices to be used\n");
+							"MIDI Port takes an integer argument. Specify MIDI Device to be used\n");
+					exit(2);
+				}
+				break;
+			case 'a':
+				// Audio Device argument
+				if (is_int(optarg)) {
+					AudioDevID = atoi(optarg);
+				} else {
+					fprintf(stderr,
+							"Audio Device takes an integer argument. Specify Audio Device to be used\n");
 					exit(2);
 				}
 				break;
@@ -37,7 +46,7 @@ int main(int argc, char *argv[]) {
 			case 'd':
 				// Devices argument
 				chip::PortAudioHandler::printAudioDevices();
-				chip::PortMIDIHandler::printAudioDevices();
+				chip::PortMIDIHandler::printMIDIDevices();
 				exit(0);
 				break;
 			case 'b':
@@ -82,24 +91,27 @@ int main(int argc, char *argv[]) {
 				break;
 
 		}
-
-	}
-	if (verbose) {
-		printf("Device ID is: %d\n", devID);
 	}
 
 	chip::AudioProcessor * audioProcessor = new chip::AudioProcessor(bufferSize,
-			sampleRate,
-			NUM_MODULES);
-	midiParser = new chip::MIDIProcessor();
+			sampleRate, numModules);
 
-	// Connect to the MIDI stream and start reading
-	midiParser->connectToMIDIStream(devID);
+	chip::MIDIProcessor * midiParser = new chip::MIDIProcessor();
+
+	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
+	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioDevID, NULL, 1,
+			0, audioProcessor);
+
+	chip::PortMIDIHandler * PMHandler = new chip::PortMIDIHandler();
+	PMHandler->connectMIDIStream(MIDIDevID);
 
 	while (1) {
 		midiParser->readMIDI();
 		audioProcessor->cleanup();
 	}
+
+	PAHandler->disconnectAudioStream();
+	PMHandler->disconnectMIDIStream();
 
 }
 

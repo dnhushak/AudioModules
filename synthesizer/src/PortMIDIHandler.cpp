@@ -58,6 +58,10 @@ namespace chip {
 
 	}
 
+	PmStream * PortMIDIHandler::getStream(){
+		return mstream;
+	}
+
 	// PortMIDI Error Check
 	PmError PortMIDIHandler::errorPortMIDI(PmError err) {
 		Pm_Terminate();

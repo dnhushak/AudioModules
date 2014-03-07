@@ -3,11 +3,12 @@
 namespace chip {
 
 	// Setup and start a PortAudio Stream
-	PaError PortAudioHandler::ConnectAudioStream(int bufferSize, int sampleRate,
-			PaDeviceIndex devID, int numChannels, void *userData) {
+	PaError PortAudioHandler::connectAudioStream(int bufferSize, int sampleRate,
+			PaDeviceIndex outDevID, PaDeviceIndex inDevID, int numOutChannels,
+			int numInChannels, void *userData) {
 
 		// Declare output parameters
-		PaStreamParameters outputParameters;
+		PaStreamParameters outputParameters, inputParameters;
 
 		// Initialize PA
 		err = Pa_Initialize();
@@ -15,24 +16,35 @@ namespace chip {
 			return errorPortAudio(err);
 
 		// Set output Parameters
-		outputParameters.device = devID;
+		outputParameters.device = outDevID;
 		if (outputParameters.device == paNoDevice)
 			return errorPortAudio(err);
-		outputParameters.channelCount = numChannels;
+		outputParameters.channelCount = numOutChannels;
 		outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
 		outputParameters.suggestedLatency = Pa_GetDeviceInfo(
 				outputParameters.device)->defaultLowOutputLatency;
 		outputParameters.hostApiSpecificStreamInfo = NULL;
 
+		// Set input Parameters
+		inputParameters.device = inDevID;
+		if (inputParameters.device == paNoDevice)
+			return errorPortAudio(err);
+		inputParameters.channelCount = numInChannels;
+		inputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
+		inputParameters.suggestedLatency = Pa_GetDeviceInfo(
+				inputParameters.device)->defaultLowOutputLatency;
+		inputParameters.hostApiSpecificStreamInfo = NULL;
+
+
 		// Open the stream
-		err = Pa_OpenStream(&stream, NULL, &outputParameters, sampleRate,
+		err = Pa_OpenStream(&astream, &inputParameters, &outputParameters, sampleRate,
 				bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
 				PortAudioHandler::paCallback, userData); // We want to pass a pointer to the AudioProcessor
 		if (err != paNoError)
 			return errorPortAudio(err);
 
 		// Start the stream
-		err = Pa_StartStream(stream);
+		err = Pa_StartStream(astream);
 		if (err != paNoError)
 			return errorPortAudio(err);
 
@@ -40,13 +52,13 @@ namespace chip {
 	}
 
 	// Stop a PortAudio stream
-	PaError PortAudioHandler::DisconnectAudioStream() {
+	PaError PortAudioHandler::disconnectAudioStream() {
 		PaError err;
-		err = Pa_StopStream(stream);
+		err = Pa_StopStream(astream);
 		if (err != paNoError)
 			errorPortAudio(err);
 
-		err = Pa_CloseStream(stream);
+		err = Pa_CloseStream(astream);
 		if (err != paNoError)
 			errorPortAudio(err);
 
@@ -103,6 +115,11 @@ namespace chip {
 
 	}
 
+	// For any input stream we may want
+	PaStream * PortAudioHandler::getStream() {
+		return astream;
+	}
+
 	// PortAudio Callback
 	int PortAudioHandler::paCallback(const void *inputBuffer,
 			void *outputBuffer, unsigned long framesPerBuffer,
@@ -113,7 +130,7 @@ namespace chip {
 		float *out = (float*) outputBuffer;
 
 		// Grab the supplied user data
-		chip::AudioProcessor * audio = (chip::AudioProcessor*) userData;
+		chip::AudioDevice * audio = (chip::AudioDevice*) userData;
 
 		// Fill the output buffer
 		out = audio->advance(framesPerBuffer);

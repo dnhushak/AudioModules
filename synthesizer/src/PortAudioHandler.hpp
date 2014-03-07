@@ -6,11 +6,12 @@ namespace chip {
 	class PortAudioHandler {
 		public:
 			// Setup and start a PortAudio Stream
-			PaError ConnectAudioStream(int bufferSize, int sampleRate,
-					PaDeviceIndex devID, int numChannels, void *userData);
+			PaError connectAudioStream(int bufferSize, int sampleRate,
+					PaDeviceIndex outDevID, PaDeviceIndex inDevID, int numOutChannels,
+					int numInChannels, void *userData);
 
 			// Stop a PortAudio stream
-			PaError DisconnectAudioStream();
+			PaError disconnectAudioStream();
 
 			// PortAudio Callback
 			static int paCallback(const void *inputBuffer, void *outputBuffer,
@@ -19,13 +20,15 @@ namespace chip {
 					PaStreamCallbackFlags statusFlags, void *userData);
 
 			void static printAudioDevices();
+
+			PaStream * getStream();
 		private:
 
 			// PortAudio Error Check
 			PaError errorPortAudio(PaError err);
 
 			// Declare stream
-			PaStream *stream;
+			PaStream * astream;
 			PaError err;
 
 	};
