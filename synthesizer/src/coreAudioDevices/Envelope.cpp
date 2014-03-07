@@ -32,6 +32,9 @@ float * chip::Envelope::advance(int numSamples) {
 
 	for (int i = 0; i < numSamples; i++) {
 		switch (state) {
+			default:
+				envmult = 0.0;
+				break;
 			case ATTACK:
 				envmult += Aslope;
 				// When the evelope location has hit the number of samples, do a state transition
@@ -61,10 +64,6 @@ float * chip::Envelope::advance(int numSamples) {
 				if (envloc >= RsampCount) {
 					state = DONE;
 				}
-				break;
-
-			default:
-				envmult = 0.0;
 				break;
 
 		}

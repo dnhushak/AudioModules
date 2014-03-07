@@ -3,6 +3,7 @@
 #include "chiputil.hpp"
 #include <vector>
 #include <iostream>
+#include <limits.h>
 
 namespace chip {
 	class Oscillator: public AudioDevice {
@@ -14,12 +15,38 @@ namespace chip {
 			float * advance(int);
 
 			// Based on the frequency and sample rate, determine how much to advance the phase register
-			unsigned int stepsize();
+			void setFrequency(float);
+
+			// Return the oscillator's current frequency
+			float getFrequency();
+
+			// Sets the pointer to the wavetable
+			void setWavetable(Wavetable *);
 
 		private:
-			unsigned short phase;
-			float frequency;
+			// Current phase of the oscillator
+			unsigned int phase = 0;
 
-			Wavetables * wavetable;
+			// The maximum value of the phase register
+			// !! If you change the type of phase register,
+			// also change this value according to limits.h
+			unsigned int phaseMax = UINT_MAX;
+
+			// The truncated current phase, used to access a wavetable index
+			int phaseTruncated = 0;
+
+			// The amount to truncate the phase by every step increase
+			int phaseTruncateAmt = 0;
+
+			// The scale
+			int phaseScale = 0;
+
+			// The amount to increase the phase by every sample
+			unsigned int stepSize = 0;
+
+			// The current frequency of the oscillator
+			float frequency = 0;
+
+			Wavetable * wavetable = NULL;
 	};
 }
