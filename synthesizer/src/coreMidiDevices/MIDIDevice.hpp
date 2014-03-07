@@ -14,7 +14,7 @@ namespace chip {
 	class MIDIDevice {
 		public:
 			// The affect call used to act based on MIDI input
-			void affect(MIDIMessage);
+			void affect(MIDIMessage *);
 
 			// Adds MIDI object to mixer list
 			void addMIDIDevice(MIDIDevice *);
