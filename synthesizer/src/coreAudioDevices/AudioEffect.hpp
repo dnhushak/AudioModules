@@ -9,7 +9,7 @@ namespace chip {
 	/** An audio effect. Has a list of AudioDevices that can be manipulated in some way
 	* User has to add devices to device list using the single add, vector add, or repoint methods
 	* User has an option to set the maximum number of devices in the list, which will affect additions.
-	* Default upon adding an AudioDevice to a full AudioEffect list is to replace the one at the max index
+	* Default upon adding an AudioDevice to a full AudioEffect list is to ignore if at maximum
 	*
 	* User must implement the advance() method inherited from the AudioDevice class.
 	* Best to make use of the std::vector capabilities to dynamically

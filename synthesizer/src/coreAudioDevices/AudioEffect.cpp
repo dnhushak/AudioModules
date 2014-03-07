@@ -2,30 +2,47 @@
 
 // Add another AudioDevice object to be mixed
 void chip::AudioEffect::addAudioDevice(AudioDevice* audioObject) {
-	// Replace the maximum index valued device if full
-	if (numAudioDevices == maxNumAudioDevices) {
-		removeAudioDevice(maxNumAudioDevices - 1);
+	// Ignore if at maximum value or no maximum
+	if (numAudioDevices < maxNumAudioDevices || maxNumAudioDevices == -1) {
+		audioDeviceList->push_back(audioObject);
+		numAudioDevices = audioDeviceList->size();
 	}
-	audioDeviceList->push_back(audioObject);
-	numAudioDevices = audioDeviceList->size();
 }
 
 // Add a vector of AudioDevices to be mixed
 void chip::AudioEffect::addAudioDevices(
 		std::vector<AudioDevice*> * audioObjects) {
-	//TODO: Check maximum devices for add Objects
+	int numToAdd;
+
+	// If no maximum...
+	if (maxNumAudioDevices != -1) {
+		// Add all objects
+		numToAdd = audioObjects->size();
+	}
+	// ...Or number of devices won't put us at our maximum
+	else if ((numAudioDevices + audioObjects->size()) < maxNumAudioDevices) {
+		// Add all objects
+		numToAdd = audioObjects->size();
+	}
+	// Else add as many as are available
+	else{
+		numToAdd = maxNumAudioDevices - numAudioDevices;
+	}
+
 	audioDeviceList->insert(audioDeviceList->end(), audioObjects->begin(),
-			audioObjects->end());
+			audioObjects->begin() + numToAdd);
+
+	numAudioDevices = audioDeviceList->size()
 }
 
 // Switch pointer to a new audioDeviceList
 void chip::AudioEffect::setAudioDeviceList(
 		std::vector<AudioDevice*> * audioObjects) {
 
-	// Re-reference
+// Re-reference
 	audioDeviceList = audioObjects;
 
-	// If the new device list has less than the maximum number of devices, or there is no maximum...
+// If the new device list has less than the maximum number of devices, or there is no maximum...
 	if (audioDeviceList->size() < maxNumAudioDevices
 			|| maxNumAudioDevices == -1) {
 		// Then the current number of devices is the size of the new list
@@ -36,7 +53,7 @@ void chip::AudioEffect::setAudioDeviceList(
 	}
 }
 
-// Remove IAudio objects from the list of the mixer (by object reference)
+// Remove AudioDevice objects from the list of the mixer (by object reference)
 void chip::AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
 	for (int i = 0; i < numAudioDevices; i++) {
 		if (audioDeviceList->at(i) == audioObject) {
@@ -66,16 +83,16 @@ int chip::AudioEffect::getNumAudioDevices() {
 
 // Resize the buffer of the mixer
 void chip::AudioEffect::resizeBuffer(int newSize) {
-	// Free the current buffer memory
+// Free the current buffer memory
 	free(buffer);
 
-	// Reset the buffer size
+// Reset the buffer size
 	bufferSize = newSize;
 
-	// reallocate memory
+// reallocate memory
 	buffer = new float[bufferSize];
 
-	// Resize all child buffer sizes
+// Resize all child buffer sizes
 	for (int i = 0; i < numAudioDevices; i++) {
 		(*audioDeviceList)[i]->resizeBuffer(newSize);
 	}
