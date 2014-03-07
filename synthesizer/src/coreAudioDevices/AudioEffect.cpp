@@ -32,7 +32,7 @@ void chip::AudioEffect::addAudioDevices(
 	audioDeviceList->insert(audioDeviceList->end(), audioObjects->begin(),
 			audioObjects->begin() + numToAdd);
 
-	numAudioDevices = audioDeviceList->size()
+	numAudioDevices = audioDeviceList->size();
 }
 
 // Switch pointer to a new audioDeviceList
