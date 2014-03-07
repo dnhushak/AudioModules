@@ -93,6 +93,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	//TODO: Generate wavetables
+	//TODO: generate default voices
+	//TODO: Assign voices downstream
+	//TODO: Fix Voice Configuration Reader
 	chip::AudioProcessor * audioProcessor = new chip::AudioProcessor(bufferSize,
 			sampleRate, numModules);
 

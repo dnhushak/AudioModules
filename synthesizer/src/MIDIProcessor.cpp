@@ -3,10 +3,16 @@
 namespace chip
 {
 
-MIDIProcessor::MIDIProcessor()
+void MIDIProcessor::MIDIProcessor()
 {
 
 }
+
+
+//TODO: Combine this class with the MidiController Class - they serve the same function.. maybe?
+// Perhaps separate files, one for interpretation, another for generation? Try to do it in a similar
+// vein to all of the audio processing pipeline
+
 
 /* Refer to MIDI spec 
  * http://www.midi.org/techspecs/midimessages.php
@@ -41,7 +47,7 @@ void MIDIProcessor::readMIDI(PortMidiStream * mstream)
 }
 
 
-void MIDIProcessor::addObject(AudioProcessor* module)
+void MIDIProcessor::addObject(AudioDevice * AudioDevice)
 {
     modules->push_back(module);
 }

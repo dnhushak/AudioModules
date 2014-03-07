@@ -18,20 +18,5 @@ int is_int(char const* p) {
 	return strcmp(compare, p) == 0;
 }
 
-int printMidiDevices(void) {
-	int i;
-	for (i = 0; i < Pm_CountDevices(); i++) {
-		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-		if (info->input) {
-			printf("Input:  ");
-		} else {
-			printf("Output: ");
-		}
-		printf("%d: %s, %s", i, info->interf, info->name);
-		printf("\n");
-	}
-	return 0;
-}
-
 
 

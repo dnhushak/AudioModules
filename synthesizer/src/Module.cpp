@@ -2,6 +2,9 @@
 
 void chip::Module::Module(int initBufferSize, int initSampleRate) {
 
+	//TODO: Implement glissando and arpeggiation - split into separate AudioEffect modules, and reroute the
+	// moduleGain inputs to the gliss/arpegg/polyMixer outputs
+
 	bufferSize = initBufferSize;
 	sampleRate = initSampleRate;
 	buffer = new float[bufferSize];
