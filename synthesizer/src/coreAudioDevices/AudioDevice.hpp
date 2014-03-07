@@ -4,6 +4,9 @@
 #include <iostream>
 
 namespace chip {
+	enum devState_t {
+		ACTIVE, INACTIVE,
+	};
 	class AudioDevice {
 		public:
 			// The advance call used to fill a buffer
@@ -24,14 +27,19 @@ namespace chip {
 			// Return the sample rate
 			int getSampleRate();
 
+			// Return the state
+			devState_t getState();
+
 		protected:
 			// Size of buffer
 			int bufferSize;
 			// The buffer itself
-			float * buffer = new float[bufferSize];;
+			float * buffer = new float[bufferSize];
 
 			// Sampling rate of the device
 			int sampleRate;
+
+			devState_t state = ACTIVE;
 	};
 }
 

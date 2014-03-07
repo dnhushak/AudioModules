@@ -42,6 +42,35 @@ float * chip::PolyVoice::advance(int numSamples) {
 	return buffer;
 }
 
-polyVoiceState_t PolyVoice::getState() {
+devState_t PolyVoice::getState() {
 	return state;
+}
+
+// Enable vibrato
+void PolyVoice::enableVibrato(){
+	vib_en = true;
+}
+
+// Disable vibrato
+void PolyVoice::disableVibrato(){
+	vib_en = false;
+}
+
+// Start the polyvoice
+void PolyVoice::startPolyVoice(int newNote){
+	state = ACTIVE;
+	note = newNote;
+	baseFrequency = MtoF(note);
+	osc_env->startEnv();
+	vib_env->startEnv();
+
+}
+
+// Release the polyvoice (with envelopes, doesn't necessarily deactivate it)
+void PolyVoice::releasePolyVoice(){
+	osc_env->releaseEnv();
+}
+
+void PolyVoice::setVoice(Voice * newVoice){
+
 }

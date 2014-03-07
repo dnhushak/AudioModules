@@ -5,9 +5,6 @@
 
 static chip::MIDIParser* midiParser;
 
-// Buffer for sound data to be sent off through the audio callback
-static std::vector<float> buffer;
-
 /* This routine will be called by the PortAudio engine when audio is needed.
  ** It may called at interrupt level on some machines so don't do anything
  ** that could mess up the system like calling malloc() or free().
@@ -75,7 +72,8 @@ int main(int argc, char *argv[]) {
 	PaStream *stream;
 	PaError err;
 
-	chip::AudioProcessor* audioProcessor = new chip::AudioProcessor(BUFFER_SIZE, NUM_MODULES);
+	chip::AudioProcessor* audioProcessor = new chip::AudioProcessor(BUFFER_SIZE,
+	NUM_MODULES);
 	midiParser = new chip::MIDIParser();
 
 	// Give the MIDIParser pointers to the modules
@@ -151,16 +149,14 @@ static int paCallback(const void *inputBuffer, void *outputBuffer,
 		unsigned long framesPerBuffer, const PaStreamCallbackTimeInfo* timeInfo,
 		PaStreamCallbackFlags statusFlags, void *userData) {
 
-	(void) inputBuffer;
-	(void) timeInfo;
-	(void) statusFlags;
-	chip::AudioProcessor * audio = (chip::AudioProcessor*) userData;
+	// Cast void type outbut buffer to float
 	float *out = (float*) outputBuffer;
-	audio->advance(framesPerBuffer);
-//out = audio->advance(framesPerBuffer);
-	for (int i = 0; i < (int) framesPerBuffer; i++) {
-		*out++ = 0;
-	}
+
+	// Grab the supplied user data
+	chip::AudioProcessor * audio = (chip::AudioProcessor*) userData;
+
+	// Fill the output buffer
+	out = audio->advance(framesPerBuffer);
 
 	return paContinue;
 }

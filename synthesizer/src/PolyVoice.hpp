@@ -8,9 +8,6 @@
 #include <iostream>
 
 namespace chip {
-	enum polyVoiceState_t {
-		ACTIVE, INACTIVE
-	};
 	class PolyVoice: public AudioDevice {
 		public:
 			// Constructor
@@ -20,8 +17,7 @@ namespace chip {
 			float * advance(int);
 
 			// Return the current state of the polyvoice
-			polyVoiceState_t getState();
-
+			devState_t getState();
 
 			// Enable vibrato
 			void enableVibrato();
@@ -35,9 +31,12 @@ namespace chip {
 			// Release the polyvoice (with envelopes, doesn't necessarily deactivate it)
 			void releasePolyVoice();
 
+			// Sets the parameters of the polyvoice
+			void setVoice(Voice *);
+
 		private:
 			// Current state of polyvoices
-			int state = ACTIVE;
+			devState_t state = ACTIVE;
 
 			// Main oscillator
 			Oscillator * osc;
