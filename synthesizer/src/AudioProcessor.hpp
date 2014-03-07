@@ -11,22 +11,19 @@
 #include "VoiceConfigReader.hpp"
 #include "Wavetables.hpp"
 
-//Pi, for generation of sine table
-#ifndef M_PI
-#define M_PI  (3.14159265)
-#endif
-
 namespace chip {
-	class AudioProcessor {
+	class AudioProcessor: public AudioDevice {
 		public:
+
+			AudioProcessor(int, int, int);
+
+			float * advance(int);
+
+			void cleanup();
+
+		private:
 			Mixer * masterMixer;
 			std::vector<Module*> * modules;
-
-
-			AudioProcessor(int, int);
-			std::vector<float> * advance(int);
-			void cleanup();
-			~AudioProcessor();
 	};
 
 }

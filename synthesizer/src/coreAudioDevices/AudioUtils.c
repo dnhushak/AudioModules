@@ -9,3 +9,8 @@ float dbToRatio(float db){
 	// Therefore, in/out = 10^(gain(db)/20)
 	return 10^(db/20);
 }
+
+//Midi Note to Frequency
+float MtoF(int note) {
+	return (float)pow(2, (((double) note - 69) / 12.0)) * 440.0;
+}

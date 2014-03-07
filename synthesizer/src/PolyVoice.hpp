@@ -2,6 +2,7 @@
 #include "AudioDevice.hpp"
 #include "Wavetables.hpp"
 #include "chiputil.hpp"
+#include "AudioUtils.h"
 #include "Oscillator.hpp"
 #include "Envelope.hpp"
 #include <vector>

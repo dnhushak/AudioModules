@@ -6,7 +6,6 @@
 
 //Audio buffer size
 #define BUFFER_SIZE  (1024)
-#define PHASESCALE ((1<<17)-1)
 
 //Power of wavetable size (wavetable size = 2 ^ POWER)
 #define POWER (4)
@@ -30,7 +29,3 @@
 //MIDI file list
 #define MIDI_FILE_NAMES "../src/config/MidiFileList.txt"
 
-// PI
-#define PI 3.14159265
-
-typedef void func(int);

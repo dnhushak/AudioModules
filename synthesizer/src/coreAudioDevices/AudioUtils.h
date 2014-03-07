@@ -3,3 +3,6 @@ float ratioToDb(float ratio);
 
 // Converts a db gain value into a straight I/O ratio
 float dbToRatio(float db);
+
+//Midi Note number to Frequency
+float MtoF(int note);

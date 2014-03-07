@@ -33,8 +33,5 @@ int printMidiDevices(void) {
 	return 0;
 }
 
-//Midi Note to Frequency
-double MtoF(int note) {
-	return pow(2, (((double) note - 69) / 12.0)) * 440.0;
-}
+
 
