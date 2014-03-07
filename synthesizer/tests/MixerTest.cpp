@@ -25,7 +25,7 @@ int main(void) {
 	TestAdvanceWithZeroAdditions(TEST_ADVANCE, TEST_BUFFER_SIZE);
 	std::cout << "=============  1 IAudio Device  =============\n";
 	TestAdvanceWithOneAddition(TEST_ADVANCE, TEST_BUFFER_SIZE);
-	mixer->removeObjects(0);
+	mixer->removeObject(0);
 	std::cout << "============= Two IAudio Devices=============\n";
 	TestAdvanceWithTwoAdditions(TEST_ADVANCE, TEST_BUFFER_SIZE);
 	mixer->removeAllObjects();
@@ -56,7 +56,7 @@ void TestAdvanceWithZeroAdditions(int advance, int bufferSize) {
 void TestAdvanceWithOneAddition(int advance, int bufferSize) {
 
 	chip::MockIAudio * mock = new chip::MockIAudio(bufferSize); // Start at 5 and increment by 0
-	mixer->addObjects((chip::AudioDevice*) mock);
+	mixer->addObject((chip::AudioDevice*) mock);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {
@@ -75,8 +75,8 @@ void TestAdvanceWithTwoAdditions(int advance, int bufferSize) {
 
 	chip::MockIAudio * mock1 = new chip::MockIAudio(bufferSize);
 	chip::MockIAudio * mock2 = new chip::MockIAudio(bufferSize);
-	mixer->addObjects((chip::AudioDevice*) mock1);
-	mixer->addObjects((chip::AudioDevice*) mock2);
+	mixer->addObject((chip::AudioDevice*) mock1);
+	mixer->addObject((chip::AudioDevice*) mock2);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {
@@ -97,8 +97,8 @@ void TestTwoAdvancesWithTwoAdditions(int advance, int bufferSize) {
 
 	chip::MockIAudio * mock1 = new chip::MockIAudio(bufferSize);
 	chip::MockIAudio * mock2 = new chip::MockIAudio(bufferSize);
-	mixer->addObjects((chip::AudioDevice*) mock1);
-	mixer->addObjects((chip::AudioDevice*) mock2);
+	mixer->addObject((chip::AudioDevice*) mock1);
+	mixer->addObject((chip::AudioDevice*) mock2);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {

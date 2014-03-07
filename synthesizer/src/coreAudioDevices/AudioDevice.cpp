@@ -1,11 +1,22 @@
 #include "AudioDevice.hpp"
 
+float * chip::AudioDevice::advance(int numSamples) {
+	for (int i = 0; i < numSamples; i++) {
+		buffer[i] = 0;
+	}
+	return buffer;
+}
+
+// Resize the buffer of the audio device
+// DO NOT CALL DURING CALLBACK
 void chip::AudioDevice::resizeBuffer(int newSize) {
+	// Clears old buffer memory
 	free(buffer);
 	bufferSize = newSize;
 	buffer = new float[bufferSize];
 }
 
+// Change the sample rate of the device
 void chip::AudioDevice::changeSampleRate(int newRate) {
 	sampleRate = newRate;
 }
@@ -17,10 +28,12 @@ void chip::AudioDevice::zeroBuffer() {
 	}
 }
 
+// Return the buffer size
 int chip::AudioDevice::getBufferSize() {
 	return bufferSize;
 }
 
+// Return the audio sampling rate
 int chip::AudioDevice::getSampleRate() {
 	return sampleRate;
 }

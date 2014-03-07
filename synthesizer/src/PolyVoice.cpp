@@ -43,7 +43,6 @@ float * chip::PolyVoice::advance(int numSamples) {
 
 		phase += stepsize();
 		if (envelope) {
-			advanceEnvelope();
 			buffer[i] *= envmult;
 		}
 	}
@@ -56,20 +55,9 @@ int PolyVoice::getState() {
 	return state;
 }
 
-void PolyVoice::releasePolyVoice() {
-	state = RELEASE;
-	envloc = 0;
-	Rslope = -(envmult / RsampCount);
-}
 
-unsigned int PolyVoice::stepsize() {
-//Maximum value of phase scale (16^4 in this case)
-	int step;
 
-//Our equation!
-	step = ((frequency + vibFreq) * PHASESCALE) / SAMPLE_RATE;
-	return step;
-}
+
 
 void PolyVoice::setVoice(int attack, int decay, float sustain, int release,
 		int waveType, float vibAmp, int vibPeriod, int vibDelay) {
@@ -86,55 +74,3 @@ void PolyVoice::setVoice(int attack, int decay, float sustain, int release,
 	vibFreq = 0.0;
 }
 
-/*** Getters and setters ***/
-
-float PolyVoice::getEnvmult() {
-	return envmult;
-}
-
-void PolyVoice::setEnvmult(float newmult) {
-	envmult = newmult;
-}
-
-int PolyVoice::getEnvloc() {
-	return envloc;
-}
-
-void PolyVoice::setEnvloc(int newloc) {
-	envloc = newloc;
-}
-
-void PolyVoice::setAttack(int newAttack) {
-	attack = newAttack;
-	AsampCount = (attack * SAMPLE_RATE) / 1000;
-	Aslope = 1.0 / AsampCount;
-
-// Calculation explanation:
-// Attack - ms, SAMPLE_RATE - sample/s, 1000 ms/s
-
-// msec * sample   sec
-// -----  ------ ---------  = # of samples
-//         sec    1k msec
-
-}
-
-void PolyVoice::setDecay(int newDecay) {
-	decay = newDecay;
-	DsampCount = (decay * SAMPLE_RATE) / 1000;
-	Dslope = (sustain - 1.0) / DsampCount;
-}
-
-void PolyVoice::setSustain(float newSustain) {
-	sustain = newSustain;
-}
-
-void PolyVoice::setRelease(int newRelease) {
-	release = newRelease;
-	RsampCount = (release * SAMPLE_RATE) / 1000;
-}
-
-void PolyVoice::zeroBuffer() {
-	for (int i = 0; i < bufferSize; i++) {
-		buffer[i] = 0.0;
-	}
-}
