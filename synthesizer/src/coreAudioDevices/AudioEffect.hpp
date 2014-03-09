@@ -26,6 +26,9 @@ namespace chip {
 			// Overriding AudioDevice::resizeBuffer()
 			void resizeBuffer(int);
 
+			// Perform cleanup on all devices in the audioDeviceList
+			void cleanup();
+
 			// Adds audio object to mixer list
 			void addAudioDevice(AudioDevice *);
 

@@ -12,6 +12,9 @@ namespace chip {
 			// The advance call used to fill a buffer
 			float * advance(int);
 
+			// Perform whatever cleanup is necessary
+			void cleanup();
+
 			// Resize the buffer of the audio device
 			void resizeBuffer(int);
 
