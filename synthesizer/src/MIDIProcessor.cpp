@@ -34,8 +34,12 @@ namespace chip {
 
 	void MIDIProcessor::readMIDI(PortMidiStream * mstream) {
 		while (Pm_Poll(mstream)) {
+			// Grab all MIDI events still in the queue
 			int cnt = Pm_Read(mstream, msg, 32);
+
+			// Interpret each
 			for (int i = 0; i < cnt; i++) {
+				for (int j = 0; j<)
 				interpretMIDI(msg[i]);
 			}
 		}

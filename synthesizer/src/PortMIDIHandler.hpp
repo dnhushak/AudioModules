@@ -3,7 +3,7 @@
 
 namespace chip {
 	
-	class PortMIDIHandler {
+	class PortMIDIHandler: MIDIDevice {
 		public:
 			PmError connectMIDIStream(PmDeviceID devID);
 
@@ -13,10 +13,20 @@ namespace chip {
 
 			PmStream * getStream();
 
+			// Read from the FIFO serial stream
+			void readMIDI(PmStream * mstream);
+
+			// Process the MIDI
+			static void processMIDI(MIDIMessage);
+
 		private:
 			PmStream * mstream;
 
 			PmError errorPortMIDI(PmError err);
+
+			PmEvent msg[32];
+
+			void interpretMIDI(PmEvent data);
 	};
 
 }

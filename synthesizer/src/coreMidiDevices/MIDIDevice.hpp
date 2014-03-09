@@ -49,6 +49,12 @@ namespace chip {
 
 			// Actual number of MIDI devices in effect
 			int numMIDIDevices = 0;
+
+			// Scale a MIDI message to an int
+			int scaleValue(int value, int min, int max);
+
+			// Scale a MIDI message to a float
+			float scaleValue(int value, float min, float max);
 	};
 }
 

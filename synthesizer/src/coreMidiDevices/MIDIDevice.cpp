@@ -10,8 +10,7 @@ void chip::MIDIDevice::addMIDIDevice(MIDIDevice* MIDIObject) {
 }
 
 // Add a vector of MIDIDevices to be mixed
-void chip::MIDIDevice::addMIDIDevices(
-		std::vector<MIDIDevice*> * MIDIObjects) {
+void chip::MIDIDevice::addMIDIDevices(std::vector<MIDIDevice*> * MIDIObjects) {
 	int numToAdd;
 
 	// If no maximum...
@@ -25,7 +24,7 @@ void chip::MIDIDevice::addMIDIDevices(
 		numToAdd = MIDIObjects->size();
 	}
 	// Else add as many as are available
-	else{
+	else {
 		numToAdd = maxNumMIDIDevices - numMIDIDevices;
 	}
 
@@ -39,12 +38,11 @@ void chip::MIDIDevice::addMIDIDevices(
 void chip::MIDIDevice::setMIDIDeviceList(
 		std::vector<MIDIDevice*> * MIDIObjects) {
 
-// Re-reference
+	// Re-reference
 	MIDIDeviceList = MIDIObjects;
 
-// If the new device list has less than the maximum number of devices, or there is no maximum...
-	if (MIDIDeviceList->size() < maxNumMIDIDevices
-			|| maxNumMIDIDevices == -1) {
+	// If the new device list has less than the maximum number of devices, or there is no maximum...
+	if (MIDIDeviceList->size() < maxNumMIDIDevices || maxNumMIDIDevices == -1) {
 		// Then the current number of devices is the size of the new list
 		numMIDIDevices = MIDIDeviceList->size();
 	} else {
@@ -79,5 +77,15 @@ void chip::MIDIDevice::removeAllMIDIDevices() {
 // Returns the number of objects in this mixer
 int chip::MIDIDevice::getNumMIDIDevices() {
 	return numMIDIDevices;
+}
+
+// Scale a MIDI message to an int
+int scaleValue(int value, int min, int max) {
+	return (value * ((max - min) / 127) + min);
+}
+
+// Scale a MIDI message to a float
+float scaleValue(int value, float min, float max) {
+	return (value * ((max - min) / 127) + min);
 }
 
