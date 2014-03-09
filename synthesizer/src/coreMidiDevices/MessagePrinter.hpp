@@ -1,0 +1,17 @@
+#include "MIDIDevice.hpp"
+
+namespace chip {
+	
+	class MessagePrinter: public chip::MIDIDevice {
+		public:
+			MessagePrinter();
+
+			void affect(MIDIMessage *);
+
+			char * decodeMessageType(MIDIMessage *);
+
+	};
+
+}
+
+

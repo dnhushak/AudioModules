@@ -1,16 +1,10 @@
-/*
- * ChannelFilter.cpp
- *
- *  Created on: Mar 7, 2014
- *      Author: dnhushak
- */
-
 #include "ChannelFilter.hpp"
 
 namespace chip {
 	
 	ChannelFilter::ChannelFilter(int initChannel) {
 		// Expects channel in MIDI channel value (1-16) and not bit value (0-15)
+		// Channel of -1 Indicates omni
 		channel = initChannel - 1;
 	}
 
@@ -26,7 +20,7 @@ namespace chip {
 
 	void ChannelFilter::setChannel(int newChannel) {
 		// Expects channel in MIDI channel value (1-16) and not bit value (0-15)
-		if (newChannel > 0 && newChannel < 17) {
+		if (newChannel > -1 && newChannel < 17) {
 			channel = newChannel - 1;
 		}
 	}

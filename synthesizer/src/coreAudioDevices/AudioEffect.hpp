@@ -46,9 +46,6 @@ namespace chip {
 
 			// Returns the number of objects in this mixer
 			int getNumAudioDevices();
-
-			// Sets the maximum number of devices
-			int setMaxNumAudioDevices();
 		protected:
 
 			// List of Audio items to mix together
