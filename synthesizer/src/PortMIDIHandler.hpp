@@ -1,9 +1,10 @@
 #include "portmidi.h"
+#include "MIDIDevice.hpp"
 #include <stdio.h>
 
 namespace chip {
 	
-	class PortMIDIHandler: MIDIDevice {
+	class PortMIDIHandler: public MIDIDevice {
 		public:
 			PmError connectMIDIStream(PmDeviceID devID);
 

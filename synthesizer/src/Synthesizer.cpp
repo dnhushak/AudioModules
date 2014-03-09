@@ -1,4 +1,3 @@
-#include "AudioProcessor.hpp"
 #include "MIDIProcessor.hpp"
 #include "PortAudioHandler.hpp"
 #include "PortMIDIHandler.hpp"
@@ -97,21 +96,34 @@ int main(int argc, char *argv[]) {
 	//TODO: generate default voices
 	//TODO: Assign voices downstream
 	//TODO: Fix Voice Configuration Reader
-	chip::AudioProcessor * audioProcessor = new chip::AudioProcessor(bufferSize,
-			sampleRate, numModules);
 
-	chip::MIDIProcessor * midiProcessor = new chip::MIDIProcessor();
+	// The master mixer for the whole synth
+	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
 
+
+	/*** Set up the PA Handler. This is where the audio callback is ***/
 	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
 	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioDevID, NULL, 1,
-			0, audioProcessor);
+			0, masterMixer);
 
+	/*** Set up the PM handler ***/
 	chip::PortMIDIHandler * PMHandler = new chip::PortMIDIHandler();
 	PMHandler->connectMIDIStream(MIDIDevID);
 
+
+	/*** Make all MIDI Connections ***/
+
+	// Print incoming MIDI Connections
+	if (verbose) {
+		chip::MessagePrinter * printer = new chip::MessagePrinter();
+		PMHandler->addMIDIDevice(printer);
+
+	}
+
 	while (1) {
-		midiProcessor->readMIDI();
-		audioProcessor->cleanup();
+		// Read MIDI, forward
+		PMHandler->readMIDI();
+		masterMixer->cleanup();
 	}
 
 	PAHandler->disconnectAudioStream();
