@@ -1,5 +1,5 @@
 #include "AudioEffect.hpp"
-#include "AudioUtils.h"
+#include "AudioUtils.hpp"
 
 namespace chip {
 	

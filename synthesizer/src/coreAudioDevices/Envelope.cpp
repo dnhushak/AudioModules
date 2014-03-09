@@ -9,7 +9,6 @@ void chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 
 	// Initialize state to INIT
 	state = INIT;
-
 }
 
 // Advance the envelope. Returns a buffer holding the envelope multiplier values

@@ -1,10 +1,3 @@
-/*
- * Wavetable.cpp
- *
- *  Created on: Mar 6, 2014
- *      Author: dnhushak
- */
-
 #include "Wavetable.hpp"
 
 namespace chip {
