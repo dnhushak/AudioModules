@@ -1,5 +1,6 @@
 #include "AudioDevice.hpp"
 
+// Default behavior for audio device, just returns 0
 float * chip::AudioDevice::advance(int numSamples) {
 	for (int i = 0; i < numSamples; i++) {
 		buffer[i] = 0;

@@ -29,6 +29,42 @@ namespace chip {
 		return err;
 	}
 
+	void PortMIDIHandler::readMIDI() {
+		while (Pm_Poll(mstream)) {
+			// Grab all MIDI events still in the queue
+			int cnt = Pm_Read(mstream, msg, 32);
+
+			// Interpret each
+			for (int i = 0; i < cnt; i++) {
+				// Parse the MIDI and pass it to the affect method
+				affect(parseMIDI(&msg[i]));
+			}
+		}
+		return;
+	}
+
+	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {
+
+		// MIDIMessage struct to be returned
+		MIDIMessage * message = new MIDIMessage;
+
+		// Grab status
+		int status = Pm_MessageStatus(data->message);
+
+		// Top four bits is message type
+		message->type = status >> 4;
+		// Bottom four bits is MIDI Channel
+		int channel = (status & 0x0F);
+
+		// Grab the data bits
+		message->data1 = Pm_MessageData1(data->message);
+		message->data2 = Pm_MessageData2(data->message);
+
+		// Grab the timestamp
+		message->time = data->timestamp;
+		return message;
+	}
+
 	// Print a list of valid devices
 	void static PortMIDIHandler::printMIDIDevices() {
 		printf("***Valid MIDI Devices: ***");
@@ -58,7 +94,7 @@ namespace chip {
 
 	}
 
-	PmStream * PortMIDIHandler::getStream(){
+	PmStream * PortMIDIHandler::getStream() {
 		return mstream;
 	}
 
