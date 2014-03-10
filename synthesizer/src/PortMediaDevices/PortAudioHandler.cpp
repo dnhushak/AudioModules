@@ -69,16 +69,24 @@ namespace chip {
 	// PortAudio Error Check
 	PaError PortAudioHandler::errorPortAudio(PaError err) {
 		Pa_Terminate();
-		fprintf(stderr, "An error occured while using the portaudio stream\n");
-		fprintf(stderr, "Error number: %d\n", err);
-		fprintf(stderr, "Error message: %s\n", Pa_GetErrorText(err));
+		std::string red = "\033[1;31m";
+		std::string defcol = "\033[0m";
+		std::cout << red;
+		std::cout << "An error occured while using the portaudio stream\n";
+		std::cout << "Error number: " << err << "\n";
+		std::cout << "Error message: " << Pa_GetErrorText(err) << "\n";
+		std::cout << defcol;
 		printAudioDevices();
 		return err;
 	}
 
 	// Print a list of valid devices
 	void PortAudioHandler::printAudioDevices() {
-		printf("***Valid Audio Devices: ***\n");
+		//Make Magenta
+		std::string magenta = "\033[1;35m";
+		// Make default color
+		std::string defcol = "\033[0m";
+		std::cout << magenta << "***Valid Audio Devices: ***\n" << defcol;
 		Pa_Initialize();
 		int ndev;
 		ndev = Pa_GetDeviceCount();
@@ -102,8 +110,12 @@ namespace chip {
 					}
 
 				}
-				printf("%d: %s\n", i, info->name);
+				printf("| In: %02i | Out: %02i | %02i: %s \n",
+						info->maxInputChannels, info->maxOutputChannels, i,
+						info->name);
 			}
+
+			std::cout << magenta << "***Default Audio Devices: ***\n" << defcol;
 
 			PaDeviceIndex defaultin = Pa_GetDefaultInputDevice();
 			PaDeviceIndex defaultout = Pa_GetDefaultOutputDevice();
@@ -111,19 +123,23 @@ namespace chip {
 					(PaDeviceIndex) defaultin);
 			const PaDeviceInfo * outputinfo = Pa_GetDeviceInfo(
 					(PaDeviceIndex) defaultout);
-			printf("\nDefault Input Device:   %d: %s\n", defaultin,
-					inputinfo->name);
-			printf("Default Output Device:  %d: %s\n\n", defaultout,
-					outputinfo->name);
+			printf(
+					"Default Input Device:   | In: %02i | Out: %02i | %02i: %s \n",
+					inputinfo->maxInputChannels, inputinfo->maxOutputChannels,
+					defaultin, inputinfo->name);
+			printf(
+					"Default Output Device:  | In: %02i | Out: %02i | %02i: %s \n\n",
+					outputinfo->maxInputChannels, outputinfo->maxOutputChannels,
+					defaultout, outputinfo->name);
 		}
 	}
 
-	// For any input stream we may want
+// For any input stream we may want
 	PaStream * PortAudioHandler::getStream() {
 		return astream;
 	}
 
-	// PortAudio Callback
+// PortAudio Callback
 	int PortAudioHandler::paCallback(const void *inputBuffer,
 			void *outputBuffer, unsigned long framesPerBuffer,
 			const PaStreamCallbackTimeInfo* timeInfo,

@@ -4,6 +4,7 @@
 #include "ChannelFilter.hpp"
 #include "MessagePrinter.hpp"
 #include <unistd.h>
+#include <stdlib.h>
 
 int is_int(char const* p) {
 	char compare[10];
@@ -19,8 +20,8 @@ int main(int argc, char *argv[]) {
 
 	int bufferSize = 512;
 	int sampleRate = 44100;
-	int numOutChannels = 1;
-	int numInChannels = 1;
+	int numOutChannels = 2;
+	int numInChannels = 0;
 	int numModules = 5;
 	int MIDIDevID = 0;
 	int AudioOutDevID = 3;
@@ -115,7 +116,7 @@ int main(int argc, char *argv[]) {
 	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
 
 	/*** Set up the PA Handler. This is where the audio callback is ***/
-	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID, 0, numOutChannels,
+	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID, AudioInDevID, numOutChannels,
 			numInChannels, masterMixer);
 
 	/*** Set up the PM handler ***/
