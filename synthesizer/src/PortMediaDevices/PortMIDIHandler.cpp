@@ -64,7 +64,11 @@ namespace chip {
 
 	// Print a list of valid devices
 	void PortMIDIHandler::printMIDIDevices() {
-		printf("***Valid MIDI Devices: ***\n");
+		//Make Magenta
+		std::string magenta = "\033[1;35m";
+		// Make default color
+		std::string defcol = "\033[0m";
+		std::cout << magenta << "***Valid MIDI Devices: ***\n" << defcol;
 		Pm_Initialize();
 		int ndev;
 		ndev = Pm_CountDevices();
@@ -74,23 +78,23 @@ namespace chip {
 			for (int i = 0; i < ndev; i++) {
 				const PmDeviceInfo * info = Pm_GetDeviceInfo((PmDeviceID) i);
 				if (info->input) {
-					printf("Input Device:          ");
+					printf("Input Device:           ");
 				} else if (info->output) {
-					printf("Output Device:           ");
-
+					printf("Output Device:          ");
 				}
-				printf("%d: %s\n", i, info->name);
+				printf("| %d: %s\n", i, info->name);
 			}
+
+			std::cout << magenta << "***Default MIDI Devices: ***\n" << defcol;
+
 			PmDeviceID defaultin = Pm_GetDefaultInputDeviceID();
 			PmDeviceID defaultout = Pm_GetDefaultOutputDeviceID();
 			const PmDeviceInfo * inputinfo = Pm_GetDeviceInfo(
 					(PmDeviceID) defaultin);
 			const PmDeviceInfo * outputinfo = Pm_GetDeviceInfo(
 					(PmDeviceID) defaultout);
-			printf("\nDefault Input Device:   %d: %s\n", defaultin,
-					inputinfo->name);
-			printf("Default Output Device:  %d: %s\n\n", defaultout,
-					outputinfo->name);
+			printf("Default Input Device:   | %d: %s\n", defaultin, inputinfo->name);
+			printf("Default Output Device:  | %d: %s\n", defaultout, outputinfo->name);
 		}
 	}
 
