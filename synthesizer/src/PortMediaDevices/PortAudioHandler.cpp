@@ -8,45 +8,61 @@ namespace chip {
 			int numInChannels, void *userData) {
 
 		// Declare output parameters
-		PaStreamParameters outputParameters, inputParameters;
-
+		PaStreamParameters * outputParameters, *inputParameters;
+		outputParameters = new PaStreamParameters;
+		inputParameters = new PaStreamParameters;
 		// Initialize PA
 		err = Pa_Initialize();
 		if (err != paNoError)
 			return errorPortAudio(err);
 
-		// Set output Parameters
-		outputParameters.device = outDevID;
-		if (outputParameters.device == paNoDevice)
-			return errorPortAudio(err);
-		outputParameters.channelCount = numOutChannels;
-		outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
-		outputParameters.suggestedLatency = Pa_GetDeviceInfo(
-				outputParameters.device)->defaultLowOutputLatency;
-		outputParameters.hostApiSpecificStreamInfo = NULL;
+		// Check if using output stream
+		if (outDevID == -1) {
+			printf("No output device selected...\n");
+			outputParameters = NULL;
+		} else {
+			printf("Connecting to output device %d...\n", outDevID);
+			// Set output Parameters
+			outputParameters->device = outDevID;
+			if (outputParameters->device == paNoDevice)
+				return errorPortAudio(err);
+			outputParameters->channelCount = numOutChannels;
+			printf("Using %d channels...\n", numOutChannels);
+			outputParameters->sampleFormat = paFloat32; /* 32 bit floating point output */
+			outputParameters->suggestedLatency = Pa_GetDeviceInfo(
+					outputParameters->device)->defaultLowOutputLatency;
+			outputParameters->hostApiSpecificStreamInfo = NULL;
+		}
 
-		// Set input Parameters
-		inputParameters.device = inDevID;
-		if (inputParameters.device == paNoDevice)
-			return errorPortAudio(err);
-		inputParameters.channelCount = numInChannels;
-		inputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
-		inputParameters.suggestedLatency = Pa_GetDeviceInfo(
-				inputParameters.device)->defaultLowOutputLatency;
-		inputParameters.hostApiSpecificStreamInfo = NULL;
-
+		// Check if using input stream
+		if (inDevID == -1) {
+			printf("No input device selected...\n");
+			inputParameters = NULL;
+		} else {
+			printf("Connecting to input device %d...\n", inDevID);
+			// Set input Parameters
+			inputParameters->device = inDevID;
+			if (inputParameters->device == paNoDevice)
+				return errorPortAudio(err);
+			inputParameters->channelCount = numInChannels;
+			printf("Using %d channels...\n", numInChannels);
+			inputParameters->sampleFormat = paFloat32; /* 32 bit floating point output */
+			inputParameters->suggestedLatency = Pa_GetDeviceInfo(
+					inputParameters->device)->defaultLowOutputLatency;
+			inputParameters->hostApiSpecificStreamInfo = NULL;
+		}
 		// Open the stream
-		err = Pa_OpenStream(&astream, &inputParameters, &outputParameters,
+		err = Pa_OpenStream(&astream, inputParameters, outputParameters,
 				sampleRate, bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
 				PortAudioHandler::paCallback, userData); // We want to pass a pointer to the AudioProcessor
 		if (err != paNoError)
 			return errorPortAudio(err);
-
+		printf("Stream opened...\n");
 		// Start the stream
 		err = Pa_StartStream(astream);
 		if (err != paNoError)
 			return errorPortAudio(err);
-
+		printf("Stream started...\n");
 		return err;
 	}
 

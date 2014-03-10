@@ -6,12 +6,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int is_int(char const* p) {
-	char compare[10];
-	sprintf(compare, "%d", atoi(p));
-	return strcmp(compare, p) == 0;
-}
-
 // Main
 int main(int argc, char *argv[]) {
 
@@ -21,11 +15,11 @@ int main(int argc, char *argv[]) {
 	int bufferSize = 512;
 	int sampleRate = 44100;
 	int numOutChannels = 2;
-	int numInChannels = 0;
+	int numInChannels = 2;
 	int numModules = 5;
 	int MIDIDevID = 0;
 	int AudioOutDevID = 3;
-	int AudioInDevID = 1;
+	int AudioInDevID = -1;
 	int verbose = 0;
 	extern char *optarg;
 	int ch;
@@ -34,23 +28,11 @@ int main(int argc, char *argv[]) {
 		switch (ch) {
 			case 'p':
 				// MIDI Port argument
-				if (is_int(optarg)) {
-					MIDIDevID = atoi(optarg);
-				} else {
-					fprintf(stderr,
-							"MIDI Port takes an integer argument. Specify MIDI Device to be used\n");
-					exit(2);
-				}
+				MIDIDevID = atoi(optarg);
 				break;
 			case 'a':
 				// Audio Device argument
-				if (is_int(optarg)) {
-					AudioOutDevID = atoi(optarg);
-				} else {
-					fprintf(stderr,
-							"Audio Device takes an integer argument. Specify Audio Device to be used\n");
-					exit(2);
-				}
+				AudioOutDevID = atoi(optarg);
 				break;
 			case 'v':
 				// Verbose argument
@@ -65,43 +47,19 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'b':
 				// Buffer Size Argument
-				if (is_int(optarg)) {
-					bufferSize = atoi(optarg);
-				} else {
-					fprintf(stderr,
-							"Buffer Size takes an integer argument. Specify desired buffer size\n");
-					exit(2);
-				}
+				bufferSize = atoi(optarg);
 				break;
 			case 's':
 				// Sample Rate argument
-				if (is_int(optarg)) {
-					sampleRate = atoi(optarg);
-				} else {
-					fprintf(stderr,
-							"Sample Rate takes an integer argument. Specify desired audio Sampling Rate\n");
-					exit(2);
-				}
+				sampleRate = atoi(optarg);
 				break;
 			case 'c':
 				// Audio Channels
-				if (is_int(optarg)) {
-					numOutChannels = atoi(optarg);
-				} else {
-					fprintf(stderr,
-							"Audio Channels takes an integer argument. Specify number of output audio channels\n");
-					exit(2);
-				}
+				numOutChannels = atoi(optarg);
 				break;
 			case 'm':
 				// Number of Modules
-				if (is_int(optarg)) {
-					numModules = atoi(optarg);
-				} else {
-					fprintf(stderr,
-							"Modules takes an integer argument. Specify number of MIDI modules\n");
-					exit(2);
-				}
+				numModules = atoi(optarg);
 				break;
 
 		}
@@ -116,11 +74,19 @@ int main(int argc, char *argv[]) {
 	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
 
 	/*** Set up the PA Handler. This is where the audio callback is ***/
-	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID, AudioInDevID, numOutChannels,
-			numInChannels, masterMixer);
+	PaError paerr;
+	paerr = PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
+			AudioInDevID, numOutChannels, numInChannels, masterMixer);
+	if (!paerr == paNoError) {
+		exit(0);
+	}
 
 	/*** Set up the PM handler ***/
-	PMHandler->connectMIDIStream(MIDIDevID);
+	PmError pmerr;
+	pmerr = PMHandler->connectMIDIStream(MIDIDevID);
+	if (!pmerr == pmNoError) {
+		exit(0);
+	}
 
 	/*** Make all MIDI Connections ***/
 
