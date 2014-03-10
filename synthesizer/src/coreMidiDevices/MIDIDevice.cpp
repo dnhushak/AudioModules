@@ -6,6 +6,13 @@ chip::MIDIDevice::MIDIDevice() {
 	numMIDIDevices = 0;
 }
 
+// Forwards all MIDI messages in the stream to all in the MIDIDevice List
+void chip::MIDIDevice::affect(MIDIMessage * message) {
+	for (int i = 0; i < numMIDIDevices; i++) {
+		(*MIDIDeviceList)[i]->affect(message);
+	}
+}
+
 // Add another MIDIDevice object to be mixed
 void chip::MIDIDevice::addMIDIDevice(MIDIDevice* MIDIObject) {
 	// Ignore if at maximum value or no maximum
@@ -86,12 +93,14 @@ int chip::MIDIDevice::getNumMIDIDevices() {
 }
 
 // Scale a MIDI message to an int
-int scaleValue(int value, int min, int max) {
+int chip::MIDIDevice::scaleValue(int value, int min, int max) {
 	return (value * ((max - min) / 127) + min);
 }
 
 // Scale a MIDI message to a float
-float scaleValue(int value, float min, float max) {
+float chip::MIDIDevice::scaleValue(int value, float min, float max) {
 	return (value * ((max - min) / 127) + min);
 }
 
+chip::MIDIDevice::~MIDIDevice() {
+}

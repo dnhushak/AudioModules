@@ -9,8 +9,8 @@ namespace chip {
 	void MessagePrinter::affect(MIDIMessage * message) {
 		printf("MIDI Message | Type: ");
 		decodeMessageType(message);
-		printf(" | Channel: %03i | Data1: %03i | Data2: %03i\n", message->channel,
-				message->data1, message->data2);
+		printf(" | Channel: %03i | Data1: %03i | Data2: %03i\n",
+				message->channel, message->data1, message->data2);
 	}
 
 	void MessagePrinter::decodeMessageType(MIDIMessage * message) {
@@ -51,6 +51,10 @@ namespace chip {
 				std::cout << "Unrecognized   ";
 				break;
 		}
+	}
+
+	MessagePrinter::~MessagePrinter() {
+
 	}
 
 }

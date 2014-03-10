@@ -1,5 +1,6 @@
 //MIDI Device Class
-#pragma once
+#ifndef MIDIDEVICE_H
+#define MIDIDEVICE_H
 #include <vector>
 #include <iostream>
 
@@ -16,7 +17,7 @@ namespace chip {
 			MIDIDevice();
 
 			// The affect call used to act based on MIDI input
-			void virtual affect(MIDIMessage *);
+			virtual void affect(MIDIMessage *);
 
 			// Adds MIDI object to mixer list
 			void addMIDIDevice(MIDIDevice *);
@@ -41,6 +42,8 @@ namespace chip {
 
 			// Sets the maximum number of devices
 			int setMaxNumMIDIDevices();
+
+			virtual ~MIDIDevice();
 		protected:
 
 			// List of MIDI items to mix together
@@ -59,4 +62,4 @@ namespace chip {
 			float scaleValue(int value, float min, float max);
 	};
 }
-
+#endif /*MIDIDevice*/

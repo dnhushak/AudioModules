@@ -1,3 +1,4 @@
+#pragma once
 #include "MIDIDevice.hpp"
 
 namespace chip {
@@ -6,9 +7,11 @@ namespace chip {
 		public:
 			MessagePrinter();
 
-			void affect(MIDIMessage *);
+			virtual void affect(MIDIMessage *);
 
 			void decodeMessageType(MIDIMessage *);
+
+			virtual ~MessagePrinter();
 
 	};
 

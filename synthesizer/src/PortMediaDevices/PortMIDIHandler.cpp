@@ -2,13 +2,6 @@
 
 namespace chip {
 
-	// Forwards all MIDI messages in the stream to all in the MIDIDevice List
-	void chip::MIDIDevice::affect(MIDIMessage * message) {
-		for (int i = 0; i < numMIDIDevices; i++) {
-			(*MIDIDeviceList)[i]->affect(message);
-		}
-	}
-
 	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
 		PmError err = Pm_Initialize();
 		if (err != pmNoError)
@@ -113,6 +106,10 @@ namespace chip {
 		fprintf(stderr, "Error message: %s\n", Pm_GetErrorText(err));
 		printMIDIDevices();
 		return err;
+	}
+
+	PortMIDIHandler::~PortMIDIHandler(){
+
 	}
 
 }
