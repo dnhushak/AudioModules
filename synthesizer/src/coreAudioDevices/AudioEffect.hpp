@@ -26,10 +26,10 @@ namespace chip {
 
 			// Resize the buffer of the object, as well as all of its downstream connected objects
 			// Overriding AudioDevice::resizeBuffer()
-			void resizeBuffer(int);
+			virtual void resizeBuffer(int);
 
 			// Perform cleanup on all devices in the audioDeviceList
-			void cleanup();
+			virtual void cleanup();
 
 			// Adds audio object to mixer list
 			void addAudioDevice(AudioDevice *);

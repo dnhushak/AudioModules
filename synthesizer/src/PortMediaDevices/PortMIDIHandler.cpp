@@ -108,8 +108,4 @@ namespace chip {
 		return err;
 	}
 
-	PortMIDIHandler::~PortMIDIHandler(){
-
-	}
-
 }

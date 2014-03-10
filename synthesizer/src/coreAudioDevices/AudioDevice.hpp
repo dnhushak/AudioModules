@@ -12,7 +12,7 @@ namespace chip {
 			AudioDevice();
 
 			// The advance call used to fill a buffer
-			float * advance(int);
+			virtual float * advance(int);
 
 			// Perform whatever cleanup is necessary
 			void cleanup();
@@ -34,6 +34,8 @@ namespace chip {
 
 			// Return the state
 			devState_t getState();
+
+			virtual ~AudioDevice();
 
 		protected:
 			// Size of buffer

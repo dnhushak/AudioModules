@@ -10,9 +10,6 @@ namespace chip {
 			virtual void affect(MIDIMessage *);
 
 			void decodeMessageType(MIDIMessage *);
-
-			virtual ~MessagePrinter();
-
 	};
 
 }

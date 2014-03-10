@@ -24,8 +24,6 @@ namespace chip {
 
 			PortMidiStream * getStream();
 
-			virtual ~PortMIDIHandler();
-
 		private:
 			// The PortMIDI stream
 			PortMidiStream * mstream;

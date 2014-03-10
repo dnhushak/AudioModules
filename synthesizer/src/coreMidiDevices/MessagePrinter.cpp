@@ -53,8 +53,4 @@ namespace chip {
 		}
 	}
 
-	MessagePrinter::~MessagePrinter() {
-
-	}
-
 }

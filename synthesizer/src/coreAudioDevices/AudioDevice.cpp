@@ -49,3 +49,7 @@ int chip::AudioDevice::getSampleRate() {
 void cleanup() {
 	return;
 }
+
+chip::AudioDevice::~AudioDevice(){
+
+}
