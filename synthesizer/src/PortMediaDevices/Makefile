@@ -1,5 +1,5 @@
 CXX = g++
-LDFLAGS = -Wall -g
+LDFLAGS = -lportmidi -lportaudio -Wall -g
 CFLAGS = -I../coreAudioDevices -I../coreMidiDevices
 CXXFLAGS =
 

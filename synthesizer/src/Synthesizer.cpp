@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	extern char *optarg;
 	int ch;
 	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
-	/**while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a")) != EOF) {
+	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a")) != EOF) {
 		switch (ch) {
 			case 'p':
 				// MIDI Port argument
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 			case 'c':
 				// Audio Channels
 				if (is_int(optarg)) {
-					numChannels = atoi(optarg);
+					numOutChannels = atoi(optarg);
 				} else {
 					fprintf(stderr,
 							"Audio Channels takes an integer argument. Specify number of output audio channels\n");
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 				break;
 
 		}
-	}**/
+	}
 
 	//TODO: Generate wavetables
 	//TODO: generate default voices
@@ -127,7 +127,6 @@ int main(int argc, char *argv[]) {
 	if (verbose) {
 		chip::MessagePrinter * printer = new chip::MessagePrinter();
 		PMHandler->addMIDIDevice(printer);
-
 	}
 
 	while (1) {

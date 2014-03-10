@@ -6,6 +6,7 @@ namespace chip {
 	
 	class PortMIDIHandler: public MIDIDevice {
 		public:
+
 			PmError connectMIDIStream(PmDeviceID devID);
 
 			PmError disconnectMIDIStream();
@@ -21,11 +22,11 @@ namespace chip {
 
 			void printMIDIDevices();
 
-			PmStream * getStream();
+			PortMidiStream * getStream();
 
 		private:
 			// The PortMIDI stream
-			PmStream * mstream;
+			PortMidiStream * mstream;
 
 			// PM error handling
 			PmError errorPortMIDI(PmError err);

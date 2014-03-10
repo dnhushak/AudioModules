@@ -2,15 +2,8 @@
 
 chip::MIDIDevice::MIDIDevice() {
 	maxNumMIDIDevices = -1;
-	MIDIDeviceList = NULL;
+	MIDIDeviceList = new std::vector<MIDIDevice *>;
 	numMIDIDevices = 0;
-}
-
-// Forwards all MIDI messages in the stream to all in the MIDIDevice List
-void chip::MIDIDevice::affect(MIDIMessage * message) {
-	for (int i = 0; i < numMIDIDevices; i++) {
-		(*MIDIDeviceList)[i]->affect(message);
-	}
 }
 
 // Add another MIDIDevice object to be mixed

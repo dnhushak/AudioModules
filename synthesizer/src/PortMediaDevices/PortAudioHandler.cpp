@@ -35,10 +35,9 @@ namespace chip {
 				inputParameters.device)->defaultLowOutputLatency;
 		inputParameters.hostApiSpecificStreamInfo = NULL;
 
-
 		// Open the stream
-		err = Pa_OpenStream(&astream, &inputParameters, &outputParameters, sampleRate,
-				bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
+		err = Pa_OpenStream(&astream, &inputParameters, &outputParameters,
+				sampleRate, bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
 				PortAudioHandler::paCallback, userData); // We want to pass a pointer to the AudioProcessor
 		if (err != paNoError)
 			return errorPortAudio(err);
@@ -83,36 +82,40 @@ namespace chip {
 		Pa_Initialize();
 		int ndev;
 		ndev = Pa_GetDeviceCount();
-		for (int i = 0; i < ndev; i++) {
-			const PaDeviceInfo * info = Pa_GetDeviceInfo((PaDeviceIndex) i);
-			if (info->maxOutputChannels > 0) {
+		if (ndev == 0) {
+			printf("No Audio devices connected!\n");
+		} else {
+			for (int i = 0; i < ndev; i++) {
+				const PaDeviceInfo * info = Pa_GetDeviceInfo((PaDeviceIndex) i);
+				if (info->maxOutputChannels > 0) {
 
-				if (info->maxInputChannels > 0) {
-					printf("Input/Output Device:    ");
+					if (info->maxInputChannels > 0) {
+						printf("Input/Output Device:    ");
+					} else {
+						printf("Output Device:          ");
+					}
 				} else {
-					printf("Output Device:          ");
-				}
-			} else {
-				if (info->maxInputChannels > 0) {
-					printf("Input Device:           ");
-				} else {
-					printf("Device:                 ");
-				}
+					if (info->maxInputChannels > 0) {
+						printf("Input Device:           ");
+					} else {
+						printf("Device:                 ");
+					}
 
+				}
+				printf("%d: %s\n", i, info->name);
 			}
-			printf("%d: %s\n", i, info->name);
+
+			PaDeviceIndex defaultin = Pa_GetDefaultInputDevice();
+			PaDeviceIndex defaultout = Pa_GetDefaultOutputDevice();
+			const PaDeviceInfo * inputinfo = Pa_GetDeviceInfo(
+					(PaDeviceIndex) defaultin);
+			const PaDeviceInfo * outputinfo = Pa_GetDeviceInfo(
+					(PaDeviceIndex) defaultout);
+			printf("\nDefault Input Device:   %d: %s\n", defaultin,
+					inputinfo->name);
+			printf("Default Output Device:  %d: %s\n\n", defaultout,
+					outputinfo->name);
 		}
-
-		PaDeviceIndex defaultin = Pa_GetDefaultInputDevice();
-		PaDeviceIndex defaultout = Pa_GetDefaultOutputDevice();
-		const PaDeviceInfo * inputinfo = Pa_GetDeviceInfo(
-				(PaDeviceIndex) defaultin);
-		const PaDeviceInfo * outputinfo = Pa_GetDeviceInfo(
-				(PaDeviceIndex) defaultout);
-		printf("Default Input Device:   %d: %s\n", defaultin, inputinfo->name);
-		printf("Default Output Device:  %d: %s\n", defaultout,
-				outputinfo->name);
-
 	}
 
 	// For any input stream we may want
@@ -125,7 +128,6 @@ namespace chip {
 			void *outputBuffer, unsigned long framesPerBuffer,
 			const PaStreamCallbackTimeInfo* timeInfo,
 			PaStreamCallbackFlags statusFlags, void *userData) {
-
 		// Cast void type outbut buffer to float
 		float *out = (float*) outputBuffer;
 

@@ -7,10 +7,10 @@ namespace chip {
 	}
 
 	void MessagePrinter::affect(MIDIMessage * message) {
-		std::cout << "MIDI message: " << " Message: ";
+		printf("MIDI Message | Type: ");
 		decodeMessageType(message);
-		std::cout << " Channel: " << message->channel << " Data 1: "
-				<< message->data1 << " Data2 = " << message->data2 << "\n";
+		printf(" | Channel: %03i | Data1: %03i | Data2: %03i\n", message->channel,
+				message->data1, message->data2);
 	}
 
 	void MessagePrinter::decodeMessageType(MIDIMessage * message) {

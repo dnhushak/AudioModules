@@ -16,7 +16,7 @@ namespace chip {
 			MIDIDevice();
 
 			// The affect call used to act based on MIDI input
-			void affect(MIDIMessage *);
+			void virtual affect(MIDIMessage *);
 
 			// Adds MIDI object to mixer list
 			void addMIDIDevice(MIDIDevice *);

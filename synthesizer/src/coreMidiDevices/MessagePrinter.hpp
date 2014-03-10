@@ -2,7 +2,7 @@
 
 namespace chip {
 	
-	class MessagePrinter: public chip::MIDIDevice {
+	class MessagePrinter: public MIDIDevice {
 		public:
 			MessagePrinter();
 
