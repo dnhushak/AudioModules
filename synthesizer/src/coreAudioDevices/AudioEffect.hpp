@@ -22,6 +22,8 @@ namespace chip {
 	*/
 	class AudioEffect: public AudioDevice {
 		public:
+			AudioEffect();
+
 			// Resize the buffer of the object, as well as all of its downstream connected objects
 			// Overriding AudioDevice::resizeBuffer()
 			void resizeBuffer(int);
@@ -55,10 +57,10 @@ namespace chip {
 			std::vector<AudioDevice*> * audioDeviceList;
 
 			// Maximum number of audio devices allowable in effect (-1 -> no maximum)
-			int maxNumAudioDevices = - 1;
+			int maxNumAudioDevices;
 
 			// Actual number of audio devices in effect
-			int numAudioDevices = 0;
+			int numAudioDevices;
 
 	};
 }

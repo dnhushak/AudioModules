@@ -1,6 +1,6 @@
 #include "Module.hpp"
 
-void chip::Module::Module(int initBufferSize, int initSampleRate) {
+chip::Module::Module(int initBufferSize, int initSampleRate) {
 
 	//TODO: Implement glissando and arpeggiation - split into separate AudioEffect modules, and reroute the
 	// moduleGain inputs to the gliss/arpegg/polyMixer outputs
@@ -19,8 +19,15 @@ void chip::Module::Module(int initBufferSize, int initSampleRate) {
 	polyMixer->setAudioDeviceList(
 			(std::vector<chip::AudioDevice *> *) audioDeviceList);
 
+	voice = NULL;
 	// Inputs the polyMixer into the gain module
 	moduleGain->addAudioDevice(polyMixer);
+
+	arp_en = false;
+	gliss_en = false;
+	arpTime = 100;
+	glissTime = 1000;
+	volume = -6;
 
 }
 
@@ -69,7 +76,7 @@ void chip::Module::releasePolyVoice(int note) {
 void chip::Module::cleanup() {
 	// Remove all polyvoices in cleanup state
 	for (int i = 0; i < audioDeviceList->size(); i++) {
-		if ((*audioDeviceList)[i]->getState == INACTIVE) {
+		if ((*audioDeviceList)[i]->getState() == INACTIVE) {
 			audioDeviceList->erase(audioDeviceList->begin() + i);
 		}
 	}

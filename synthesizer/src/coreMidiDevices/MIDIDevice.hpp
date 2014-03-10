@@ -13,6 +13,8 @@ namespace chip {
 	};
 	class MIDIDevice {
 		public:
+			MIDIDevice();
+
 			// The affect call used to act based on MIDI input
 			void affect(MIDIMessage *);
 
@@ -45,10 +47,10 @@ namespace chip {
 			std::vector<MIDIDevice*> * MIDIDeviceList;
 
 			// Maximum number of MIDI devices allowable in effect (-1 -> no maximum)
-			int maxNumMIDIDevices = -1;
+			int maxNumMIDIDevices;
 
 			// Actual number of MIDI devices in effect
-			int numMIDIDevices = 0;
+			int numMIDIDevices;
 
 			// Scale a MIDI message to an int
 			int scaleValue(int value, int min, int max);

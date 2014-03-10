@@ -1,6 +1,6 @@
 #include "Envelope.hpp"
 
-void chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
+chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 	// Initialize the output buffer
 	bufferSize = initBufferSize;
 
@@ -9,6 +9,11 @@ void chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 
 	// Initialize state to INIT
 	state = INIT;
+
+	setRelease(100);
+	setAttack(100);
+	setDecay(100);
+	setSustain(.7);
 }
 
 // Advance the envelope. Returns a buffer holding the envelope multiplier values

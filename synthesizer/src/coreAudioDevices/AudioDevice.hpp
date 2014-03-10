@@ -9,6 +9,8 @@ namespace chip {
 	};
 	class AudioDevice {
 		public:
+			AudioDevice();
+
 			// The advance call used to fill a buffer
 			float * advance(int);
 
@@ -42,7 +44,7 @@ namespace chip {
 			// Sampling rate of the device
 			int sampleRate;
 
-			devState_t state = ACTIVE;
+			devState_t state;
 	};
 }
 

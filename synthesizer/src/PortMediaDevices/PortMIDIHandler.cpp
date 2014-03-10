@@ -54,8 +54,7 @@ namespace chip {
 		// Top four bits is message type
 		message->type = status >> 4;
 		// Bottom four bits is MIDI Channel
-		int channel = (status & 0x0F);
-
+		message->channel = (status & 0x0F);
 		// Grab the data bits
 		message->data1 = Pm_MessageData1(data->message);
 		message->data2 = Pm_MessageData2(data->message);
@@ -66,8 +65,8 @@ namespace chip {
 	}
 
 	// Print a list of valid devices
-	void static PortMIDIHandler::printMIDIDevices() {
-		printf("***Valid MIDI Devices: ***");
+	void PortMIDIHandler::printMIDIDevices() {
+		printf("***Valid MIDI Devices: ***\n");
 		Pm_Initialize();
 		int ndev;
 		ndev = Pm_CountDevices();
@@ -83,7 +82,7 @@ namespace chip {
 		}
 
 		PmDeviceID defaultin = Pm_GetDefaultInputDeviceID();
-		PmDeviceID defaultout = Pm_GetDefaultOutputDeviceID()();
+		PmDeviceID defaultout = Pm_GetDefaultOutputDeviceID();
 		const PmDeviceInfo * inputinfo = Pm_GetDeviceInfo(
 				(PmDeviceID) defaultin);
 		const PmDeviceInfo * outputinfo = Pm_GetDeviceInfo(
@@ -103,7 +102,7 @@ namespace chip {
 		Pm_Terminate();
 		fprintf(stderr, "An error occured while using the portmidi stream\n");
 		fprintf(stderr, "Error number: %d\n", err);
-		fprintf(stderr, "Error message: %s\n", Pa_GetErrorText(err));
+		fprintf(stderr, "Error message: %s\n", Pm_GetErrorText(err));
 		printMIDIDevices();
 		return err;
 	}

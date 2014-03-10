@@ -1,3 +1,5 @@
+#include "AudioUtils.hpp"
+
 float ratioToDb(float ratio){
 	return 20*log10f(ratio);
 }
@@ -7,7 +9,7 @@ float dbToRatio(float db){
 	// 0.0 dbfs = gain of 1
 	// gain (db) = 20*log10(in/out)
 	// Therefore, in/out = 10^(gain(db)/20)
-	return 10^(db/20);
+	return pow(10,(db/20));
 }
 
 //Midi Note to Frequency

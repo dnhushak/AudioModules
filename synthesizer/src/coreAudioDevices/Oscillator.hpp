@@ -1,9 +1,10 @@
 #pragma once
 #include "AudioEffect.hpp"
-#include "chiputil.hpp"
+#include "Wavetable.hpp"
 #include <vector>
 #include <iostream>
 #include <limits.h>
+#include <math.h>
 
 namespace chip {
 	class Oscillator: public AudioDevice {
@@ -25,28 +26,28 @@ namespace chip {
 
 		private:
 			// Current phase of the oscillator
-			unsigned int phase = 0;
+			unsigned int phase;
 
 			// The maximum value of the phase register
 			// !! If you change the type of phase register,
 			// also change this value according to limits.h
-			unsigned int phaseMax = UINT_MAX;
+			unsigned int phaseMax;
 
 			// The truncated current phase, used to access a wavetable index
-			int phaseTruncated = 0;
+			int phaseTruncated;
 
 			// The amount to truncate the phase by every step increase
-			int phaseTruncateAmt = 0;
+			int phaseTruncateAmt;
 
 			// The scale
-			int phaseScale = 0;
+			int phaseScale;
 
 			// The amount to increase the phase by every sample
-			unsigned int stepSize = 0;
+			unsigned int stepSize;
 
 			// The current frequency of the oscillator
-			float frequency = 0;
+			float frequency;
 
-			Wavetable * wavetable = NULL;
+			Wavetable * wavetable;
 	};
 }

@@ -8,11 +8,13 @@ PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
 	sampleRate = initSampleRate;
 	osc = new Oscillator(bufferSize, sampleRate);
 	vib = new Oscillator(bufferSize, sampleRate);
-	osc_env = new Envelope();
-	vib_env = new Envelope();
+	osc_env = new Envelope(bufferSize, sampleRate);
+	vib_env = new Envelope(bufferSize, sampleRate);
 	note = 0;
 	baseFrequency = 0;
 	vibmult = 0;
+	vib_en = true;
+	state = ACTIVE;
 }
 
 float * chip::PolyVoice::advance(int numSamples) {
@@ -24,13 +26,13 @@ float * chip::PolyVoice::advance(int numSamples) {
 
 	for (int i = 0; i < bufferSize; i++) {
 		// Grab the oscillator sample
-		buffer[i] = osc->advance(1);
+		buffer[i] = *osc->advance(1);
 		// Apply the oscillator envelope
-		buffer[i] *= osc_env->advance(1);
+		buffer[i] *= *osc_env->advance(1);
 
 		if (vib_en) {
-			vibmult = vib->advance(1);
-			vibmult *= vib_env->advance(1);
+			vibmult = *vib->advance(1);
+			vibmult *= *vib_env->advance(1);
 			osc->setFrequency(baseFrequency * vibmult);
 		}
 	}
@@ -88,4 +90,8 @@ void PolyVoice::setVoice(Voice * voice) {
 	vib_env->setRelease(voice->osc_release);
 	vib_en = voice->vib_en;
 
+}
+
+int PolyVoice::getNote() {
+	return note;
 }

@@ -1,7 +1,13 @@
 #include "MIDIDevice.hpp"
 
+chip::MIDIDevice::MIDIDevice() {
+	maxNumMIDIDevices = -1;
+	MIDIDeviceList = NULL;
+	numMIDIDevices = 0;
+}
+
 // Forwards all MIDI messages in the stream to all in the MIDIDevice List
-static void chip::MIDIDevice::affect(MIDIMessage * message) {
+void chip::MIDIDevice::affect(MIDIMessage * message) {
 	for (int i = 0; i < numMIDIDevices; i++) {
 		(*MIDIDeviceList)[i]->affect(message);
 	}
@@ -76,7 +82,7 @@ void chip::MIDIDevice::removeMIDIDevice(int loc) {
 
 // Remove all objects from mixer
 void chip::MIDIDevice::removeAllMIDIDevices() {
-	while (numMIDIDevices() > 0) {
+	while (numMIDIDevices > 0) {
 		removeMIDIDevice(0);
 	}
 }

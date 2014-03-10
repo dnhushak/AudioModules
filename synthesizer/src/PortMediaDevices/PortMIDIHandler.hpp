@@ -17,9 +17,9 @@ namespace chip {
 			MIDIMessage * parseMIDI(PmEvent * data);
 
 			// Forwards all MIDI messages in the stream to all in the MIDIDevice List
-			static void affect(MIDIMessage * );
+			//void affect(MIDIMessage *);
 
-			void static printMIDIDevices();
+			void printMIDIDevices();
 
 			PmStream * getStream();
 

@@ -2,7 +2,7 @@
 
 namespace chip {
 
-	void chip::Gain::Gain(int initBufferSize, int initSampleRate) {
+	chip::Gain::Gain(int initBufferSize, int initSampleRate) {
 		bufferSize = initBufferSize;
 		sampleRate = initSampleRate;
 		buffer = new float[bufferSize];
@@ -14,7 +14,7 @@ namespace chip {
 	float * chip::Gain::advance(int numSamples) {
 		if (numAudioDevices > 0) {
 			for (int i = 0; i < numSamples; i++) {
-				buffer[i] = (*audioDeviceList)[0]->advance(1);
+				buffer[i] = *(*audioDeviceList)[0]->advance(1);
 				buffer[i] *= gain;
 			}
 		}

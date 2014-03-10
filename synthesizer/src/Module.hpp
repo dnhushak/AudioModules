@@ -4,10 +4,10 @@
 #include "AudioEffect.hpp"
 #include "Voice.hpp"
 #include "Gain.hpp"
-#include "chiputil.hpp"
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include "AudioEffect.hpp"
 
 namespace chip {
 	class Module: public AudioEffect {
@@ -35,11 +35,11 @@ namespace chip {
 			/*** Voice ***/
 			Voice * voice;
 
-			bool arp_en = false;
-			bool gliss_en = false;
-			int arpTime = 100;
-			int glissTime = 1000;
-			float volume = -6;
+			bool arp_en;
+			bool gliss_en;
+			int arpTime;
+			int glissTime;
+			float volume;
 
 			// List of active notes
 			std::vector<PolyVoice *> * audioDeviceList;

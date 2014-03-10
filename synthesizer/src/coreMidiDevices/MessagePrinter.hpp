@@ -8,10 +8,9 @@ namespace chip {
 
 			void affect(MIDIMessage *);
 
-			char * decodeMessageType(MIDIMessage *);
+			void decodeMessageType(MIDIMessage *);
 
 	};
 
 }
-
 

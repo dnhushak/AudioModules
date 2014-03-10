@@ -4,6 +4,30 @@
 chip::Oscillator::Oscillator(int initBufferSize, int initSampleRate) {
 	bufferSize = initBufferSize;
 	sampleRate = initSampleRate;
+
+	phase = 0;
+
+	// The maximum value of the phase register
+	// !! If you change the type of phase register,
+	// also change this value according to limits.h
+	phaseMax = UINT_MAX;
+
+	// The truncated current phase, used to access a wavetable index
+	phaseTruncated = 0;
+
+	// The amount to truncate the phase by every step increase
+	phaseTruncateAmt = 0;
+
+	// The scale
+	phaseScale = 0;
+
+	// The amount to increase the phase by every sample
+	stepSize = 0;
+
+	// The current frequency of the oscillator
+	frequency = 0;
+
+	wavetable = NULL;
 }
 
 // Returns a buffer of sample values based on oscillation

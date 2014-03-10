@@ -1,7 +1,6 @@
 #pragma once
 #include <sstream>
 #include <string>
-#include "chiputil.hpp"
 
 namespace chip {
 	struct Voice {

@@ -1,21 +1,35 @@
-#include "MIDIProcessor.hpp"
 #include "PortAudioHandler.hpp"
 #include "PortMIDIHandler.hpp"
-#include "utils.h"
+#include "Mixer.hpp"
+#include "ChannelFilter.hpp"
+#include "MessagePrinter.hpp"
+#include <unistd.h>
+
+int is_int(char const* p) {
+	char compare[10];
+	sprintf(compare, "%d", atoi(p));
+	return strcmp(compare, p) == 0;
+}
 
 // Main
 int main(int argc, char *argv[]) {
-	int bufferSize = BUFFER_SIZE;
-	int sampleRate = SAMPLE_RATE;
-	int numChannels = NUM_AUDIO_CHANNELS;
-	int numModules = NUM_MODULES;
+
+	chip::PortMIDIHandler * PMHandler = new chip::PortMIDIHandler();
+	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
+
+	int bufferSize = 512;
+	int sampleRate = 44100;
+	int numOutChannels = 1;
+	int numInChannels = 1;
+	int numModules = 5;
 	int MIDIDevID = 0;
-	int AudioDevID = 0;
+	int AudioOutDevID = 3;
+	int AudioInDevID = 1;
 	int verbose = 0;
 	extern char *optarg;
 	int ch;
 	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
-	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a")) != EOF) {
+	/**while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a")) != EOF) {
 		switch (ch) {
 			case 'p':
 				// MIDI Port argument
@@ -30,7 +44,7 @@ int main(int argc, char *argv[]) {
 			case 'a':
 				// Audio Device argument
 				if (is_int(optarg)) {
-					AudioDevID = atoi(optarg);
+					AudioOutDevID = atoi(optarg);
 				} else {
 					fprintf(stderr,
 							"Audio Device takes an integer argument. Specify Audio Device to be used\n");
@@ -44,8 +58,8 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'd':
 				// Devices argument
-				chip::PortAudioHandler::printAudioDevices();
-				chip::PortMIDIHandler::printMIDIDevices();
+				PAHandler->printAudioDevices();
+				PMHandler->printMIDIDevices();
 				exit(0);
 				break;
 			case 'b':
@@ -90,7 +104,7 @@ int main(int argc, char *argv[]) {
 				break;
 
 		}
-	}
+	}**/
 
 	//TODO: Generate wavetables
 	//TODO: generate default voices
@@ -100,16 +114,12 @@ int main(int argc, char *argv[]) {
 	// The master mixer for the whole synth
 	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
 
-
 	/*** Set up the PA Handler. This is where the audio callback is ***/
-	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
-	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioDevID, NULL, 1,
-			0, masterMixer);
+	PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID, 0, numOutChannels,
+			numInChannels, masterMixer);
 
 	/*** Set up the PM handler ***/
-	chip::PortMIDIHandler * PMHandler = new chip::PortMIDIHandler();
 	PMHandler->connectMIDIStream(MIDIDevID);
-
 
 	/*** Make all MIDI Connections ***/
 

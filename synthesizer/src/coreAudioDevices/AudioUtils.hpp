@@ -1,3 +1,5 @@
+#include <math.h>
+
 // Converts a straight I/O ratio to a db gain
 float ratioToDb(float ratio);
 

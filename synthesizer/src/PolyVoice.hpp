@@ -1,10 +1,10 @@
 #pragma once
 #include "AudioDevice.hpp"
-#include "Wavetables.hpp"
-#include "chiputil.hpp"
-#include "AudioUtils.h"
+#include "Wavetable.hpp"
+#include "AudioUtils.hpp"
 #include "Oscillator.hpp"
 #include "Envelope.hpp"
+#include "Voice.hpp"
 #include <vector>
 #include <iostream>
 
@@ -40,7 +40,7 @@ namespace chip {
 
 		private:
 			// Current state of polyvoice
-			devState_t state = ACTIVE;
+			devState_t state;
 
 			// Main oscillator
 			Oscillator * osc;
@@ -62,7 +62,7 @@ namespace chip {
 			/*** Feature activation/deactivation ***/
 
 			// Vibrato
-			bool vib_en = true;
+			bool vib_en;
 	};
 
 }

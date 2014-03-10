@@ -1,5 +1,12 @@
 #include "AudioDevice.hpp"
 
+chip::AudioDevice::AudioDevice() {
+	sampleRate = 0;
+	state = ACTIVE;
+	bufferSize = 256;
+	buffer = NULL;
+}
+
 // Default behavior for audio device, just returns 0
 float * chip::AudioDevice::advance(int numSamples) {
 	for (int i = 0; i < numSamples; i++) {
@@ -37,4 +44,8 @@ int chip::AudioDevice::getBufferSize() {
 // Return the audio sampling rate
 int chip::AudioDevice::getSampleRate() {
 	return sampleRate;
+}
+
+void cleanup() {
+	return;
 }

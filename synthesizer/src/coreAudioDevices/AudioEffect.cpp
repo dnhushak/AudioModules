@@ -1,10 +1,16 @@
 #include "AudioEffect.hpp"
 
+chip::AudioEffect::AudioEffect(){
+	audioDeviceList = NULL;
+	maxNumAudioDevices = -1;
+	numAudioDevices = 0;
+}
+
 // Perform cleanup on all devices in audio device list
 void chip::AudioEffect::cleanup(){
-	for(int i=0;i<numAudioDevices; i++){
-		(*audioDeviceList)[i]->cleanup();
-	}
+//	for(int i=0;i<numAudioDevices; i++){
+//		(*audioDeviceList)[i]->cleanup();
+//	}
 }
 
 // Add another AudioDevice object to be mixed
@@ -78,7 +84,7 @@ void chip::AudioEffect::removeAudioDevice(int loc) {
 
 // Remove all objects from mixer
 void chip::AudioEffect::removeAllAudioDevices() {
-	while (numAudioDevices() > 0) {
+	while (numAudioDevices > 0) {
 		removeAudioDevice(0);
 	}
 }

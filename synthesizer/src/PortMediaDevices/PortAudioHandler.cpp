@@ -78,8 +78,8 @@ namespace chip {
 	}
 
 	// Print a list of valid devices
-	void static PortAudioHandler::printAudioDevices() {
-		printf("***Valid Audio Devices: ***");
+	void PortAudioHandler::printAudioDevices() {
+		printf("***Valid Audio Devices: ***\n");
 		Pa_Initialize();
 		int ndev;
 		ndev = Pa_GetDeviceCount();

@@ -1,6 +1,6 @@
 #include "Ramp.hpp"
 
-void chip::Ramp::Ramp(int initBufferSize, int initSampleRate) {
+chip::Ramp::Ramp(int initBufferSize, int initSampleRate) {
 	// Initialize the output buffer
 	bufferSize = initBufferSize;
 
@@ -9,6 +9,21 @@ void chip::Ramp::Ramp(int initBufferSize, int initSampleRate) {
 
 	// Initialize state to INIT
 	state = ACTIVE;
+
+	// time of ramp
+	time = 0;
+
+	// Envelope location
+	ramploc = 0;
+
+	// The current envelope multiplier (goes from 0 to 1)
+	rampmult = 0;
+
+	// Length (in samples) of the ramp
+	sampCount = 100;
+
+	// Slope of the ramp curve
+	slope = .01;
 }
 
 // Advance the rampelope. Returns a buffer holding the rampelope multiplier values

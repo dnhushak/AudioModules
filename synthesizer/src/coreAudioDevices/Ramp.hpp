@@ -1,6 +1,5 @@
 #pragma once
 #include "AudioDevice.hpp"
-#include "chiputil.hpp"
 #include <vector>
 #include <iostream>
 
@@ -8,7 +7,7 @@ namespace chip {
 	class Ramp: public AudioDevice {
 		public:
 			// Constructor
-			void Ramp(int, int);
+			Ramp(int, int);
 
 			// Advance/fill the buffer
 			float * advance(int);
@@ -29,7 +28,7 @@ namespace chip {
 		private:
 
 			// Current state of ramp
-			envState_t state;
+			devState_t state;
 
 			// time of ramp
 			int time;
@@ -42,6 +41,7 @@ namespace chip {
 
 			// Length (in samples) of the ramp
 			int sampCount;
+
 			// Slope of the ramp curve
 			float slope;
 	};

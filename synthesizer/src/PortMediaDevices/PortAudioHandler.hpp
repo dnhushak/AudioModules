@@ -1,4 +1,5 @@
 #include "portaudio.h"
+#include "AudioDevice.hpp"
 #include <stdio.h>
 
 namespace chip {
@@ -7,8 +8,8 @@ namespace chip {
 		public:
 			// Setup and start a PortAudio Stream
 			PaError connectAudioStream(int bufferSize, int sampleRate,
-					PaDeviceIndex outDevID, PaDeviceIndex inDevID, int numOutChannels,
-					int numInChannels, void *userData);
+					PaDeviceIndex outDevID, PaDeviceIndex inDevID,
+					int numOutChannels, int numInChannels, void *userData);
 
 			// Stop a PortAudio stream
 			PaError disconnectAudioStream();
@@ -19,7 +20,7 @@ namespace chip {
 					const PaStreamCallbackTimeInfo* timeInfo,
 					PaStreamCallbackFlags statusFlags, void *userData);
 
-			void static printAudioDevices();
+			void printAudioDevices();
 
 			PaStream * getStream();
 		private:

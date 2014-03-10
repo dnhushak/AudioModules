@@ -1,6 +1,5 @@
 #pragma once
 #include "AudioDevice.hpp"
-#include "chiputil.hpp"
 #include <vector>
 #include <iostream>
 
@@ -13,7 +12,7 @@ namespace chip {
 	class Envelope: public AudioDevice {
 		public:
 			// Constructor
-			void Envelope(int, int);
+			Envelope(int, int);
 
 			// Advance/fill the buffer
 			float * advance(int);
