@@ -42,19 +42,19 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 		if (i < half) {
 			square50->setSample(i, -1);
 			square25->setSample(i, -1);
-			triangle->setSample(i, (((float) i / 4) - 1));
+			triangle->setSample(i, -1 + (((float) i / 4)));
 		}
 		//Third quarter of the wave
 		else if (i < three_fourths) {
 			square50->setSample(i, 1);
 			square25->setSample(i, -1);
-			triangle->setSample(i, -(((float) i / 4) - 1));
+			triangle->setSample(i, 1 - (( ((float)i-half) / 4)));
 		}
 		//Fourth quarter of the wave
 		else {
 			square50->setSample(i, 1);
 			square25->setSample(i, 1);
-			triangle->setSample(i, -(((float) i / 4) - 1));
+			triangle->setSample(i, 1 - (( ((float)i-half) / 4)));
 		}
 	}
 	int rnd;
@@ -63,6 +63,7 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 		sine->setSample(i, (sin((pi * 2 * (float) i) / 256)));
 		rnd = ((-2) * ((float) rand() / RAND_MAX)) + 1;
 		noise->setSample(i, rnd);
+		printf("Noise sample %d : %f\n", i, noise->getSample(i));
 	}
 	return tables;
 }
@@ -160,16 +161,24 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->vib_sustain = 1;
 		voices->at(i)->vib_release = 500;
 		voices->at(i)->vib_table = tables->at(5);
-		voices->at(i)->volume = -3;
+		voices->at(i)->volume = -12;
 
 	}
 	printf("Generating modules\n");
 	// Modules
 	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>(0);
 	for (int i = 0; i < numModules; i++) {
+		// Add a new module to the vector of modules
 		modules->push_back(new chip::Module(bufferSize, sampleRate));
+		// Set voice for each module
 		modules->at(i)->setVoice(voices->at(i));
-		PMHandler->addMIDIDevice(modules->at(i));
+		// Create a midi Channel filter
+		chip::ChannelFilter * moduleFilter = new chip::ChannelFilter(i);
+		// Add the module to the channel filter outputs
+		moduleFilter->addMIDIDevice(modules->at(i));
+		// Add the channel filter to the PMhandler outputs
+		PMHandler->addMIDIDevice(moduleFilter);
+		// Add the module to the master mixer
 		masterMixer->addAudioDevice(modules->at(i));
 	}
 

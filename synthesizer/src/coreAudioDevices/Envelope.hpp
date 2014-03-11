@@ -18,7 +18,7 @@ namespace chip {
 			float * advance(int);
 
 			// Gets the current state
-			envState_t getState();
+			envState_t getEnvState();
 
 			// Starts the Envelope
 			void startEnv();

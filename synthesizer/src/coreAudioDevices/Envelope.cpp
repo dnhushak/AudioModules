@@ -74,7 +74,7 @@ float * chip::Envelope::advance(int numSamples) {
 }
 
 // Gets the state of the envelope (generally for cleanup purposes)
-chip::envState_t chip::Envelope::getState() {
+chip::envState_t chip::Envelope::getEnvState() {
 	return state;
 }
 

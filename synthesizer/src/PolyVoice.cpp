@@ -22,6 +22,11 @@ float * chip::PolyVoice::advance(int numSamples) {
 		return buffer;
 	}
 
+
+	/* We unfortunately have to go through sample by sample, as
+	 * the vibrato is also time-based, and needs to alter the frequency of the
+	 * oscillator within the callback
+	 */
 	for (int i = 0; i < bufferSize; i++) {
 		// Grab the oscillator sample
 		buffer[i] = (osc->advance(1))[0];
@@ -39,11 +44,10 @@ float * chip::PolyVoice::advance(int numSamples) {
 			vibmult += 1;
 			osc->setFrequency(baseFrequency * vibmult);
 		}
-
 	}
 
 	// Check whether or not to deactivate the polyVoice
-	if (osc_env->getState() == DONE) {
+	if (osc_env->getEnvState() == DONE) {
 		state = INACTIVE;
 	}
 	return buffer;

@@ -15,6 +15,10 @@ float * chip::AudioDevice::advance(int numSamples) {
 	return buffer;
 }
 
+chip::devState_t chip::AudioDevice::getState(){
+	return state;
+}
+
 // Perform cleanup on all devices in audio device list
 void chip::AudioDevice::cleanup() {
 }
