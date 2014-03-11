@@ -2,14 +2,13 @@
 
 chip::Mixer::Mixer(int initBufferSize, int initSampleRate) {
 	//constructor
+	// Initialize the audio buffers
+	temp = new float;
+	resizeBuffer(initBufferSize);
+	changeSampleRate(initSampleRate);
 	audioDeviceList = new std::vector<AudioDevice*>(0);
 
-	bufferSize = initBufferSize;
-	sampleRate = initSampleRate;
 
-	// Initialize the audio buffer
-	buffer = new float[bufferSize];
-	temp = new float;
 }
 
 float * chip::Mixer::advance(int numSamples) {
@@ -20,7 +19,7 @@ float * chip::Mixer::advance(int numSamples) {
 	for (unsigned int i = 0; i < numAudioDevices; i++) {
 
 		// Fill up a temp buffer for one IAudio object
-		temp = (*audioDeviceList)[i]->advance(numSamples);
+		temp = audioDeviceList->at(i)->advance(numSamples);
 
 		// Add each element into the mixdown buffer
 		for (int j = 0; j < bufferSize; j++) {

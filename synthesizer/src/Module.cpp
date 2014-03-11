@@ -14,7 +14,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	printf(".5\n");
 	moduleGain = new Gain(bufferSize, sampleRate);
 	printf(".7\n");
-	//moduleGain->addAudioDevice(polyMixer);
+	moduleGain->addAudioDevice(polyMixer);
 
 	voice = new Voice;
 
@@ -64,11 +64,11 @@ void chip::Module::setVoice(Voice * newVoice) {
 	gliss_en = voice->gliss_en;
 	arpTime = voice->arpTime;
 	glissTime = voice->glissTime;
-	moduleGain->setGain(voice->volume);
+	//moduleGain->setGain(voice->volume);
 }
 
 float * chip::Module::advance(int numSamples) {
-	return polyMixer->advance(numSamples);
+	return moduleGain->advance(numSamples);
 }
 
 void chip::Module::activatePolyVoice(int note) {

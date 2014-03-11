@@ -1,5 +1,7 @@
 #include "AudioEffect.hpp"
 #include "AudioUtils.hpp"
+#include <vector>
+#include <iostream>
 
 namespace chip {
 	

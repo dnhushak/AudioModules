@@ -4,14 +4,12 @@ namespace chip {
 
 	//TODO: fix gain adding of devices? Segfaulting??
 	chip::Gain::Gain(int initBufferSize, int initSampleRate) {
-		printf("1\n");
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
-		//maxNumAudioDevices = 3;
+		audioDeviceList = new std::vector<AudioDevice*>(0);
+		maxNumAudioDevices = 1;
 		// Default gain to -6 db
 		setGain(-6);
-
-		printf("2\n");
 	}
 
 	float * chip::Gain::advance(int numSamples) {
