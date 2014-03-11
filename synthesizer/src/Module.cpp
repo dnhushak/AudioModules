@@ -104,7 +104,8 @@ void chip::Module::releasePolyVoice(int note) {
 void chip::Module::cleanup() {
 	// Remove all polyvoices in cleanup state
 	for (int i = 0; i < audioDeviceList->size(); i++) {
-		if ((*audioDeviceList)[i]->getState() == INACTIVE) {
+		if (audioDeviceList->at(i)->getState() == INACTIVE) {
+			delete audioDeviceList->at(i);
 			audioDeviceList->erase(audioDeviceList->begin() + i);
 			polyMixer->removeAudioDevice(i);
 		}
