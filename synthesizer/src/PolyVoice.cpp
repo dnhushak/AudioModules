@@ -29,8 +29,14 @@ float * chip::PolyVoice::advance(int numSamples) {
 		buffer[i] *= (osc_env->advance(1))[0];
 
 		if (vib_en) {
+			// Grab the sine oscillator
 			vibmult = (vib->advance(1))[0];
+			// Grab the envelope for vibrato
 			vibmult *= (vib_env->advance(1))[0];
+			// Scale the vibrato
+			vibmult *= .05;
+			// Add 1 (to prevent 0 and negative frequencies!)
+			vibmult += 1;
 			osc->setFrequency(baseFrequency * vibmult);
 		}
 
@@ -64,6 +70,7 @@ void PolyVoice::startPolyVoice(int newNote) {
 		note = newNote;
 		baseFrequency = MtoF(note);
 		osc->setFrequency(baseFrequency);
+		vib->setFrequency(5);
 		osc_env->startEnv();
 		vib_env->startEnv();
 	}

@@ -7,16 +7,16 @@ chip::AudioDevice::AudioDevice() {
 	buffer = NULL;
 }
 
-void chip::AudioDevice::cleanup(){
-
-}
-
 // Default behavior for audio device, just returns 0
 float * chip::AudioDevice::advance(int numSamples) {
 	for (int i = 0; i < numSamples; i++) {
 		buffer[i] = 0;
 	}
 	return buffer;
+}
+
+// Perform cleanup on all devices in audio device list
+void chip::AudioDevice::cleanup() {
 }
 
 // Resize the buffer of the audio device
@@ -54,6 +54,6 @@ void cleanup() {
 	return;
 }
 
-chip::AudioDevice::~AudioDevice(){
+chip::AudioDevice::~AudioDevice() {
 
 }

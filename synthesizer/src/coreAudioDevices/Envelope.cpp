@@ -6,7 +6,7 @@ chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 
 	// Initialize state to INIT
 	state = INIT;
-
+	envmult = 0.0;
 	setRelease(100);
 	setAttack(100);
 	setDecay(100);
@@ -81,7 +81,6 @@ chip::envState_t chip::Envelope::getState() {
 // Starts the envelope
 void chip::Envelope::startEnv() {
 	state = ATTACK;
-	envmult = 0.0;
 	envloc = 0;
 	Aslope = ((1.0 - envmult) / AsampCount);
 }

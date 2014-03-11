@@ -1,30 +1,24 @@
 #include "AudioEffect.hpp"
 
-chip::AudioEffect::AudioEffect(){
-	audioDeviceList = NULL;
+chip::AudioEffect::AudioEffect() {
+	audioDeviceList = new std::vector<AudioDevice*>(0);
 	maxNumAudioDevices = -1;
 	numAudioDevices = 0;
 }
 
 // Perform cleanup on all devices in audio device list
-void chip::AudioEffect::cleanup(){
-	for(int i=0;i<numAudioDevices; i++){
+void chip::AudioEffect::cleanup() {
+	for (int i = 0; i < numAudioDevices; i++) {
 		(*audioDeviceList)[i]->cleanup();
 	}
 }
 
 // Add another AudioDevice object to be mixed
 void chip::AudioEffect::addAudioDevice(AudioDevice * audioObject) {
-
-	printf("3\n");
 	// Ignore if at maximum value or no maximum
 	if (numAudioDevices < maxNumAudioDevices || maxNumAudioDevices == -1) {
-		printf("4\n");
 		audioDeviceList->push_back(audioObject);
-		printf("4.5\n");
 		numAudioDevices = audioDeviceList->size();
-
-		printf("5\n");
 	}
 }
 

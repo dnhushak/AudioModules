@@ -6,7 +6,6 @@ chip::Mixer::Mixer(int initBufferSize, int initSampleRate) {
 	temp = new float;
 	resizeBuffer(initBufferSize);
 	changeSampleRate(initSampleRate);
-	audioDeviceList = new std::vector<AudioDevice*>(0);
 
 
 }

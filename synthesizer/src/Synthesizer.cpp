@@ -19,14 +19,14 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 	chip::Wavetable* square50 = new chip::Wavetable(16);
 	chip::Wavetable* square25 = new chip::Wavetable(16);
 	chip::Wavetable* noise = new chip::Wavetable(256);
-	chip::Wavetable* vibrato = new chip::Wavetable(256);
+	chip::Wavetable* sine = new chip::Wavetable(256);
 
 	tables->push_back(sawtooth);
 	tables->push_back(triangle);
 	tables->push_back(square50);
 	tables->push_back(square25);
 	tables->push_back(noise);
-	tables->push_back(vibrato);
+	tables->push_back(sine);
 
 	//Divide 16 into four regions
 	int quarter = 4;
@@ -60,7 +60,8 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 	int rnd;
 	float pi = 3.14159265359;
 	for (int i = 0; i < 256; i++) {
-		vibrato->setSample(i, sin((pi * (float) i) / 256));
+		sine->setSample(i, (sin((pi * 2 * (float) i) / 256)));
+		printf("Sine sample %d: %02f\n", i, sine->getSample(i));
 		rnd = ((-2) * ((float) rand() / RAND_MAX)) + 1;
 		noise->setSample(i, rnd);
 	}
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
 	int bufferSize = 512;
 	int sampleRate = 32000;
 	int numOutChannels = 1;
-	int numInChannels = 1;
+	int numInChannels = 0;
 	int numModules = 5;
 	int MIDIDevID = 0;
 	int AudioOutDevID = 3;
@@ -128,7 +129,6 @@ int main(int argc, char *argv[]) {
 	}
 
 	//TODO: generate default voices
-	//TODO: Assign voices downstream
 	//TODO: Fix Voice Configuration Reader
 
 	/*** Make all Audio Connections ***/
@@ -156,10 +156,10 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->osc_sustain = .6;
 		voices->at(i)->osc_release = 500;
 		voices->at(i)->osc_table = tables->at(i);
-		voices->at(i)->vib_en = false;
+		voices->at(i)->vib_en = true;
 		voices->at(i)->vib_attack = 100;
 		voices->at(i)->vib_decay = 200;
-		voices->at(i)->vib_sustain = .6;
+		voices->at(i)->vib_sustain = 1;
 		voices->at(i)->vib_release = 500;
 		voices->at(i)->vib_table = tables->at(5);
 		voices->at(i)->volume = -3;
@@ -168,10 +168,7 @@ int main(int argc, char *argv[]) {
 	printf("Generating modules\n");
 	// Modules
 	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>(0);
-	printf("a\n");
 	for (int i = 0; i < numModules; i++) {
-
-		printf("-1\n");
 		modules->push_back(new chip::Module(bufferSize, sampleRate));
 		modules->at(i)->setVoice(voices->at(i));
 		PMHandler->addMIDIDevice(modules->at(i));

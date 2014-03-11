@@ -9,11 +9,8 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	buffer = new float[bufferSize];
 	//instantiates "bucket" of polyvoices
 	audioDeviceList = new std::vector<PolyVoice *>(0);
-	printf("0\n");
 	polyMixer = new Mixer(bufferSize, sampleRate);
-	printf(".5\n");
 	moduleGain = new Gain(bufferSize, sampleRate);
-	printf(".7\n");
 	moduleGain->addAudioDevice(polyMixer);
 
 	voice = new Voice;
@@ -64,7 +61,7 @@ void chip::Module::setVoice(Voice * newVoice) {
 	gliss_en = voice->gliss_en;
 	arpTime = voice->arpTime;
 	glissTime = voice->glissTime;
-	//moduleGain->setGain(voice->volume);
+	moduleGain->setGain(voice->volume);
 }
 
 float * chip::Module::advance(int numSamples) {

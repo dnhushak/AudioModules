@@ -3,12 +3,13 @@
 
 
 #Chipophone Specifics
+/bin
 chipophone
 printMidiDevices
 readMidiData
 *.save
 readmidi
-/synthesizer/linux/Synthesizer
+/synthesizer/bin/Synthesizer
 
 # Compiled source #
 ###################
