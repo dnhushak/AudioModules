@@ -26,7 +26,7 @@ float * chip::PolyVoice::advance(int numSamples) {
 		// Grab the oscillator sample
 		buffer[i] = (osc->advance(1))[0];
 		// Apply the oscillator envelope
-		buffer[i] = (osc_env->advance(1))[0];
+		buffer[i] *= (osc_env->advance(1))[0];
 
 		if (vib_en) {
 			vibmult = (vib->advance(1))[0];
@@ -60,9 +60,12 @@ void PolyVoice::disableVibrato() {
 // Start the polyvoice
 void PolyVoice::startPolyVoice(int newNote) {
 	if (newNote > 0 && newNote <= 127) {
+		printf("Starting PolyVoice\n");
 		state = ACTIVE;
 		note = newNote;
 		baseFrequency = MtoF(note);
+		printf("Setting oscillator to frequency: %f\n", baseFrequency);
+		osc->setFrequency(baseFrequency);
 		osc_env->startEnv();
 		vib_env->startEnv();
 	}

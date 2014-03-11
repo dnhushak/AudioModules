@@ -47,7 +47,9 @@ float chip::Oscillator::getFrequency() {
 
 // Set the oscillator's frequency (recalculates phase stepsize)
 void chip::Oscillator::setFrequency(float newFrequency) {
-	if (newFrequency < 0) {
+	if (newFrequency == 0) {
+		return;
+	} else if (newFrequency < 0) {
 		frequency = -newFrequency;
 	} else {
 		frequency = newFrequency;
@@ -87,7 +89,7 @@ void chip::Oscillator::setWavetable(Wavetable * newTable) {
 	// of the phase as the index. In order to keep correct in size with the table, we need
 	// to use this equation. The phaseTruncateAmt variable is the amount we need to shift
 	// phase right by every time we access the wavetable
-	phaseTruncateAmt = ((int) 8*sizeof(phase)
+	phaseTruncateAmt = ((int) 8 * sizeof(phase)
 			- (int) log2((double) wavetable->getTableSize()));
 
 	/* A pictorial explanation:

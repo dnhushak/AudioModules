@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->osc_sustain = .6;
 		voices->at(i)->osc_release = 500;
 		voices->at(i)->osc_table = tables->at(i);
-		voices->at(i)->vib_en = true;
+		voices->at(i)->vib_en = false;
 		voices->at(i)->vib_attack = 100;
 		voices->at(i)->vib_decay = 200;
 		voices->at(i)->vib_sustain = .6;
