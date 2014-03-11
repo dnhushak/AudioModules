@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->glissTime = 100;
 		voices->at(i)->gliss_en = false;
 		voices->at(i)->osc_attack = 100;
-		voices->at(i)->osc_decay = 200;
+		voices->at(i)->osc_decay = 100;
 		voices->at(i)->osc_sustain = .6;
 		voices->at(i)->osc_release = 500;
 		voices->at(i)->osc_table = tables->at(i);

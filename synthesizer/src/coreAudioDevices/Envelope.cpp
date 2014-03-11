@@ -83,14 +83,14 @@ void chip::Envelope::startEnv() {
 	state = ATTACK;
 	envmult = 0.0;
 	envloc = 0;
-	Aslope = (1.0 - envmult) / AsampCount;
+	Aslope = ((1.0 - envmult) / AsampCount);
 }
 
 // Releases the envelope
 void chip::Envelope::releaseEnv() {
 	state = RELEASE;
 	envloc = 0;
-	Rslope = -(envmult / (float)RsampCount);
+	Rslope = -(envmult / RsampCount);
 }
 
 /*** Getters and setters ***/
@@ -106,7 +106,7 @@ int chip::Envelope::getAttack() {
 void chip::Envelope::setDecay(int newDecay) {
 	decay = newDecay;
 	DsampCount = (decay * sampleRate) / 1000;
-	Dslope = ((sustain - 1.0) / (float) DsampCount);
+	Dslope = ((sustain - 1.0) / DsampCount);
 
 }
 int chip::Envelope::getDecay() {
@@ -115,6 +115,8 @@ int chip::Envelope::getDecay() {
 
 void chip::Envelope::setSustain(float newSustain) {
 	sustain = newSustain;
+	// Decay calculation relies on the sustain value, need to set it here
+	setDecay(decay);
 }
 float chip::Envelope::getSustain() {
 	return sustain;
