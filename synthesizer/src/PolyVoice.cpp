@@ -3,9 +3,8 @@
 using namespace chip;
 
 PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
-
-	bufferSize = initBufferSize;
-	sampleRate = initSampleRate;
+	resizeBuffer(initBufferSize);
+	changeSampleRate(initSampleRate);
 	osc = new Oscillator(bufferSize, sampleRate);
 	vib = new Oscillator(bufferSize, sampleRate);
 	osc_env = new Envelope(bufferSize, sampleRate);
@@ -18,7 +17,6 @@ PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
 }
 
 float * chip::PolyVoice::advance(int numSamples) {
-
 	if (state == INACTIVE) {
 		zeroBuffer();
 		return buffer;
@@ -26,15 +24,16 @@ float * chip::PolyVoice::advance(int numSamples) {
 
 	for (int i = 0; i < bufferSize; i++) {
 		// Grab the oscillator sample
-		buffer[i] = *osc->advance(1);
+		buffer[i] = (osc->advance(1))[0];
 		// Apply the oscillator envelope
-		buffer[i] *= *osc_env->advance(1);
+		buffer[i] = (osc_env->advance(1))[0];
 
 		if (vib_en) {
-			vibmult = *vib->advance(1);
-			vibmult *= *vib_env->advance(1);
+			vibmult = (vib->advance(1))[0];
+			vibmult *= (vib_env->advance(1))[0];
 			osc->setFrequency(baseFrequency * vibmult);
 		}
+
 	}
 
 	// Check whether or not to deactivate the polyVoice
@@ -60,7 +59,7 @@ void PolyVoice::disableVibrato() {
 
 // Start the polyvoice
 void PolyVoice::startPolyVoice(int newNote) {
-	if (note > 0 && note <= 127) {
+	if (newNote > 0 && newNote <= 127) {
 		state = ACTIVE;
 		note = newNote;
 		baseFrequency = MtoF(note);

@@ -24,8 +24,6 @@ namespace chip {
 
 			PaStream * getStream();
 		private:
-			int numOutputChannels;
-			int numInputChannels;
 			// PortAudio Error Check
 			PaError errorPortAudio(PaError err);
 

@@ -15,7 +15,7 @@ namespace chip {
 			virtual float * advance(int);
 
 			// Perform whatever cleanup is necessary
-			void cleanup();
+			virtual void cleanup();
 
 			// Resize the buffer of the audio device
 			void resizeBuffer(int);

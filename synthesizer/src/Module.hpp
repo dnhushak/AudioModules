@@ -2,19 +2,21 @@
 #include "PolyVoice.hpp"
 #include "Mixer.hpp"
 #include "AudioEffect.hpp"
+#include "MIDIDevice.hpp"
 #include "Voice.hpp"
 #include "Gain.hpp"
 #include <vector>
 #include <iostream>
 #include <math.h>
-#include "AudioEffect.hpp"
 
 namespace chip {
-	class Module: public AudioEffect {
+	class Module: public AudioEffect, public MIDIDevice {
 		public:
 			Module(int, int);
 
 			float * advance(int);
+
+			void affect(MIDIMessage *);
 
 			void setVoice(Voice * voice);
 

@@ -47,7 +47,7 @@ namespace chip {
 		protected:
 
 			// List of MIDI items to mix together
-			std::vector<MIDIDevice*> * MIDIDeviceList;
+			std::vector<MIDIDevice * > * MIDIDeviceList;
 
 			// Maximum number of MIDI devices allowable in effect (-1 -> no maximum)
 			int maxNumMIDIDevices;

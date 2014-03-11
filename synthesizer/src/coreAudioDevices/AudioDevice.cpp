@@ -7,6 +7,10 @@ chip::AudioDevice::AudioDevice() {
 	buffer = NULL;
 }
 
+void chip::AudioDevice::cleanup(){
+
+}
+
 // Default behavior for audio device, just returns 0
 float * chip::AudioDevice::advance(int numSamples) {
 	for (int i = 0; i < numSamples; i++) {

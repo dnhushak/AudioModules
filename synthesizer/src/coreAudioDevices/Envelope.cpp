@@ -1,11 +1,8 @@
 #include "Envelope.hpp"
 
 chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
-	// Initialize the output buffer
-	bufferSize = initBufferSize;
-
-	// Initialize the sample rate
-	sampleRate = initSampleRate;
+	resizeBuffer(initBufferSize);
+	changeSampleRate(initSampleRate);
 
 	// Initialize state to INIT
 	state = INIT;
@@ -42,8 +39,8 @@ float * chip::Envelope::advance(int numSamples) {
 				envmult += Aslope;
 				// When the evelope location has hit the number of samples, do a state transition
 				if (envloc >= AsampCount) {
-					state = DECAY;
 					envloc = 0;
+					state = DECAY;
 				}
 				break;
 
@@ -51,8 +48,8 @@ float * chip::Envelope::advance(int numSamples) {
 				envmult += Dslope;
 				// When the evelope location has hit the number of samples, do a state transition
 				if (envloc >= DsampCount) {
-					state = SUSTAIN;
 					envloc = 0;
+					state = SUSTAIN;
 				}
 				break;
 
@@ -93,7 +90,7 @@ void chip::Envelope::startEnv() {
 void chip::Envelope::releaseEnv() {
 	state = RELEASE;
 	envloc = 0;
-	Rslope = -(envmult / RsampCount);
+	Rslope = -(envmult / (float)RsampCount);
 }
 
 /*** Getters and setters ***/
@@ -109,7 +106,7 @@ int chip::Envelope::getAttack() {
 void chip::Envelope::setDecay(int newDecay) {
 	decay = newDecay;
 	DsampCount = (decay * sampleRate) / 1000;
-	Dslope = (sustain - 1.0) / DsampCount;
+	Dslope = ((sustain - 1.0) / (float) DsampCount);
 
 }
 int chip::Envelope::getDecay() {

@@ -3,7 +3,7 @@
 
 namespace chip {
 	
-	class Gain: public chip::AudioEffect {
+	class Gain: public AudioEffect {
 		public:
 			Gain(int, int);
 

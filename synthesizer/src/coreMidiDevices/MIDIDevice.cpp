@@ -22,12 +22,13 @@ void chip::MIDIDevice::addMIDIDevice(MIDIDevice* MIDIObject) {
 	}
 }
 
+//TODO: Determine whether or not adding a vector of devices will work w/o killing derived class methods
 // Add a vector of MIDIDevices to be mixed
 void chip::MIDIDevice::addMIDIDevices(std::vector<MIDIDevice*> * MIDIObjects) {
 	int numToAdd;
 
 	// If no maximum...
-	if (maxNumMIDIDevices != -1) {
+	if (maxNumMIDIDevices == -1) {
 		// Add all objects
 		numToAdd = MIDIObjects->size();
 	}

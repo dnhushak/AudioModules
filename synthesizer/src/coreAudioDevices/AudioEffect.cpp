@@ -8,9 +8,9 @@ chip::AudioEffect::AudioEffect(){
 
 // Perform cleanup on all devices in audio device list
 void chip::AudioEffect::cleanup(){
-//	for(int i=0;i<numAudioDevices; i++){
-//		(*audioDeviceList)[i]->cleanup();
-//	}
+	for(int i=0;i<numAudioDevices; i++){
+		(*audioDeviceList)[i]->cleanup();
+	}
 }
 
 // Add another AudioDevice object to be mixed
@@ -28,7 +28,7 @@ void chip::AudioEffect::addAudioDevices(
 	int numToAdd;
 
 	// If no maximum...
-	if (maxNumAudioDevices != -1) {
+	if (maxNumAudioDevices == -1) {
 		// Add all objects
 		numToAdd = audioObjects->size();
 	}
