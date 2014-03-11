@@ -2,8 +2,8 @@
 
 // Constructor. Sets buffer size and sample rate
 chip::Oscillator::Oscillator(int initBufferSize, int initSampleRate) {
-	bufferSize = initBufferSize;
-	sampleRate = initSampleRate;
+	resizeBuffer(initBufferSize);
+	changeSampleRate(initSampleRate);
 
 	phase = 0;
 
@@ -52,9 +52,8 @@ void chip::Oscillator::setFrequency(float newFrequency) {
 	} else {
 		frequency = newFrequency;
 	}
-
 	// Step size calculation
-	stepSize = (int) ((frequency) * (float) phaseMax) / sampleRate;
+	stepSize = (int) (((frequency) * (float) phaseMax) / sampleRate);
 
 	/* Step size is an advancement of phase once every sample
 	 * So, its units are technically cycles per sample
@@ -88,7 +87,7 @@ void chip::Oscillator::setWavetable(Wavetable * newTable) {
 	// of the phase as the index. In order to keep correct in size with the table, we need
 	// to use this equation. The phaseTruncateAmt variable is the amount we need to shift
 	// phase right by every time we access the wavetable
-	phaseTruncateAmt = ((int) sizeof(phase)
+	phaseTruncateAmt = ((int) 8*sizeof(phase)
 			- (int) log2((double) wavetable->getTableSize()));
 
 	/* A pictorial explanation:

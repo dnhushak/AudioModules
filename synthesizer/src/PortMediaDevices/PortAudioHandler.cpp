@@ -54,7 +54,7 @@ namespace chip {
 		// Open the stream
 		err = Pa_OpenStream(&astream, inputParameters, outputParameters,
 				sampleRate, bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
-				PortAudioHandler::paCallback, userData); // We want to pass a pointer to the AudioProcessor
+				paCallback, userData); // We want to pass a pointer to the AudioProcessor
 		if (err != paNoError)
 			return errorPortAudio(err);
 		printf("Stream opened...\n");
@@ -156,19 +156,24 @@ namespace chip {
 	}
 
 // PortAudio Callback
-	int PortAudioHandler::paCallback(const void *inputBuffer,
-			void *outputBuffer, unsigned long framesPerBuffer,
+	int PortAudioHandler::paCallback(const void * inputBuffer,
+			void * outputBuffer, unsigned long framesPerBuffer,
 			const PaStreamCallbackTimeInfo* timeInfo,
 			PaStreamCallbackFlags statusFlags, void *userData) {
-		// Cast void type outbut buffer to float
-		float *out = (float*) outputBuffer;
+
+		//TODO: get multichannel to work right
+
+		// Cast void type output buffer to float
+		float * out = (float*) outputBuffer;
 
 		// Grab the supplied user data
 		chip::AudioDevice * audio = (chip::AudioDevice*) userData;
 
 		// Fill the output buffer
-		out = audio->advance(framesPerBuffer);
-
+		float * buffer = audio->advance(framesPerBuffer);
+		for (int i = 0; i < framesPerBuffer; i++) {
+			*out++ = buffer[i];
+		}
 		// Continue
 		return paContinue;
 	}

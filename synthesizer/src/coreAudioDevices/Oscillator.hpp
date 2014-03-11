@@ -34,7 +34,7 @@ namespace chip {
 			unsigned int phaseMax;
 
 			// The truncated current phase, used to access a wavetable index
-			int phaseTruncated;
+			unsigned int phaseTruncated;
 
 			// The amount to truncate the phase by every step increase
 			int phaseTruncateAmt;

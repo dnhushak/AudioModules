@@ -2,6 +2,8 @@
 #include "PortMIDIHandler.hpp"
 #include "Mixer.hpp"
 #include "ChannelFilter.hpp"
+#include "Wavetable.hpp"
+#include "Oscillator.hpp"
 #include "MessagePrinter.hpp"
 #include <unistd.h>
 #include <stdlib.h>
@@ -13,9 +15,9 @@ int main(int argc, char *argv[]) {
 	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
 
 	int bufferSize = 512;
-	int sampleRate = 44100;
-	int numOutChannels = 2;
-	int numInChannels = 2;
+	int sampleRate = 32000;
+	int numOutChannels = 1;
+	int numInChannels = 1;
 	int numModules = 5;
 	int MIDIDevID = 0;
 	int AudioOutDevID = 3;
@@ -24,7 +26,7 @@ int main(int argc, char *argv[]) {
 	extern char *optarg;
 	int ch;
 	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
-	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a")) != EOF) {
+	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a:")) != EOF) {
 		switch (ch) {
 			case 'p':
 				// MIDI Port argument
@@ -73,6 +75,26 @@ int main(int argc, char *argv[]) {
 	// The master mixer for the whole synth
 	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
 
+	/*** Make all Audio Connections ***/
+
+	chip::Wavetable * square = new chip::Wavetable(16);
+	float samp;
+	for (int i = 0; i<16; i++){
+		if (i<8){
+			samp = -.2;
+		}
+		else{
+			samp = .2;
+		}
+		square->setSample(i, samp);
+	}
+
+
+	chip::Oscillator * osc = new chip::Oscillator(bufferSize, sampleRate);
+	osc->setFrequency(400);
+	osc->setWavetable(square);
+	masterMixer->addAudioDevice(osc);
+
 	/*** Set up the PA Handler. This is where the audio callback is ***/
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
@@ -88,6 +110,10 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
+
+
+
+
 	/*** Make all MIDI Connections ***/
 
 	// Print incoming MIDI Connections
@@ -95,6 +121,7 @@ int main(int argc, char *argv[]) {
 		chip::MessagePrinter * printer = new chip::MessagePrinter();
 		PMHandler->addMIDIDevice(printer);
 	}
+
 
 	while (1) {
 		// Read MIDI, forward

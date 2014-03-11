@@ -15,7 +15,7 @@ namespace chip {
 			PaError disconnectAudioStream();
 
 			// PortAudio Callback
-			static int paCallback(const void *inputBuffer, void *outputBuffer,
+			static int paCallback(const void *inputBuffer,  void *outputBuffer,
 					unsigned long framesPerBuffer,
 					const PaStreamCallbackTimeInfo* timeInfo,
 					PaStreamCallbackFlags statusFlags, void *userData);
@@ -24,7 +24,8 @@ namespace chip {
 
 			PaStream * getStream();
 		private:
-
+			int numOutputChannels;
+			int numInputChannels;
 			// PortAudio Error Check
 			PaError errorPortAudio(PaError err);
 

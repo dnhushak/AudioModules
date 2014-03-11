@@ -14,6 +14,9 @@ namespace chip {
 			// Read from the FIFO serial stream
 			void readMIDI();
 
+			// Write to the output stream
+			void writeMIDI(MIDIMessage* message);
+
 			// Parses a PmEvent type and returns a MIDIMessage struct
 			MIDIMessage * parseMIDI(PmEvent * data);
 

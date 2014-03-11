@@ -41,6 +41,17 @@ namespace chip {
 		return;
 	}
 
+	void PortMIDIHandler::writeMIDI(MIDIMessage* message){
+		//TODO: complete behavior for midi writing
+		PmEvent * event = new PmEvent;
+		int status = (message->type << 4);
+		status &= message->channel;
+//		Pm_MessageStatus(event) = status;
+//		Pm_MessageData1(event) = message->data1;
+//		Pm_MessageData2(event) = message->data2;
+//		Pm_Write(mstream, event, 1);
+	}
+
 	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {
 
 		// MIDIMessage struct to be returned
