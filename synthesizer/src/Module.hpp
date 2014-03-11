@@ -41,13 +41,12 @@ namespace chip {
 			bool gliss_en;
 			int arpTime;
 			int glissTime;
-			float volume;
 
 			// List of active notes
 			std::vector<PolyVoice *> * audioDeviceList;
 
-			Mixer * polyMixer;
-			Gain * moduleGain;
+			chip::Mixer * polyMixer;
+			chip::Gain * moduleGain;
 
 	};
 }

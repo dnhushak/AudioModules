@@ -60,11 +60,9 @@ void PolyVoice::disableVibrato() {
 // Start the polyvoice
 void PolyVoice::startPolyVoice(int newNote) {
 	if (newNote > 0 && newNote <= 127) {
-		printf("Starting PolyVoice\n");
 		state = ACTIVE;
 		note = newNote;
 		baseFrequency = MtoF(note);
-		printf("Setting oscillator to frequency: %f\n", baseFrequency);
 		osc->setFrequency(baseFrequency);
 		osc_env->startEnv();
 		vib_env->startEnv();

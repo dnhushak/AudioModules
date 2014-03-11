@@ -14,11 +14,17 @@ void chip::AudioEffect::cleanup(){
 }
 
 // Add another AudioDevice object to be mixed
-void chip::AudioEffect::addAudioDevice(AudioDevice* audioObject) {
+void chip::AudioEffect::addAudioDevice(AudioDevice * audioObject) {
+
+	printf("3\n");
 	// Ignore if at maximum value or no maximum
 	if (numAudioDevices < maxNumAudioDevices || maxNumAudioDevices == -1) {
+		printf("4\n");
 		audioDeviceList->push_back(audioObject);
+		printf("4.5\n");
 		numAudioDevices = audioDeviceList->size();
+
+		printf("5\n");
 	}
 }
 

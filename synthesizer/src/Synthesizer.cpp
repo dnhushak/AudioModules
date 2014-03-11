@@ -168,7 +168,10 @@ int main(int argc, char *argv[]) {
 	printf("Generating modules\n");
 	// Modules
 	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>(0);
+	printf("a\n");
 	for (int i = 0; i < numModules; i++) {
+
+		printf("-1\n");
 		modules->push_back(new chip::Module(bufferSize, sampleRate));
 		modules->at(i)->setVoice(voices->at(i));
 		PMHandler->addMIDIDevice(modules->at(i));
