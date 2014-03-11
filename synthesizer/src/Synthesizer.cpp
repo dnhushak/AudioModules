@@ -61,7 +61,6 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 	float pi = 3.14159265359;
 	for (int i = 0; i < 256; i++) {
 		sine->setSample(i, (sin((pi * 2 * (float) i) / 256)));
-		printf("Sine sample %d: %02f\n", i, sine->getSample(i));
 		rnd = ((-2) * ((float) rand() / RAND_MAX)) + 1;
 		noise->setSample(i, rnd);
 	}
@@ -128,7 +127,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	//TODO: generate default voices
 	//TODO: Fix Voice Configuration Reader
 
 	/*** Make all Audio Connections ***/

@@ -109,11 +109,6 @@ void chip::Module::cleanup() {
 	}
 }
 
-//Midi Note to Frequency
-float chip::Module::MtoF(int note) {
-	return pow(2, (((float) note - 69) / 12.0)) * 440.0;
-}
-
 void chip::Module::printPolyVoices() {
 	std::cout << "Allocated PolyVoices: " << this->audioDeviceList->size()
 			<< "\n";

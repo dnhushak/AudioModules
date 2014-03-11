@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include<AudioUtils.hpp>
 
 namespace chip {
 	class Module: public AudioEffect, public MIDIDevice {
@@ -26,9 +27,6 @@ namespace chip {
 
 			// Removes any inactive polyVoices
 			void cleanup();
-
-			//Midi Note to Frequency
-			float MtoF(int note);
 
 			void printPolyVoices();
 

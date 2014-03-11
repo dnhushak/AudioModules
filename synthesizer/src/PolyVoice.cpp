@@ -34,7 +34,7 @@ float * chip::PolyVoice::advance(int numSamples) {
 			// Grab the envelope for vibrato
 			vibmult *= (vib_env->advance(1))[0];
 			// Scale the vibrato
-			vibmult *= .05;
+			vibmult *= .005;
 			// Add 1 (to prevent 0 and negative frequencies!)
 			vibmult += 1;
 			osc->setFrequency(baseFrequency * vibmult);

@@ -33,7 +33,7 @@ namespace chip {
 			int getSampleRate();
 
 			// Return the state
-			devState_t getState();
+			virtual devState_t getState();
 
 			virtual ~AudioDevice();
 
