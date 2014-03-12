@@ -7,10 +7,17 @@ namespace chip {
 	}
 
 	void MessagePrinter::affect(MIDIMessage * message) {
+
+		//Make Magenta
+		std::string cyan = "\033[1;36m";
+		// Make default color
+		std::string defcol = "\033[0m";
+		std::cout << cyan;
 		printf("MIDI Message | Type: ");
 		decodeMessageType(message);
-		printf(" | Channel: %03i | Data1: %03i | Data2: %03i\n",
-				message->channel, message->data1, message->data2);
+		printf(" | Channel: %02i | Data1: %03i | Data2: %03i | Time: %i",
+				message->channel, message->data1, message->data2, message->time);
+		std::cout << defcol << "\n";
 	}
 
 	void MessagePrinter::decodeMessageType(MIDIMessage * message) {

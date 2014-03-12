@@ -68,10 +68,14 @@ void chip::AudioEffect::setAudioDeviceList(
 
 // Remove AudioDevice objects from the list of the mixer (by object reference)
 void chip::AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
-	for (int i = 0; i < numAudioDevices; i++) {
-		if (audioDeviceList->at(i) == audioObject) {
-			audioDeviceList->erase(audioDeviceList->begin() + i);
+	// Using an iterator
+	std::vector<AudioDevice *>::iterator it = audioDeviceList->begin();
+	while (it < audioDeviceList->end()) {
+		if ((*it) == audioObject) {
+			it = audioDeviceList->erase(it);
+			break;
 		}
+		it++;
 	}
 	numAudioDevices = audioDeviceList->size();
 }
