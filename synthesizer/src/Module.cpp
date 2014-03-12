@@ -7,8 +7,6 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	bufferSize = initBufferSize;
 	sampleRate = initSampleRate;
 	buffer = new float[bufferSize];
-	//instantiates "bucket" of polyvoices
-	audioDeviceList = new std::list<AudioDevice *>;
 	polyMixer = new Mixer(bufferSize, sampleRate);
 	polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
@@ -22,6 +20,8 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	glissTime = 1000;
 
 	numActive = 0;
+
+	toDelete = new std::vector<AudioDevice *>;
 }
 
 void chip::Module::affect(MIDIMessage * message) {
@@ -40,7 +40,7 @@ void chip::Module::affect(MIDIMessage * message) {
 			break;
 		case 0b1011:
 			// CC
-			if (message->data1 == 10 && message->data2 == 127) {
+			if (message->data2 == 127) {
 				printf("Number of polyvoices in mixer:           %d\n",
 						polyMixer->getNumAudioDevices());
 				printf("Number of polyvoices in polyvoice array: %d\n",
@@ -62,6 +62,7 @@ void chip::Module::affect(MIDIMessage * message) {
 		default:
 			break;
 	}
+	cleanup();
 }
 
 void chip::Module::setVoice(Voice * newVoice) {
@@ -116,21 +117,23 @@ void chip::Module::releasePolyVoice(int note) {
 }
 
 void chip::Module::cleanup() {
-	// Remove all polyvoices in cleanup state
+	// Start with a fresh list of things to delete
+	toDelete->clear();
+
+	// Find all inactive polyVoices and put them in the list
 	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
 			++audIter) {
-
 		// Grab its pointer before we remove it from the device list
-
 		if ((*audIter)->getState() == INACTIVE) {
-			// Remove it from the device list - also removes from mixer, as it points to the same list
-			//polyMixer->removeAudioDevice((*audIter));
-			audioDeviceList->remove(*audIter);
-			printf("Number of devices in polymixer: %d\n", polyMixer->getNumAudioDevices());
-			// Free memory
-			delete (*audIter);
-			numAudioDevices = audioDeviceList->size();
-			return;
+			toDelete->push_back(*audIter);
 		}
 	}
+
+	// Remove everything in the toDelete list from the device list, and call its deconstructor
+	for (int i = 0; i < toDelete->size(); i++) {
+		audioDeviceList->remove(toDelete->at(i));
+		// Free memory
+		delete (toDelete->at(i));
+	}
+	numAudioDevices = audioDeviceList->size();
 }

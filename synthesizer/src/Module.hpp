@@ -44,5 +44,8 @@ namespace chip {
 			chip::Mixer * polyMixer;
 			chip::Gain * moduleGain;
 
+			// Items to delete
+			std::vector<AudioDevice*> * toDelete;
+
 	};
 }

@@ -76,7 +76,6 @@ void PolyVoice::disableVibrato() {
 // Start the polyvoice
 void PolyVoice::startPolyVoice(int newNote) {
 	if (newNote > 0 && newNote <= 127) {
-		printf("Start PolyVoice\n");
 		state = ACTIVE;
 		note = newNote;
 		baseFrequency = MtoF(note);
