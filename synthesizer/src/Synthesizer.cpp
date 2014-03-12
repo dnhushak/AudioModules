@@ -183,6 +183,7 @@ int main(int argc, char *argv[]) {
 		// Add the module to the master mixer
 		masterMixer->addAudioDevice(modules->at(i));
 	}
+	//masterMixer->addAudioDevice(modules->at(0));
 
 
 	/*** Make all MIDI Connections ***/
@@ -211,7 +212,7 @@ int main(int argc, char *argv[]) {
 	while (1) {
 		// Read MIDI, forward
 		PMHandler->readMIDI();
-		masterMixer->cleanup();
+		//masterMixer->cleanup();
 	}
 
 	PAHandler->disconnectAudioStream();

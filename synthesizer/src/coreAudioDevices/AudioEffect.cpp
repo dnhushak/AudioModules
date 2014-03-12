@@ -1,19 +1,20 @@
 #include "AudioEffect.hpp"
 
 chip::AudioEffect::AudioEffect() {
-	audioDeviceList = new std::forward_list<AudioDevice*>(0);
+	audioDeviceList = new std::list<AudioDevice*>(0);
 	maxNumAudioDevices = -1;
 	numAudioDevices = 0;
 	audIter = audioDeviceList->begin();
+	current = *audIter;
 }
 
 // Perform cleanup on all devices in audio device list
 void chip::AudioEffect::cleanup() {
-	if (numAudioDevices > 0) {
-		for (audIter = audioDeviceList->begin();
-				audIter != audioDeviceList->end(); ++audIter) {
-			//(*audIter)->cleanup();
-		}
+	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
+			++audIter) {
+		current = *audIter;
+		current->cleanup();
+
 	}
 }
 
@@ -26,9 +27,9 @@ void chip::AudioEffect::addAudioDevice(AudioDevice * audioObject) {
 	}
 }
 
-//// Add a forward_list of AudioDevices to be mixed
+//// Add a list of AudioDevices to be mixed
 //void chip::AudioEffect::addAudioDevices(
-//		std::forward_list<AudioDevice*> * audioObjects) {
+//		std::list<AudioDevice*> * audioObjects) {
 //	int numToAdd;
 //
 //	// If no maximum...
@@ -54,7 +55,7 @@ void chip::AudioEffect::addAudioDevice(AudioDevice * audioObject) {
 
 // Switch pointer to a new audioDeviceList - Useful if list is managed by external object
 void chip::AudioEffect::setAudioDeviceList(
-		std::forward_list<AudioDevice*> * audioObjects) {
+		std::list<AudioDevice*> * audioObjects) {
 
 	// Re-reference
 	audioDeviceList = audioObjects;
@@ -74,7 +75,7 @@ void chip::AudioEffect::setAudioDeviceList(
 // Remove AudioDevice objects from the list of the mixer (by object reference)
 void chip::AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
 	// Using an iterator
-//	std::forward_list<AudioDevice *>::iterator it = audioDeviceList->begin();
+//	std::list<AudioDevice *>::iterator it = audioDeviceList->begin();
 //	while (it < audioDeviceList->end()) {
 //		if ((*it) == audioObject) {
 //			it = audioDeviceList->erase(it);
@@ -117,6 +118,7 @@ void chip::AudioEffect::resizeBuffer(int newSize) {
 // Resize all child buffer sizes
 	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
 			++audIter) {
-		(*audIter)->resizeBuffer(bufferSize);
+		current = *audIter;
+		current->resizeBuffer(bufferSize);
 	}
 }

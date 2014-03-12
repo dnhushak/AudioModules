@@ -1,6 +1,7 @@
 #pragma once
 #include "AudioEffect.hpp"
-#include <vector>
+#include <list>
+#include <iterator>
 #include <iostream>
 
 namespace chip {
