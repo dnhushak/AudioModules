@@ -18,15 +18,15 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 	chip::Wavetable* triangle = new chip::Wavetable(16);
 	chip::Wavetable* square50 = new chip::Wavetable(16);
 	chip::Wavetable* square25 = new chip::Wavetable(16);
-	chip::Wavetable* noise = new chip::Wavetable(256);
-	chip::Wavetable* sine = new chip::Wavetable(256);
+	chip::Wavetable* noise = new chip::Wavetable(1024);
+	chip::Wavetable* vibrasin = new chip::Wavetable(256);
 
 	tables->push_back(sawtooth);
 	tables->push_back(triangle);
 	tables->push_back(square50);
 	tables->push_back(square25);
 	tables->push_back(noise);
-	tables->push_back(sine);
+	tables->push_back(vibrasin);
 
 	//Divide 16 into four regions
 	int quarter = 4;
@@ -48,22 +48,23 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 		else if (i < three_fourths) {
 			square50->setSample(i, 1);
 			square25->setSample(i, -1);
-			triangle->setSample(i, 1 - (( ((float)i-half) / 4)));
+			triangle->setSample(i, 1 - ((((float) i - half) / 4)));
 		}
 		//Fourth quarter of the wave
 		else {
 			square50->setSample(i, 1);
 			square25->setSample(i, 1);
-			triangle->setSample(i, 1 - (( ((float)i-half) / 4)));
+			triangle->setSample(i, 1 - ((((float) i - half) / 4)));
 		}
 	}
-	int rnd;
-	float pi = 3.14159265359;
-	for (int i = 0; i < 256; i++) {
-		sine->setSample(i, (sin((pi * 2 * (float) i) / 256)));
+	float rnd;
+	for (int i = 0; i<noise->getTableSize();i++){
 		rnd = ((-2) * ((float) rand() / RAND_MAX)) + 1;
 		noise->setSample(i, rnd);
-		printf("Noise sample %d : %f\n", i, noise->getSample(i));
+	}
+	float pi = 3.14159265359;
+	for (int i = 0; i < 256; i++) {
+		vibrasin->setSample(i, (sin((pi * 2 * (float) i) / 256)));
 	}
 	return tables;
 }
@@ -162,8 +163,9 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->vib_release = 500;
 		voices->at(i)->vib_table = tables->at(5);
 		voices->at(i)->volume = -12;
-
 	}
+	voices->at(4)->vib_en = false;
+
 	printf("Generating modules\n");
 	// Modules
 	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>(0);
