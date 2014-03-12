@@ -10,7 +10,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	//instantiates "bucket" of polyvoices
 	audioDeviceList = new std::list<AudioDevice *>;
 	polyMixer = new Mixer(bufferSize, sampleRate);
-	//polyMixer->setAudioDeviceList(audioDeviceList);
+	polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
 
@@ -74,10 +74,7 @@ void chip::Module::setVoice(Voice * newVoice) {
 }
 
 float * chip::Module::advance(int numSamples) {
-	//return moduleGain->advance(numSamples);
-	printf("moduleAdvance\n");
-	zeroBuffer();
-	return buffer;
+	return moduleGain->advance(numSamples);
 }
 
 void chip::Module::activatePolyVoice(int note) {
@@ -109,7 +106,8 @@ void chip::Module::activatePolyVoice(int note) {
 
 void chip::Module::releasePolyVoice(int note) {
 	// Release the polyVoice
-	while (audIter != audioDeviceList->end()) {
+	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
+			++audIter) {
 		if (((PolyVoice*) (*audIter))->getNote() == note) {
 			((PolyVoice*) (*audIter))->releasePolyVoice();
 			return;

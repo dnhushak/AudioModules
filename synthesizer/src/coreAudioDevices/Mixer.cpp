@@ -11,15 +11,11 @@ chip::Mixer::Mixer(int initBufferSize, int initSampleRate) {
 float * chip::Mixer::advance(int numSamples) {
 	// Zero out the buffer
 	zeroBuffer();
-	int i = 0;
 	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
 			++audIter) {
 		//TODO: Restrict maximum number of devices
-		current = *audIter;
-		printf("Mixer advance %d: current = %d\n", i, current);
 		// Fill up a temp buffer for one IAudio object
-		temp = current->advance(numSamples);
-		i++;
+		temp = (*audIter)->advance(numSamples);
 		// Add each element into the mixdown buffer
 		for (int j = 0; j < bufferSize; j++) {
 			// Sum each advanced IAudio to the master mixed vector
