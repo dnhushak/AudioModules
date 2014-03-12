@@ -13,7 +13,7 @@ void chip::MIDIDevice::affect(MIDIMessage * message) {
 	}
 }
 
-// Add another MIDIDevice object to be mixed
+// Add another MIDIDevice object to the list
 void chip::MIDIDevice::addMIDIDevice(MIDIDevice* MIDIObject) {
 	// Ignore if at maximum value or no maximum
 	if (numMIDIDevices < maxNumMIDIDevices || maxNumMIDIDevices == -1) {
@@ -22,8 +22,7 @@ void chip::MIDIDevice::addMIDIDevice(MIDIDevice* MIDIObject) {
 	}
 }
 
-//TODO: Determine whether or not adding a vector of devices will work w/o killing derived class methods
-// Add a vector of MIDIDevices to be mixed
+// Add a vector of MIDIDevices to the list
 void chip::MIDIDevice::addMIDIDevices(std::vector<MIDIDevice*> * MIDIObjects) {
 	int numToAdd;
 

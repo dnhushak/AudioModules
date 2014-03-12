@@ -13,10 +13,15 @@ namespace chip {
 
 	void ChannelFilter::affect(MIDIMessage * message) {
 		// Check to see if the message is of the desired channel
-		if (message->channel == channel || channel == -1) {
-			// If it is, forward it to all MIDI Devices
-			for (int i = 0; i < numMIDIDevices; i++) {
-				(*MIDIDeviceList)[i]->affect(message);
+		if (message->type == 0b1111) {
+			//System messages are channel independent
+		} else {
+			if (message->channel == channel || channel == -1) {
+
+				// If it is, forward it to all MIDI Devices
+				for (int i = 0; i < numMIDIDevices; i++) {
+					(*MIDIDeviceList)[i]->affect(message);
+				}
 			}
 		}
 	}

@@ -162,7 +162,6 @@ namespace chip {
 			PaStreamCallbackFlags statusFlags, void *userData) {
 
 		//TODO: get multichannel to work right
-
 		// Cast void type output buffer to float
 		float * out = (float*) outputBuffer;
 

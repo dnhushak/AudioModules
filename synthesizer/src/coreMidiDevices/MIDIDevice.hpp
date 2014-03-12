@@ -45,7 +45,7 @@ namespace chip {
 
 			virtual ~MIDIDevice();
 		protected:
-
+			// TODO: Change the vector to list, to match audio device behavior
 			// List of MIDI items to mix together
 			std::vector<MIDIDevice * > * MIDIDeviceList;
 

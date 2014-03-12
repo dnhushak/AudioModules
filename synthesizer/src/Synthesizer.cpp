@@ -63,8 +63,12 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 		noise->setSample(i, rnd);
 	}
 	float pi = 3.14159265359;
+	float samp;
 	for (int i = 0; i < 256; i++) {
-		vibrasin->setSample(i, (sin((pi * 2 * (float) i) / 256)));
+		samp = (sin((pi * 2 * (float) i) / 256));
+		// Scale the vibrato
+		samp *= .01;
+		vibrasin->setSample(i, samp);
 	}
 	return tables;
 }

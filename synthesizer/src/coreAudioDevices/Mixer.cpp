@@ -13,7 +13,6 @@ float * chip::Mixer::advance(int numSamples) {
 	zeroBuffer();
 	audCallbackIter = audioDeviceList->begin();
 
-	std::list<AudioDevice*>::iterator end = audioDeviceList->end();
 	while (audCallbackIter != audioDeviceList->end()) {
 		//TODO: Restrict maximum number of devices
 
@@ -24,7 +23,6 @@ float * chip::Mixer::advance(int numSamples) {
 			// Sum each advanced IAudio to the master mixed vector
 			buffer[j] += temp[j];
 		}
-		end = audioDeviceList->end();
 		++audCallbackIter;
 	}
 	//Pointer to the summed buffer
