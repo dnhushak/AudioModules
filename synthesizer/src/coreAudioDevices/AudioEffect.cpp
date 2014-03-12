@@ -5,16 +5,14 @@ chip::AudioEffect::AudioEffect() {
 	maxNumAudioDevices = -1;
 	numAudioDevices = 0;
 	audIter = audioDeviceList->begin();
+	audCallbackIter = audioDeviceList->begin();
 	current = *audIter;
 }
 
-// Perform cleanup on all devices in audio device list
 void chip::AudioEffect::cleanup() {
 	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
 			++audIter) {
-		current = *audIter;
-		current->cleanup();
-
+		(*audIter)->cleanup();
 	}
 }
 
@@ -70,38 +68,34 @@ void chip::AudioEffect::setAudioDeviceList(
 //		// Otherwise set to maximum number of devices
 //		numAudioDevices = maxNumAudioDevices;
 //	}
+
+	numAudioDevices = audioDeviceList->size();
 }
 
 // Remove AudioDevice objects from the list of the mixer (by object reference)
+// Note also calls destructor of device we are removing
+
 void chip::AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
-	// Using an iterator
-//	std::list<AudioDevice *>::iterator it = audioDeviceList->begin();
-//	while (it < audioDeviceList->end()) {
-//		if ((*it) == audioObject) {
-//			it = audioDeviceList->erase(it);
-//			break;
-//		}
-//		it++;
-//	}
 	audioDeviceList->remove(audioObject);
-	numAudioDevices--;
+	numAudioDevices = audioDeviceList->size();
 }
 
 // Remove IAudio objects from the list of the mixer (by location)
-//void chip::AudioEffect::removeAudioDevice(int loc) {
+void chip::AudioEffect::removeAudioDevice(int loc) {
+//	// TODO: fix this
 //	audioDeviceList->erase(audioDeviceList->begin() + loc);
 //	numAudioDevices = audioDeviceList->size();
-//}
+}
 
 // Remove all objects from mixer
 void chip::AudioEffect::removeAllAudioDevices() {
 	audioDeviceList->clear();
-	numAudioDevices = 0;
+	numAudioDevices = audioDeviceList->size();
 }
 
 // Returns the number of objects in this mixer
 int chip::AudioEffect::getNumAudioDevices() {
-	return numAudioDevices;
+	return audioDeviceList->size();
 }
 
 // Resize the buffer of the mixer

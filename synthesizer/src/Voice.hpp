@@ -21,10 +21,7 @@ namespace chip {
 
 			// Vibrato Settings
 			Wavetable * vib_table;
-			int vib_attack;
-			int vib_decay;
-			float vib_sustain;
-			int vib_release;
+			int vib_time;
 			bool vib_en;
 	};
 }

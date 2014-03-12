@@ -8,7 +8,7 @@ PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
 	osc = new Oscillator(bufferSize, sampleRate);
 	vib = new Oscillator(bufferSize, sampleRate);
 	osc_env = new Envelope(bufferSize, sampleRate);
-	vib_env = new Envelope(bufferSize, sampleRate);
+	vib_ramp = new Ramp(bufferSize, sampleRate);
 	note = 0;
 	baseFrequency = 0;
 	vibmult = 0;
@@ -16,11 +16,11 @@ PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
 	state = ACTIVE;
 }
 
-void chip::PolyVoice::cleanup(){
+chip::PolyVoice::~PolyVoice() {
 	delete osc;
 	delete vib;
 	delete osc_env;
-	delete vib_env;
+	delete vib_ramp;
 }
 
 float * chip::PolyVoice::advance(int numSamples) {
@@ -28,7 +28,6 @@ float * chip::PolyVoice::advance(int numSamples) {
 		zeroBuffer();
 		return buffer;
 	}
-
 
 	/* We unfortunately have to go through sample by sample, as
 	 * the vibrato is also time-based, and needs to alter the frequency of the
@@ -44,9 +43,9 @@ float * chip::PolyVoice::advance(int numSamples) {
 			// Grab the sine oscillator
 			vibmult = (vib->advance(1))[0];
 			// Grab the envelope for vibrato
-			vibmult *= (vib_env->advance(1))[0];
+			vibmult *= (vib_ramp->advance(1))[0];
 			// Scale the vibrato
-			vibmult *= .005;
+			vibmult *= .01;
 			// Add 1 (to prevent 0 and negative frequencies!)
 			vibmult += 1;
 			osc->setFrequency(baseFrequency * vibmult);
@@ -77,13 +76,14 @@ void PolyVoice::disableVibrato() {
 // Start the polyvoice
 void PolyVoice::startPolyVoice(int newNote) {
 	if (newNote > 0 && newNote <= 127) {
+		printf("Start PolyVoice\n");
 		state = ACTIVE;
 		note = newNote;
 		baseFrequency = MtoF(note);
 		osc->setFrequency(baseFrequency);
 		vib->setFrequency(5);
 		osc_env->startEnv();
-		vib_env->startEnv();
+		vib_ramp->startRamp();
 	}
 }
 
@@ -102,10 +102,7 @@ void PolyVoice::setVoice(Voice * voice) {
 
 	// Vibrato settings
 	vib->setWavetable(voice->vib_table);
-	vib_env->setAttack(voice->osc_attack);
-	vib_env->setDecay(voice->osc_decay);
-	vib_env->setSustain(voice->osc_sustain);
-	vib_env->setRelease(voice->osc_release);
+	vib_ramp->setTime(voice->vib_time);
 	vib_en = voice->vib_en;
 
 }

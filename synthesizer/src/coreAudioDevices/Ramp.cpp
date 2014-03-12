@@ -1,11 +1,8 @@
 #include "Ramp.hpp"
 
 chip::Ramp::Ramp(int initBufferSize, int initSampleRate) {
-	// Initialize the output buffer
-	bufferSize = initBufferSize;
-
-	// Initialize the sample rate
-	sampleRate = initSampleRate;
+	changeSampleRate(initSampleRate);
+	resizeBuffer(initBufferSize);
 
 	// Initialize state to INIT
 	state = ACTIVE;
@@ -28,7 +25,6 @@ chip::Ramp::Ramp(int initBufferSize, int initSampleRate) {
 
 // Advance the rampelope. Returns a buffer holding the rampelope multiplier values
 float * chip::Ramp::advance(int numSamples) {
-
 	for (int i = 0; i < numSamples; i++) {
 		if (state == ACTIVE) {
 			rampmult += slope;

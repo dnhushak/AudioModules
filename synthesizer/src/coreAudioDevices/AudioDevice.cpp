@@ -21,6 +21,7 @@ chip::devState_t chip::AudioDevice::getState(){
 
 // Perform cleanup on all devices in audio device list
 void chip::AudioDevice::cleanup() {
+	return;
 }
 
 // Resize the buffer of the audio device

@@ -5,6 +5,7 @@
 #include "Oscillator.hpp"
 #include "Envelope.hpp"
 #include "Voice.hpp"
+#include "Ramp.hpp"
 #include <vector>
 #include <iostream>
 
@@ -19,8 +20,6 @@ namespace chip {
 
 			// Return the current state of the polyvoice
 			devState_t getState();
-
-			void cleanup();
 
 			// Enable vibrato
 			void enableVibrato();
@@ -40,6 +39,8 @@ namespace chip {
 			// Gets the MIDI note number tied to this polyVoice
 			int getNote();
 
+			~PolyVoice();
+
 		private:
 			// Current state of polyvoice
 			devState_t state;
@@ -50,8 +51,8 @@ namespace chip {
 			Oscillator * vib;
 			// Main Envelope
 			Envelope * osc_env;
-			// Vibrato Envelope
-			Envelope * vib_env;
+			// Vibrato Ramp
+			Ramp * vib_ramp;
 			// Vibrato multiplier
 			float vibmult;
 			// Base frequency

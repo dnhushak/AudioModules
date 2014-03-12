@@ -30,10 +30,10 @@ namespace chip {
 			// Overriding AudioDevice::resizeBuffer()
 			virtual void resizeBuffer(int);
 
-			virtual void cleanup();
-
 			// Adds audio object to mixer list
 			void addAudioDevice(AudioDevice *);
+
+			void cleanup();
 
 			// Adds a list of audio objects to mixer list
 			//void addAudioDevices(std::list<AudioDevice *> *);
@@ -45,7 +45,7 @@ namespace chip {
 			void removeAudioDevice(AudioDevice *);
 
 			// Removes audio object from mixer based on list index
-//			void removeAudioDevice(int);
+			void removeAudioDevice(int);
 
 			// Remove all objects from the mixer
 			void removeAllAudioDevices();
@@ -56,7 +56,9 @@ namespace chip {
 
 			// List of Audio items to mix together
 			std::list<AudioDevice*> * audioDeviceList;
-			// List iterator
+			// List iterator - for use inside the callback
+			std::list<AudioDevice*>::iterator audCallbackIter;
+			// List iterator - for use outside the callback
 			std::list<AudioDevice*>::iterator audIter;
 			// The device currently pointed to by the iterator
 			AudioDevice * current;

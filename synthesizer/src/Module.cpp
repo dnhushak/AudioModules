@@ -116,21 +116,21 @@ void chip::Module::releasePolyVoice(int note) {
 }
 
 void chip::Module::cleanup() {
-	AudioDevice * toDelete;
-	// Using an iterator
-	audIter = audioDeviceList->begin();
 	// Remove all polyvoices in cleanup state
-	while (audIter != audioDeviceList->end()) {
+	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
+			++audIter) {
+
+		// Grab its pointer before we remove it from the device list
+
 		if ((*audIter)->getState() == INACTIVE) {
-			// Grab its pointer before we remove it from the device list
-			toDelete = *audIter;
 			// Remove it from the device list - also removes from mixer, as it points to the same list
-			audioDeviceList->remove(toDelete);
+			//polyMixer->removeAudioDevice((*audIter));
+			audioDeviceList->remove(*audIter);
+			printf("Number of devices in polymixer: %d\n", polyMixer->getNumAudioDevices());
 			// Free memory
-			toDelete->cleanup();
-			delete toDelete;
-			numAudioDevices--;
+			delete (*audIter);
+			numAudioDevices = audioDeviceList->size();
+			return;
 		}
-		audIter++;
 	}
 }

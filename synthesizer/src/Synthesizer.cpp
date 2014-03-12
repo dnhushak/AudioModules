@@ -58,7 +58,7 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 		}
 	}
 	float rnd;
-	for (int i = 0; i<noise->getTableSize();i++){
+	for (int i = 0; i < noise->getTableSize(); i++) {
 		rnd = ((-2) * ((float) rand() / RAND_MAX)) + 1;
 		noise->setSample(i, rnd);
 	}
@@ -157,10 +157,7 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->osc_release = 500;
 		voices->at(i)->osc_table = tables->at(i);
 		voices->at(i)->vib_en = true;
-		voices->at(i)->vib_attack = 500;
-		voices->at(i)->vib_decay = 200;
-		voices->at(i)->vib_sustain = 1;
-		voices->at(i)->vib_release = 500;
+		voices->at(i)->vib_time = 1500;
 		voices->at(i)->vib_table = tables->at(5);
 		voices->at(i)->volume = -12;
 	}
@@ -183,8 +180,6 @@ int main(int argc, char *argv[]) {
 		// Add the module to the master mixer
 		masterMixer->addAudioDevice(modules->at(i));
 	}
-	//masterMixer->addAudioDevice(modules->at(0));
-
 
 	/*** Make all MIDI Connections ***/
 
@@ -212,7 +207,7 @@ int main(int argc, char *argv[]) {
 	while (1) {
 		// Read MIDI, forward
 		PMHandler->readMIDI();
-		//masterMixer->cleanup();
+		masterMixer->cleanup();
 	}
 
 	PAHandler->disconnectAudioStream();
