@@ -3,6 +3,7 @@
 #define MIDIDEVICE_H
 #include <vector>
 #include <iostream>
+#include <stdint.h>
 
 namespace chip {
 	struct MIDIMessage {
@@ -50,10 +51,10 @@ namespace chip {
 			std::vector<MIDIDevice * > * MIDIDeviceList;
 
 			// Maximum number of MIDI devices allowable in effect (-1 -> no maximum)
-			int maxNumMIDIDevices;
+			unsigned int maxNumMIDIDevices;
 
 			// Actual number of MIDI devices in effect
-			int numMIDIDevices;
+			unsigned int numMIDIDevices;
 
 			// Scale a MIDI message to an int
 			int scaleValue(int value, int min, int max);
