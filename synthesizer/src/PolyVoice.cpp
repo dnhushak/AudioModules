@@ -16,6 +16,13 @@ PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
 	state = ACTIVE;
 }
 
+void chip::PolyVoice::cleanup(){
+	delete osc;
+	delete vib;
+	delete osc_env;
+	delete vib_env;
+}
+
 float * chip::PolyVoice::advance(int numSamples) {
 	if (state == INACTIVE) {
 		zeroBuffer();

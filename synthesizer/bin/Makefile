@@ -24,8 +24,8 @@ CXX = g++
 LDFLAGS1 = -lportaudio -Wall -g
 LDFLAGS2 = -lportmidi -Wall -g
 LDFLAGS3 = -Wall -g
-LDFLAGS4 = -lportmidi -lportaudio -Wall -g
-CFLAGS = -I$(SRCEDIR) -I$(AUDIDIR) -I$(MIDIDIR) -I$(PORTDIR)
+LDFLAGS4 = -lportmidi -lportaudio -Wall -g -ggdb
+CFLAGS = -I$(SRCEDIR) -I$(AUDIDIR) -I$(MIDIDIR) -I$(PORTDIR) -g -ggdb
 
 Synthesizer: $(OBJECTS)
 	$(CXX) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS4)

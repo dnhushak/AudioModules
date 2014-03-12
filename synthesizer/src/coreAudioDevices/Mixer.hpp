@@ -11,9 +11,6 @@ namespace chip {
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			float * advance(int);
 
-			// Returns the number of objects in this mixer
-			int getNumAudioDevices();
-
 			// Sets the maximum number of devices
 			void setMaxNumAudioDevices(int);
 

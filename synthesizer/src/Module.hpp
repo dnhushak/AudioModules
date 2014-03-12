@@ -28,8 +28,6 @@ namespace chip {
 			// Removes any inactive polyVoices
 			void cleanup();
 
-			void printPolyVoices();
-
 		private:
 
 			/*** Voice ***/
@@ -41,7 +39,7 @@ namespace chip {
 			int glissTime;
 
 			// List of active notes
-			std::vector<PolyVoice *> * audioDeviceList;
+			int numActive;
 
 			chip::Mixer * polyMixer;
 			chip::Gain * moduleGain;

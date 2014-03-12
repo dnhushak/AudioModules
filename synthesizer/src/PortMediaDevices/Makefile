@@ -1,6 +1,6 @@
 CXX = g++
-LDFLAGS = -lportmidi -lportaudio -Wall -g
-CFLAGS = -I../coreAudioDevices -I../coreMidiDevices
+LDFLAGS = -lportmidi -lportaudio -Wall -g -ggdb
+CFLAGS = -I../coreAudioDevices -I../coreMidiDevices -g -ggdb
 CXXFLAGS =
 
 SRCDIR = ./

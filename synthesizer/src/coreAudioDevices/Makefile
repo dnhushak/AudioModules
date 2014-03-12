@@ -1,6 +1,6 @@
 CXX = g++
-LDFLAGS = -Wall -g
-CFLAGS = 
+LDFLAGS = -Wall -g -ggdb
+CFLAGS = -g -ggdb
 CXXFLAGS =
 
 SRCDIR = ./

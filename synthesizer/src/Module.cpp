@@ -8,8 +8,9 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	sampleRate = initSampleRate;
 	buffer = new float[bufferSize];
 	//instantiates "bucket" of polyvoices
-	audioDeviceList = new std::vector<PolyVoice *>(0);
+	audioDeviceList = new std::forward_list<AudioDevice *>;
 	polyMixer = new Mixer(bufferSize, sampleRate);
+	polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
 
@@ -19,6 +20,8 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	gliss_en = false;
 	arpTime = 100;
 	glissTime = 1000;
+
+	numActive = 0;
 }
 
 void chip::Module::affect(MIDIMessage * message) {
@@ -37,6 +40,12 @@ void chip::Module::affect(MIDIMessage * message) {
 			break;
 		case 0b1011:
 			// CC
+			if (message->data1 == 10 && message->data2 == 127) {
+				printf("Number of polyvoices in mixer:           %d\n",
+						polyMixer->getNumAudioDevices());
+				printf("Number of polyvoices in polyvoice array: %d\n",
+						numAudioDevices);
+			}
 			break;
 		case 0b1100:
 			// Program Change
@@ -70,62 +79,57 @@ float * chip::Module::advance(int numSamples) {
 
 void chip::Module::activatePolyVoice(int note) {
 	// Check for existing note in the active polyvoices
-	for (int i = 0; i < audioDeviceList->size(); i++) {
-		if ((*audioDeviceList)[i]->getNote() == note) {
-			// Restart the polyVoice
-			(*audioDeviceList)[i]->startPolyVoice(note);
-			return;
+	if (numAudioDevices > 0) {
+		for (audIter = audioDeviceList->begin();
+				audIter != audioDeviceList->end(); ++audIter) {
+
+			// Notation is a little wonkyhere, but we want to access the note
+			// So, we need to access the AudioObject in the iterator (*audioDeviceIterator)
+			// And then downcast it to PolyVoice (PolyVoice*)
+			if (((PolyVoice*) (*audIter))->getNote() == note) {
+				// Restart the polyVoice
+				((PolyVoice*) (*audIter))->startPolyVoice(note);
+				return;
+			}
 		}
 	}
 
-	// Create new polyvoice, and set its parameters
+	// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 	PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
 	newPolyVoice->setVoice(voice);
 	newPolyVoice->startPolyVoice(note);
 
 	// Add new polyvoice to the device list
-	audioDeviceList->push_back(newPolyVoice);
-	polyMixer->addAudioDevice(newPolyVoice);
+	audioDeviceList->push_front(newPolyVoice);
+	numAudioDevices++;
 }
 
 void chip::Module::releasePolyVoice(int note) {
 	// Release the polyVoice
-	for (int i = 0; i < audioDeviceList->size(); i++) {
-		if ((*audioDeviceList)[i]->getNote() == note) {
-			(*audioDeviceList)[i]->releasePolyVoice();
-			break;
+	while (audIter != audioDeviceList->end()) {
+		if (((PolyVoice*) (*audIter))->getNote() == note) {
+			((PolyVoice*) (*audIter))->releasePolyVoice();
+			return;
 		}
 	}
 }
 
 void chip::Module::cleanup() {
-	AudioDevice *  toDelete;
+	AudioDevice * toDelete;
 	// Using an iterator
-	std::vector<PolyVoice *>::iterator it = audioDeviceList->begin();
+	audIter = audioDeviceList->begin();
 	// Remove all polyvoices in cleanup state
-	while(it < audioDeviceList->end()) {
-		if ((*it)->getState() == INACTIVE) {
+	while (audIter != audioDeviceList->end()) {
+		if ((*audIter)->getState() == INACTIVE) {
 			// Grab its pointer before we remove it from the device list
-			toDelete = *it;
-			// Remove the device from the mixer
-			polyMixer->removeAudioDevice(toDelete);
-			// Remove it from the device list
-			it = audioDeviceList->erase(it);
+			toDelete = *audIter;
+			// Remove it from the device list - also removes from mixer, as it points to the same list
+			audioDeviceList->remove(toDelete);
 			// Free memory
+			toDelete->cleanup();
 			delete toDelete;
+			numAudioDevices--;
 		}
-		else{
-			it++;
-		}
+		audIter++;
 	}
-}
-
-void chip::Module::printPolyVoices() {
-	std::cout << "Allocated PolyVoices: " << this->audioDeviceList->size()
-			<< "\n";
-	for (int i = 0; i < audioDeviceList->size(); i++) {
-		std::cout << "polyvoice" << i << ": "
-				<< (*audioDeviceList)[i]->getNote() << "\n";
-	}
-	std::cout << "***DONE\n";
 }

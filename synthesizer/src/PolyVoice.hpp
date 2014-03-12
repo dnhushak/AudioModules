@@ -20,6 +20,8 @@ namespace chip {
 			// Return the current state of the polyvoice
 			devState_t getState();
 
+			void cleanup();
+
 			// Enable vibrato
 			void enableVibrato();
 

@@ -151,13 +151,13 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->arp_en = false;
 		voices->at(i)->glissTime = 100;
 		voices->at(i)->gliss_en = false;
-		voices->at(i)->osc_attack = 100;
-		voices->at(i)->osc_decay = 100;
-		voices->at(i)->osc_sustain = .6;
+		voices->at(i)->osc_attack = 10;
+		voices->at(i)->osc_decay = 50;
+		voices->at(i)->osc_sustain = .4;
 		voices->at(i)->osc_release = 500;
 		voices->at(i)->osc_table = tables->at(i);
 		voices->at(i)->vib_en = true;
-		voices->at(i)->vib_attack = 100;
+		voices->at(i)->vib_attack = 500;
 		voices->at(i)->vib_decay = 200;
 		voices->at(i)->vib_sustain = 1;
 		voices->at(i)->vib_release = 500;
@@ -183,6 +183,7 @@ int main(int argc, char *argv[]) {
 		// Add the module to the master mixer
 		masterMixer->addAudioDevice(modules->at(i));
 	}
+
 
 	/*** Make all MIDI Connections ***/
 
