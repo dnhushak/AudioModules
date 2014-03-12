@@ -13,10 +13,10 @@ namespace chip {
 		// Make default color
 		std::string defcol = "\033[0m";
 		std::cout << cyan;
-		std::cout << "MIDI Message | Type: ";
+		std::printf("MIDI Message | Type: ");
 		decodeMessageType(message);
-		std::cout <<" | Channel: %02i | Data1: %03i | Data2: %03i | Time: %i",
-				message->channel, message->data1, message->data2, message->time;
+		std::printf(" | Channel: %02i | Data1: %03i | Data2: %03i | Time: %i",
+				message->channel, message->data1, message->data2, message->time);
 		std::cout << defcol << "\n";
 	}
 

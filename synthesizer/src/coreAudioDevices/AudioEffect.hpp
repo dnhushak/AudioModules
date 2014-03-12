@@ -64,10 +64,10 @@ namespace chip {
 			AudioDevice * current;
 
 			// Maximum number of audio devices allowable in effect (-1 -> no maximum)
-			unsigned int maxNumAudioDevices;
+			int maxNumAudioDevices;
 
 			// Actual number of audio devices in effect
-			unsigned int numAudioDevices;
+			int numAudioDevices;
 
 	};
 }

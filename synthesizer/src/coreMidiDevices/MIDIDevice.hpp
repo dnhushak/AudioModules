@@ -51,10 +51,10 @@ namespace chip {
 			std::vector<MIDIDevice * > * MIDIDeviceList;
 
 			// Maximum number of MIDI devices allowable in effect (-1 -> no maximum)
-			unsigned int maxNumMIDIDevices;
+			int maxNumMIDIDevices;
 
 			// Actual number of MIDI devices in effect
-			unsigned int numMIDIDevices;
+			int numMIDIDevices;
 
 			// Scale a MIDI message to an int
 			int scaleValue(int value, int min, int max);
