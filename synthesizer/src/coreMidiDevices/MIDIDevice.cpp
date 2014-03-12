@@ -55,7 +55,7 @@ void chip::MIDIDevice::setMIDIDeviceList(
 	MIDIDeviceList = MIDIObjects;
 
 	// If the new device list has less than the maximum number of devices, or there is no maximum...
-	if (MIDIDeviceList->size() < maxNumMIDIDevices || maxNumMIDIDevices == -1) {
+	if ((int)(MIDIDeviceList->size()) < maxNumMIDIDevices || maxNumMIDIDevices == -1) {
 		// Then the current number of devices is the size of the new list
 		numMIDIDevices = MIDIDeviceList->size();
 	} else {
