@@ -28,7 +28,7 @@ void chip::AudioDevice::cleanup() {
 // DO NOT CALL DURING CALLBACK
 void chip::AudioDevice::resizeBuffer(int newSize) {
 	// Clears old buffer memory
-	std::free(buffer);
+	free(buffer);
 	bufferSize = newSize;
 	buffer = new float[bufferSize];
 }
