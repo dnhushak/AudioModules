@@ -16,20 +16,18 @@ chip::Envelope::Envelope(int initBufferSize, int initSampleRate) {
 // Advance the envelope. Returns a buffer holding the envelope multiplier values
 float * chip::Envelope::advance(int numSamples) {
 
-	// This is the ADSR "state machine"
-	// Attack goes from 0 volume to 1
-	// Decay goes from 1 to the Sustain volume
-	// Release goes from the Sustain volume to 0
-	// Below is a graph of a notes volume going through the states of ADSR
-	//
-	//     /\
-	//    /  \__________
-	//   /              \
-	//  /                \
-	// /                  \
-	//
-	// | A |D|    S    | R |
-
+	/**
+	 * This is the ADSR "state machine"
+	 * Attack goes from current volume to 1
+	 * Decay goes from 1 to the Sustain volume
+	 * Release goes from the current volume to 0
+	 * Below is a graph of a note's volume going through the states of ADSR
+	 *     /\
+	 *    /  \__________
+	 *   /              \
+	 *  /                \
+	 * /                  \
+	 */
 	for (int i = 0; i < numSamples; i++) {
 		switch (state) {
 			default:
