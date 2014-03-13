@@ -94,7 +94,7 @@ void chip::Module::activatePolyVoice(int note) {
 			}
 		}
 	}
-
+	if(numAudioDevices <10){
 	// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 	PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
 	newPolyVoice->setVoice(voice);
@@ -102,7 +102,7 @@ void chip::Module::activatePolyVoice(int note) {
 
 	// Add new polyvoice to the device list
 	audioDeviceList->push_front(newPolyVoice);
-	numAudioDevices++;
+	numAudioDevices++;}
 }
 
 void chip::Module::releasePolyVoice(int note) {

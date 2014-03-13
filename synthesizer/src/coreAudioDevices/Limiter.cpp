@@ -15,10 +15,10 @@ namespace chip {
 			for (int i = 0; i < numSamples; i++) {
 				if (buffer[i] < 0 && buffer[i] < thresholdLo) {
 					buffer[i] = thresholdLo;
-					printf("Lowthresh\n");
+					//std::cout << "Lowthresh\n";
 				} else if (buffer[i] > 0 && buffer[i] > thresholdHi) {
 					buffer[i] = thresholdHi;
-					printf("Hithresh\n");
+					//std::cout << "Hithresh\n";
 				}
 			}
 		} else {
@@ -30,7 +30,7 @@ namespace chip {
 	void Limiter::setThreshold(float newThreshold) {
 		thresholdHi = dbToRatio(newThreshold);
 		thresholdLo = -thresholdHi;
-		printf("New threshold is %f\n", thresholdHi);
+		//std::cout << "New threshold is " << thresholdHi << "\n";
 	}
 
 }
