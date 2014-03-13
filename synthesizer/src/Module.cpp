@@ -64,7 +64,6 @@ void chip::Module::affect(MIDIMessage * message) {
 		default:
 			break;
 	}
-	cleanup();
 }
 
 void chip::Module::setVoice(Voice * newVoice) {

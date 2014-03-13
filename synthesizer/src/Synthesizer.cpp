@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
 	while (1) {
 		// Read MIDI, forward
 		PMHandler->readMIDI();
-		//masterMixer->cleanup();
+		masterMixer->cleanup();
 	}
 
 	PAHandler->disconnectAudioStream();
