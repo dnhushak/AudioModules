@@ -1,6 +1,6 @@
 CXX = g++
 LDFLAGS = -Wall -g -ggdb
-CFLAGS = -IcoreAudioDevices -IcoreMidiDevices -IPortMediaDevices -g -ggdb
+CFLAGS = -O3 -IcoreAudioDevices -IcoreMidiDevices -IPortMediaDevices -g -ggdb
 
 SRCDIR = ./
 OUTDIR = ../bin/

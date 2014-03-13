@@ -160,12 +160,15 @@ int main(int argc, char *argv[]) {
 		voices->at(i)->osc_sustain = .4;
 		voices->at(i)->osc_release = 500;
 		voices->at(i)->osc_table = tables->at(i);
-		voices->at(i)->vib_en = true;
+		if (i < 4) {
+			voices->at(i)->vib_en = true;
+		} else {
+			voices->at(i)->vib_en = false;
+		}
 		voices->at(i)->vib_time = 1500;
 		voices->at(i)->vib_table = tables->at(5);
 		voices->at(i)->volume = -12;
 	}
-	voices->at(4)->vib_en = false;
 
 	printf("Generating modules\n");
 	// Modules
@@ -197,14 +200,14 @@ int main(int argc, char *argv[]) {
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
 			AudioInDevID, numOutChannels, numInChannels, masterMixer);
-	if (!paerr == paNoError) {
+	if (paerr != paNoError) {
 		exit(0);
 	}
 
 	/*** Set up the PM handler ***/
 	PmError pmerr;
 	pmerr = PMHandler->connectMIDIStream(MIDIDevID);
-	if (!pmerr == pmNoError) {
+	if (pmerr != pmNoError) {
 		exit(0);
 	}
 
