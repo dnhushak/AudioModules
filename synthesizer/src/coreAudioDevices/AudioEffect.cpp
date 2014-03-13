@@ -101,7 +101,7 @@ int chip::AudioEffect::getNumAudioDevices() {
 // Resize the buffer of the mixer
 void chip::AudioEffect::resizeBuffer(int newSize) {
 // Free the current buffer memory
-	std::free(buffer);
+	free(buffer);
 
 // Reset the buffer size
 	bufferSize = newSize;

@@ -10,6 +10,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "Limiter.hpp"
 
 std::vector<chip::Wavetable *> * GenerateChipTables() {
 	std::vector<chip::Wavetable *> * tables =
@@ -139,7 +140,9 @@ int main(int argc, char *argv[]) {
 
 	// The master mixer for the whole synth
 	printf("Generating mixer\n");
+	chip::Limiter * masterLimiter = new chip::Limiter(bufferSize, sampleRate);
 	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
+	masterLimiter->addAudioDevice(masterMixer);
 	// All of the wavetables for the chipophone
 	printf("Generating wavetables\n");
 	std::vector<chip::Wavetable *> * tables = GenerateChipTables();
@@ -199,7 +202,7 @@ int main(int argc, char *argv[]) {
 	/*** Set up the PA Handler. This is where the audio callback is ***/
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
-			AudioInDevID, numOutChannels, numInChannels, masterMixer);
+			AudioInDevID, numOutChannels, numInChannels, masterLimiter);
 	if (paerr != paNoError) {
 		exit(0);
 	}
