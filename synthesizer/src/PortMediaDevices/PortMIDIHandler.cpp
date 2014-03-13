@@ -31,11 +31,12 @@ namespace chip {
 	void PortMIDIHandler::readMIDI() {
 		while (Pm_Poll(mstream)) {
 			// Grab all MIDI events still in the queue
-			int cnt = Pm_Read(mstream, msg, 32);
+			int cnt = Pm_Read(mstream, event, 32);
 			// Interpret each
 			for (int i = 0; i < cnt; i++) {
 				// Parse the MIDI and pass it to the affect method
-				affect(parseMIDI(&msg[i]));
+				parseMIDI(&event[i], &msg[i]);
+				affect(&msg[i]);
 			}
 		}
 		return;
@@ -52,10 +53,7 @@ namespace chip {
 //		Pm_Write(mstream, event, 1);
 	}
 
-	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {
-
-		// MIDIMessage struct to be returned
-		MIDIMessage * message = new MIDIMessage;
+	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data, MIDIMessage * message) {
 
 		// Grab status
 		int status = Pm_MessageStatus(data->message);

@@ -12,7 +12,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
 
-	voice = new Voice;
+	voice = NULL;
 
 	arp_en = false;
 	gliss_en = false;

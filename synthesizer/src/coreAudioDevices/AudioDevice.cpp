@@ -4,7 +4,8 @@ chip::AudioDevice::AudioDevice() {
 	sampleRate = 0;
 	state = ACTIVE;
 	bufferSize = 256;
-	buffer = NULL;
+	buffer = (float *) malloc(sizeof(float *));
+	resizeBuffer(bufferSize);
 }
 
 // Default behavior for audio device, just returns 0
@@ -15,7 +16,7 @@ float * chip::AudioDevice::advance(int numSamples) {
 	return buffer;
 }
 
-chip::devState_t chip::AudioDevice::getState(){
+chip::devState_t chip::AudioDevice::getState() {
 	return state;
 }
 
@@ -30,7 +31,7 @@ void chip::AudioDevice::resizeBuffer(int newSize) {
 	// Clears old buffer memory
 	free(buffer);
 	bufferSize = newSize;
-	buffer = new float[bufferSize];
+	buffer = (float*) malloc(sizeof(float[bufferSize]));
 }
 
 // Change the sample rate of the device
@@ -60,5 +61,5 @@ void cleanup() {
 }
 
 chip::AudioDevice::~AudioDevice() {
-
+	free(buffer);
 }

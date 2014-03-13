@@ -1,12 +1,11 @@
 #include "AudioEffect.hpp"
 
 chip::AudioEffect::AudioEffect() {
-	audioDeviceList = new std::list<AudioDevice*>(0);
+	audioDeviceList = new std::list<AudioDevice*>;
 	maxNumAudioDevices = -1;
 	numAudioDevices = 0;
 	audIter = audioDeviceList->begin();
 	audCallbackIter = audioDeviceList->begin();
-	current = *audIter;
 }
 
 void chip::AudioEffect::cleanup() {
@@ -112,7 +111,10 @@ void chip::AudioEffect::resizeBuffer(int newSize) {
 // Resize all child buffer sizes
 	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
 			++audIter) {
-		current = *audIter;
-		current->resizeBuffer(bufferSize);
+		(*audIter)->resizeBuffer(bufferSize);
 	}
+}
+
+chip::AudioEffect::~AudioEffect(){
+	delete audioDeviceList;
 }

@@ -18,7 +18,7 @@ namespace chip {
 			void writeMIDI(MIDIMessage* message);
 
 			// Parses a PmEvent type and returns a MIDIMessage struct
-			MIDIMessage * parseMIDI(PmEvent * data);
+			MIDIMessage * parseMIDI(PmEvent *, MIDIMessage * );
 
 			// Forwards all MIDI messages in the stream to all in the MIDIDevice List
 			//void affect(MIDIMessage *);
@@ -35,7 +35,9 @@ namespace chip {
 			PmError errorPortMIDI(PmError err);
 
 			// The buffer of MIDI messages
-			PmEvent msg[32];
+			PmEvent event[32];
+
+			MIDIMessage msg[32];
 	};
 
 }

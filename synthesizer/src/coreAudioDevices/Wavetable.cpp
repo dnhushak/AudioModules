@@ -4,7 +4,7 @@ namespace chip {
 	
 	Wavetable::Wavetable(int initTableSize) {
 		tableSize = initTableSize;
-		table = new float[tableSize];
+		table = (float*) malloc(sizeof(float[tableSize]));
 	}
 
 	// Get a sample value at a specified index
@@ -36,6 +36,10 @@ namespace chip {
 	// Set the table to a new table
 	void Wavetable::populateTable(float * newTable) {
 		table = newTable;
+	}
+
+	Wavetable::~Wavetable() {
+		free(table);
 	}
 
 }

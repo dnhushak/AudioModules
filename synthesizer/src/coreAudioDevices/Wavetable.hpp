@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdlib>
 
 namespace chip {
 	
@@ -22,6 +23,8 @@ namespace chip {
 
 			// Insert a new table
 			void populateTable(float *);
+
+			~Wavetable();
 
 		protected:
 			int tableSize;

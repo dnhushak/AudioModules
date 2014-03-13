@@ -53,6 +53,8 @@ namespace chip {
 
 			// Returns the number of objects in this mixer
 			int getNumAudioDevices();
+
+			~AudioEffect();
 		protected:
 
 			// List of Audio items to mix together
@@ -61,8 +63,6 @@ namespace chip {
 			std::list<AudioDevice*>::iterator audCallbackIter;
 			// List iterator - for use outside the callback
 			std::list<AudioDevice*>::iterator audIter;
-			// The device currently pointed to by the iterator
-			AudioDevice * current;
 
 			// Maximum number of audio devices allowable in effect (-1 -> no maximum)
 			int maxNumAudioDevices;

@@ -14,7 +14,7 @@
 
 std::vector<chip::Wavetable *> * GenerateChipTables() {
 	std::vector<chip::Wavetable *> * tables =
-			new std::vector<chip::Wavetable *>(0);
+			new std::vector<chip::Wavetable *>;
 	chip::Wavetable* sawtooth = new chip::Wavetable(16);
 	chip::Wavetable* triangle = new chip::Wavetable(16);
 	chip::Wavetable* square50 = new chip::Wavetable(16);
@@ -175,21 +175,23 @@ int main(int argc, char *argv[]) {
 
 	printf("Generating modules\n");
 	// Modules
-	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>(0);
 	for (int i = 0; i < numModules; i++) {
-		// Add a new module to the vector of modules
-		modules->push_back(new chip::Module(bufferSize, sampleRate));
+		chip::Module * newModule = new chip::Module(bufferSize, sampleRate);
 		// Set voice for each module
-		modules->at(i)->setVoice(voices->at(i));
+		newModule->setVoice(voices->at(i));
 		// Create a midi Channel filter
 		chip::ChannelFilter * moduleFilter = new chip::ChannelFilter(i);
 		// Add the module to the channel filter outputs
-		moduleFilter->addMIDIDevice(modules->at(i));
+		moduleFilter->addMIDIDevice(newModule);
 		// Add the channel filter to the PMhandler outputs
 		PMHandler->addMIDIDevice(moduleFilter);
 		// Add the module to the master mixer
-		masterMixer->addAudioDevice(modules->at(i));
+		masterMixer->addAudioDevice(newModule);
+		// Add a new module to the vector of modules
 	}
+
+	delete voices;
+	delete tables;
 
 	/*** Make all MIDI Connections ***/
 
