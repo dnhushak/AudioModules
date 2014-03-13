@@ -4,10 +4,12 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 
 	//TODO: Implement glissando and arpeggiation - split into separate AudioEffect modules, and reroute the
 	// moduleGain inputs to the gliss/arpegg/polyMixer outputs
-	bufferSize = initBufferSize;
-	sampleRate = initSampleRate;
-	buffer = new float[bufferSize];
+
+	resizeBuffer(initBufferSize);
+	changeSampleRate(initSampleRate);
+
 	polyMixer = new Mixer(bufferSize, sampleRate);
+	// We use the Module's device list so we can access and edit later
 	polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
@@ -84,7 +86,7 @@ void chip::Module::activatePolyVoice(int note) {
 		for (audIter = audioDeviceList->begin();
 				audIter != audioDeviceList->end(); ++audIter) {
 
-			// Notation is a little wonkyhere, but we want to access the note
+			// Notation is a little wonky here, but we want to access the note
 			// So, we need to access the AudioObject in the iterator (*audioDeviceIterator)
 			// And then downcast it to PolyVoice (PolyVoice*)
 			if (((PolyVoice*) (*audIter))->getNote() == note) {
@@ -136,4 +138,10 @@ void chip::Module::cleanup() {
 		delete (toDelete->at(i));
 	}
 	numAudioDevices = audioDeviceList->size();
+}
+
+chip::Module::~Module(){
+	delete polyMixer;
+	delete moduleGain;
+	delete toDelete;
 }

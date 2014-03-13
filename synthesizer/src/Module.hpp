@@ -28,6 +28,8 @@ namespace chip {
 			// Removes any inactive polyVoices
 			void cleanup();
 
+			~Module();
+
 		private:
 
 			/*** Voice ***/
