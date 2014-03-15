@@ -95,15 +95,16 @@ void chip::Module::activatePolyVoice(int note) {
 			}
 		}
 	}
-	if(numAudioDevices <10){
-	// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
-	PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
-	newPolyVoice->setVoice(voice);
-	newPolyVoice->startPolyVoice(note);
+	if (numAudioDevices < 10) {
+		// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
+		PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
+		newPolyVoice->setVoice(voice);
+		newPolyVoice->startPolyVoice(note);
 
-	// Add new polyvoice to the device list
-	audioDeviceList->push_front(newPolyVoice);
-	numAudioDevices++;}
+		// Add new polyvoice to the device list
+		audioDeviceList->push_front(newPolyVoice);
+		numAudioDevices++;
+	}
 }
 
 void chip::Module::releasePolyVoice(int note) {
@@ -139,7 +140,7 @@ void chip::Module::cleanup() {
 	numAudioDevices = audioDeviceList->size();
 }
 
-chip::Module::~Module(){
+chip::Module::~Module() {
 	delete polyMixer;
 	delete moduleGain;
 	delete toDelete;
