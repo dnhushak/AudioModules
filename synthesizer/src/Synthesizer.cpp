@@ -223,12 +223,13 @@ int main(int argc, char *argv[]) {
 	modules->at(0)->activatePolyVoice(67);
 	modules->at(0)->activatePolyVoice(72);
 
-	while (1) {
-		// Read MIDI, forward
-		PMHandler->readMIDI();
-		masterMixer->cleanup();
-	}
+//	while (1) {
+//		// Read MIDI, forward
+//		PMHandler->readMIDI();
+//		masterMixer->cleanup();
+//	}
 
+	Pa_Sleep(1500);
 	PAHandler->disconnectAudioStream();
 	PMHandler->disconnectMIDIStream();
 
