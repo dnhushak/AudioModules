@@ -150,6 +150,8 @@ int main(int argc, char *argv[]) {
 	printf("Generating voices\n");
 	std::vector<chip::Voice *> * voices = new std::vector<chip::Voice *>;
 
+	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>;
+
 	printf("Setting voice defaults\n");
 	// Set defaults for voices
 	for (int i = 0; i < numModules; i++) {
@@ -188,10 +190,11 @@ int main(int argc, char *argv[]) {
 		// Add the module to the master mixer
 		masterMixer->addAudioDevice(newModule);
 		// Add a new module to the vector of modules
+		modules->push_back(newModule);
 	}
 
-	delete voices;
-	delete tables;
+	//delete voices;
+	//delete tables;
 
 	/*** Make all MIDI Connections ***/
 
@@ -215,6 +218,10 @@ int main(int argc, char *argv[]) {
 	if (pmerr != pmNoError) {
 		exit(0);
 	}
+	modules->at(0)->activatePolyVoice(60);
+	modules->at(0)->activatePolyVoice(64);
+	modules->at(0)->activatePolyVoice(67);
+	modules->at(0)->activatePolyVoice(72);
 
 	while (1) {
 		// Read MIDI, forward
