@@ -42,12 +42,6 @@ void chip::Module::affect(MIDIMessage * message) {
 			break;
 		case 0b1011:
 			// CC
-			if (message->data2 == 127) {
-				std::cout << "Number of polyvoices in mixer:           "
-						<< polyMixer->getNumAudioDevices() << "\n";
-				std::cout << "Number of polyvoices in polyvoice array: "
-						<< numAudioDevices << "\n";
-			}
 			break;
 		case 0b1100:
 			// Program Change
