@@ -1,3 +1,10 @@
+#Core Audio Devices makefile
+CXX = g++
+LDFLAGS = -Wall
+PAFLAGS = -lportaudio
+PMFLAGS = -lportmidi
+CFLAGS = -g -O3
+
 #File Extensions
 HEADER = .hpp
 SOURCE = .cpp
@@ -8,27 +15,36 @@ SRCEDIR = ../src/
 AUDIDIR = $(SRCEDIR)coreAudioDevices/
 MIDIDIR = $(SRCEDIR)coreMidiDevices/
 PORTDIR = $(SRCEDIR)PortMediaDevices/
-DIRLIST = $(SRCEDIREDIR) $(AUDIDIR) $(MIDIDIR) $(PORTDIR)
+DIRLIST = $(SRCEDIR) $(AUDIDIR) $(MIDIDIR) $(PORTDIR)
 
 #Final Executable Name
 EXE = Synthesizer
 
-#List of Headers
-HEADERS = $(foreach DIRLIST, $(dirs), $(wildcard $(dir)/*.$(HEADER)))
-SOURCES = $(foreach DIRLIST, $(dirs), $(wildcard $(dir)/*.$(SOURCE)))
-
-OBJECTS = $(wildcard *$(BINARY))
-
-#Compiler type and flags
-CXX = g++
-LDFLAGS1 = -lportaudio -Wall -g
-LDFLAGS2 = -lportmidi -Wall -g
-LDFLAGS3 = -Wall -g
-LDFLAGS4 = -lportmidi -lportaudio -Wall -g -ggdb
-CFLAGS = -O3 -I$(SRCEDIR) -I$(AUDIDIR) -I$(MIDIDIR) -I$(PORTDIR) -g -ggdb
+# Generate list of source headers with extensions
+HEADERS = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(HEADER)))
+SOURCES = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(SOURCE)))
+OBJECTS = $(addsuffix $(BINARY), $(notdir $(basename $(SOURCES))))
+INCLUDE = $(foreach DIR, $(DIRLIST), -I$(DIR))
 
 Synthesizer: $(OBJECTS)
-	$(CXX) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS4)
+	$(CXX) $(CFLAGS) $(INCLUDE) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)
+	
+include MakeCoreAudio
+include MakeCoreMIDI
+include MakePortMedia
+
+Module.o: $(SRCEDIR)Module.cpp $(HEADERS)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $(SRCEDIR)Module.cpp $(LDFLAGS)
+
+PolyVoice.o: $(SRCEDIR)PolyVoice.cpp $(HEADERS)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $(SRCEDIR)PolyVoice.cpp $(LDFLAGS)
+
+Synthesizer.o: $(SRCEDIR)Synthesizer.cpp $(HEADERS)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $(SRCEDIR)Synthesizer.cpp $(LDFLAGS)
+
+#%$(BINARY) : %$(SOURCE)
+#	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
+
 
 clean:
 	rm -rf $(EXE) *.o

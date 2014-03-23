@@ -1,0 +1,9 @@
+#PortMedia makefile
+
+# Generate list of source headers with extensions
+
+PortAudioHandler.o: $(PORTDIR)PortAudioHandler.cpp $(HEADERS)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $(PORTDIR)PortAudioHandler.cpp $(LDFLAGS)
+
+PortMIDIHandler.o: $(PORTDIR)PortMIDIHandler.cpp $(HEADERS)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $(PORTDIR)PortMIDIHandler.cpp $(LDFLAGS)
