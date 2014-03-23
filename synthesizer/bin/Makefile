@@ -28,22 +28,18 @@ INCLUDE = $(foreach DIR, $(DIRLIST), -I$(DIR))
 
 Synthesizer: $(OBJECTS)
 	$(CXX) $(CFLAGS) $(INCLUDE) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)
+
+%$(BINARY) : $(SRCEDIR)%$(SOURCE)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
 	
-include MakeCoreAudio
-include MakeCoreMIDI
-include MakePortMedia
+%$(BINARY) : $(AUDIDIR)%$(SOURCE)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
+	
+%$(BINARY) : $(MIDIDIR)%$(SOURCE)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
 
-Module.o: $(SRCEDIR)Module.cpp $(HEADERS)
-	$(CXX) $(CFLAGS) $(INCLUDE) -c $(SRCEDIR)Module.cpp $(LDFLAGS)
-
-PolyVoice.o: $(SRCEDIR)PolyVoice.cpp $(HEADERS)
-	$(CXX) $(CFLAGS) $(INCLUDE) -c $(SRCEDIR)PolyVoice.cpp $(LDFLAGS)
-
-Synthesizer.o: $(SRCEDIR)Synthesizer.cpp $(HEADERS)
-	$(CXX) $(CFLAGS) $(INCLUDE) -c $(SRCEDIR)Synthesizer.cpp $(LDFLAGS)
-
-#%$(BINARY) : %$(SOURCE)
-#	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
+%$(BINARY) : $(PORTDIR)%$(SOURCE)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
 
 
 clean:
