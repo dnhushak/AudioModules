@@ -80,13 +80,13 @@ int main(int argc, char *argv[]) {
 	chip::PortMIDIHandler * PMHandler = new chip::PortMIDIHandler();
 	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
 
-	int bufferSize = 512;
-	int sampleRate = 32000;
-	int numOutChannels = 1;
+	int bufferSize = 1024;
+	int sampleRate = 41000;
+	int numOutChannels = 2;
 	int numInChannels = 0;
 	int numModules = 5;
 	int MIDIDevID = 0;
-	int AudioOutDevID = 3;
+	int AudioOutDevID = 2;
 	int AudioInDevID = -1;
 	int verbose = 0;
 	extern char *optarg;

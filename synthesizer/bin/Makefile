@@ -18,7 +18,7 @@ PORTDIR = $(SRCEDIR)PortMediaDevices/
 DIRLIST = $(SRCEDIR) $(AUDIDIR) $(MIDIDIR) $(PORTDIR)
 
 #Final Executable Name
-EXE = Synthesizer
+EXE = Chipophone
 
 # Generate list of source headers with extensions
 HEADERS = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(HEADER)))
@@ -26,8 +26,8 @@ SOURCES = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(SOURCE)))
 OBJECTS = $(addsuffix $(BINARY), $(notdir $(basename $(SOURCES))))
 INCLUDE = $(foreach DIR, $(DIRLIST), -I$(DIR))
 
-Synthesizer: $(OBJECTS)
-	$(CXX) $(CFLAGS) $(INCLUDE) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)
+$(EXE): $(OBJECTS)
+	$(CXX) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)
 
 %$(BINARY) : $(SRCEDIR)%$(SOURCE)
 	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
