@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
 	int bufferSize = 1024;
 	int sampleRate = 41000;
-	int numOutChannels = 2;
+	int numOutChannels = 1;
 	int numInChannels = 0;
 	int numModules = 5;
 	int MIDIDevID = 0;
