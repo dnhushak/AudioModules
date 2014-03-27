@@ -6,6 +6,7 @@ chip::AudioEffect::AudioEffect() {
 	numAudioDevices = 0;
 	audIter = audioDeviceList->begin();
 	audCallbackIter = audioDeviceList->begin();
+	pthread_mutex_init(&listLock, NULL);
 }
 
 void chip::AudioEffect::cleanup() {
@@ -113,6 +114,14 @@ void chip::AudioEffect::resizeBuffer(int newSize) {
 			++audIter) {
 		(*audIter)->resizeBuffer(bufferSize);
 	}
+}
+
+void chip::AudioEffect::lockList(){
+	pthread_mutex_lock(&listLock);
+}
+
+void chip::AudioEffect::unlockList(){
+	pthread_mutex_unlock(&listLock);
 }
 
 chip::AudioEffect::~AudioEffect(){

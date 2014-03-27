@@ -6,6 +6,7 @@
 #include <iterator>
 #include <list>
 #include <cstdlib>
+#include <pthread.h>
 
 namespace chip {
 
@@ -54,6 +55,10 @@ namespace chip {
 			// Returns the number of objects in this mixer
 			int getNumAudioDevices();
 
+			void lockList();
+
+			void unlockList();
+
 			~AudioEffect();
 		protected:
 
@@ -69,6 +74,8 @@ namespace chip {
 
 			// Actual number of audio devices in effect
 			int numAudioDevices;
+
+			pthread_mutex_t listLock;
 
 	};
 }

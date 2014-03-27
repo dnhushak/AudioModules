@@ -70,7 +70,10 @@ void chip::Module::setVoice(Voice * newVoice) {
 }
 
 float * chip::Module::advance(int numSamples) {
-	return moduleGain->advance(numSamples);
+	polyMixer->lockList();
+	buffer = moduleGain->advance(numSamples);
+	polyMixer->unlockList();
+	return buffer;
 }
 
 void chip::Module::activatePolyVoice(int note) {
@@ -129,7 +132,9 @@ void chip::Module::cleanup() {
 	for (int i = 0; i < toDelete->size(); i++) {
 		audioDeviceList->remove(toDelete->at(i));
 		// Free memory
+		polyMixer->lockList();
 		delete (toDelete->at(i));
+		polyMixer->unlockList();
 	}
 	numAudioDevices = audioDeviceList->size();
 }
