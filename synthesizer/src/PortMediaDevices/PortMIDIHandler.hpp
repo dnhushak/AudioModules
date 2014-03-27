@@ -20,9 +20,6 @@ namespace chip {
 			// Parses a PmEvent type and returns a MIDIMessage struct
 			MIDIMessage * parseMIDI(PmEvent *, MIDIMessage * );
 
-			// Forwards all MIDI messages in the stream to all in the MIDIDevice List
-			//void affect(MIDIMessage *);
-
 			void printMIDIDevices();
 
 			PortMidiStream * getStream();

@@ -92,6 +92,9 @@ void chip::Module::activatePolyVoice(int note) {
 			}
 		}
 	}
+	if(state==INACTIVE){
+		StartCleaner();
+	}
 	if (numAudioDevices < 10) {
 		// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 		PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
@@ -104,6 +107,7 @@ void chip::Module::activatePolyVoice(int note) {
 		polyMixer->addAudioDevice(newPolyVoice);
 		numAudioDevices++;
 		unlockList();
+		state = ACTIVE;
 	}
 }
 
@@ -145,6 +149,20 @@ void chip::Module::cleanup() {
 	if (numAudioDevices == 0){
 		state = INACTIVE;
 	}
+}
+
+void chip::Module::StartCleaner(){
+	pthread_t cleaner_tid;
+	pthread_create(&cleaner_tid, NULL, Module::Cleaner, this);
+}
+
+void * chip::Module::Cleaner(void * args){
+	Module * mod = (Module * ) args;
+	while(mod->getState() == ACTIVE){
+		mod->cleanup();
+		usleep(10000);
+	}
+	return NULL;
 }
 
 chip::Module::~Module() {

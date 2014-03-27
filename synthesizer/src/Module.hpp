@@ -8,7 +8,8 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
-#include<AudioUtils.hpp>
+#include <AudioUtils.hpp>
+#include <unistd.h>
 
 namespace chip {
 	class Module: public AudioEffect, public MIDIDevice {
@@ -28,9 +29,14 @@ namespace chip {
 			// Removes any inactive polyVoices
 			void cleanup();
 
+
+
 			~Module();
 
 		private:
+			void StartCleaner();
+
+			static void * Cleaner(void * args);
 
 			/*** Voice ***/
 			Voice * voice;
