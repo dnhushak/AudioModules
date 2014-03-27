@@ -13,6 +13,7 @@
 #include "Limiter.hpp"
 #include "AudioDevice.hpp"
 #include "AudioEffect.hpp"
+#include <pthread.h>
 
 std::vector<chip::Wavetable *> * GenerateChipTables() {
 	std::vector<chip::Wavetable *> * tables =
