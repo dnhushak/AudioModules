@@ -10,7 +10,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 
 	polyMixer = new Mixer(bufferSize, sampleRate);
 	// We use the Module's device list so we can access and edit later
-	polyMixer->setAudioDeviceList(audioDeviceList);
+	//polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
 	state=INACTIVE;
@@ -101,6 +101,7 @@ void chip::Module::activatePolyVoice(int note) {
 		lockList();
 		// Add new polyvoice to the device list
 		audioDeviceList->push_front(newPolyVoice);
+		polyMixer->addAudioDevice(newPolyVoice);
 		numAudioDevices++;
 		unlockList();
 	}
@@ -132,10 +133,11 @@ void chip::Module::cleanup() {
 
 	// Remove everything in the toDelete list from the device list, and call its deconstructor
 	for (int i = 0; i < toDelete->size(); i++) {
-		audioDeviceList->remove(toDelete->at(i));
-		// Free memory
 
 		lockList();
+		audioDeviceList->remove(toDelete->at(i));
+		// Free memory
+		polyMixer->removeAudioDevice(toDelete->at(i));
 		delete (toDelete->at(i));
 		unlockList();
 	}
