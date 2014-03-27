@@ -10,12 +10,12 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 
 	polyMixer = new Mixer(bufferSize, sampleRate);
 	// We use the Module's device list so we can access and edit later
-	//polyMixer->setAudioDeviceList(audioDeviceList);
+	polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
-	state=INACTIVE;
+	state = INACTIVE;
 	voice = NULL;
-
+	cleaner_tid = NULL;
 	arp_en = false;
 	gliss_en = false;
 	arpTime = 100;
@@ -77,6 +77,12 @@ float * chip::Module::advance(int numSamples) {
 }
 
 void chip::Module::activatePolyVoice(int note) {
+
+	// Start the cleaner thread if currently inactive
+	if (state == INACTIVE) {
+		StartCleaner();
+	}
+
 	// Check for existing note in the active polyvoices
 	if (numAudioDevices > 0) {
 		for (audIter = audioDeviceList->begin();
@@ -92,9 +98,6 @@ void chip::Module::activatePolyVoice(int note) {
 			}
 		}
 	}
-	if(state==INACTIVE){
-		StartCleaner();
-	}
 	if (numAudioDevices < 10) {
 		// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 		PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
@@ -104,8 +107,7 @@ void chip::Module::activatePolyVoice(int note) {
 		lockList();
 		// Add new polyvoice to the device list
 		audioDeviceList->push_front(newPolyVoice);
-		polyMixer->addAudioDevice(newPolyVoice);
-		numAudioDevices++;
+		numAudioDevices = audioDeviceList->size();
 		unlockList();
 		state = ACTIVE;
 	}
@@ -138,27 +140,28 @@ void chip::Module::cleanup() {
 	// Remove everything in the toDelete list from the device list, and call its deconstructor
 	for (int i = 0; i < toDelete->size(); i++) {
 
+		// Prevent data races in the audio callback by locking
 		lockList();
 		audioDeviceList->remove(toDelete->at(i));
-		// Free memory
-		polyMixer->removeAudioDevice(toDelete->at(i));
-		delete (toDelete->at(i));
+		numAudioDevices = audioDeviceList->size();
 		unlockList();
+
+		// Free Memory
+		delete (toDelete->at(i));
 	}
-	numAudioDevices = audioDeviceList->size();
-	if (numAudioDevices == 0){
+	if (numAudioDevices == 0) {
+		// Deactivate the Module
 		state = INACTIVE;
 	}
 }
 
-void chip::Module::StartCleaner(){
-	pthread_t cleaner_tid;
+void chip::Module::StartCleaner() {
 	pthread_create(&cleaner_tid, NULL, Module::Cleaner, this);
 }
 
-void * chip::Module::Cleaner(void * args){
-	Module * mod = (Module * ) args;
-	while(mod->getState() == ACTIVE){
+void * chip::Module::Cleaner(void * args) {
+	Module * mod = (Module *) args;
+	while (mod->getState() == ACTIVE) {
 		mod->cleanup();
 		usleep(10000);
 	}
@@ -166,6 +169,7 @@ void * chip::Module::Cleaner(void * args){
 }
 
 chip::Module::~Module() {
+	pthread_join(cleaner_tid, NULL);
 	delete polyMixer;
 	delete moduleGain;
 	delete toDelete;

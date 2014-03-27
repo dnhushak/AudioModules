@@ -224,7 +224,6 @@ int main(int argc, char *argv[]) {
 	while (1) {
 		// Read MIDI, forward
 		PMHandler->readMIDI();
-		//masterMixer->cleanup();
 		Pa_Sleep(15);
 	}
 

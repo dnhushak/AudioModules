@@ -29,11 +29,12 @@ namespace chip {
 			// Removes any inactive polyVoices
 			void cleanup();
 
-
-
 			~Module();
 
 		private:
+
+			pthread_t cleaner_tid;
+
 			void StartCleaner();
 
 			static void * Cleaner(void * args);
