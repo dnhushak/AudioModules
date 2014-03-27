@@ -1,6 +1,7 @@
 #include "portaudio.h"
 #include "AudioDevice.hpp"
 #include <stdio.h>
+#include "pa_linux_alsa.h"
 
 namespace chip {
 	

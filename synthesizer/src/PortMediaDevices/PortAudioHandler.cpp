@@ -51,6 +51,8 @@ namespace chip {
 					inputParameters->device)->defaultLowOutputLatency;
 			inputParameters->hostApiSpecificStreamInfo = NULL;
 		}
+		PaAlsa_EnableRealtimeScheduling(astream, 1);
+
 		// Open the stream
 		err = Pa_OpenStream(&astream, inputParameters, outputParameters,
 				sampleRate, bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
