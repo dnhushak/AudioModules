@@ -59,7 +59,6 @@ namespace chip {
 		if (err != paNoError)
 			return errorPortAudio(err);
 		printf("Stream opened...\n");
-		PaAlsa_EnableRealtimeScheduling(astream, 1);
 		// Start the stream
 		err = Pa_StartStream(astream);
 		if (err != paNoError)
