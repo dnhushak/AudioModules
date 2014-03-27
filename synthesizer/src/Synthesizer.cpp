@@ -222,16 +222,6 @@ int main(int argc, char *argv[]) {
 	}
 	while (1) {
 		// Read MIDI, forward
-		for(int i = 0; i<numModules; i++){
-			if( modules->at(i)->getState() == 1){
-				PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
-							AudioInDevID, numOutChannels, numInChannels, masterLimiter);
-				break;
-			}
-			else{
-				PAHandler->disconnectAudioStream();
-			}
-		}
 		PMHandler->readMIDI();
 		masterMixer->cleanup();
 		Pa_Sleep(15);
