@@ -13,7 +13,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	polyMixer->setAudioDeviceList(audioDeviceList);
 	moduleGain = new Gain(bufferSize, sampleRate);
 	moduleGain->addAudioDevice(polyMixer);
-
+	state=INACTIVE;
 	voice = NULL;
 
 	arp_en = false;
@@ -70,9 +70,9 @@ void chip::Module::setVoice(Voice * newVoice) {
 }
 
 float * chip::Module::advance(int numSamples) {
-	this->lockList();
+	lockList();
 	buffer = moduleGain->advance(numSamples);
-	this->unlockList();
+	unlockList();
 	return buffer;
 }
 
@@ -98,11 +98,11 @@ void chip::Module::activatePolyVoice(int note) {
 		newPolyVoice->setVoice(voice);
 		newPolyVoice->startPolyVoice(note);
 
-		this->lockList();
+		lockList();
 		// Add new polyvoice to the device list
 		audioDeviceList->push_front(newPolyVoice);
 		numAudioDevices++;
-		this->unlockList();
+		unlockList();
 	}
 }
 
@@ -135,11 +135,14 @@ void chip::Module::cleanup() {
 		audioDeviceList->remove(toDelete->at(i));
 		// Free memory
 
-		this->lockList();
+		lockList();
 		delete (toDelete->at(i));
-		this->unlockList();
+		unlockList();
 	}
 	numAudioDevices = audioDeviceList->size();
+	if (numAudioDevices == 0){
+		state = INACTIVE;
+	}
 }
 
 chip::Module::~Module() {
