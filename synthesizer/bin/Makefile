@@ -3,7 +3,7 @@ CXX = g++
 LDFLAGS = -Wall
 PAFLAGS = -lportaudio
 PMFLAGS = -lportmidi
-CFLAGS = -g
+CFLAGS = -g -O3
 
 #File Extensions
 HEADER = .hpp
@@ -30,6 +30,8 @@ INCLUDE = $(foreach DIR, $(DIRLIST),-I$(DIR))
 
 $(EXE): $(OBJECTS)
 	$(CXX) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)
+
+force: clean $(EXE)
 
 %$(BINARY) : $(SRCEDIR)%$(SOURCE)
 	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@

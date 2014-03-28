@@ -42,8 +42,6 @@ namespace synth {
 			~PolyVoice();
 
 		private:
-			// Current state of polyvoice
-			devState_t state;
 
 			// Main oscillator
 			Oscillator * osc;

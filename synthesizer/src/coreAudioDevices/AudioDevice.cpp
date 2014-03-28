@@ -2,7 +2,6 @@
 
 namespace synth {
 	AudioDevice::AudioDevice(){
-		state=ACTIVE;
 		sampleRate = 0;
 		bufferSize = 256;
 		buffer = (float *) malloc(sizeof(float *));

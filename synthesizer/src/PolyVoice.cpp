@@ -13,7 +13,6 @@ namespace synth {
 		baseFrequency = 0;
 		vibmult = 0;
 		vib_en = true;
-		state = ACTIVE;
 	}
 
 	PolyVoice::~PolyVoice() {
@@ -49,7 +48,6 @@ namespace synth {
 				osc->setFrequency(baseFrequency * vibmult);
 			}
 		}
-
 		return buffer;
 	}
 
