@@ -18,7 +18,6 @@ namespace synth {
 
 			float * advance(int);
 
-
 			virtual void setVoice(synth::Voice * voice);
 
 			// Activate and release PolyVoices
@@ -30,7 +29,7 @@ namespace synth {
 
 			~PolyModule();
 
-		private:
+		protected:
 
 			pthread_t cleaner_tid;
 
@@ -42,7 +41,6 @@ namespace synth {
 			Voice * voice;
 
 			synth::Mixer * polyMixer;
-			synth::Gain * PolyModuleGain;
 
 
 	};

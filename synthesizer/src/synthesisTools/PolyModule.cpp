@@ -1,32 +1,30 @@
 #include "PolyModule.hpp"
 namespace synth {
-	synth::PolyModule::PolyModule(int initBufferSize, int initSampleRate) {
+	PolyModule::PolyModule(int initBufferSize, int initSampleRate) {
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
 
 		polyMixer = new Mixer(bufferSize, sampleRate);
 		// We use the PolyModule's device list so we can access and edit later
 		polyMixer->setAudioDeviceList(audioDeviceList);
-		PolyModuleGain = new Gain(bufferSize, sampleRate);
-		PolyModuleGain->addAudioDevice(polyMixer);
 		state = INACTIVE;
 		voice = NULL;
 		cleaner_tid = NULL;
 		numAudioDevices = 0;
 	}
 
-	void synth::PolyModule::setVoice(Voice * newVoice) {
+	void PolyModule::setVoice(Voice * newVoice) {
 		voice = newVoice;
 	}
 
-	float * synth::PolyModule::advance(int numSamples) {
+	float * PolyModule::advance(int numSamples) {
 		lockList();
-		buffer = PolyModuleGain->advance(numSamples);
+		buffer = polyMixer->advance(numSamples);
 		unlockList();
 		return buffer;
 	}
 
-	void synth::PolyModule::activatePolyVoice(int note) {
+	void PolyModule::activatePolyVoice(int note) {
 
 		// Start the cleaner thread if currently inactive
 		if (state == INACTIVE) {
@@ -70,7 +68,7 @@ namespace synth {
 		}
 	}
 
-	void synth::PolyModule::releasePolyVoice(int note) {
+	void PolyModule::releasePolyVoice(int note) {
 		// Release the polyVoice
 		lockList();
 		audIter = audioDeviceList->begin();
@@ -91,7 +89,7 @@ namespace synth {
 		unlockList();
 	}
 
-	void synth::PolyModule::cleanup() {
+	void PolyModule::cleanup() {
 		// Lock the list to prevent data races
 		lockList();
 		audIter = audioDeviceList->begin();
@@ -118,11 +116,11 @@ namespace synth {
 
 	}
 
-	void synth::PolyModule::StartCleaner() {
+	void PolyModule::StartCleaner() {
 		pthread_create(&cleaner_tid, NULL, PolyModule::Cleaner, this);
 	}
 
-	void * synth::PolyModule::Cleaner(void * args) {
+	void * PolyModule::Cleaner(void * args) {
 		PolyModule * mod = (PolyModule *) args;
 		while (mod->getState() == ACTIVE) {
 			mod->cleanup();
@@ -131,9 +129,8 @@ namespace synth {
 		return NULL;
 	}
 
-	synth::PolyModule::~PolyModule() {
+	PolyModule::~PolyModule() {
 		pthread_join(cleaner_tid, NULL);
 		delete polyMixer;
-		delete PolyModuleGain;
 	}
 }
