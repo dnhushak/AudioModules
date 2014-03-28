@@ -16,7 +16,8 @@ AUDIDIR = $(SRCEDIR)coreAudioDevices/
 MIDIDIR = $(SRCEDIR)coreMidiDevices/
 PORTDIR = $(SRCEDIR)PortMediaDevices/
 SNTHDIR = $(SRCEDIR)synthesisTools/
-DIRLIST = $(SRCEDIR) $(AUDIDIR) $(MIDIDIR) $(PORTDIR) $(SNTHDIR)
+COREDIR = $(SRCEDIR)coreDevices/
+DIRLIST = $(SRCEDIR) $(AUDIDIR) $(MIDIDIR) $(PORTDIR) $(SNTHDIR) $(COREDIR)
 
 #Final Executable Name
 EXE = Chipophone
@@ -43,6 +44,9 @@ $(EXE): $(OBJECTS)
 	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
 
 %$(BINARY) : $(SNTHDIR)%$(SOURCE)
+	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
+
+%$(BINARY) : $(COREDIR)%$(SOURCE)
 	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
 
 

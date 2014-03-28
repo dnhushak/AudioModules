@@ -3,12 +3,10 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include "Device.hpp"
 
 namespace synth {
-	enum devState_t {
-		ACTIVE, INACTIVE,
-	};
-	class AudioDevice {
+	class AudioDevice : public virtual Device {
 		public:
 			AudioDevice();
 
@@ -32,9 +30,9 @@ namespace synth {
 
 			// Return the sample rate
 			int getSampleRate();
-
-			// Return the state
-			virtual devState_t getState();
+//
+//			// Return the state
+//			virtual devState_t getState();
 
 			virtual ~AudioDevice();
 

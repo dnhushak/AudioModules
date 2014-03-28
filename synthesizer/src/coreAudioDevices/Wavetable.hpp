@@ -22,7 +22,7 @@ namespace synth {
 			int getTableSize();
 
 			// Insert a new table
-			void populateTable(float *);
+			void populateTable(float *, int);
 
 			~Wavetable();
 

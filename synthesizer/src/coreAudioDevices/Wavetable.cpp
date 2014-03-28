@@ -34,7 +34,8 @@ namespace synth {
 	}
 
 	// Set the table to a new table
-	void Wavetable::populateTable(float * newTable) {
+	void Wavetable::populateTable(float * newTable, int newSize) {
+		tableSize = newSize;
 		table = newTable;
 	}
 

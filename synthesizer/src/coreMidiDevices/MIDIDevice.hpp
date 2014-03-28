@@ -4,9 +4,10 @@
 #include <vector>
 #include <iostream>
 #include <stdint.h>
+#include "Device.hpp"
 
 namespace synth {
-	struct MIDIMessage {
+	struct MIDIMessage : public virtual Device {
 			unsigned char type;
 			unsigned char channel;
 			unsigned char data1;

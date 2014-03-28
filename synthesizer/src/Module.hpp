@@ -12,9 +12,9 @@
 #include <unistd.h>
 
 namespace synth {
-	class ChipModule : public AudioEffect, public MIDIDevice {
+	class Module : public AudioEffect, public MIDIDevice {
 		public:
-			ChipModule(int, int);
+			Module(int, int);
 
 			float * advance(int);
 
@@ -29,7 +29,7 @@ namespace synth {
 			// Removes any inactive polyVoices
 			void cleanup();
 
-			~ChipModule();
+			~Module();
 
 		private:
 
@@ -49,7 +49,7 @@ namespace synth {
 
 
 			synth::Mixer * polyMixer;
-			synth::Gain * ChipModuleGain;
+			synth::Gain * ModuleGain;
 
 			// Items to delete
 			std::vector<AudioDevice*> * toDelete;

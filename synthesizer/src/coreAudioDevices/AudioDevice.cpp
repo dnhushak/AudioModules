@@ -17,9 +17,9 @@ namespace synth {
 		return buffer;
 	}
 
-	devState_t AudioDevice::getState() {
-		return state;
-	}
+//	devState_t AudioDevice::getState() {
+//		return state;
+//	}
 
 // Perform cleanup on all devices in audio device list
 	void AudioDevice::cleanup() {

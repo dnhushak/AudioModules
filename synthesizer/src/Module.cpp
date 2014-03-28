@@ -1,20 +1,20 @@
-#include "ChipModule.hpp"
+#include "Module.hpp"
 
-namespace chip {
+namespace synth {
 
-	ChipModule::ChipModule(int initBufferSize, int initSampleRate) {
+	Module::Module(int initBufferSize, int initSampleRate) {
 
-		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect ChipModules, and reroute the
-		// ChipModuleGain inputs to the gliss/arpegg/polyMixer outputs
+		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
+		// ModuleGain inputs to the gliss/arpegg/polyMixer outputs
 
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
 
 		polyMixer = new Mixer(bufferSize, sampleRate);
-		// We use the ChipModule's device list so we can access and edit later
+		// We use the Module's device list so we can access and edit later
 		polyMixer->setAudioDeviceList(audioDeviceList);
-		ChipModuleGain = new Gain(bufferSize, sampleRate);
-		ChipModuleGain->addAudioDevice(polyMixer);
+		ModuleGain = new Gain(bufferSize, sampleRate);
+		ModuleGain->addAudioDevice(polyMixer);
 		state = INACTIVE;
 		voice = NULL;
 		cleaner_tid = NULL;
@@ -28,7 +28,7 @@ namespace chip {
 		toDelete = new std::vector<AudioDevice *>;
 	}
 
-	void ChipModule::affect(MIDIMessage * message) {
+	void Module::affect(MIDIMessage * message) {
 		switch (message->type) {
 			case 0b1000:
 				// Note Off
@@ -62,23 +62,23 @@ namespace chip {
 		}
 	}
 
-	void ChipModule::setVoice(Voice * newVoice) {
+	void Module::setVoice(Voice * newVoice) {
 		voice = newVoice;
 		arp_en = voice->arp_en;
 		gliss_en = voice->gliss_en;
 		arpTime = voice->arpTime;
 		glissTime = voice->glissTime;
-		ChipModuleGain->setGain(voice->volume);
+		ModuleGain->setGain(voice->volume);
 	}
 
-	float * ChipModule::advance(int numSamples) {
+	float * Module::advance(int numSamples) {
 		lockList();
-		buffer = ChipModuleGain->advance(numSamples);
+		buffer = ModuleGain->advance(numSamples);
 		unlockList();
 		return buffer;
 	}
 
-	void ChipModule::activatePolyVoice(int note) {
+	void Module::activatePolyVoice(int note) {
 
 		// Start the cleaner thread if currently inactive
 		if (state == INACTIVE) {
@@ -142,7 +142,7 @@ namespace chip {
 		}
 	}
 
-	void ChipModule::releasePolyVoice(int note) {
+	void Module::releasePolyVoice(int note) {
 		// Release the polyVoice
 		lockList();
 		audIter = audioDeviceList->begin();
@@ -163,7 +163,7 @@ namespace chip {
 		unlockList();
 	}
 
-	void ChipModule::cleanup() {
+	void Module::cleanup() {
 		// Lock the list to prevent data races
 		lockList();
 		audIter = audioDeviceList->begin();
@@ -184,18 +184,18 @@ namespace chip {
 		unlockList();
 
 		if (numAudioDevices == 0) {
-			// Deactivate the ChipModule
+			// Deactivate the Module
 			state = INACTIVE;
 		}
 
 	}
 
-	void ChipModule::StartCleaner() {
-		pthread_create(&cleaner_tid, NULL, ChipModule::Cleaner, this);
+	void Module::StartCleaner() {
+		pthread_create(&cleaner_tid, NULL, Module::Cleaner, this);
 	}
 
-	void * ChipModule::Cleaner(void * args) {
-		ChipModule * mod = (ChipModule *) args;
+	void * Module::Cleaner(void * args) {
+		Module * mod = (Module *) args;
 		while (mod->getState() == ACTIVE) {
 			mod->cleanup();
 			usleep(10000);
@@ -203,10 +203,10 @@ namespace chip {
 		return NULL;
 	}
 
-	ChipModule::~ChipModule() {
+	Module::~Module() {
 		pthread_join(cleaner_tid, NULL);
 		delete polyMixer;
-		delete ChipModuleGain;
+		delete ModuleGain;
 		delete toDelete;
 	}
 }
