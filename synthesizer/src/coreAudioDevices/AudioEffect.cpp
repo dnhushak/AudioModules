@@ -52,7 +52,7 @@ namespace synth {
 //	numAudioDevices = audioDeviceList->size();
 //}
 
-// Switch pointer to a new audioDeviceList - Useful if list is managed by external object
+	// Switch pointer to a new audioDeviceList - Useful if list is managed by external object
 	void AudioEffect::setAudioDeviceList(
 			std::list<AudioDevice*> * audioObjects) {
 
@@ -73,44 +73,43 @@ namespace synth {
 		numAudioDevices = audioDeviceList->size();
 	}
 
-// Remove AudioDevice objects from the list of the mixer (by object reference)
-// Note also calls destructor of device we are removing
-
+	// Remove AudioDevice objects from the list of the mixer (by object reference)
+	// Note also calls destructor of device we are removing
 	void AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
 		audioDeviceList->remove(audioObject);
 		numAudioDevices = audioDeviceList->size();
 	}
 
-// Remove IAudio objects from the list of the mixer (by location)
+	// Remove IAudio objects from the list of the mixer (by location)
 	void AudioEffect::removeAudioDevice(int loc) {
-//	// TODO: fix this
-//	audioDeviceList->erase(audioDeviceList->begin() + loc);
-//	numAudioDevices = audioDeviceList->size();
+		//	// TODO: fix this
+		//	audioDeviceList->erase(audioDeviceList->begin() + loc);
+		//	numAudioDevices = audioDeviceList->size();
 	}
 
-// Remove all objects from mixer
+	// Remove all objects from mixer
 	void AudioEffect::removeAllAudioDevices() {
 		audioDeviceList->clear();
 		numAudioDevices = audioDeviceList->size();
 	}
 
-// Returns the number of objects in this mixer
+	// Returns the number of objects in this mixer
 	int AudioEffect::getNumAudioDevices() {
 		return audioDeviceList->size();
 	}
 
-// Resize the buffer of the mixer
+	// Resize the buffer of the mixer
 	void AudioEffect::resizeBuffer(int newSize) {
-// Free the current buffer memory
+		// Free the current buffer memory
 		free(buffer);
 
-// Reset the buffer size
+		// Reset the buffer size
 		bufferSize = newSize;
 
-// reallocate memory
+		// reallocate memory
 		buffer = new float[bufferSize];
 
-// Resize all child buffer sizes
+		// Resize all child buffer sizes
 		for (audIter = audioDeviceList->begin();
 				audIter != audioDeviceList->end(); ++audIter) {
 			(*audIter)->resizeBuffer(bufferSize);

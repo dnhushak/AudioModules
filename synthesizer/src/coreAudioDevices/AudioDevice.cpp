@@ -48,11 +48,6 @@ namespace synth {
 		return bufferSize;
 	}
 
-//	devState_t AudioDevice::getState(){
-//		printf("\tAudioDevice State: %d\n", state);
-//		return state;
-//	}
-
 // Return the audio sampling rate
 	int AudioDevice::getSampleRate() {
 		return sampleRate;

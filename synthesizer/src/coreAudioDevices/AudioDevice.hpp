@@ -6,7 +6,7 @@
 #include "Device.hpp"
 
 namespace synth {
-	class AudioDevice : public virtual Device {
+	class AudioDevice: public virtual Device {
 		public:
 			AudioDevice();
 
@@ -17,19 +17,13 @@ namespace synth {
 			virtual void cleanup();
 
 			// Resize the buffer of the audio device
-			void resizeBuffer(int);
+			virtual void resizeBuffer(int);
 
 			// Change the sample rate of the audio device
 			void changeSampleRate(int);
 
-			// Set every value in the buffer to 0
-			void zeroBuffer();
-
 			// Return the size of the buffer
 			int getBufferSize();
-//
-//			// Get the state
-//			devState_t getState();
 
 			// Return the sample rate
 			int getSampleRate();
@@ -37,11 +31,13 @@ namespace synth {
 			virtual ~AudioDevice();
 
 		protected:
+			// Set every value in the buffer to 0
+			void zeroBuffer();
+
 			// Size of buffer
 			int bufferSize;
 			// The buffer itself
 			float * buffer;
-
 			// Sampling rate of the device
 			int sampleRate;
 
