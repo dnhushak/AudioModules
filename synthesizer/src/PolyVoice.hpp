@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 
-namespace chip {
+namespace synth {
 	class PolyVoice: public AudioDevice {
 		public:
 			// Constructor
@@ -34,7 +34,7 @@ namespace chip {
 			void releasePolyVoice();
 
 			// Sets the parameters of the polyvoice
-			void setVoice(Voice *);
+			void setVoice(synth::Voice *);
 
 			// Gets the MIDI note number tied to this polyVoice
 			int getNote();

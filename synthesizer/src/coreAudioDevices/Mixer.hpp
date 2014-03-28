@@ -4,7 +4,7 @@
 #include <iterator>
 #include <iostream>
 
-namespace chip {
+namespace synth {
 	class Mixer: public AudioEffect {
 		public:
 			// Constructor

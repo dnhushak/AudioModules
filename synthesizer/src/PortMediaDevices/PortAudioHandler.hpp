@@ -2,7 +2,7 @@
 #include "AudioDevice.hpp"
 #include <stdio.h>
 
-namespace chip {
+namespace synth {
 	
 	class PortAudioHandler {
 		public:

@@ -2,8 +2,8 @@
 #include <sstream>
 #include <string>
 
-namespace chip {
-	struct Voice {
+namespace synth {
+	struct ChipVoice : Voice {
 			/*** Module/Instrument level parameters go here: ***/
 			bool arp_en;
 			bool gliss_en;

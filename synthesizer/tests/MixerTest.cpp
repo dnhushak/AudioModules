@@ -7,7 +7,7 @@
 #define TEST_BUFFER_SIZE_2 20
 #define TEST_ADVANCE_2 20
 
-chip::Mixer * mixer;
+synth::Mixer * mixer;
 
 void TestAdvanceWithZeroAdditions(int, int);
 void TestAdvanceWithOneAddition(int, int);
@@ -18,7 +18,7 @@ int main(void) {
 	std::cout << "\n--- Testing Mixer ---\n";
 
 	// Create the mixer with buffer size of 10.
-	mixer = new chip::Mixer(TEST_BUFFER_SIZE);
+	mixer = new synth::Mixer(TEST_BUFFER_SIZE);
 
 	// Run test methods
 	std::cout << "=============Zero IAudio Devices=============\n";
@@ -55,8 +55,8 @@ void TestAdvanceWithZeroAdditions(int advance, int bufferSize) {
 
 void TestAdvanceWithOneAddition(int advance, int bufferSize) {
 
-	chip::MockIAudio * mock = new chip::MockIAudio(bufferSize); // Start at 5 and increment by 0
-	mixer->addAudioDevice((chip::AudioDevice*) mock);
+	synth::MockIAudio * mock = new synth::MockIAudio(bufferSize); // Start at 5 and increment by 0
+	mixer->addAudioDevice((synth::AudioDevice*) mock);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {
@@ -73,10 +73,10 @@ void TestAdvanceWithOneAddition(int advance, int bufferSize) {
 
 void TestAdvanceWithTwoAdditions(int advance, int bufferSize) {
 
-	chip::MockIAudio * mock1 = new chip::MockIAudio(bufferSize);
-	chip::MockIAudio * mock2 = new chip::MockIAudio(bufferSize);
-	mixer->addAudioDevice((chip::AudioDevice*) mock1);
-	mixer->addAudioDevice((chip::AudioDevice*) mock2);
+	synth::MockIAudio * mock1 = new synth::MockIAudio(bufferSize);
+	synth::MockIAudio * mock2 = new synth::MockIAudio(bufferSize);
+	mixer->addAudioDevice((synth::AudioDevice*) mock1);
+	mixer->addAudioDevice((synth::AudioDevice*) mock2);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {
@@ -95,10 +95,10 @@ void TestAdvanceWithTwoAdditions(int advance, int bufferSize) {
 
 void TestTwoAdvancesWithTwoAdditions(int advance, int bufferSize) {
 
-	chip::MockIAudio * mock1 = new chip::MockIAudio(bufferSize);
-	chip::MockIAudio * mock2 = new chip::MockIAudio(bufferSize);
-	mixer->addAudioDevice((chip::AudioDevice*) mock1);
-	mixer->addAudioDevice((chip::AudioDevice*) mock2);
+	synth::MockIAudio * mock1 = new synth::MockIAudio(bufferSize);
+	synth::MockIAudio * mock2 = new synth::MockIAudio(bufferSize);
+	mixer->addAudioDevice((synth::AudioDevice*) mock1);
+	mixer->addAudioDevice((synth::AudioDevice*) mock2);
 
 	float * expected = new float[bufferSize];
 	for (int i = 0; i < bufferSize; i++) {

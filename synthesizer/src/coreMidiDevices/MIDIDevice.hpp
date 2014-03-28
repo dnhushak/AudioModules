@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdint.h>
 
-namespace chip {
+namespace synth {
 	struct MIDIMessage {
 			unsigned char type;
 			unsigned char channel;

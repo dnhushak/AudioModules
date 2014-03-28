@@ -2,7 +2,7 @@
 #include "MIDIDevice.hpp"
 #include <stdio.h>
 
-namespace chip {
+namespace synth {
 	
 	class MessagePrinter: public MIDIDevice {
 		public:

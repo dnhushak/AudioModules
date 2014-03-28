@@ -1,6 +1,6 @@
 #include "Limiter.hpp"
 
-namespace chip {
+namespace synth {
 	
 	Limiter::Limiter(int initBufferSize, int initSampleRate) {
 		resizeBuffer(initBufferSize);

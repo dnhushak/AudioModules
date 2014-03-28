@@ -1,7 +1,7 @@
 #include "../src/AudioDevice.hpp"
 #include <vector>
 
-namespace chip {
+namespace synth {
 	class MockIAudio: public AudioDevice {
 		public:
 

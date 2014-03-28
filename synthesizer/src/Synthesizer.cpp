@@ -15,15 +15,15 @@
 #include "AudioEffect.hpp"
 #include <pthread.h>
 
-std::vector<chip::Wavetable *> * GenerateChipTables() {
-	std::vector<chip::Wavetable *> * tables =
-			new std::vector<chip::Wavetable *>;
-	chip::Wavetable* sawtooth = new chip::Wavetable(16);
-	chip::Wavetable* triangle = new chip::Wavetable(16);
-	chip::Wavetable* square50 = new chip::Wavetable(16);
-	chip::Wavetable* square25 = new chip::Wavetable(16);
-	chip::Wavetable* noise = new chip::Wavetable(1024);
-	chip::Wavetable* vibrasin = new chip::Wavetable(256);
+std::vector<synth::Wavetable *> * GeneratesynthTables() {
+	std::vector<synth::Wavetable *> * tables =
+			new std::vector<synth::Wavetable *>;
+	synth::Wavetable* sawtooth = new synth::Wavetable(16);
+	synth::Wavetable* triangle = new synth::Wavetable(16);
+	synth::Wavetable* square50 = new synth::Wavetable(16);
+	synth::Wavetable* square25 = new synth::Wavetable(16);
+	synth::Wavetable* noise = new synth::Wavetable(1024);
+	synth::Wavetable* vibrasin = new synth::Wavetable(256);
 
 	tables->push_back(sawtooth);
 	tables->push_back(triangle);
@@ -80,8 +80,8 @@ std::vector<chip::Wavetable *> * GenerateChipTables() {
 // Main
 int main(int argc, char *argv[]) {
 
-	chip::PortMIDIHandler * PMHandler = new chip::PortMIDIHandler();
-	chip::PortAudioHandler * PAHandler = new chip::PortAudioHandler();
+	synth::PortMIDIHandler * PMHandler = new synth::PortMIDIHandler();
+	synth::PortAudioHandler * PAHandler = new synth::PortAudioHandler();
 
 	int bufferSize = 1024;
 	int sampleRate = 41000;
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 	extern char *optarg;
 	int ch;
 
-	//Scans for argument inputs: -p # binds chipophone to MIDI Port number #, -v makes chipophone behave in verbose mode
+	//Scans for argument inputs: -p # binds synthophone to MIDI Port number #, -v makes synthophone behave in verbose mode
 	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a:")) != EOF) {
 		switch (ch) {
 			case 'p':
@@ -143,22 +143,22 @@ int main(int argc, char *argv[]) {
 
 	// The master mixer for the whole synth
 	printf("Generating mixer\n");
-	chip::Limiter * masterLimiter = new chip::Limiter(bufferSize, sampleRate);
-	chip::Mixer * masterMixer = new chip::Mixer(bufferSize, sampleRate);
+	synth::Limiter * masterLimiter = new synth::Limiter(bufferSize, sampleRate);
+	synth::Mixer * masterMixer = new synth::Mixer(bufferSize, sampleRate);
 	masterLimiter->addAudioDevice(masterMixer);
-	// All of the wavetables for the chipophone
+	// All of the wavetables for the synthophone
 	printf("Generating wavetables\n");
-	std::vector<chip::Wavetable *> * tables = GenerateChipTables();
+	std::vector<synth::Wavetable *> * tables = GeneratesynthTables();
 
 	printf("Generating voices\n");
-	std::vector<chip::Voice *> * voices = new std::vector<chip::Voice *>;
+	std::vector<synth::Voice *> * voices = new std::vector<synth::Voice *>;
 
-	std::vector<chip::Module *> * modules = new std::vector<chip::Module *>;
+	std::vector<synth::Module *> * modules = new std::vector<synth::Module *>;
 
 	printf("Setting voice defaults\n");
 	// Set defaults for voices
 	for (int i = 0; i < numModules; i++) {
-		voices->push_back(new chip::Voice);
+		voices->push_back(new synth::Voice);
 		voices->at(i)->arpTime = 100;
 		voices->at(i)->arp_en = false;
 		voices->at(i)->glissTime = 100;
@@ -181,11 +181,11 @@ int main(int argc, char *argv[]) {
 	printf("Generating modules\n");
 	// Modules
 	for (int i = 0; i < numModules; i++) {
-		chip::Module * newModule = new chip::Module(bufferSize, sampleRate);
+		synth::Module * newModule = new synth::Module(bufferSize, sampleRate);
 		// Set voice for each module
 		newModule->setVoice(voices->at(i));
 		// Create a midi Channel filter
-		chip::ChannelFilter * moduleFilter = new chip::ChannelFilter(i);
+		synth::ChannelFilter * moduleFilter = new synth::ChannelFilter(i);
 		// Add the module to the channel filter outputs
 		moduleFilter->addMIDIDevice(newModule);
 		// Add the channel filter to the PMhandler outputs
@@ -201,7 +201,7 @@ int main(int argc, char *argv[]) {
 
 	// Print incoming MIDI Connections
 	if (verbose) {
-		chip::MessagePrinter * printer = new chip::MessagePrinter();
+		synth::MessagePrinter * printer = new synth::MessagePrinter();
 		PMHandler->addMIDIDevice(printer);
 	}
 

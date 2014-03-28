@@ -1,9 +1,9 @@
 #pragma once
 #include "MIDIDevice.hpp"
 
-namespace chip {
+namespace synth {
 	
-	class ChannelFilter: public chip::MIDIDevice {
+	class ChannelFilter: public synth::MIDIDevice {
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);

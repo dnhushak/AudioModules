@@ -1,7 +1,7 @@
 #include "../src/Wavetables.hpp"
 #include "Assert.hpp"
 
-chip::Wavetables* wavetable;
+synth::Wavetables* wavetable;
 
 void TestOnlyOneInstance();
 void TestSquareWave();
@@ -11,7 +11,7 @@ int main(void)
     std::cout << "\n--- Testing Wavetables ---\n";
     
     // Create the first and only instance of the Wavetables.
-    wavetable = chip::Wavetables::getInstance();
+    wavetable = synth::Wavetables::getInstance();
     
     TestOnlyOneInstance();
     TestSquareWave();
@@ -23,7 +23,7 @@ void TestOnlyOneInstance()
 {
     Assert::isNotNULL( wavetable, "Wavetables should not be null.\n" );
     
-    chip::Wavetables* second = chip::Wavetables::getInstance();
+    synth::Wavetables* second = synth::Wavetables::getInstance();
     Assert::areEqual( wavetable, second, "Only one instance should be created.\n" );
 }
 

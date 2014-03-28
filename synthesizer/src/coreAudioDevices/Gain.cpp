@@ -1,8 +1,8 @@
 #include "Gain.hpp"
 
-namespace chip {
+namespace synth {
 
-	chip::Gain::Gain(int initBufferSize, int initSampleRate) {
+	Gain::Gain(int initBufferSize, int initSampleRate) {
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
 		maxNumAudioDevices = 1;
@@ -10,7 +10,7 @@ namespace chip {
 		setGain(-6);
 	}
 
-	float * chip::Gain::advance(int numSamples) {
+	float * Gain::advance(int numSamples) {
 		if (numAudioDevices > 0) {
 			buffer = audioDeviceList->front()->advance(numSamples);
 			for (int i = 0; i < numSamples; i++) {
@@ -22,7 +22,7 @@ namespace chip {
 		return buffer;
 	}
 
-	void chip::Gain::setGain(float volume) {
+	void Gain::setGain(float volume) {
 		// Volume is coming it in dbFs
 		// 0 dbFs => gain of 1
 		gain = dbToRatio(volume);

@@ -1,29 +1,30 @@
 #include "AudioEffect.hpp"
 
-chip::AudioEffect::AudioEffect() {
-	audioDeviceList = new std::list<AudioDevice*>;
-	maxNumAudioDevices = -1;
-	numAudioDevices = 0;
-	audIter = audioDeviceList->begin();
-	audCallbackIter = audioDeviceList->begin();
-	pthread_mutex_init(&listLock, NULL);
-}
-
-void chip::AudioEffect::cleanup() {
-	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
-			++audIter) {
-		(*audIter)->cleanup();
+namespace synth {
+	AudioEffect::AudioEffect() {
+		audioDeviceList = new std::list<AudioDevice*>;
+		maxNumAudioDevices = -1;
+		numAudioDevices = 0;
+		audIter = audioDeviceList->begin();
+		audCallbackIter = audioDeviceList->begin();
+		pthread_mutex_init(&listLock, NULL);
 	}
-}
+
+	void AudioEffect::cleanup() {
+		for (audIter = audioDeviceList->begin();
+				audIter != audioDeviceList->end(); ++audIter) {
+			(*audIter)->cleanup();
+		}
+	}
 
 // Add another AudioDevice object to be mixed
-void chip::AudioEffect::addAudioDevice(AudioDevice * audioObject) {
-	// Ignore if at maximum value or no maximum
-	if (numAudioDevices < maxNumAudioDevices || maxNumAudioDevices == -1) {
-		audioDeviceList->push_front(audioObject);
-		numAudioDevices++;
+	void AudioEffect::addAudioDevice(AudioDevice * audioObject) {
+		// Ignore if at maximum value or no maximum
+		if (numAudioDevices < maxNumAudioDevices || maxNumAudioDevices == -1) {
+			audioDeviceList->push_front(audioObject);
+			numAudioDevices++;
+		}
 	}
-}
 
 //// Add a list of AudioDevices to be mixed
 //void chip::AudioEffect::addAudioDevices(
@@ -52,13 +53,13 @@ void chip::AudioEffect::addAudioDevice(AudioDevice * audioObject) {
 //}
 
 // Switch pointer to a new audioDeviceList - Useful if list is managed by external object
-void chip::AudioEffect::setAudioDeviceList(
-		std::list<AudioDevice*> * audioObjects) {
+	void AudioEffect::setAudioDeviceList(
+			std::list<AudioDevice*> * audioObjects) {
 
-	// Re-reference
-	audioDeviceList = audioObjects;
+		// Re-reference
+		audioDeviceList = audioObjects;
 
-	//TODO: Fix maximum logic for changing the audioDeviceList
+		//TODO: Fix maximum logic for changing the audioDeviceList
 // If the new device list has less than the maximum number of devices, or there is no maximum...
 //	if (audioDeviceList->size() < maxNumAudioDevices
 //			|| maxNumAudioDevices == -1) {
@@ -69,61 +70,62 @@ void chip::AudioEffect::setAudioDeviceList(
 //		numAudioDevices = maxNumAudioDevices;
 //	}
 
-	numAudioDevices = audioDeviceList->size();
-}
+		numAudioDevices = audioDeviceList->size();
+	}
 
 // Remove AudioDevice objects from the list of the mixer (by object reference)
 // Note also calls destructor of device we are removing
 
-void chip::AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
-	audioDeviceList->remove(audioObject);
-	numAudioDevices = audioDeviceList->size();
-}
+	void AudioEffect::removeAudioDevice(AudioDevice* audioObject) {
+		audioDeviceList->remove(audioObject);
+		numAudioDevices = audioDeviceList->size();
+	}
 
 // Remove IAudio objects from the list of the mixer (by location)
-void chip::AudioEffect::removeAudioDevice(int loc) {
+	void AudioEffect::removeAudioDevice(int loc) {
 //	// TODO: fix this
 //	audioDeviceList->erase(audioDeviceList->begin() + loc);
 //	numAudioDevices = audioDeviceList->size();
-}
+	}
 
 // Remove all objects from mixer
-void chip::AudioEffect::removeAllAudioDevices() {
-	audioDeviceList->clear();
-	numAudioDevices = audioDeviceList->size();
-}
+	void AudioEffect::removeAllAudioDevices() {
+		audioDeviceList->clear();
+		numAudioDevices = audioDeviceList->size();
+	}
 
 // Returns the number of objects in this mixer
-int chip::AudioEffect::getNumAudioDevices() {
-	return audioDeviceList->size();
-}
+	int AudioEffect::getNumAudioDevices() {
+		return audioDeviceList->size();
+	}
 
 // Resize the buffer of the mixer
-void chip::AudioEffect::resizeBuffer(int newSize) {
+	void AudioEffect::resizeBuffer(int newSize) {
 // Free the current buffer memory
-	free(buffer);
+		free(buffer);
 
 // Reset the buffer size
-	bufferSize = newSize;
+		bufferSize = newSize;
 
 // reallocate memory
-	buffer = new float[bufferSize];
+		buffer = new float[bufferSize];
 
 // Resize all child buffer sizes
-	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
-			++audIter) {
-		(*audIter)->resizeBuffer(bufferSize);
+		for (audIter = audioDeviceList->begin();
+				audIter != audioDeviceList->end(); ++audIter) {
+			(*audIter)->resizeBuffer(bufferSize);
+		}
 	}
-}
 
-void chip::AudioEffect::lockList(){
-	pthread_mutex_lock(&listLock);
-}
+	void AudioEffect::lockList() {
+		pthread_mutex_lock(&listLock);
+	}
 
-void chip::AudioEffect::unlockList(){
-	pthread_mutex_unlock(&listLock);
-}
+	void AudioEffect::unlockList() {
+		pthread_mutex_unlock(&listLock);
+	}
 
-chip::AudioEffect::~AudioEffect(){
-	delete audioDeviceList;
+	AudioEffect::~AudioEffect() {
+		delete audioDeviceList;
+	}
 }

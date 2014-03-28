@@ -3,9 +3,9 @@
 
 #include "MIDIDevice.hpp"
 
-namespace chip {
+namespace synth {
 	
-	class Arpeggiator: public chip::MIDIDevice {
+	class Arpeggiator: public synth::MIDIDevice {
 		public:
 			Arpeggiator();
 	};

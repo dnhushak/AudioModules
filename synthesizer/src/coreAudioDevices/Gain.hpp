@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-namespace chip {
+namespace synth {
 	
 	class Gain: public AudioEffect {
 		public:

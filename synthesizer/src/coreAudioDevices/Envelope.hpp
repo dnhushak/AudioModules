@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-namespace chip {
+namespace synth {
 
 	enum envState_t {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE,

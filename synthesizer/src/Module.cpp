@@ -1,6 +1,6 @@
 #include "Module.hpp"
 
-chip::Module::Module(int initBufferSize, int initSampleRate) {
+synth::Module::Module(int initBufferSize, int initSampleRate) {
 
 	//TODO: Implement glissando and arpeggiation - split into separate AudioEffect modules, and reroute the
 	// moduleGain inputs to the gliss/arpegg/polyMixer outputs
@@ -26,7 +26,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	toDelete = new std::vector<AudioDevice *>;
 }
 
-void chip::Module::affect(MIDIMessage * message) {
+void synth::Module::affect(MIDIMessage * message) {
 	switch (message->type) {
 		case 0b1000:
 			// Note Off
@@ -60,7 +60,7 @@ void chip::Module::affect(MIDIMessage * message) {
 	}
 }
 
-void chip::Module::setVoice(Voice * newVoice) {
+void synth::Module::setVoice(Voice * newVoice) {
 	voice = newVoice;
 	arp_en = voice->arp_en;
 	gliss_en = voice->gliss_en;
@@ -69,14 +69,14 @@ void chip::Module::setVoice(Voice * newVoice) {
 	moduleGain->setGain(voice->volume);
 }
 
-float * chip::Module::advance(int numSamples) {
+float * synth::Module::advance(int numSamples) {
 	lockList();
 	buffer = moduleGain->advance(numSamples);
 	unlockList();
 	return buffer;
 }
 
-void chip::Module::activatePolyVoice(int note) {
+void synth::Module::activatePolyVoice(int note) {
 
 	// Start the cleaner thread if currently inactive
 	if (state == INACTIVE) {
@@ -140,7 +140,7 @@ void chip::Module::activatePolyVoice(int note) {
 	}
 }
 
-void chip::Module::releasePolyVoice(int note) {
+void synth::Module::releasePolyVoice(int note) {
 	// Release the polyVoice
 	lockList();
 	audIter = audioDeviceList->begin();
@@ -161,7 +161,7 @@ void chip::Module::releasePolyVoice(int note) {
 	unlockList();
 }
 
-void chip::Module::cleanup() {
+void synth::Module::cleanup() {
 	// Lock the list to prevent data races
 	lockList();
 	audIter = audioDeviceList->begin();
@@ -188,11 +188,11 @@ void chip::Module::cleanup() {
 
 }
 
-void chip::Module::StartCleaner() {
+void synth::Module::StartCleaner() {
 	pthread_create(&cleaner_tid, NULL, Module::Cleaner, this);
 }
 
-void * chip::Module::Cleaner(void * args) {
+void * synth::Module::Cleaner(void * args) {
 	Module * mod = (Module *) args;
 	while (mod->getState() == ACTIVE) {
 		mod->cleanup();
@@ -201,7 +201,7 @@ void * chip::Module::Cleaner(void * args) {
 	return NULL;
 }
 
-chip::Module::~Module() {
+synth::Module::~Module() {
 	pthread_join(cleaner_tid, NULL);
 	delete polyMixer;
 	delete moduleGain;

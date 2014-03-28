@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
 
-namespace chip {
+namespace synth {
 	
 	class Wavetable {
 		public:

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 
-namespace chip {
+namespace synth {
 	enum devState_t {
 		ACTIVE, INACTIVE,
 	};

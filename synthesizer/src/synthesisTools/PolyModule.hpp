@@ -12,15 +12,14 @@
 #include <unistd.h>
 
 namespace synth {
-	class Module: public AudioEffect, public MIDIDevice {
+	class PolyModule: public AudioEffect, public MIDIDevice {
 		public:
-			Module(int, int);
+			PolyModule(int, int);
 
 			float * advance(int);
 
-			void affect(MIDIMessage *);
 
-			void setVoice(Voice * voice);
+			virtual void setVoice(synth::Voice * voice);
 
 			// Activate and release PolyVoices
 			void activatePolyVoice(int note);
@@ -29,7 +28,7 @@ namespace synth {
 			// Removes any inactive polyVoices
 			void cleanup();
 
-			~Module();
+			~PolyModule();
 
 		private:
 
@@ -42,17 +41,9 @@ namespace synth {
 			/*** Voice ***/
 			Voice * voice;
 
-			bool arp_en;
-			bool gliss_en;
-			int arpTime;
-			int glissTime;
-
-
 			synth::Mixer * polyMixer;
-			synth::Gain * moduleGain;
+			synth::Gain * PolyModuleGain;
 
-			// Items to delete
-			std::vector<AudioDevice*> * toDelete;
 
 	};
 }

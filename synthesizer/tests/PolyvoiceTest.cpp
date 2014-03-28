@@ -2,7 +2,7 @@
 #include "Assert.hpp"
 #include <vector>
 
-chip::PolyVoice* polyVoice;
+synth::PolyVoice* polyVoice;
 
 // Test methods
 void TestStepSize();
@@ -17,7 +17,7 @@ int main(void) {
 	std::cout << "\n--- Testing PolyVoice ---\n";
 
 	// Create the mixer.
-	polyVoice = new chip::PolyVoice();
+	polyVoice = new synth::PolyVoice();
 
 	// Run test methods.
 	TestStepSize();

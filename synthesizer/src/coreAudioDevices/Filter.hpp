@@ -1,8 +1,10 @@
 #include "AudioEffect.hpp"
+namespace synth {
 
-class Filter: public chip::AudioEffect {
-	public:
-		Filter();
+	class Filter: public AudioEffect {
+		public:
+			Filter();
 
-		float * advance(int);
-};
+			float * advance(int);
+	};
+}

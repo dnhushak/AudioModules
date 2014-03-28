@@ -3,9 +3,9 @@
 #include "AudioEffect.hpp"
 #include "AudioUtils.hpp"
 
-namespace chip {
+namespace synth {
 	
-	class Limiter: public chip::AudioEffect {
+	class Limiter: public synth::AudioEffect {
 		public:
 			Limiter(int, int);
 			float * advance(int);

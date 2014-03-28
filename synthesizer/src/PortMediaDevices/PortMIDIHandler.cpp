@@ -1,6 +1,6 @@
 #include "PortMIDIHandler.hpp"
 
-namespace chip {
+namespace synth {
 
 	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
 		PmError err = Pm_Initialize();

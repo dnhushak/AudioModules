@@ -1,6 +1,6 @@
 #include "Arpeggiator.hpp"
 
-namespace chip {
+namespace synth {
 	
 	Arpeggiator::Arpeggiator() {
 		// TODO Auto-generated constructor stub

@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <pthread.h>
 
-namespace chip {
+namespace synth {
 
 	/** An audio effect. Has a list of AudioDevices that can be manipulated in some way
 	 * User has to add devices to device list using the single add, list add, or repoint methods

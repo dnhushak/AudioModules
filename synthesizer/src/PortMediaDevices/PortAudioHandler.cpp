@@ -1,6 +1,6 @@
 #include "PortAudioHandler.hpp"
 
-namespace chip {
+namespace synth {
 
 	// Setup and start a PortAudio Stream
 	PaError PortAudioHandler::connectAudioStream(int bufferSize, int sampleRate,
@@ -162,13 +162,12 @@ namespace chip {
 			const PaStreamCallbackTimeInfo* timeInfo,
 			PaStreamCallbackFlags statusFlags, void *userData) {
 
-
 		//TODO: get multichannel to work right
 		// Cast void type output buffer to float
 		float * out = (float*) outputBuffer;
 
 		// Grab the supplied user data
-		chip::AudioDevice * audio = (chip::AudioDevice*) userData;
+		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
 
 		// Fill the output buffer
 		float * buffer = audio->advance(framesPerBuffer);

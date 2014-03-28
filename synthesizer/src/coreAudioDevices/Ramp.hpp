@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-namespace chip {
+namespace synth {
 	class Ramp: public AudioDevice {
 		public:
 			// Constructor

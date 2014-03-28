@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-namespace chip {
+namespace synth {
 	
 	class PortMIDIHandler: public MIDIDevice {
 		public:

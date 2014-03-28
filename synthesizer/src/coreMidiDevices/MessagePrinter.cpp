@@ -1,6 +1,6 @@
 #include "MessagePrinter.hpp"
 
-namespace chip {
+namespace synth {
 	MessagePrinter::MessagePrinter() {
 		// Cannot add devices to the Printer, nothing to do.
 		maxNumMIDIDevices = 0;
