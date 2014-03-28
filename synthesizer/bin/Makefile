@@ -3,7 +3,7 @@ CXX = g++
 LDFLAGS = -Wall
 PAFLAGS = -lportaudio
 PMFLAGS = -lportmidi
-CFLAGS = -g -O3
+CFLAGS = -g
 
 #File Extensions
 HEADER = .hpp
@@ -24,7 +24,7 @@ EXE = Chipophone
 HEADERS = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(HEADER)))
 SOURCES = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(SOURCE)))
 OBJECTS = $(addsuffix $(BINARY), $(notdir $(basename $(SOURCES))))
-INCLUDE = $(foreach DIR, $(DIRLIST), -I$(DIR))
+INCLUDE = $(foreach DIR, $(DIRLIST),-I$(DIR))
 
 $(EXE): $(OBJECTS)
 	$(CXX) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)

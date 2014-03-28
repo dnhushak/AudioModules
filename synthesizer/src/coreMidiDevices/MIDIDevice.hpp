@@ -13,6 +13,7 @@ namespace chip {
 			unsigned char data2;
 			int32_t time;
 	};
+
 	class MIDIDevice {
 		public:
 			MIDIDevice();
@@ -44,11 +45,15 @@ namespace chip {
 			// Sets the maximum number of devices
 			int setMaxNumMIDIDevices();
 
+			int getMIDIState();
+
 			virtual ~MIDIDevice();
 		protected:
 			// TODO: Change the vector to list, to match audio device behavior
 			// List of MIDI items to mix together
 			std::vector<MIDIDevice * > * MIDIDeviceList;
+
+			int MIDIstate;
 
 			// Maximum number of MIDI devices allowable in effect (-1 -> no maximum)
 			int maxNumMIDIDevices;

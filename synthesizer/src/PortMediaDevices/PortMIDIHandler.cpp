@@ -11,6 +11,7 @@ namespace chip {
 		if (count == 0)
 			fprintf(stderr, "No MIDI devices found\n");
 		err = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
+		StartCallback();
 		if (err != pmNoError)
 			errorPortMIDI(err);
 
@@ -19,6 +20,7 @@ namespace chip {
 	}
 
 	PmError PortMIDIHandler::disconnectMIDIStream() {
+		MIDIstate = 0;
 		PmError err = Pm_Close(mstream);
 		if (err != pmNoError)
 			errorPortMIDI(err);
@@ -42,18 +44,12 @@ namespace chip {
 		return;
 	}
 
-	void PortMIDIHandler::writeMIDI(MIDIMessage* message){
+	void PortMIDIHandler::writeMIDI(MIDIMessage* message) {
 		//TODO: complete behavior for midi writing
-		PmEvent * event = new PmEvent;
-		int status = (message->type << 4);
-		status &= message->channel;
-//		Pm_MessageStatus(event) = status;
-//		Pm_MessageData1(event) = message->data1;
-//		Pm_MessageData2(event) = message->data2;
-//		Pm_Write(mstream, event, 1);
 	}
 
-	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data, MIDIMessage * message) {
+	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data,
+			MIDIMessage * message) {
 
 		// Grab status
 		int status = Pm_MessageStatus(data->message);
@@ -102,13 +98,28 @@ namespace chip {
 					(PmDeviceID) defaultin);
 			const PmDeviceInfo * outputinfo = Pm_GetDeviceInfo(
 					(PmDeviceID) defaultout);
-			printf("Default Input Device:   | %d: %s\n", defaultin, inputinfo->name);
-			printf("Default Output Device:  | %d: %s\n", defaultout, outputinfo->name);
+			printf("Default Input Device:   | %d: %s\n", defaultin,
+					inputinfo->name);
+			printf("Default Output Device:  | %d: %s\n", defaultout,
+					outputinfo->name);
 		}
 	}
 
 	PmStream * PortMIDIHandler::getStream() {
 		return mstream;
+	}
+
+	void PortMIDIHandler::StartCallback() {
+		pthread_create(&callback_tid, NULL, PortMIDIHandler::Callback, this);
+	}
+
+	void * PortMIDIHandler::Callback(void * args) {
+		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
+		while (PMHandler->getMIDIState() == 1) {
+			PMHandler->readMIDI();
+			usleep(1000);
+		}
+		return NULL;
 	}
 
 	// PortMIDI Error Check

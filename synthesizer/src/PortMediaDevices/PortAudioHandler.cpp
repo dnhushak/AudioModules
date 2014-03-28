@@ -78,9 +78,9 @@ namespace chip {
 		if (err != paNoError)
 			errorPortAudio(err);
 
-		return err;
 		Pa_Terminate();
 
+		return err;
 	}
 
 	// PortAudio Error Check
@@ -161,6 +161,7 @@ namespace chip {
 			void * outputBuffer, unsigned long framesPerBuffer,
 			const PaStreamCallbackTimeInfo* timeInfo,
 			PaStreamCallbackFlags statusFlags, void *userData) {
+
 
 		//TODO: get multichannel to work right
 		// Cast void type output buffer to float

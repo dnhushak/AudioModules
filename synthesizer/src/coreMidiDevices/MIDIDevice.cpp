@@ -4,6 +4,7 @@ chip::MIDIDevice::MIDIDevice() {
 	maxNumMIDIDevices = -1;
 	MIDIDeviceList = new std::vector<MIDIDevice *>;
 	numMIDIDevices = 0;
+	MIDIstate = 1;
 }
 
 // Forwards all MIDI messages in the stream to all in the MIDIDevice List
@@ -92,6 +93,10 @@ int chip::MIDIDevice::getNumMIDIDevices() {
 	return numMIDIDevices;
 }
 
+int chip::MIDIDevice::getMIDIState(){
+	return MIDIstate;
+}
+
 // Scale a MIDI message to an int
 int chip::MIDIDevice::scaleValue(int value, int min, int max) {
 	return (value * ((max - min) / 127) + min);
@@ -103,4 +108,5 @@ float chip::MIDIDevice::scaleValue(int value, float min, float max) {
 }
 
 chip::MIDIDevice::~MIDIDevice() {
+	MIDIstate = 0;
 }

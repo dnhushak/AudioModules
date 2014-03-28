@@ -196,8 +196,6 @@ int main(int argc, char *argv[]) {
 		modules->push_back(newModule);
 	}
 
-	//delete voices;
-	//delete tables;
 
 	/*** Make all MIDI Connections ***/
 
@@ -221,14 +219,17 @@ int main(int argc, char *argv[]) {
 	if (pmerr != pmNoError) {
 		exit(0);
 	}
-	while (1) {
-		// Read MIDI, forward
-		PMHandler->readMIDI();
-		Pa_Sleep(15);
-	}
 
-	PAHandler->disconnectAudioStream();
+	std::cin.ignore(255, '\n');
+
+	printf("Ending...\nShutting Down MIDI Stream...\n");
 	PMHandler->disconnectMIDIStream();
+	printf("Shutting down Audio Stream...\n");
+	PAHandler->disconnectAudioStream();
+	printf("Cleaning up...\n");
+	delete voices;
+	delete tables;
+	printf("Complete\n");
 
 }
 

@@ -1,6 +1,7 @@
 #include "portmidi.h"
 #include "MIDIDevice.hpp"
 #include <stdio.h>
+#include <unistd.h>
 
 namespace chip {
 	
@@ -18,13 +19,19 @@ namespace chip {
 			void writeMIDI(MIDIMessage* message);
 
 			// Parses a PmEvent type and returns a MIDIMessage struct
-			MIDIMessage * parseMIDI(PmEvent *, MIDIMessage * );
+			MIDIMessage * parseMIDI(PmEvent *, MIDIMessage *);
 
 			void printMIDIDevices();
 
 			PortMidiStream * getStream();
 
 		private:
+			static void * Callback(void * args);
+
+			void StartCallback();
+
+			pthread_t callback_tid;
+
 			// The PortMIDI stream
 			PortMidiStream * mstream;
 

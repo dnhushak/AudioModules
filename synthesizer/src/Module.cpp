@@ -21,7 +21,7 @@ chip::Module::Module(int initBufferSize, int initSampleRate) {
 	arpTime = 100;
 	glissTime = 1000;
 
-	numActive = 0;
+	numAudioDevices = 0;
 
 	toDelete = new std::vector<AudioDevice *>;
 }
@@ -80,24 +80,52 @@ void chip::Module::activatePolyVoice(int note) {
 
 	// Start the cleaner thread if currently inactive
 	if (state == INACTIVE) {
+		state = ACTIVE;
 		StartCleaner();
 	}
 
+//	// Check for existing note in the active polyvoices
+//	if (numAudioDevices > 0) {
+//		lockList();
+//		for (audIter = audioDeviceList->begin();
+//				audIter != audioDeviceList->end(); ++audIter) {
+//
+//			// Notation is a little wonky here, but we want to access the note
+//			// So, we need to access the AudioObject in the iterator (*audioDeviceIterator)
+//			// And then downcast it to PolyVoice (PolyVoice*)
+//			if (((PolyVoice*) (*audIter))->getNote() == note) {
+//				// Restart the polyVoice
+//				((PolyVoice*) (*audIter))->startPolyVoice(note);
+//				return;
+//			}
+//
+//			printf("In Update\n");
+//		}
+//		unlockList();
+//	}
+
 	// Check for existing note in the active polyvoices
 	if (numAudioDevices > 0) {
-		for (audIter = audioDeviceList->begin();
-				audIter != audioDeviceList->end(); ++audIter) {
+		lockList();
+		audIter = audioDeviceList->begin();
+		// Go from beginning to end of the list
+		while (audIter != audioDeviceList->end()) {
 
-			// Notation is a little wonky here, but we want to access the note
-			// So, we need to access the AudioObject in the iterator (*audioDeviceIterator)
-			// And then downcast it to PolyVoice (PolyVoice*)
+			// If the polyvoice has the same note as the new incoming note...
 			if (((PolyVoice*) (*audIter))->getNote() == note) {
-				// Restart the polyVoice
+
+				// ... Restart the polyVoice, unlock and return
 				((PolyVoice*) (*audIter))->startPolyVoice(note);
+				unlockList();
 				return;
+			} else {
+				// ...Or just advance the iterator
+				++audIter;
 			}
 		}
+		unlockList();
 	}
+
 	if (numAudioDevices < 10) {
 		// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 		PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
@@ -109,50 +137,55 @@ void chip::Module::activatePolyVoice(int note) {
 		audioDeviceList->push_front(newPolyVoice);
 		numAudioDevices = audioDeviceList->size();
 		unlockList();
-		state = ACTIVE;
 	}
 }
 
 void chip::Module::releasePolyVoice(int note) {
 	// Release the polyVoice
-	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
-			++audIter) {
+	lockList();
+	audIter = audioDeviceList->begin();
+	// Go from beginning to end of the list
+	while (audIter != audioDeviceList->end()) {
+
+		// If the polyvoice has the same note as the new incoming note...
 		if (((PolyVoice*) (*audIter))->getNote() == note) {
+			// ... Release the polyVoice, unlock and return
 			((PolyVoice*) (*audIter))->releasePolyVoice();
+			unlockList();
 			return;
+		} else {
+			// ...Or just advance the iterator
+			++audIter;
 		}
 	}
+	unlockList();
 }
 
 void chip::Module::cleanup() {
-	// Start with a fresh list of things to delete
-	toDelete->clear();
+	// Lock the list to prevent data races
+	lockList();
+	audIter = audioDeviceList->begin();
 
-	// Find all inactive polyVoices and put them in the list
-	for (audIter = audioDeviceList->begin(); audIter != audioDeviceList->end();
-			++audIter) {
-		// Grab its pointer before we remove it from the device list
+	// Go from beginning to end of the list
+	while (audIter != audioDeviceList->end()) {
+		// If the polyvoice is inactive...
 		if ((*audIter)->getState() == INACTIVE) {
-			toDelete->push_back(*audIter);
+			// ... Erase it and set the iterator to the next item
+			audIter = audioDeviceList->erase(audIter);
+		} else {
+			// Or just advance the iterator
+			++audIter;
 		}
 	}
+	// Recound the number of devices
+	numAudioDevices = audioDeviceList->size();
+	unlockList();
 
-	// Remove everything in the toDelete list from the device list, and call its deconstructor
-	for (int i = 0; i < toDelete->size(); i++) {
-
-		// Prevent data races in the audio callback by locking
-		lockList();
-		audioDeviceList->remove(toDelete->at(i));
-		numAudioDevices = audioDeviceList->size();
-		unlockList();
-
-		// Free Memory
-		delete (toDelete->at(i));
-	}
 	if (numAudioDevices == 0) {
 		// Deactivate the Module
 		state = INACTIVE;
 	}
+
 }
 
 void chip::Module::StartCleaner() {

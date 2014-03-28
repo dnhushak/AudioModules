@@ -47,8 +47,6 @@ namespace chip {
 			int arpTime;
 			int glissTime;
 
-			// List of active notes
-			int numActive;
 
 			chip::Mixer * polyMixer;
 			chip::Gain * moduleGain;
