@@ -7,7 +7,7 @@
 #include "Device.hpp"
 
 namespace synth {
-	struct MIDIMessage : public virtual Device {
+	struct MIDIMessage {
 			unsigned char type;
 			unsigned char channel;
 			unsigned char data1;
@@ -15,7 +15,7 @@ namespace synth {
 			int32_t time;
 	};
 
-	class MIDIDevice {
+	class MIDIDevice : public virtual Device {
 		public:
 			MIDIDevice();
 

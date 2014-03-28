@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 namespace synth {
-	class Module : public AudioEffect, public MIDIDevice {
+	class Module : public MIDIDevice, public AudioEffect {
 		public:
 			Module(int, int);
 
@@ -51,8 +51,6 @@ namespace synth {
 			synth::Mixer * polyMixer;
 			synth::Gain * ModuleGain;
 
-			// Items to delete
-			std::vector<AudioDevice*> * toDelete;
 
 	};
 }

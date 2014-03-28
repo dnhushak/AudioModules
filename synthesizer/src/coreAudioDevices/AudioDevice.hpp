@@ -27,12 +27,12 @@ namespace synth {
 
 			// Return the size of the buffer
 			int getBufferSize();
+//
+//			// Get the state
+//			devState_t getState();
 
 			// Return the sample rate
 			int getSampleRate();
-//
-//			// Return the state
-//			virtual devState_t getState();
 
 			virtual ~AudioDevice();
 
@@ -45,7 +45,6 @@ namespace synth {
 			// Sampling rate of the device
 			int sampleRate;
 
-			devState_t state;
 	};
 }
 

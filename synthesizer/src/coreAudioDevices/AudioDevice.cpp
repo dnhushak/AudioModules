@@ -1,9 +1,9 @@
 #include "AudioDevice.hpp"
 
 namespace synth {
-	AudioDevice::AudioDevice() {
+	AudioDevice::AudioDevice(){
+		state=ACTIVE;
 		sampleRate = 0;
-		state = ACTIVE;
 		bufferSize = 256;
 		buffer = (float *) malloc(sizeof(float *));
 		resizeBuffer(bufferSize);
@@ -16,10 +16,6 @@ namespace synth {
 		}
 		return buffer;
 	}
-
-//	devState_t AudioDevice::getState() {
-//		return state;
-//	}
 
 // Perform cleanup on all devices in audio device list
 	void AudioDevice::cleanup() {
@@ -51,6 +47,11 @@ namespace synth {
 	int AudioDevice::getBufferSize() {
 		return bufferSize;
 	}
+
+//	devState_t AudioDevice::getState(){
+//		printf("\tAudioDevice State: %d\n", state);
+//		return state;
+//	}
 
 // Return the audio sampling rate
 	int AudioDevice::getSampleRate() {

@@ -50,15 +50,12 @@ namespace synth {
 			}
 		}
 
-		// Check whether or not to deactivate the polyVoice
-		if (osc_env->getEnvState() == DONE) {
-			state = INACTIVE;
-		}
 		return buffer;
 	}
 
+	// Using the state of the envelope instead of the polyVoice
 	devState_t PolyVoice::getState() {
-		return state;
+		return osc_env->getState();
 	}
 
 // Enable vibrato

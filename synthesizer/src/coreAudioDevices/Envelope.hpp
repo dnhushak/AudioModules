@@ -42,7 +42,7 @@ namespace synth {
 		private:
 
 			// Current state of envelope
-			envState_t state;
+			envState_t envState;
 
 			// ADSR - A, D, and R are in ms, S is a multiplier scaled from 0.0 - 1.0
 			int attack;

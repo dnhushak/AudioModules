@@ -1,9 +1,11 @@
 #ifndef DEVICE_HPP_
 #define DEVICE_HPP_
+#include <stdio.h>
+#include <cstdlib>
 
 namespace synth {
 	enum devState_t {
-		ACTIVE, INACTIVE,
+		INACTIVE, ACTIVE
 	};
 	
 	class Device {

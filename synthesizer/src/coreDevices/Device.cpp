@@ -4,7 +4,6 @@ namespace synth {
 	
 	Device::Device() {
 		state = ACTIVE;
-		
 	}
 
 	devState_t Device::getState() {

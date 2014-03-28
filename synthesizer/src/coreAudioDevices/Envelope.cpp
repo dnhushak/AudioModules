@@ -5,7 +5,9 @@ namespace synth {
 		changeSampleRate(initSampleRate);
 
 		// Initialize state to INIT
-		state = INIT;
+		envState = INIT;
+		state = ACTIVE;
+
 		envmult = 0.0;
 		setRelease(100);
 		setAttack(100);
@@ -23,13 +25,13 @@ namespace synth {
 		 * Release goes from the current volume to 0
 		 * Below is a graph of a note's volume going through the states of ADSR
 		 *     /\
-	 *    /  \__________
+		 *    /  \__________
 		 *   /              \
-	 *  /                \
-	 * /                  \
-	 */
+		 *  /                \
+		 * /                  \
+		 */
 		for (int i = 0; i < numSamples; i++) {
-			switch (state) {
+			switch (envState) {
 				default:
 					envmult = 0.0;
 					break;
@@ -38,7 +40,7 @@ namespace synth {
 					// When the evelope location has hit the number of samples, do a state transition
 					if (envloc >= AsampCount) {
 						envloc = 0;
-						state = DECAY;
+						envState = DECAY;
 					}
 					break;
 
@@ -47,7 +49,7 @@ namespace synth {
 					// When the evelope location has hit the number of samples, do a state transition
 					if (envloc >= DsampCount) {
 						envloc = 0;
-						state = SUSTAIN;
+						envState = SUSTAIN;
 					}
 					break;
 
@@ -60,7 +62,8 @@ namespace synth {
 					envmult += Rslope;
 					// When the evelope location has hit the number of samples, do a state transition
 					if (envloc >= RsampCount) {
-						state = DONE;
+						state = INACTIVE;
+						envState = DONE;
 					}
 					break;
 
@@ -73,19 +76,21 @@ namespace synth {
 
 // Gets the state of the envelope (generally for cleanup purposes)
 	envState_t Envelope::getEnvState() {
-		return state;
+		return envState;
 	}
 
 // Starts the envelope
 	void Envelope::startEnv() {
-		state = ATTACK;
+		state = ACTIVE;
+		envState = ATTACK;
 		envloc = 0;
 		Aslope = ((1.0 - envmult) / AsampCount);
 	}
 
 // Releases the envelope
 	void Envelope::releaseEnv() {
-		state = RELEASE;
+		state = ACTIVE;
+		envState = RELEASE;
 		envloc = 0;
 		Rslope = -(envmult / RsampCount);
 	}

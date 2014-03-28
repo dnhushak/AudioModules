@@ -54,4 +54,4 @@ clean:
 	rm -rf $(EXE) *.o
 	
 depend:
-	gccmakedep -- $(LDFLAGS3) -- $(SOURCES)
+	gccmakedep -- $(LDFLAGS3) -- $(SOURCES) $(HEADERS)

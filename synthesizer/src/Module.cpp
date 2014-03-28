@@ -2,7 +2,8 @@
 
 namespace synth {
 
-	Module::Module(int initBufferSize, int initSampleRate) {
+	Module::Module(int initBufferSize, int initSampleRate) :
+			MIDIDevice(), AudioEffect() {
 
 		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
 		// ModuleGain inputs to the gliss/arpegg/polyMixer outputs
@@ -25,7 +26,6 @@ namespace synth {
 
 		numAudioDevices = 0;
 
-		toDelete = new std::vector<AudioDevice *>;
 	}
 
 	void Module::affect(MIDIMessage * message) {
@@ -86,26 +86,6 @@ namespace synth {
 			StartCleaner();
 		}
 
-//	// Check for existing note in the active polyvoices
-//	if (numAudioDevices > 0) {
-//		lockList();
-//		for (audIter = audioDeviceList->begin();
-//				audIter != audioDeviceList->end(); ++audIter) {
-//
-//			// Notation is a little wonky here, but we want to access the note
-//			// So, we need to access the AudioObject in the iterator (*audioDeviceIterator)
-//			// And then downcast it to PolyVoice (PolyVoice*)
-//			if (((PolyVoice*) (*audIter))->getNote() == note) {
-//				// Restart the polyVoice
-//				((PolyVoice*) (*audIter))->startPolyVoice(note);
-//				return;
-//			}
-//
-//			printf("In Update\n");
-//		}
-//		unlockList();
-//	}
-
 		// Check for existing note in the active polyvoices
 		if (numAudioDevices > 0) {
 			lockList();
@@ -165,6 +145,8 @@ namespace synth {
 
 	void Module::cleanup() {
 		// Lock the list to prevent data races
+
+		AudioDevice * toErase;
 		lockList();
 		audIter = audioDeviceList->begin();
 
@@ -172,8 +154,10 @@ namespace synth {
 		while (audIter != audioDeviceList->end()) {
 			// If the polyvoice is inactive...
 			if ((*audIter)->getState() == INACTIVE) {
+				toErase = *audIter;
 				// ... Erase it and set the iterator to the next item
 				audIter = audioDeviceList->erase(audIter);
+				delete toErase;
 			} else {
 				// Or just advance the iterator
 				++audIter;
@@ -207,6 +191,5 @@ namespace synth {
 		pthread_join(cleaner_tid, NULL);
 		delete polyMixer;
 		delete ModuleGain;
-		delete toDelete;
 	}
 }

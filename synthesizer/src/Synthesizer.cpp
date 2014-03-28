@@ -80,7 +80,9 @@ std::vector<synth::Wavetable *> * GeneratesynthTables() {
 // Main
 int main(int argc, char *argv[]) {
 
+	printf("Generating PortMIDI Handler...\n");
 	synth::PortMIDIHandler * PMHandler = new synth::PortMIDIHandler();
+	printf("Generating PortAudio Handler...\n");
 	synth::PortAudioHandler * PAHandler = new synth::PortAudioHandler();
 
 	int bufferSize = 1024;
