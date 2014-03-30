@@ -11,6 +11,7 @@ namespace synth {
 		if (count == 0)
 			fprintf(stderr, "No MIDI devices found\n");
 		err = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
+
 		StartCallback();
 		if (err != pmNoError)
 			errorPortMIDI(err);
@@ -21,9 +22,15 @@ namespace synth {
 
 	PmError PortMIDIHandler::disconnectMIDIStream() {
 		MIDIstate = 0;
+
+		printf("\nSet state to 0...");
+		pthread_join(callback_tid, NULL);
+
+		printf("\nCallback ended, closing stream...");
 		PmError err = Pm_Close(mstream);
-		if (err != pmNoError)
+		if (err != pmNoError) {
 			errorPortMIDI(err);
+		}
 
 		Pm_Terminate();
 
@@ -117,8 +124,10 @@ namespace synth {
 		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
 		while (PMHandler->getMIDIState() == 1) {
 			PMHandler->readMIDI();
-			usleep(1000);
+			usleep(10000);
 		}
+
+		printf("\nExiting callback...");
 		return NULL;
 	}
 

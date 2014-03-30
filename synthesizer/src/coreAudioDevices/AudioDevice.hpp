@@ -6,6 +6,8 @@
 #include "Device.hpp"
 
 namespace synth {
+	typedef float bufType ;
+
 	class AudioDevice: public virtual Device {
 		public:
 			AudioDevice();
@@ -36,6 +38,7 @@ namespace synth {
 
 			// Size of buffer
 			int bufferSize;
+
 			// The buffer itself
 			float * buffer;
 			// Sampling rate of the device

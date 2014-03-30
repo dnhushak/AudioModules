@@ -212,6 +212,7 @@ int main(int argc, char *argv[]) {
 	paerr = PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
 			AudioInDevID, numOutChannels, numInChannels, masterLimiter);
 	if (paerr != paNoError) {
+		std::cout << "Port Audio Error";
 		exit(0);
 	}
 
@@ -219,15 +220,17 @@ int main(int argc, char *argv[]) {
 	PmError pmerr;
 	pmerr = PMHandler->connectMIDIStream(MIDIDevID);
 	if (pmerr != pmNoError) {
+		std::cout << "Port MIDI Error";
 		exit(0);
 	}
 
+	std::cout << "\nChipophone running, press enter to end program\n";
 	std::cin.ignore(255, '\n');
 
-	printf("Ending...\nShutting Down MIDI Stream...\n");
-	PMHandler->disconnectMIDIStream();
 	printf("Shutting down Audio Stream...\n");
 	PAHandler->disconnectAudioStream();
+	printf("Ending...\nShutting Down MIDI Stream...\n");
+	PMHandler->disconnectMIDIStream();
 	printf("Cleaning up...\n");
 	delete voices;
 	delete tables;

@@ -1,16 +1,19 @@
 #include "PolyModule.hpp"
 namespace synth {
-	PolyModule::PolyModule(int initBufferSize, int initSampleRate) {
+	PolyModule::PolyModule(int initBufferSize, int initSampleRate, int initMaxPolyVoices) {
+		if(initMaxPolyVoices>0){
+			maxPolyVoices=initMaxPolyVoices;
+		}
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
-
 		polyMixer = new Mixer(bufferSize, sampleRate);
 		// We use the PolyModule's device list so we can access and edit later
 		polyMixer->setAudioDeviceList(audioDeviceList);
+
+		// Default to inactive instead of active
 		state = INACTIVE;
 		voice = NULL;
 		cleaner_tid = NULL;
-		numAudioDevices = 0;
 	}
 
 	void PolyModule::setVoice(Voice * newVoice) {
@@ -48,23 +51,25 @@ namespace synth {
 					return;
 				} else {
 					// ...Or just advance the iterator
+
 					++audIter;
 				}
 			}
 			unlockList();
 		}
 
-		if (numAudioDevices < 10) {
+		if (numAudioDevices < maxPolyVoices) {
 			// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 			PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
 			newPolyVoice->setVoice(voice);
-			newPolyVoice->startPolyVoice(note);
 
 			lockList();
 			// Add new polyvoice to the device list
 			audioDeviceList->push_front(newPolyVoice);
 			numAudioDevices = audioDeviceList->size();
 			unlockList();
+
+			newPolyVoice->startPolyVoice(note);
 		}
 	}
 

@@ -163,17 +163,13 @@ namespace synth {
 			PaStreamCallbackFlags statusFlags, void *userData) {
 
 		//TODO: get multichannel to work right
-		// Cast void type output buffer to float
-		float * out = (float*) outputBuffer;
 
 		// Grab the supplied user data
 		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
 
-		// Fill the output buffer
-		float * buffer = audio->advance(framesPerBuffer);
-		for (int i = 0; i < framesPerBuffer; i++) {
-			*out++ = buffer[i];
-		}
+		//Copy it to the output buffer
+		memcpy(outputBuffer, audio->advance(framesPerBuffer), sizeof(float *) * framesPerBuffer);
+
 		// Continue
 		return paContinue;
 	}

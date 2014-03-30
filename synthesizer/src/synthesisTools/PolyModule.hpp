@@ -12,13 +12,13 @@
 #include <unistd.h>
 
 namespace synth {
-	class PolyModule: public AudioEffect, public MIDIDevice {
+	class PolyModule: public AudioEffect {
 		public:
-			PolyModule(int, int);
+			PolyModule(int, int, int);
 
 			float * advance(int);
 
-			virtual void setVoice(synth::Voice * voice);
+			virtual void setVoice(Voice * voice);
 
 			// Activate and release PolyVoices
 			void activatePolyVoice(int note);
@@ -31,6 +31,8 @@ namespace synth {
 
 		protected:
 
+			int maxPolyVoices;
+
 			pthread_t cleaner_tid;
 
 			void StartCleaner();
@@ -40,7 +42,7 @@ namespace synth {
 			/*** Voice ***/
 			Voice * voice;
 
-			synth::Mixer * polyMixer;
+			Mixer * polyMixer;
 
 
 	};

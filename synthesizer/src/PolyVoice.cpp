@@ -16,9 +16,13 @@ namespace synth {
 	}
 
 	PolyVoice::~PolyVoice() {
+		printf("\nDeleting Osc...");
 		delete osc;
+		printf("\nDeleting vib...");
 		delete vib;
+		printf("\nDeleting osc_env...");
 		delete osc_env;
+		printf("\nDeleting vib_ramp...");
 		delete vib_ramp;
 	}
 

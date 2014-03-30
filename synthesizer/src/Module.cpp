@@ -129,7 +129,7 @@ namespace synth {
 		// Go from beginning to end of the list
 		while (audIter != audioDeviceList->end()) {
 
-			// If the polyvoice has the same note as the new incoming note...
+			// Find the polyvoice with the given note...
 			if (((PolyVoice*) (*audIter))->getNote() == note) {
 				// ... Release the polyVoice, unlock and return
 				((PolyVoice*) (*audIter))->releasePolyVoice();
@@ -146,7 +146,7 @@ namespace synth {
 	void Module::cleanup() {
 		// Lock the list to prevent data races
 
-		AudioDevice * toErase;
+		PolyVoice * toErase;
 		lockList();
 		audIter = audioDeviceList->begin();
 
@@ -154,16 +154,17 @@ namespace synth {
 		while (audIter != audioDeviceList->end()) {
 			// If the polyvoice is inactive...
 			if ((*audIter)->getState() == INACTIVE) {
-				toErase = *audIter;
+				toErase = (PolyVoice*) *audIter;
 				// ... Erase it and set the iterator to the next item
 				audIter = audioDeviceList->erase(audIter);
+
 				delete toErase;
 			} else {
 				// Or just advance the iterator
 				++audIter;
 			}
 		}
-		// Recound the number of devices
+		// Recount the number of devices
 		numAudioDevices = audioDeviceList->size();
 		unlockList();
 
@@ -175,7 +176,7 @@ namespace synth {
 	}
 
 	void Module::StartCleaner() {
-		pthread_create(&cleaner_tid, NULL, Module::Cleaner, this);
+		pthread_create(&cleaner_tid, NULL, Cleaner, this);
 	}
 
 	void * Module::Cleaner(void * args) {

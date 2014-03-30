@@ -4,15 +4,12 @@ namespace synth {
 	AudioDevice::AudioDevice(){
 		sampleRate = 0;
 		bufferSize = 256;
-		buffer = (float *) malloc(sizeof(float *));
+		buffer = (float *) malloc(sizeof(float[bufferSize]));
 		resizeBuffer(bufferSize);
 	}
 
 // Default behavior for audio device, just returns 0
 	float * AudioDevice::advance(int numSamples) {
-		for (int i = 0; i < numSamples; i++) {
-			buffer[i] = 0;
-		}
 		return buffer;
 	}
 
@@ -25,9 +22,10 @@ namespace synth {
 // DO NOT CALL DURING CALLBACK
 	void AudioDevice::resizeBuffer(int newSize) {
 		// Clears old buffer memory
-		free(buffer);
 		bufferSize = newSize;
-		buffer = (float*) malloc(sizeof(float[bufferSize]));
+		printf("Reallocating buffer....");
+		buffer = (float*) realloc(buffer, sizeof(float[bufferSize]));
+		zeroBuffer();
 	}
 
 // Change the sample rate of the device

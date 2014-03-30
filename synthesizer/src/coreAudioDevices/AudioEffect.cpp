@@ -100,14 +100,15 @@ namespace synth {
 
 	// Resize the buffer of the mixer
 	void AudioEffect::resizeBuffer(int newSize) {
-		// Free the current buffer memory
-		free(buffer);
 
 		// Reset the buffer size
 		bufferSize = newSize;
 
 		// reallocate memory
-		buffer = new float[bufferSize];
+
+		buffer = (float*) realloc(buffer, sizeof(float[bufferSize]));
+
+		zeroBuffer();
 
 		// Resize all child buffer sizes
 		for (audIter = audioDeviceList->begin();
