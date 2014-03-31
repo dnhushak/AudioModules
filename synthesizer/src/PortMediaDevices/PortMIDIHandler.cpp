@@ -40,12 +40,13 @@ namespace synth {
 	void PortMIDIHandler::readMIDI() {
 		while (Pm_Poll(mstream)) {
 			// Grab all MIDI events still in the queue
-			int cnt = Pm_Read(mstream, event, 32);
+			int count = Pm_Read(mstream, event, 32);
 			// Interpret each
-			for (int i = 0; i < cnt; i++) {
+			for (int i = 0; i < count; i++) {
 				// Parse the MIDI and pass it to the affect method
-				parseMIDI(&event[i], &msg[i]);
-				affect(&msg[i]);
+				MIDIMessage * message = parseMIDI(&event[i]);
+				affect(message);
+				free(message);
 			}
 		}
 		return;
@@ -55,9 +56,8 @@ namespace synth {
 		//TODO: complete behavior for midi writing
 	}
 
-	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data,
-			MIDIMessage * message) {
-
+	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {
+		MIDIMessage * message = (MIDIMessage*) malloc(sizeof(MIDIMessage));
 		// Grab status
 		int status = Pm_MessageStatus(data->message);
 
@@ -117,17 +117,20 @@ namespace synth {
 	}
 
 	void PortMIDIHandler::StartCallback() {
-		pthread_create(&callback_tid, NULL, PortMIDIHandler::Callback, this);
+		pthread_create(&callback_tid, NULL, Callback, (void *) this);
 	}
 
 	void * PortMIDIHandler::Callback(void * args) {
 		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
-		while (PMHandler->getMIDIState() == 1) {
+		std::cout << "Entering PM Callback\n" << "MIDI State: "
+				<< PMHandler->getMIDIState() << "\n";
+		while (PMHandler->getMIDIState()) {
+			std::cout << "=";
 			PMHandler->readMIDI();
 			usleep(10000);
 		}
 
-		printf("\nExiting callback...");
+		std::cout << "Exiting callback...\n";
 		return NULL;
 	}
 

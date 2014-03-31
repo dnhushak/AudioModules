@@ -1,11 +1,10 @@
 #include "AudioDevice.hpp"
 
 namespace synth {
-	AudioDevice::AudioDevice(){
+	AudioDevice::AudioDevice() {
 		sampleRate = 0;
 		bufferSize = 256;
-		buffer = (float *) malloc(sizeof(float[bufferSize]));
-		resizeBuffer(bufferSize);
+		buffer = (float *) malloc(sizeof(float) * bufferSize);
 	}
 
 // Default behavior for audio device, just returns 0
@@ -23,8 +22,7 @@ namespace synth {
 	void AudioDevice::resizeBuffer(int newSize) {
 		// Clears old buffer memory
 		bufferSize = newSize;
-		printf("Reallocating buffer....");
-		buffer = (float*) realloc(buffer, sizeof(float[bufferSize]));
+		buffer = (float*) realloc(buffer, sizeof(float) * bufferSize);
 		zeroBuffer();
 	}
 

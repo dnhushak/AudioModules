@@ -34,7 +34,7 @@ namespace synth {
 			numToAdd = MIDIObjects->size();
 		}
 		// ...Or number of devices won't put us at our maximum
-		else if ((numMIDIDevices + MIDIObjects->size()) < maxNumMIDIDevices) {
+		else if ((numMIDIDevices + (int)MIDIObjects->size()) < maxNumMIDIDevices) {
 			// Add all objects
 			numToAdd = MIDIObjects->size();
 		}

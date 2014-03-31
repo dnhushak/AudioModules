@@ -1,6 +1,6 @@
 #Core Audio Devices makefile
 CXX = g++
-LDFLAGS = -Wall
+LDFLAGS = -Wall -pedantic -Wextra -Weffc++ 
 PAFLAGS = -lportaudio
 PMFLAGS = -lportmidi
 CFLAGS = -g 

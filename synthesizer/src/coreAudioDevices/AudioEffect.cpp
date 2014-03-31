@@ -52,7 +52,7 @@ namespace synth {
 //	numAudioDevices = audioDeviceList->size();
 //}
 
-	// Switch pointer to a new audioDeviceList - Useful if list is managed by external object
+// Switch pointer to a new audioDeviceList - Useful if list is managed by external object
 	void AudioEffect::setAudioDeviceList(
 			std::list<AudioDevice*> * audioObjects) {
 
@@ -106,7 +106,7 @@ namespace synth {
 
 		// reallocate memory
 
-		buffer = (float*) realloc(buffer, sizeof(float[bufferSize]));
+		buffer = (float*) realloc(buffer, sizeof(float) * bufferSize);
 
 		zeroBuffer();
 

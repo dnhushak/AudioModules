@@ -29,12 +29,13 @@ namespace synth {
 	}
 
 	void Module::affect(MIDIMessage * message) {
+		std::cout << "Reached Module\n";
 		switch (message->type) {
-			case 0b1000:
+			case NOTEOFF:
 				// Note Off
 				releasePolyVoice(message->data1);
 				break;
-			case 0b1001:
+			case NOTEON:
 				// Note On
 				if (message->data2 == 0) {
 					releasePolyVoice(message->data1);
@@ -42,19 +43,19 @@ namespace synth {
 					activatePolyVoice(message->data1);
 				}
 				break;
-			case 0b1011:
+			case CC:
 				// CC
 				break;
-			case 0b1100:
+			case PROGRAM:
 				// Program Change
 				break;
-			case 0b1101:
+			case POLYTOUCH:
 				// Aftertouch (Monophonic)
 				break;
-			case 0b1110:
+			case PITCHBEND:
 				// Pitch Bend
 				break;
-			case 0b1111:
+			case SYSTEM:
 				// System Message
 				break;
 			default:
@@ -176,7 +177,7 @@ namespace synth {
 	}
 
 	void Module::StartCleaner() {
-		pthread_create(&cleaner_tid, NULL, Cleaner, this);
+		pthread_create(&cleaner_tid, NULL, Cleaner,(void *) this);
 	}
 
 	void * Module::Cleaner(void * args) {

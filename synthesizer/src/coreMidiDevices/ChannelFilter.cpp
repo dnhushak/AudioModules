@@ -12,14 +12,16 @@ namespace synth {
 	}
 
 	void ChannelFilter::affect(MIDIMessage * message) {
+		std::cout << "Hit Channel Filter\n";
 		// Check to see if the message is of the desired channel
-		if (message->type == 0b1111) {
+		if (message->type == SYSTEM) {
 			//System messages are channel independent
 		} else {
-			if (message->channel == channel || channel == -1) {
-
+			if (channel == -1 || message->channel == channel) {
+				//TODO: Make this an iterator
 				// If it is, forward it to all MIDI Devices
 				for (int i = 0; i < numMIDIDevices; i++) {
+					std::cout<<"Forwarding...\n";
 					(*MIDIDeviceList)[i]->affect(message);
 				}
 			}

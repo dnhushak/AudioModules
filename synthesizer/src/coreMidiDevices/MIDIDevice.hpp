@@ -15,7 +15,18 @@ namespace synth {
 			int32_t time;
 	};
 
-	class MIDIDevice : public virtual Device {
+	enum Status {
+		NOTEOFF = 8,
+		NOTEON = 9,
+		POLYTOUCH = 10,
+		CC = 11,
+		PROGRAM = 12,
+		MONOTOUCH = 13,
+		PITCHBEND = 14,
+		SYSTEM = 15
+	};
+
+	class MIDIDevice: public virtual Device {
 		public:
 			MIDIDevice();
 
@@ -52,7 +63,7 @@ namespace synth {
 		protected:
 			// TODO: Change the vector to list, to match audio device behavior
 			// List of MIDI items to mix together
-			std::vector<MIDIDevice * > * MIDIDeviceList;
+			std::vector<MIDIDevice *> * MIDIDeviceList;
 
 			int MIDIstate;
 

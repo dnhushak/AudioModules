@@ -19,7 +19,7 @@ namespace synth {
 			void writeMIDI(MIDIMessage* message);
 
 			// Parses a PmEvent type and returns a MIDIMessage struct
-			MIDIMessage * parseMIDI(PmEvent *, MIDIMessage *);
+			MIDIMessage * parseMIDI(PmEvent *);
 
 			void printMIDIDevices();
 
@@ -39,9 +39,7 @@ namespace synth {
 			PmError errorPortMIDI(PmError err);
 
 			// The buffer of MIDI messages
-			PmEvent event[32];
-
-			MIDIMessage msg[32];
+			PmEvent event[64];
 	};
 
 }

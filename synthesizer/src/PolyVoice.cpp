@@ -16,13 +16,9 @@ namespace synth {
 	}
 
 	PolyVoice::~PolyVoice() {
-		printf("\nDeleting Osc...");
 		delete osc;
-		printf("\nDeleting vib...");
 		delete vib;
-		printf("\nDeleting osc_env...");
 		delete osc_env;
-		printf("\nDeleting vib_ramp...");
 		delete vib_ramp;
 	}
 
@@ -36,7 +32,7 @@ namespace synth {
 		 * the vibrato is also time-based, and needs to alter the frequency of the
 		 * oscillator within the callback
 		 */
-		for (int i = 0; i < bufferSize; i++) {
+		for (int i = 0; i < numSamples; i++) {
 			// Grab the oscillator sample
 			buffer[i] = (osc->advance(1))[0];
 			// Apply the oscillator envelope

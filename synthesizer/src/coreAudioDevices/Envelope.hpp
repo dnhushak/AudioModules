@@ -6,7 +6,7 @@
 namespace synth {
 
 	enum envState_t {
-		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE,
+		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
 	class Envelope: public AudioDevice {
