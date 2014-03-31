@@ -16,8 +16,8 @@
 #include <pthread.h>
 
 std::vector<synth::Wavetable *> * GeneratesynthTables() {
-	std::vector<synth::Wavetable *> * tables =
-			new std::vector<synth::Wavetable *>;
+	std::vector<synth::Wavetable *> * tables = new std::vector<
+			synth::Wavetable *>;
 	synth::Wavetable* sawtooth = new synth::Wavetable(16);
 	synth::Wavetable* triangle = new synth::Wavetable(16);
 	synth::Wavetable* square50 = new synth::Wavetable(16);
@@ -82,8 +82,10 @@ int main(int argc, char *argv[]) {
 
 	printf("Generating PortMIDI Handler...\n");
 	synth::PortMIDIHandler * PMHandler = new synth::PortMIDIHandler();
+	std::cout << "New PortMidi Handler: " << PMHandler << "\n";
 	printf("Generating PortAudio Handler...\n");
 	synth::PortAudioHandler * PAHandler = new synth::PortAudioHandler();
+	std::cout << "New PortAudio Handler: " << PAHandler << "\n";
 
 	int bufferSize = 1024;
 	int sampleRate = 41000;
@@ -146,7 +148,10 @@ int main(int argc, char *argv[]) {
 	// The master mixer for the whole synth
 	printf("Generating mixer\n");
 	synth::Limiter * masterLimiter = new synth::Limiter(bufferSize, sampleRate);
+	std::cout << "New Limiter: " << masterLimiter << "\n";
 	synth::Mixer * masterMixer = new synth::Mixer(bufferSize, sampleRate);
+	std::cout << "New Master Mixer: " << masterMixer << "\n";
+
 	masterLimiter->addAudioDevice(masterMixer);
 	// All of the wavetables for the synthophone
 	printf("Generating wavetables\n");
@@ -154,40 +159,46 @@ int main(int argc, char *argv[]) {
 
 	printf("Generating voices\n");
 	std::vector<synth::Voice *> * voices = new std::vector<synth::Voice *>;
+	std::cout << "New Voices List: " << voices << "\n";
 
 	std::vector<synth::Module *> * modules = new std::vector<synth::Module *>;
+	std::cout << "New Module List: " << modules << "\n";
 
 	printf("Setting voice defaults\n");
 	// Set defaults for voices
 	for (int i = 0; i < numModules; i++) {
-		voices->push_back(new synth::Voice);
-		voices->at(i)->arpTime = 100;
-		voices->at(i)->arp_en = false;
-		voices->at(i)->glissTime = 100;
-		voices->at(i)->gliss_en = false;
-		voices->at(i)->osc_attack = 10;
-		voices->at(i)->osc_decay = 50;
-		voices->at(i)->osc_sustain = .4;
-		voices->at(i)->osc_release = 500;
-		voices->at(i)->osc_table = tables->at(i);
+		synth::Voice * newVoice = new synth::Voice;
+		std::cout << "New Voice: " << newVoice << "\n";
+		newVoice->arpTime = 100;
+		newVoice->arp_en = false;
+		newVoice->glissTime = 100;
+		newVoice->gliss_en = false;
+		newVoice->osc_attack = 10;
+		newVoice->osc_decay = 50;
+		newVoice->osc_sustain = .4;
+		newVoice->osc_release = 500;
+		newVoice->osc_table = tables->at(i);
 		if (i < 4) {
-			voices->at(i)->vib_en = true;
+			newVoice->vib_en = true;
 		} else {
-			voices->at(i)->vib_en = false;
+			newVoice->vib_en = false;
 		}
-		voices->at(i)->vib_time = 1500;
-		voices->at(i)->vib_table = tables->at(5);
-		voices->at(i)->volume = -12;
+		newVoice->vib_time = 1500;
+		newVoice->vib_table = tables->at(5);
+		newVoice->volume = -12;
+		voices->push_back(newVoice);
 	}
 
 	printf("Generating modules\n");
 	// Modules
 	for (int i = 0; i < numModules; i++) {
 		synth::Module * newModule = new synth::Module(bufferSize, sampleRate);
+		std::cout << "New Module: " << newModule << "\n";
 		// Set voice for each module
 		newModule->setVoice(voices->at(i));
 		// Create a midi Channel filter
 		synth::ChannelFilter * moduleFilter = new synth::ChannelFilter(i);
+		std::cout << "New Channel Filter: " << moduleFilter << "\n";
 		// Add the module to the channel filter outputs
 		moduleFilter->addMIDIDevice(newModule);
 		// Add the channel filter to the PMhandler outputs
@@ -198,12 +209,13 @@ int main(int argc, char *argv[]) {
 		modules->push_back(newModule);
 	}
 
-
 	/*** Make all MIDI Connections ***/
 
 	// Print incoming MIDI Connections
 	if (verbose) {
 		synth::MessagePrinter * printer = new synth::MessagePrinter();
+
+		std::cout << "New Message Printer: " << printer << "\n";
 		PMHandler->addMIDIDevice(printer);
 	}
 
@@ -223,10 +235,14 @@ int main(int argc, char *argv[]) {
 		std::cout << "Port MIDI Error";
 		exit(0);
 	}
-
+	//PMHandler->StartCallback();
+	while (1) {
+		PMHandler->readMIDI();
+	}
 	std::cout << "\nChipophone running, press enter to end program\n";
 	std::cin.ignore(255, '\n');
 
+	//PMHandler->StopCallback();
 	printf("Shutting down Audio Stream...\n");
 	PAHandler->disconnectAudioStream();
 	printf("Ending...\nShutting Down MIDI Stream...\n");

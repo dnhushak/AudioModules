@@ -3,7 +3,7 @@ namespace synth {
 	Mixer::Mixer(int initBufferSize, int initSampleRate) {
 		//constructor
 		// Initialize the audio buffers
-		temp = new float;
+		temp = (float *) malloc(sizeof(float) * initBufferSize);
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
 	}
@@ -48,5 +48,11 @@ namespace synth {
 		if (maxNumAudioDevices > -1 && numAudioDevices > maxNumAudioDevices) {
 			numAudioDevices = maxNumAudioDevices;
 		}
+	}
+
+	void Mixer::resizeBuffer(int newBufferSize) {
+		AudioDevice::resizeBuffer(newBufferSize);
+		temp = (float *) realloc(temp, sizeof(float) * newBufferSize);
+
 	}
 }

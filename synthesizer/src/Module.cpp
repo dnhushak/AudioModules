@@ -12,9 +12,12 @@ namespace synth {
 		changeSampleRate(initSampleRate);
 
 		polyMixer = new Mixer(bufferSize, sampleRate);
+		std::cout << "New PolyMixer: " << polyMixer << "\n";
 		// We use the Module's device list so we can access and edit later
 		polyMixer->setAudioDeviceList(audioDeviceList);
 		ModuleGain = new Gain(bufferSize, sampleRate);
+
+		std::cout << "New Gain: " << ModuleGain << "\n";
 		ModuleGain->addAudioDevice(polyMixer);
 		state = INACTIVE;
 		voice = NULL;
@@ -29,7 +32,6 @@ namespace synth {
 	}
 
 	void Module::affect(MIDIMessage * message) {
-		std::cout << "Reached Module\n";
 		switch (message->type) {
 			case NOTEOFF:
 				// Note Off
@@ -177,7 +179,7 @@ namespace synth {
 	}
 
 	void Module::StartCleaner() {
-		pthread_create(&cleaner_tid, NULL, Cleaner,(void *) this);
+		pthread_create(&cleaner_tid, NULL, Cleaner, (void *) this);
 	}
 
 	void * Module::Cleaner(void * args) {

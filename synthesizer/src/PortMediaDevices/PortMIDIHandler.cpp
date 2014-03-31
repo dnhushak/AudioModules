@@ -2,19 +2,28 @@
 
 namespace synth {
 
-	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
-		PmError err = Pm_Initialize();
+	PortMIDIHandler::PortMIDIHandler() {
+		callback_tid = NULL;
+		err = Pm_Initialize();
+		std::cout << "New pm err: " << err << "\n";
 		if (err != pmNoError)
 			errorPortMIDI(err);
+
+	}
+
+	PortMIDIHandler::~PortMIDIHandler() {
+
+	}
+
+	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
 
 		int count = Pm_CountDevices();
 		if (count == 0)
 			fprintf(stderr, "No MIDI devices found\n");
 		err = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
 
-		StartCallback();
 		if (err != pmNoError)
-			errorPortMIDI(err);
+			return errorPortMIDI(err);
 
 		printf("Bound to port %d\n", devID);
 		return err;
@@ -22,14 +31,9 @@ namespace synth {
 
 	PmError PortMIDIHandler::disconnectMIDIStream() {
 		MIDIstate = 0;
-
-		printf("\nSet state to 0...");
-		pthread_join(callback_tid, NULL);
-
-		printf("\nCallback ended, closing stream...");
 		PmError err = Pm_Close(mstream);
 		if (err != pmNoError) {
-			errorPortMIDI(err);
+			return errorPortMIDI(err);
 		}
 
 		Pm_Terminate();
@@ -38,6 +42,7 @@ namespace synth {
 	}
 
 	void PortMIDIHandler::readMIDI() {
+		//std::cout << Pm_Poll(mstream);
 		while (Pm_Poll(mstream)) {
 			// Grab all MIDI events still in the queue
 			int count = Pm_Read(mstream, event, 32);
@@ -58,6 +63,7 @@ namespace synth {
 
 	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {
 		MIDIMessage * message = (MIDIMessage*) malloc(sizeof(MIDIMessage));
+		std::cout << "New Message: " << message << "\n";
 		// Grab status
 		int status = Pm_MessageStatus(data->message);
 
@@ -120,14 +126,22 @@ namespace synth {
 		pthread_create(&callback_tid, NULL, Callback, (void *) this);
 	}
 
+	void PortMIDIHandler::StopCallback() {
+		MIDIstate = 0;
+
+		printf("\nSet state to 0...");
+		pthread_join(callback_tid, NULL);
+
+		printf("\nCallback ended, closing stream...");
+	}
+
 	void * PortMIDIHandler::Callback(void * args) {
 		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
-		std::cout << "Entering PM Callback\n" << "MIDI State: "
-				<< PMHandler->getMIDIState() << "\n";
+		std::cout << "Entering PM Callback\n" << "\n";
 		while (PMHandler->getMIDIState()) {
-			std::cout << "=";
+			//std::cout << "=";
 			PMHandler->readMIDI();
-			usleep(10000);
+			//usleep(100000);
 		}
 
 		std::cout << "Exiting callback...\n";

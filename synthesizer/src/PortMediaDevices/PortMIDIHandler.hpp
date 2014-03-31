@@ -7,6 +7,7 @@ namespace synth {
 	
 	class PortMIDIHandler: public MIDIDevice {
 		public:
+			PortMIDIHandler();
 
 			PmError connectMIDIStream(PmDeviceID devID);
 
@@ -25,10 +26,16 @@ namespace synth {
 
 			PortMidiStream * getStream();
 
-		private:
-			static void * Callback(void * args);
+			virtual ~PortMIDIHandler();
 
 			void StartCallback();
+			void StopCallback();
+		private:
+
+			static void * Callback(void * args);
+
+
+			PmError err;
 
 			pthread_t callback_tid;
 

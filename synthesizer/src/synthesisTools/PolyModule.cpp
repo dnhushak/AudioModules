@@ -7,6 +7,7 @@ namespace synth {
 		resizeBuffer(initBufferSize);
 		changeSampleRate(initSampleRate);
 		polyMixer = new Mixer(bufferSize, sampleRate);
+		std::cout << "New PolyMixer: " << polyMixer << "\n";
 		// We use the PolyModule's device list so we can access and edit later
 		polyMixer->setAudioDeviceList(audioDeviceList);
 
@@ -61,6 +62,7 @@ namespace synth {
 		if (numAudioDevices < maxPolyVoices) {
 			// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
 			PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
+			std::cout << "New PolyVoice: " << newPolyVoice << "\n";
 			newPolyVoice->setVoice(voice);
 
 			lockList();

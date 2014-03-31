@@ -3,6 +3,7 @@
 namespace synth {
 	AudioEffect::AudioEffect() {
 		audioDeviceList = new std::list<AudioDevice*>;
+		std::cout << "New AudioDevice List: " << audioDeviceList << "\n";
 		maxNumAudioDevices = -1;
 		numAudioDevices = 0;
 		audIter = audioDeviceList->begin();

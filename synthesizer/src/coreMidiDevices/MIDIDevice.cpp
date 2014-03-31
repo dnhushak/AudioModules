@@ -4,6 +4,7 @@ namespace synth {
 	MIDIDevice::MIDIDevice() {
 		maxNumMIDIDevices = -1;
 		MIDIDeviceList = new std::vector<MIDIDevice *>;
+		std::cout << "New MIDIDevice List: " << MIDIDeviceList << "\n";
 		numMIDIDevices = 0;
 		MIDIstate = 1;
 	}
