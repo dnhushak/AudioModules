@@ -5,7 +5,6 @@ namespace synth {
 	PortMIDIHandler::PortMIDIHandler() {
 		callback_tid = NULL;
 		err = Pm_Initialize();
-		std::cout << "New pm err: " << err << "\n";
 		if (err != pmNoError)
 			errorPortMIDI(err);
 
@@ -63,7 +62,6 @@ namespace synth {
 
 	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {
 		MIDIMessage * message = (MIDIMessage*) malloc(sizeof(MIDIMessage));
-		std::cout << "New Message: " << message << "\n";
 		// Grab status
 		int status = Pm_MessageStatus(data->message);
 
@@ -137,14 +135,11 @@ namespace synth {
 
 	void * PortMIDIHandler::Callback(void * args) {
 		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
-		std::cout << "Entering PM Callback\n" << "\n";
 		while (PMHandler->getMIDIState()) {
-			//std::cout << "=";
 			PMHandler->readMIDI();
-			//usleep(100000);
+			usleep(1000);
 		}
 
-		std::cout << "Exiting callback...\n";
 		return NULL;
 	}
 

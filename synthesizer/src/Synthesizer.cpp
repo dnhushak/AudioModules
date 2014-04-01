@@ -22,7 +22,7 @@ std::vector<synth::Wavetable *> * GeneratesynthTables() {
 	synth::Wavetable* triangle = new synth::Wavetable(16);
 	synth::Wavetable* square50 = new synth::Wavetable(16);
 	synth::Wavetable* square25 = new synth::Wavetable(16);
-	synth::Wavetable* noise = new synth::Wavetable(1024);
+	synth::Wavetable* noise = new synth::Wavetable(8192);
 	synth::Wavetable* vibrasin = new synth::Wavetable(256);
 
 	tables->push_back(sawtooth);
@@ -82,10 +82,8 @@ int main(int argc, char *argv[]) {
 
 	printf("Generating PortMIDI Handler...\n");
 	synth::PortMIDIHandler * PMHandler = new synth::PortMIDIHandler();
-	std::cout << "New PortMidi Handler: " << PMHandler << "\n";
 	printf("Generating PortAudio Handler...\n");
 	synth::PortAudioHandler * PAHandler = new synth::PortAudioHandler();
-	std::cout << "New PortAudio Handler: " << PAHandler << "\n";
 
 	int bufferSize = 1024;
 	int sampleRate = 41000;
@@ -148,9 +146,7 @@ int main(int argc, char *argv[]) {
 	// The master mixer for the whole synth
 	printf("Generating mixer\n");
 	synth::Limiter * masterLimiter = new synth::Limiter(bufferSize, sampleRate);
-	std::cout << "New Limiter: " << masterLimiter << "\n";
 	synth::Mixer * masterMixer = new synth::Mixer(bufferSize, sampleRate);
-	std::cout << "New Master Mixer: " << masterMixer << "\n";
 
 	masterLimiter->addAudioDevice(masterMixer);
 	// All of the wavetables for the synthophone
@@ -159,24 +155,22 @@ int main(int argc, char *argv[]) {
 
 	printf("Generating voices\n");
 	std::vector<synth::Voice *> * voices = new std::vector<synth::Voice *>;
-	std::cout << "New Voices List: " << voices << "\n";
 
 	std::vector<synth::Module *> * modules = new std::vector<synth::Module *>;
-	std::cout << "New Module List: " << modules << "\n";
 
 	printf("Setting voice defaults\n");
 	// Set defaults for voices
 	for (int i = 0; i < numModules; i++) {
+		// TODO: Handle this in a voice reader class
 		synth::Voice * newVoice = new synth::Voice;
-		std::cout << "New Voice: " << newVoice << "\n";
 		newVoice->arpTime = 100;
 		newVoice->arp_en = false;
 		newVoice->glissTime = 100;
 		newVoice->gliss_en = false;
 		newVoice->osc_attack = 10;
-		newVoice->osc_decay = 50;
-		newVoice->osc_sustain = .4;
-		newVoice->osc_release = 500;
+		newVoice->osc_decay = 10;
+		newVoice->osc_sustain = 1;
+		newVoice->osc_release = 10;
 		newVoice->osc_table = tables->at(i);
 		if (i < 4) {
 			newVoice->vib_en = true;
@@ -189,16 +183,50 @@ int main(int argc, char *argv[]) {
 		voices->push_back(newVoice);
 	}
 
+	// Legend of Zelda Bass Voice
+	voices->at(2)->volume = -6;
+	voices->at(2)->osc_table = tables->at(1);
+	voices->at(2)->vib_en = false;
+	voices->at(2)->osc_attack = 10;
+	voices->at(2)->osc_decay = 10;
+	voices->at(2)->osc_sustain = 1;
+	voices->at(2)->osc_release = 10;
+
+	// Zelda Countermelody
+	voices->at(1)->volume = -15;
+	voices->at(1)->vib_en = false;
+	voices->at(1)->osc_attack = 10;
+	voices->at(1)->osc_decay = 10;
+	voices->at(1)->osc_sustain = 1;
+	voices->at(1)->osc_release = 10;
+	voices->at(1)->osc_table = tables->at(2);
+
+	// Zelda Melody
+	voices->at(0)->volume = -15;
+	voices->at(0)->vib_en = false;
+	voices->at(0)->osc_attack = 10;
+	voices->at(0)->osc_decay = 10;
+	voices->at(0)->osc_sustain = 1;
+	voices->at(0)->osc_release = 10;
+	voices->at(0)->osc_table = tables->at(2);
+
+	// Zelda Drums
+	voices->at(4)->volume = -15;
+	voices->at(4)->vib_en = false;
+	voices->at(4)->osc_attack = 10;
+	voices->at(4)->osc_decay = 100;
+	voices->at(4)->osc_sustain = 0;
+	voices->at(4)->osc_release = 10;
+	voices->at(4)->osc_table = tables->at(4);
+
 	printf("Generating modules\n");
 	// Modules
 	for (int i = 0; i < numModules; i++) {
 		synth::Module * newModule = new synth::Module(bufferSize, sampleRate);
-		std::cout << "New Module: " << newModule << "\n";
 		// Set voice for each module
 		newModule->setVoice(voices->at(i));
 		// Create a midi Channel filter
 		synth::ChannelFilter * moduleFilter = new synth::ChannelFilter(i);
-		std::cout << "New Channel Filter: " << moduleFilter << "\n";
 		// Add the module to the channel filter outputs
 		moduleFilter->addMIDIDevice(newModule);
 		// Add the channel filter to the PMhandler outputs
@@ -214,8 +242,6 @@ int main(int argc, char *argv[]) {
 	// Print incoming MIDI Connections
 	if (verbose) {
 		synth::MessagePrinter * printer = new synth::MessagePrinter();
-
-		std::cout << "New Message Printer: " << printer << "\n";
 		PMHandler->addMIDIDevice(printer);
 	}
 
@@ -235,10 +261,10 @@ int main(int argc, char *argv[]) {
 		std::cout << "Port MIDI Error";
 		exit(0);
 	}
-	//PMHandler->StartCallback();
-	while (1) {
-		PMHandler->readMIDI();
-	}
+	PMHandler->StartCallback();
+//	while (1) {
+//		PMHandler->readMIDI();
+//	}
 	std::cout << "\nChipophone running, press enter to end program\n";
 	std::cin.ignore(255, '\n');
 

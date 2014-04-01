@@ -12,12 +12,9 @@ namespace synth {
 		changeSampleRate(initSampleRate);
 
 		polyMixer = new Mixer(bufferSize, sampleRate);
-		std::cout << "New PolyMixer: " << polyMixer << "\n";
 		// We use the Module's device list so we can access and edit later
 		polyMixer->setAudioDeviceList(audioDeviceList);
 		ModuleGain = new Gain(bufferSize, sampleRate);
-
-		std::cout << "New Gain: " << ModuleGain << "\n";
 		ModuleGain->addAudioDevice(polyMixer);
 		state = INACTIVE;
 		voice = NULL;
@@ -28,6 +25,7 @@ namespace synth {
 		glissTime = 1000;
 
 		numAudioDevices = 0;
+		sustain = PEDALUP;
 
 	}
 
@@ -46,7 +44,13 @@ namespace synth {
 				}
 				break;
 			case CC:
-				// CC
+				if (message->data1 == 64) {
+					if (message->data2 == 0) {
+						sustain = PEDALUP;
+					} else {
+						sustain = PEDALDOWN;
+					}
+				}
 				break;
 			case PROGRAM:
 				// Program Change
@@ -149,7 +153,6 @@ namespace synth {
 	void Module::cleanup() {
 		// Lock the list to prevent data races
 
-		PolyVoice * toErase;
 		lockList();
 		audIter = audioDeviceList->begin();
 
@@ -157,11 +160,11 @@ namespace synth {
 		while (audIter != audioDeviceList->end()) {
 			// If the polyvoice is inactive...
 			if ((*audIter)->getState() == INACTIVE) {
-				toErase = (PolyVoice*) *audIter;
+				PolyVoice * toErase = (PolyVoice*) *audIter;
 				// ... Erase it and set the iterator to the next item
 				audIter = audioDeviceList->erase(audIter);
 
-				delete toErase;
+				//delete toErase;
 			} else {
 				// Or just advance the iterator
 				++audIter;

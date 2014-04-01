@@ -15,10 +15,5 @@ namespace synth {
 			// Sets the maximum number of devices
 			void setMaxNumAudioDevices(int);
 
-			void resizeBuffer(int);
-
-		private:
-			// Temp buffer
-			float * temp;
 	};
 }

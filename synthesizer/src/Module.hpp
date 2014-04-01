@@ -12,7 +12,11 @@
 #include <unistd.h>
 
 namespace synth {
-	class Module : public MIDIDevice, public AudioEffect {
+	enum sustain_t {
+		PEDALUP, PEDALDOWN
+	};
+
+	class Module: public MIDIDevice, public AudioEffect {
 		public:
 			Module(int, int);
 
@@ -46,11 +50,9 @@ namespace synth {
 			bool gliss_en;
 			int arpTime;
 			int glissTime;
-
-
+			sustain_t sustain;
 			synth::Mixer * polyMixer;
 			synth::Gain * ModuleGain;
-
 
 	};
 }
