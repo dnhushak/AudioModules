@@ -164,7 +164,7 @@ namespace synth {
 				// ... Erase it and set the iterator to the next item
 				audIter = audioDeviceList->erase(audIter);
 
-				//delete toErase;
+				delete toErase;
 			} else {
 				// Or just advance the iterator
 				++audIter;

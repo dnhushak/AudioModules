@@ -46,7 +46,7 @@ namespace synth {
 			PmError errorPortMIDI(PmError err);
 
 			// The buffer of MIDI messages
-			PmEvent event[64];
+			PmEvent event[128];
 	};
 
 }
