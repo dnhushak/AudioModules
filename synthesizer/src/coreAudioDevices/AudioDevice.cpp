@@ -48,10 +48,6 @@ namespace synth {
 		return sampleRate;
 	}
 
-	void AudioDevice::cleanup() {
-		return;
-	}
-
 	AudioDevice::~AudioDevice() {
 		free(buffer);
 	}
