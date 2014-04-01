@@ -6,7 +6,6 @@ namespace synth {
 
 		// Initialize state to INIT
 		envState = INIT;
-		state = ACTIVE;
 
 		envmult = 0.0;
 		setRelease(100);
