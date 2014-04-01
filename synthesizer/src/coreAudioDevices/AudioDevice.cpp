@@ -48,7 +48,7 @@ namespace synth {
 		return sampleRate;
 	}
 
-	void cleanup() {
+	void AudioDevice::cleanup() {
 		return;
 	}
 

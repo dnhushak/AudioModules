@@ -3,7 +3,7 @@
 namespace synth {
 
 	Module::Module(int initBufferSize, int initSampleRate) :
-			MIDIDevice(), AudioEffect() {
+					MIDIDevice(), AudioEffect() {
 
 		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
 		// ModuleGain inputs to the gliss/arpegg/polyMixer outputs
@@ -189,7 +189,7 @@ namespace synth {
 		Module * mod = (Module *) args;
 		while (mod->getState() == ACTIVE) {
 			mod->cleanup();
-			usleep(10000);
+			usleep(100000);
 		}
 		return NULL;
 	}

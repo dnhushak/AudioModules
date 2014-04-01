@@ -137,7 +137,7 @@ namespace synth {
 		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
 		while (PMHandler->getMIDIState()) {
 			PMHandler->readMIDI();
-			usleep(1000);
+			usleep(100	);
 		}
 
 		return NULL;
