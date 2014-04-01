@@ -1,9 +1,9 @@
 #Core Audio Devices makefile
 CXX = g++
-LDFLAGS = -Wall -pedantic -Wextra -Weffc++ 
+LDFLAGS = -Wall -pedantic -Wextra
 PAFLAGS = -lportaudio
 PMFLAGS = -lportmidi
-CFLAGS = -g 
+CFLAGS = -O3 -g 
 
 #File Extensions
 HEADER = .hpp

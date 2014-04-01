@@ -8,23 +8,16 @@ namespace synth {
 	}
 
 	float * Mixer::advance(int numSamples) {
-		if (audioDeviceList->size() == 0) {
-			// Zero out the buffer
-			zeroBuffer();
-		} else {
-			// Get the first device's advance buffer and point to it
-			buffer = audioDeviceList->front()->advance(numSamples);
-
+		// Zero out the buffer
+		zeroBuffer();
+		if (audioDeviceList->size()) {
 			audCallbackIter = audioDeviceList->begin();
-			audCallbackIter++;
-			// Start at the second item
-			//This prevents us from having to iterate through the whole buffer if there's just one item
 			while (audCallbackIter != audioDeviceList->end()) {
 				//TODO: Restrict maximum number of devices
 				// Add each element into the mixdown buffer
 				for (int j = 0; j < numSamples; j++) {
 					// Sum each advanced IAudio to the master mixed vector
-					buffer[j] += *(*audCallbackIter)->advance(1);
+					buffer[j] += *((*audCallbackIter)->advance(1));
 				}
 				audCallbackIter++;
 			}
