@@ -30,7 +30,7 @@ namespace synth {
 	}
 
 	void Module::affect(MIDIMessage * message) {
-		switch (message->type) {
+		switch (message->statusType) {
 			case NOTEOFF:
 				// Note Off
 				releasePolyVoice(message->data1);

@@ -8,14 +8,14 @@
 
 namespace synth {
 	struct MIDIMessage {
-			unsigned char type;
+			unsigned char statusType;
 			unsigned char channel;
 			unsigned char data1;
 			unsigned char data2;
 			int32_t time;
 	};
 
-	enum Status {
+	enum StatusType {
 		NOTEOFF = 8,
 		NOTEON = 9,
 		POLYTOUCH = 10,

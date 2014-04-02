@@ -13,7 +13,7 @@ namespace synth {
 
 	void ChannelFilter::affect(MIDIMessage * message) {
 		// Check to see if the message is of the desired channel
-		if (message->type == SYSTEM) {
+		if (message->statusType == SYSTEM) {
 			//System messages are channel independent
 		} else {
 			if (channel == -1 || message->channel == channel) {

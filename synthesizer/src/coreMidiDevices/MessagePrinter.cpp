@@ -22,7 +22,7 @@ namespace synth {
 	}
 
 	void MessagePrinter::decodeMessageType(MIDIMessage * message) {
-		switch (message->type) {
+		switch (message->statusType) {
 			case NOTEOFF:
 				//0b1000
 				// Note Off

@@ -66,7 +66,7 @@ namespace synth {
 		int status = Pm_MessageStatus(data->message);
 
 		// Top four bits is message type
-		message->type = status >> 4;
+		message->statusType = status >> 4;
 		// Bottom four bits is MIDI Channel
 		message->channel = (status & 0x0F);
 		// Grab the data bits
