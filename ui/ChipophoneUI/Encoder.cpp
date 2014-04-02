@@ -48,6 +48,8 @@ namespace ArduinoUI {
 
 	void ArduinoUI::Encoder::poll() {
 		/*
+		 * Here is a diagram of the two waveforms in an encoder rotation:
+		 *
 		 * CW  -->
 		 * CCW <--
 		 *
@@ -65,7 +67,6 @@ namespace ArduinoUI {
 			bLastState ^ aLastState ? currentVal++ : currentVal--;
 			aLastState = aPolledState;
 			normalizeCurrentVal();
-			Serial.println(this->getCurrentVal(), DEC);
 		}
 
 		// Edge on the B pin
