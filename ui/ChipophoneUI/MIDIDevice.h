@@ -39,19 +39,8 @@ class MIDIDevice: public virtual Device {
     // The affect call used to act based on MIDI input
     virtual void affect(MIDIMessage *);
 
-    int getMIDIState();
-
     virtual ~MIDIDevice();
   protected:
-
-    int MIDIstate;
-
-    // Maximum number of MIDI devices allowable in effect (-1 -> no maximum)
-    int maxNumMIDIDevices;
-
-    // Actual number of MIDI devices in effect
-    int numMIDIDevices;
-
     // Scale a MIDI message to an int
     int scaleValue(int value, int min, int max);
 
