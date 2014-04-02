@@ -1,6 +1,14 @@
 #include "Button.h"
 namespace ArduinoUI {
 
+	/*
+	 * Button wiring:
+	 *
+	 * Pin     Switch      Ground
+	 * o--------o_/ o--------v
+	 *
+	 */
+
 	Button::Button(int initPin) {
 		pin = initPin;
 		//Default debounce thresh is 5

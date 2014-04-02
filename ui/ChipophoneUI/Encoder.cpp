@@ -2,6 +2,18 @@
 
 namespace ArduinoUI {
 
+	/*
+	 * Encoder Wiring:
+	 *
+	 * 		Encoder
+	 * Pin A  Common  Pin B
+	 *    o		o		o
+	 *    |		|		|
+	 *    |		|		|
+	 *  o_|		V		|_o
+	 * Pin #   GND		Pin #
+	 * 		Arduino
+	 */
 	ArduinoUI::Encoder::Encoder(int initPinA, int initPinB) {
 		pinA = initPinA;
 		pinB = initPinB;
