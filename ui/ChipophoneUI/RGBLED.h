@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "LED.h"
 
-namespace UI {
+namespace ArduinoUI {
 class RGBLED {
   public:
     RGBLED(int redPin, int grnPin, int bluPin);
@@ -11,9 +11,9 @@ class RGBLED {
     void off();
     ~RGBLED();
   private:
-    UI::LED * redLED;
-    UI::LED * grnLED;
-    UI::LED * bluLED;
+    ArduinoUI::LED * redLED;
+    ArduinoUI::LED * grnLED;
+    ArduinoUI::LED * bluLED;
 };
 
 }

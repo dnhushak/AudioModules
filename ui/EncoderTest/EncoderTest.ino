@@ -9,8 +9,9 @@
 
 */ 
 
-#define encoder0PinA  2
-#define encoder0PinB  4
+#define encoder0PinA  4
+#define encoder0PinV  5
+#define encoder0PinB  6
 
 volatile unsigned int encoder0Pos = 0;
 
@@ -18,9 +19,9 @@ void setup() {
 
 
   pinMode(encoder0PinA, INPUT); 
-  digitalWrite(encoder0PinA, HIGH);       // turn on pullup resistor
   pinMode(encoder0PinB, INPUT); 
-  digitalWrite(encoder0PinB, HIGH);       // turn on pullup resistor
+  pinMode(encoder0PinV, OUTPUT); 
+  digitalWrite(encoder0PinV, HIGH);
 
   //attachInterrupt(0, doEncoder, CHANGE);  // encoder pin on interrupt 0 - pin 2
   Serial.begin (9600);

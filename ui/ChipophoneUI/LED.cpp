@@ -1,5 +1,5 @@
 #include "LED.h"
-namespace UI {
+namespace ArduinoUI {
 
 	LED::LED(int newPin) {
 		pin = newPin;

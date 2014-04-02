@@ -2,7 +2,7 @@
 #define BUTTON_H_
 
 #include "Arduino.h"
-namespace UI {
+namespace ArduinoUI {
 class Button {
   public:
     Button(int initPin);

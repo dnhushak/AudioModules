@@ -10167,6 +10167,10 @@ Source: www.kingbright.com</description>
 <part name="LED3" library="led" deviceset="LED" device="LSU260"/>
 <part name="R8" library="resistor" deviceset="R-US_" device="0204/7" value="4k7"/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
+<part name="GND9" library="SparkFun" deviceset="GND" device=""/>
+<part name="GND13" library="SparkFun" deviceset="GND" device=""/>
+<part name="GND14" library="SparkFun" deviceset="GND" device=""/>
+<part name="GND15" library="SparkFun" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10218,6 +10222,10 @@ Source: www.kingbright.com</description>
 <instance part="LED3" gate="G$1" x="43.18" y="43.18"/>
 <instance part="R8" gate="G$1" x="48.26" y="35.56" rot="R180"/>
 <instance part="GND12" gate="1" x="55.88" y="33.02"/>
+<instance part="GND9" gate="1" x="134.62" y="127" rot="R90"/>
+<instance part="GND13" gate="1" x="134.62" y="119.38" rot="R90"/>
+<instance part="GND14" gate="1" x="109.22" y="121.92" rot="R270"/>
+<instance part="GND15" gate="1" x="109.22" y="114.3" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -10264,22 +10272,6 @@ Source: www.kingbright.com</description>
 <label x="76.2" y="147.32" size="1.778" layer="95"/>
 <pinref part="R3" gate="G$1" pin="2"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<wire x1="132.08" y1="127" x2="129.54" y2="127" width="0.1524" layer="91"/>
-<pinref part="ENCODERS" gate="1" pin="2"/>
-</segment>
-<segment>
-<wire x1="114.3" y1="121.92" x2="111.76" y2="121.92" width="0.1524" layer="91"/>
-<pinref part="ENCODERS" gate="1" pin="5"/>
-</segment>
-<segment>
-<wire x1="132.08" y1="119.38" x2="129.54" y2="119.38" width="0.1524" layer="91"/>
-<pinref part="ENCODERS" gate="1" pin="8"/>
-</segment>
-<segment>
-<wire x1="114.3" y1="114.3" x2="111.76" y2="114.3" width="0.1524" layer="91"/>
-<pinref part="ENCODERS" gate="1" pin="11"/>
 </segment>
 <segment>
 <wire x1="114.3" y1="152.4" x2="111.76" y2="152.4" width="0.1524" layer="91"/>
@@ -10406,6 +10398,26 @@ Source: www.kingbright.com</description>
 <pinref part="MIDI_IN" gate="G$1" pin="PE"/>
 <pinref part="GND7" gate="1" pin="GND"/>
 <wire x1="55.88" y1="50.8" x2="58.42" y2="50.8" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<wire x1="132.08" y1="127" x2="129.54" y2="127" width="0.1524" layer="91"/>
+<pinref part="ENCODERS" gate="1" pin="2"/>
+<pinref part="GND9" gate="1" pin="GND"/>
+</segment>
+<segment>
+<wire x1="132.08" y1="119.38" x2="129.54" y2="119.38" width="0.1524" layer="91"/>
+<pinref part="ENCODERS" gate="1" pin="8"/>
+<pinref part="GND13" gate="1" pin="GND"/>
+</segment>
+<segment>
+<wire x1="114.3" y1="121.92" x2="111.76" y2="121.92" width="0.1524" layer="91"/>
+<pinref part="ENCODERS" gate="1" pin="5"/>
+<pinref part="GND14" gate="1" pin="GND"/>
+</segment>
+<segment>
+<wire x1="114.3" y1="114.3" x2="111.76" y2="114.3" width="0.1524" layer="91"/>
+<pinref part="ENCODERS" gate="1" pin="11"/>
+<pinref part="GND15" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="VIN" class="0">

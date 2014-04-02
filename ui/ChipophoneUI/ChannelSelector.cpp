@@ -1,6 +1,6 @@
 #include "ChannelSelector.h"
 
-namespace UI {
+namespace ArduinoUI {
 
 	ChannelSelector::ChannelSelector(int * initPins, int initNumChannels) {
 		// Number of channels

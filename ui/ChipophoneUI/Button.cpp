@@ -1,5 +1,5 @@
 #include "Button.h"
-namespace UI {
+namespace ArduinoUI {
 
 	Button::Button(int initPin) {
 		pin = initPin;

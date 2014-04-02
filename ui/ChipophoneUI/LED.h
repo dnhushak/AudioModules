@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-namespace UI {
+namespace ArduinoUI {
 
 	class LED {
 		public:

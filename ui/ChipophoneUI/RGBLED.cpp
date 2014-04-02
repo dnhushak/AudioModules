@@ -1,10 +1,10 @@
 #include "RGBLED.h"
 
-namespace UI {
+namespace ArduinoUI {
 RGBLED::RGBLED(int redPin, int grnPin, int bluPin) {
-  redLED = new UI::LED(redPin);
-  grnLED = new UI::LED(grnPin);
-  bluLED = new UI::LED(bluPin);
+  redLED = new ArduinoUI::LED(redPin);
+  grnLED = new ArduinoUI::LED(grnPin);
+  bluLED = new ArduinoUI::LED(bluPin);
 }
 void RGBLED::setColor(unsigned char newRedIntensity, unsigned char newGrnIntensity, unsigned char newBluIntensity) {
   redLED->setIntensity(newRedIntensity);
