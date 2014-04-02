@@ -177,8 +177,8 @@
 <text x="58.42" y="19.05" size="1.778" layer="21" rot="R180">NumPad 
 and Screen</text>
 <text x="44.45" y="35.56" size="1.778" layer="21">LEDs</text>
-<text x="73.66" y="33.02" size="1.778" layer="21" rot="R90">Encoders</text>
-<text x="73.66" y="11.43" size="1.778" layer="21" rot="R90">Pushbuttons</text>
+<text x="74.93" y="11.43" size="1.778" layer="21" rot="R90">Encoders</text>
+<text x="73.66" y="31.75" size="1.778" layer="21" rot="R90">Pushbuttons</text>
 <text x="12.7" y="10.16" size="1.778" layer="21" rot="R180">MIDI In</text>
 <text x="2.54" y="50.8" size="1.778" layer="21">MIDI Out</text>
 <text x="41.91" y="22.86" size="1.778" layer="21">Chipophpone Arduino
