@@ -112,7 +112,12 @@ void setup() {
 	AMHandler = new synth::ArduinoMIDIHandler(&Serial1);
 	AMHandler->begin();
 
-	VolEncoder = new ArduinoUI::Encoder(TEMPOENCODERA, TEMPOENCODERB);
+
+	pinMode(5, OUTPUT);
+
+	// Turn on internal pullup resistors
+	digitalWrite(5, LOW);
+	VolEncoder = new ArduinoUI::Encoder(4, 6);
 	VolEncoder->begin();
 }
 
