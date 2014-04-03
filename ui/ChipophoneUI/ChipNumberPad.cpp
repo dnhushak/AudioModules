@@ -14,7 +14,6 @@ namespace chip {
 		char keys[rows][cols] = { { '1', '2', '3' }, { '4', '5', '6' }, { '7',
 				'8', '9' }, { '*', '0', '#' } };
 		keypad = new Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
-
 		// Initialize key input info
 		selectionValue = 0;
 		key = '0';
