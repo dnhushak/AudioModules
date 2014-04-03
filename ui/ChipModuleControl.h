@@ -87,7 +87,7 @@ namespace chip {
 			synth::MIDIMessage * message;
 
 			// State tracking (lastLEDModule is used to keep track of LED updates)
-			int currentModule, lastModule, lastLEDModule;
+			int currentModule, lastLEDModule;
 			int arpState[5];
 			int glissState[5];
 			int arpTime[5];

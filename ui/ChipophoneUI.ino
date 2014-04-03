@@ -1,7 +1,6 @@
 #include "Arduino.h"
 #include "HardwareSerial.h"
 #include "Button.h"
-#include "ChannelSelector.h"
 #include "LED.h"
 #include "RGBLED.h"
 #include "ArduinoMIDIHandler.h"
@@ -59,83 +58,126 @@ const int PAUSBUTTON = A8;
 const int PAUSLED = 25;
 const int STOPBUTTON = A6;
 const int STOPLED = 27;
-const int RECDBUTTON  =A10;
+const int RECDBUTTON = A10;
 const int RECDLED = 28;
-const int TEMPOENCODERA=  8;
-const int TEMPOENCODERB=  9;
+const int TEMPOENCODERA = 8;
+const int TEMPOENCODERB = 9;
 
-int numChannels = 5;
-ArduinoUI::Button * buttonA;
-ArduinoUI::ChannelSelector * channelSel;
-ArduinoUI::LED ** channelLED;
-ArduinoUI::RGBLED * arpLED;
-ArduinoUI::RGBLED * glissLED;
-ArduinoUI::Encoder * VolEncoder;
+/******************************************************************************/
+/* Numpad Pins							                                      */
+/******************************************************************************/
+const int ROW1 = 41;
+const int ROW2 = 46;
+const int ROW3 = 45;
+const int ROW4 = 43;
+const int COL1 = 42;
+const int COL2 = 40;
+const int COL3 = 44;
 
+// MIDI Handler
 synth::ArduinoMIDIHandler * AMHandler;
 
-int channelSelPins[5] =
-		{ REDBUTTON, YELBUTTON, GRNBUTTON, BLUBUTTON, WHTBUTTON };
-int channelSelLEDs[5] = { REDLED, YELLED, GRNLED, BLULED, WHTLED };
-int currentState;
-int lastState;
+// Pinout structs
+chip::ModuleControlPins * modulePinout;
+chip::KeypadPins * numPadPinout;
+chip::SongboxControlPins * songboxPinout;
+
+// Controller classes
+chip::ChipModuleControl * moduleController;
+chip::ChipNumberPad * numPadController;
+chip::ChipSongboxControl * songboxController;
+
+int currentModule;
+
+void pinupModules() {
+
+	modulePinout = new chip::ModuleControlPins;
+	// Module Selectors
+	modulePinout->redButtonPin = REDBUTTON;
+	modulePinout->yelButtonPin = YELBUTTON;
+	modulePinout->grnButtonPin = GRNBUTTON;
+	modulePinout->bluButtonPin = BLUBUTTON;
+	modulePinout->whtButtonPin = WHTBUTTON;
+	modulePinout->redLEDPin = REDLED;
+	modulePinout->yelLEDPin = YELLED;
+	modulePinout->grnLEDPin = GRNLED;
+	modulePinout->bluLEDPin = BLULED;
+	modulePinout->whtLEDPin = WHTLED;
+
+	// Arp pins
+	modulePinout->arpButtonPin = ARPBUTTON;
+	modulePinout->arpRedLEDPin = ARPLEDRED;
+	modulePinout->arpGrnLEDPin = ARPLEDGRN;
+	modulePinout->arpBluLEDPin = ARPLEDBLU;
+	modulePinout->arpEncoderPinA = ARPENCODERA;
+	modulePinout->arpEncoderPinB = ARPENCODERB;
+	modulePinout->arpButtonPin = ARPBUTTON;
+	// Gliss pins
+	modulePinout->glissButtonPin = GLISSBUTTON;
+	modulePinout->glissRedLEDPin = GLISSLEDRED;
+	modulePinout->glissGrnLEDPin = GLISSLEDGRN;
+	modulePinout->glissBluLEDPin = GLISSLEDBLU;
+	modulePinout->glissEncoderPinA = GLISSENCODERA;
+	modulePinout->glissEncoderPinB = GLISSENCODERB;
+	// Volume pins
+	modulePinout->volEncoderPinA = VOLENCODERA;
+	modulePinout->volEncoderPinB = VOLENCODERB;
+}
+
+void pinupNumPad() {
+	numPadPinout = new chip::KeypadPins;
+	numPadPinout->row1Pin = ROW1;
+	numPadPinout->row2Pin = ROW2;
+	numPadPinout->row3Pin = ROW3;
+	numPadPinout->row4Pin = ROW4;
+	numPadPinout->col1Pin = COL1;
+	numPadPinout->col2Pin = COL2;
+	numPadPinout->col3Pin = COL3;
+
+}
+
+void pinupSongbox() {
+	songboxPinout = new chip::SongboxControlPins;
+	songboxPinout->pauseButtonPin = PAUSBUTTON;
+	songboxPinout->playButtonPin = PLAYBUTTON;
+	songboxPinout->stopButtonPin = STOPBUTTON;
+	songboxPinout->recordButtonPin = RECDBUTTON;
+	songboxPinout->pauseLEDPin = PAUSLED;
+	songboxPinout->playLEDPin = PLAYLED;
+	songboxPinout->stopLEDPin = STOPLED;
+	songboxPinout->recordLEDPin = RECDLED;
+	songboxPinout->tempoEncoderPinA = TEMPOENCODERA;
+	songboxPinout->tempoEncoderPinB = TEMPOENCODERB;
+}
 
 void setup() {
-	// Start serial comm for debugging
+// Start serial comm for debugging
 	Serial.begin(9600);
 	Serial.println("Start");
 	
-	// Initialize the LED's
-	channelLED = (ArduinoUI::LED **) malloc(
-			sizeof(ArduinoUI::LED *) * numChannels);
-	
-	for (int i = 0; i < numChannels; i++) {
-		channelLED[i] = new ArduinoUI::LED(channelSelLEDs[i]);
-		channelLED[i]->begin();
-		channelLED[i]->on();
-	}
-	arpLED = new ArduinoUI::RGBLED(ARPLEDRED, ARPLEDGRN, ARPLEDBLU);
-	glissLED = new ArduinoUI::RGBLED(GLISSLEDRED, GLISSLEDGRN, GLISSLEDBLU);
-	arpLED->begin();
-	glissLED->begin();
-	arpLED->on();
-	glissLED->on();
-	
-	// Initialize the buttons
-	channelSel = new ArduinoUI::ChannelSelector(channelSelPins, numChannels);
-	channelSel->begin();
-	buttonA = new ArduinoUI::Button(A10);
-	buttonA->begin();
-	
-	// Initialize MIDI
 	AMHandler = new synth::ArduinoMIDIHandler(&Serial1);
 	AMHandler->begin();
 
-	VolEncoder = new ArduinoUI::Encoder(4, 6);
-	VolEncoder->begin();
+	pinupModules();
+	moduleController = new chip::ChipModuleControl(modulePinout, AMHandler);
+	moduleController->begin();
+
+	pinupNumPad();
+	numPadController = new chip::ChipNumberPad(numPadPinout, AMHandler);
+
+	pinupSongbox();
+	songboxController = new chip::ChipSongboxControl(songboxPinout, AMHandler);
+	songboxController->begin();
+
+	delete modulePinout;
+	delete numPadPinout;
+	delete songboxPinout;
 }
 
 void loop() {
-//	channelSel->poll();
-//	currentState = channelSel->getState();
-//	if (currentState != lastState) {
-//		lastState = currentState;
-//		Serial.println(currentState, DEC);
-//		synth::MIDIMessage * msg = new synth::MIDIMessage;
-//		msg->channel = currentState;
-//		msg->statusType = synth::CC;
-//		msg->data1 = 100;
-//		msg->data2 = 25;
-//		AMHandler->writeMIDI(msg);
-//		for (int i = 0; i < numChannels; i++) {
-//			channelLED[i]->off();
-//			if (i == currentState) {
-//				channelLED[i]->on();
-//			}
-//		}
-//	}
-	VolEncoder->poll();
-	
-
+	moduleController->poll();
+	currentModule = moduleController->getState();
+	numPadController->poll(currentModule);
+	songboxController->poll();
 }
 

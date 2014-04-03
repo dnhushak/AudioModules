@@ -32,7 +32,6 @@ namespace chip {
 				pinout->volEncoderPinB);
 		
 		currentModule = RED;
-		lastModule = RED;
 		lastLEDModule = WHT;
 
 	}

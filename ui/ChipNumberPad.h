@@ -8,13 +8,22 @@ namespace chip {
 	 * This is NOT a scalable, reusable class,
 	 * as there are a number of things specific to the ISU Chipohphone setup
 	 */
+	typedef struct KeypadPins {
+			int row1Pin;
+			int row2Pin;
+			int row3Pin;
+			int row4Pin;
+			int col1Pin;
+			int col2Pin;
+			int col3Pin;
+	} KeypadPins;
 
 	class ChipNumberPad {
 			enum {
 				VOICE, SONG
 			};
 		public:
-			ChipNumberPad(int * rowPins, int * colPins,
+			ChipNumberPad(KeypadPins * pinout,
 					synth::ArduinoMIDIHandler * initAMHandler);
 			void poll(int state);
 			~ChipNumberPad();
