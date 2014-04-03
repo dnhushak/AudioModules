@@ -4,6 +4,9 @@
 #include "Arduino.h"
 
 namespace ArduinoUI {
+	enum LEDState{
+		OFF, ON
+	};
 
 	class LED {
 		public:
@@ -13,10 +16,19 @@ namespace ArduinoUI {
 			unsigned char getIntensity();
 			void on();
 			void off();
+			void toggle();
+			void blink(unsigned long blinkTime);
+			void blink();
 
 		private:
 			int pin;
+			int LEDstate;
 			unsigned char intensity;
+
+			// Blink timing variables
+			unsigned long currentTime;
+			unsigned long lastTime;
+			unsigned long blinkTime;
 
 	};
 
