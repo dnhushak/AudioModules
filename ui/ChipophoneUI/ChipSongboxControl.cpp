@@ -4,18 +4,28 @@ namespace chip {
 	
 	ChipSongboxControl::ChipSongboxControl(SongboxControlPins* initPins,
 			synth::ArduinoMIDIHandler* initAMHandler) {
+		// MIDI Handling
 		AMHandler = initAMHandler;
+		message = new synth::MIDIMessage;
+		message->statusType = synth::SYSTEM;
+
+		// Button Initialization
 		pauseButton = new ArduinoUI::Button(initPins->pauseButtonPin);
 		playButton = new ArduinoUI::Button(initPins->playButtonPin);
 		stopButton = new ArduinoUI::Button(initPins->stopButtonPin);
 		recordButton = new ArduinoUI::Button(initPins->recordButtonPin);
+
+		// LED Initialization
 		pauseLED = new ArduinoUI::LED(initPins->pauseLEDPin);
 		playLED = new ArduinoUI::LED(initPins->playLEDPin);
 		stopLED = new ArduinoUI::LED(initPins->stopLEDPin);
 		recordLED = new ArduinoUI::LED(initPins->recordLEDPin);
+
+		// Encoder Initialization
 		tempoEncoder = new ArduinoUI::Encoder(initPins->tempoEncoderPinA,
 				initPins->tempoEncoderPinB);
 
+		// Playback states
 		playbackState = lastPlaybackState = STOPPED;
 		recordState = lastRecordState = OFF;
 		tempo = 120;
@@ -40,11 +50,47 @@ namespace chip {
 	}
 	
 	void ChipSongboxControl::poll() {
+		/*
+		 * Behavior:
+		 *
+		 * Pressing play while in stop mode starts from beginning Ã
+		 * Pressing play while in pause mode continues Ã
+		 * Pressing pause while in play mode pauses Ã
+		 * Pressing pause while in pause mode does nothing Ã
+		 * Pressing pause in stop mode does nothing Ã
+		 * Pressing stop at any time stops Ã
+		 * Pressing record while in play mode does nothing, Otherwise toggles record arm mode
+		 */
 		pauseButton->poll();
 		playButton->poll();
 		stopButton->poll();
 		recordButton->poll();
 
+		switch (playbackState) {
+			case PLAYING:
+				if (stopButton->isPressed()) {
+					playbackState = STOPPED;
+				}
+				else if(pauseButton->isPressed()){
+					playbackState = PAUSED;
+				}
+				break;
+			case PAUSED:
+				if (stopButton->isPressed()) {
+					playbackState = STOPPED;
+				}
+				if (playButton->isPressed()) {
+					playbackState = PLAYING;
+				}
+				break;
+			case STOPPED:
+				if (playButton->isPressed()) {
+					playbackState = PLAYING;
+				}
+				break;
+
+		}
+		updateLED();
 	}
 
 	void ChipSongboxControl::updateLED() {
@@ -88,11 +134,10 @@ namespace chip {
 				break;
 			case PLAYING:
 				// Playing mode
-				if( recordState == ARMED){
+				if (recordState == ARMED) {
 					// Record LED is on
 					recordLED->on();
-				}
-				else{
+				} else {
 					recordLED->off();
 				}
 				playLED->on();
