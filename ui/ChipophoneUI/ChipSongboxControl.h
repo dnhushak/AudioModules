@@ -35,6 +35,7 @@ namespace chip {
 			virtual ~ChipSongboxControl();
 		private:
 			void updateLED();
+			void setRecordState();
 			ArduinoUI::Button * pauseButton;
 			ArduinoUI::Button * playButton;
 			ArduinoUI::Button * stopButton;

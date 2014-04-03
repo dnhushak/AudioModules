@@ -19,6 +19,14 @@ namespace chip {
 		MIDIContinue.channel = synth::CONTINUE;
 		// Using undefined system message 9 for record
 		MIDIRecord.channel = 9;
+		MIDIStop.data1 = 0;
+		MIDIStart.data1 = 0;
+		MIDIContinue.data1 = 0;
+		MIDIRecord.data1 = 0;
+		MIDIStop.data2 = 0;
+		MIDIStart.data2 = 0;
+		MIDIContinue.data2 = 0;
+		MIDIRecord.data2 = 0;
 
 		// Button Initialization
 		pauseButton = new ArduinoUI::Button(initPins->pauseButtonPin);
@@ -71,18 +79,6 @@ namespace chip {
 		 * Pressing pause in stop mode does nothing Ã
 		 * Pressing stop at any time stops Ã
 		 * Pressing record while in play mode does nothing, Otherwise toggles record arm mode Ã
-		 *
-		 * For the record state checking:
-		 *  Four states here:
-		 * -Armed and still pressed
-		 * -Armed
-		 * -Off and still pressed
-		 * -Off
-		 * Pressing in armed mode takes to off and still pressed
-		 * Releasing in off and still pressed takes to off
-		 * Pressing in off mode takes to armed and still pressed
-		 * Releasing in armed and still pressed takes to armed
-		 *
 		 */
 		pauseButton->poll();
 		playButton->poll();
@@ -110,29 +106,7 @@ namespace chip {
 						AMHandler->writeMIDI(&MIDIRecord);
 					}
 				}
-				// See above for state description
-				if (recordState == ARMED) {
-					// Button release in "Armed and still pressed"
-					if (lastRecordState == OFF && !recordButton->isPressed()) {
-						lastRecordState = ARMED;
-					}
-					// Button press in "Armed"
-					else if (lastRecordState == ARMED
-							&& recordButton->isPressed()) {
-						recordState = OFF;
-					}
-				} else if (recordState == OFF) {
-					// Button release in "Off and still pressed"
-					if (lastRecordState == ARMED
-							&& !recordButton->isPressed()) {
-						lastRecordState = OFF;
-					}
-					// Button press in "Off"
-					else if (lastRecordState == OFF
-							&& recordButton->isPressed()) {
-						recordState = ARMED;
-					}
-				}
+				setRecordState();
 				break;
 			case STOPPED:
 				if (playButton->isPressed()) {
@@ -142,29 +116,7 @@ namespace chip {
 						AMHandler->writeMIDI(&MIDIRecord);
 					}
 				}
-				// See above for state description
-				if (recordState == ARMED) {
-					// Button release in "Armed and still pressed"
-					if (lastRecordState == OFF && !recordButton->isPressed()) {
-						lastRecordState = ARMED;
-					}
-					// Button press in "Armed"
-					else if (lastRecordState == ARMED
-							&& recordButton->isPressed()) {
-						recordState = OFF;
-					}
-				} else if (recordState == OFF) {
-					// Button release in "Off and still pressed"
-					if (lastRecordState == ARMED
-							&& !recordButton->isPressed()) {
-						lastRecordState = OFF;
-					}
-					// Button press in "Off"
-					else if (lastRecordState == OFF
-							&& recordButton->isPressed()) {
-						recordState = ARMED;
-					}
-				}
+				setRecordState();
 				break;
 
 		}
@@ -224,6 +176,39 @@ namespace chip {
 				break;
 		}
 
+	}
+
+	void ChipSongboxControl::setRecordState() {
+		/*
+		 * Four states here:
+		 * -Armed and still pressed
+		 * -Armed
+		 * -Off and still pressed
+		 * -Off
+		 * Pressing in armed mode takes to off and still pressed
+		 * Releasing in off and still pressed takes to off
+		 * Pressing in off mode takes to armed and still pressed
+		 * Releasing in armed and still pressed takes to armed
+		 */
+		if (recordState == ARMED) {
+			// Button release in "Armed and still pressed"
+			if (lastRecordState == OFF && !recordButton->isPressed()) {
+				lastRecordState = ARMED;
+			}
+			// Button press in "Armed"
+			else if (lastRecordState == ARMED && recordButton->isPressed()) {
+				recordState = OFF;
+			}
+		} else if (recordState == OFF) {
+			// Button release in "Off and still pressed"
+			if (lastRecordState == ARMED && !recordButton->isPressed()) {
+				lastRecordState = OFF;
+			}
+			// Button press in "Off"
+			else if (lastRecordState == OFF && recordButton->isPressed()) {
+				recordState = ARMED;
+			}
+		}
 	}
 
 	ChipSongboxControl::~ChipSongboxControl() {
