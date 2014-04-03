@@ -6,8 +6,19 @@ namespace chip {
 			synth::ArduinoMIDIHandler* initAMHandler) {
 		// MIDI Handling
 		AMHandler = initAMHandler;
-		message = new synth::MIDIMessage;
-		message->statusType = synth::SYSTEM;
+		MIDIStop = new synth::MIDIMessage;
+		MIDIStart = new synth::MIDIMessage;
+		MIDIContinue = new synth::MIDIMessage;
+		MIDIRecord = new synth::MIDIMessage;
+		MIDIStop.statusType = synth::SYSTEM;
+		MIDIStart.statusType = synth::SYSTEM;
+		MIDIContinue.statusType = synth::SYSTEM;
+		MIDIRecord.statusType = synth::SYSTEM;
+		MIDIStop.channel = synth::STOP;
+		MIDIStart.channel = synth::START;
+		MIDIContinue.channel = synth::CONTINUE;
+		// Using undefined system message 9 for record
+		MIDIRecord.channel = 9;
 
 		// Button Initialization
 		pauseButton = new ArduinoUI::Button(initPins->pauseButtonPin);
@@ -59,7 +70,19 @@ namespace chip {
 		 * Pressing pause while in pause mode does nothing Ã
 		 * Pressing pause in stop mode does nothing Ã
 		 * Pressing stop at any time stops Ã
-		 * Pressing record while in play mode does nothing, Otherwise toggles record arm mode
+		 * Pressing record while in play mode does nothing, Otherwise toggles record arm mode Ã
+		 *
+		 * For the record state checking:
+		 *  Four states here:
+		 * -Armed and still pressed
+		 * -Armed
+		 * -Off and still pressed
+		 * -Off
+		 * Pressing in armed mode takes to off and still pressed
+		 * Releasing in off and still pressed takes to off
+		 * Pressing in off mode takes to armed and still pressed
+		 * Releasing in armed and still pressed takes to armed
+		 *
 		 */
 		pauseButton->poll();
 		playButton->poll();
@@ -70,9 +93,10 @@ namespace chip {
 			case PLAYING:
 				if (stopButton->isPressed()) {
 					playbackState = STOPPED;
-				}
-				else if(pauseButton->isPressed()){
+					AMHandler->writeMIDI(&MIDIStop);
+				} else if (pauseButton->isPressed()) {
 					playbackState = PAUSED;
+					AMHandler->writeMIDI(&MIDIStop);
 				}
 				break;
 			case PAUSED:
@@ -81,11 +105,65 @@ namespace chip {
 				}
 				if (playButton->isPressed()) {
 					playbackState = PLAYING;
+					AMHandler->writeMIDI(&MIDIContinue);
+					if (recordState == ARMED) {
+						AMHandler->writeMIDI(&MIDIRecord);
+					}
+				}
+				// See above for state description
+				if (recordState == ARMED) {
+					// Button release in "Armed and still pressed"
+					if (lastRecordState == OFF && !recordButton->isPressed()) {
+						lastRecordState = ARMED;
+					}
+					// Button press in "Armed"
+					else if (lastRecordState == ARMED
+							&& recordButton->isPressed()) {
+						recordState = OFF;
+					}
+				} else if (recordState == OFF) {
+					// Button release in "Off and still pressed"
+					if (lastRecordState == ARMED
+							&& !recordButton->isPressed()) {
+						lastRecordState = OFF;
+					}
+					// Button press in "Off"
+					else if (lastRecordState == OFF
+							&& recordButton->isPressed()) {
+						recordState = ARMED;
+					}
 				}
 				break;
 			case STOPPED:
 				if (playButton->isPressed()) {
 					playbackState = PLAYING;
+					AMHandler->writeMIDI(&MIDIStart);
+					if (recordState == ARMED) {
+						AMHandler->writeMIDI(&MIDIRecord);
+					}
+				}
+				// See above for state description
+				if (recordState == ARMED) {
+					// Button release in "Armed and still pressed"
+					if (lastRecordState == OFF && !recordButton->isPressed()) {
+						lastRecordState = ARMED;
+					}
+					// Button press in "Armed"
+					else if (lastRecordState == ARMED
+							&& recordButton->isPressed()) {
+						recordState = OFF;
+					}
+				} else if (recordState == OFF) {
+					// Button release in "Off and still pressed"
+					if (lastRecordState == ARMED
+							&& !recordButton->isPressed()) {
+						lastRecordState = OFF;
+					}
+					// Button press in "Off"
+					else if (lastRecordState == OFF
+							&& recordButton->isPressed()) {
+						recordState = ARMED;
+					}
 				}
 				break;
 
@@ -147,6 +225,7 @@ namespace chip {
 		}
 
 	}
+
 	ChipSongboxControl::~ChipSongboxControl() {
 		delete playButton;
 		delete pauseButton;
@@ -158,5 +237,4 @@ namespace chip {
 		delete recordLED;
 		delete tempoEncoder;
 	}
-
 }

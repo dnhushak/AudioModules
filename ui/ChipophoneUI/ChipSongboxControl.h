@@ -45,7 +45,7 @@ namespace chip {
 			ArduinoUI::LED * recordLED;
 			ArduinoUI::Encoder * tempoEncoder;
 			synth::ArduinoMIDIHandler * AMHandler;
-			synth::MIDIMessage * message;
+			synth::MIDIMessage MIDIStop, MIDIStart, MIDIContinue, MIDIRecord;
 			int playbackState, lastPlaybackState;
 			int recordState, lastRecordState;
 			int tempo;
