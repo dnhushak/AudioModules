@@ -2,7 +2,7 @@
 
 namespace chip {
 	
-	ChipSongboxControl::ChipSongboxControl(SongboxControlPins* initPins,
+	ChipSongboxControl::ChipSongboxControl(SongboxControlPins* pinout,
 			synth::ArduinoMIDIHandler* initAMHandler) {
 		// MIDI Handling
 		AMHandler = initAMHandler;
@@ -29,20 +29,20 @@ namespace chip {
 		MIDIRecord.data2 = 0;
 
 		// Button Initialization
-		pauseButton = new ArduinoUI::Button(initPins->pauseButtonPin);
-		playButton = new ArduinoUI::Button(initPins->playButtonPin);
-		stopButton = new ArduinoUI::Button(initPins->stopButtonPin);
-		recordButton = new ArduinoUI::Button(initPins->recordButtonPin);
+		pauseButton = new ArduinoUI::Button(pinout->pauseButtonPin);
+		playButton = new ArduinoUI::Button(pinout->playButtonPin);
+		stopButton = new ArduinoUI::Button(pinout->stopButtonPin);
+		recordButton = new ArduinoUI::Button(pinout->recordButtonPin);
 
 		// LED Initialization
-		pauseLED = new ArduinoUI::LED(initPins->pauseLEDPin);
-		playLED = new ArduinoUI::LED(initPins->playLEDPin);
-		stopLED = new ArduinoUI::LED(initPins->stopLEDPin);
-		recordLED = new ArduinoUI::LED(initPins->recordLEDPin);
+		pauseLED = new ArduinoUI::LED(pinout->pauseLEDPin);
+		playLED = new ArduinoUI::LED(pinout->playLEDPin);
+		stopLED = new ArduinoUI::LED(pinout->stopLEDPin);
+		recordLED = new ArduinoUI::LED(pinout->recordLEDPin);
 
 		// Encoder Initialization
-		tempoEncoder = new ArduinoUI::Encoder(initPins->tempoEncoderPinA,
-				initPins->tempoEncoderPinB);
+		tempoEncoder = new ArduinoUI::Encoder(pinout->tempoEncoderPinA,
+				pinout->tempoEncoderPinB);
 
 		// Playback states
 		playbackState = lastPlaybackState = STOPPED;
