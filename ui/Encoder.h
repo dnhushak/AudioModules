@@ -12,6 +12,7 @@ namespace ArduinoUI {
 			void setCurrentVal(int newCurrentVal);
 			int getCurrentVal();
 			void poll();
+			int hasChanged();
 
 		private:
 			// Check currentVal against bounds, making sure it's <max & >min
@@ -19,7 +20,7 @@ namespace ArduinoUI {
 			// Pin assignments
 			int pinA, pinB;
 			// Encoder values
-			int minVal, maxVal, currentVal;
+			int minVal, maxVal, currentVal, lastCheckedVal;
 			// Encoder states
 			int aLastState, bLastState, aPolledState, bPolledState;
 	};

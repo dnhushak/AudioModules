@@ -14,7 +14,7 @@ namespace ArduinoUI {
 	 * Pin #   GND		Pin #
 	 * 		Arduino
 	 */
-	ArduinoUI::Encoder::Encoder(int initPinA, int initPinB) {
+	Encoder::Encoder(int initPinA, int initPinB) {
 		pinA = initPinA;
 		pinB = initPinB;
 		setCurrentVal(0);
@@ -22,7 +22,7 @@ namespace ArduinoUI {
 		setMaxVal(127);
 	}
 
-	void ArduinoUI::Encoder::begin() {
+	void Encoder::begin() {
 		// Set mode to input
 		pinMode(pinA, INPUT);
 		pinMode(pinB, INPUT);
@@ -36,29 +36,41 @@ namespace ArduinoUI {
 		bLastState = digitalRead(pinB);
 	}
 
-	void ArduinoUI::Encoder::setMinVal(int newMinVal) {
+	void Encoder::setMinVal(int newMinVal) {
 		// Set the new minimum value
 		minVal = newMinVal;
 
 		normalizeCurrentVal();
 	}
 
-	void ArduinoUI::Encoder::setMaxVal(int newMaxVal) {
+	void Encoder::setMaxVal(int newMaxVal) {
 		// Set the new maximum value
 		maxVal = newMaxVal;
 		normalizeCurrentVal();
 	}
 
-	void ArduinoUI::Encoder::setCurrentVal(int newCurrentVal) {
+	void Encoder::setCurrentVal(int newCurrentVal) {
 		currentVal = newCurrentVal;
 		normalizeCurrentVal();
 	}
 
-	int ArduinoUI::Encoder::getCurrentVal() {
+	int Encoder::getCurrentVal() {
 		return currentVal;
 	}
 
-	void ArduinoUI::Encoder::poll() {
+	int Encoder::hasChanged(){
+		// XOR for a not equal check, represents a change since the last time button was checked
+		int notEqual = currentVal ^ lastCheckedVal;
+		if(notEqual){
+			// If they are not equal, update the last state to current state so the next immediate check returns false
+			lastCheckedVal = currentVal;
+			// Sets to 1 to represent not equal
+			notEqual = 1;
+		}
+		return notEqual;
+	}
+
+	void Encoder::poll() {
 		/*
 		 * Here is a diagram of the two waveforms in an encoder rotation:
 		 *
