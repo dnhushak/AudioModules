@@ -25,7 +25,6 @@ class Button {
     int lastCheckedState;
     // A counter to count cycles for debouncing
     short debounceCounter;
-
     // The threshold of clock cycles to count for an actual press
     short debounceThreshold;
 };
