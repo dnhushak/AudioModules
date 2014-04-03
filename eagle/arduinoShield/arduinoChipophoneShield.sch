@@ -10171,6 +10171,7 @@ Source: www.kingbright.com</description>
 <part name="GND13" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND14" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND15" library="SparkFun" deviceset="GND" device=""/>
+<part name="GND16" library="SparkFun" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10226,6 +10227,7 @@ Source: www.kingbright.com</description>
 <instance part="GND13" gate="1" x="134.62" y="119.38" rot="R90"/>
 <instance part="GND14" gate="1" x="109.22" y="121.92" rot="R270"/>
 <instance part="GND15" gate="1" x="109.22" y="114.3" rot="R270"/>
+<instance part="GND16" gate="1" x="109.22" y="152.4" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -10272,10 +10274,6 @@ Source: www.kingbright.com</description>
 <label x="76.2" y="147.32" size="1.778" layer="95"/>
 <pinref part="R3" gate="G$1" pin="2"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<wire x1="114.3" y1="152.4" x2="111.76" y2="152.4" width="0.1524" layer="91"/>
-<pinref part="PUSHBUTTONS" gate="1" pin="1"/>
 </segment>
 <segment>
 <pinref part="LED" gate="G$1" pin="1"/>
@@ -10418,6 +10416,11 @@ Source: www.kingbright.com</description>
 <wire x1="114.3" y1="114.3" x2="111.76" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="ENCODERS" gate="1" pin="11"/>
 <pinref part="GND15" gate="1" pin="GND"/>
+</segment>
+<segment>
+<wire x1="114.3" y1="152.4" x2="111.76" y2="152.4" width="0.1524" layer="91"/>
+<pinref part="PUSHBUTTONS" gate="1" pin="1"/>
+<pinref part="GND16" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="VIN" class="0">

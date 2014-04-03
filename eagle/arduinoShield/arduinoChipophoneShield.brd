@@ -3604,7 +3604,6 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="5V">
 <contactref element="R3" pad="P$2"/>
 <contactref element="R1" pad="P$2"/>
-<contactref element="PUSHBUTTONS" pad="1"/>
 <contactref element="LED" pad="1"/>
 <contactref element="SCREEN_NUMPAD" pad="1"/>
 <contactref element="SCREEN_NUMPAD" pad="8"/>
@@ -3676,6 +3675,7 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="ENCODERS" pad="8"/>
 <contactref element="ENCODERS" pad="5"/>
 <contactref element="ENCODERS" pad="11"/>
+<contactref element="PUSHBUTTONS" pad="1"/>
 </signal>
 <signal name="A0">
 <contactref element="SCREEN_NUMPAD" pad="10"/>
