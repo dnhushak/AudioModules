@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include <HardwareSerial.h>
+#include "HardwareSerial.h"
 #include "Button.h"
 #include "ChannelSelector.h"
 #include "LED.h"
@@ -94,7 +94,6 @@ void setup() {
 		channelLED[i]->begin();
 		channelLED[i]->on();
 	}
-	
 	arpLED = new ArduinoUI::RGBLED(ARPLEDRED, ARPLEDGRN, ARPLEDBLU);
 	glissLED = new ArduinoUI::RGBLED(GLISSLEDRED, GLISSLEDGRN, GLISSLEDBLU);
 	arpLED->begin();
