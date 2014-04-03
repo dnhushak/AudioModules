@@ -16,6 +16,7 @@ namespace ArduinoUI {
 		currentState = 0;
 		polledState = 0;
 		lastState = 0;
+		lastCheckedState = 0;
 		debounceCounter = 0;
 	}
 
@@ -62,6 +63,16 @@ namespace ArduinoUI {
 		// Set the next last state as this state, for next polling cycle
 		lastState = polledState;
 		return currentState;
+	}
+
+	int Button::hasChanged() {
+		// XOR for a not equal check, represents a change since the last time button was checked
+		int notEqual = currentState ^ lastCheckedState;
+		if(notEqual){
+			// If they are not equal, update the last state to current state so the next immediate check returns false
+			lastCheckedState = currentState;
+		}
+		return notEqual;
 	}
 
 // Set the debounce threshold to a new threshold other than the default 5
