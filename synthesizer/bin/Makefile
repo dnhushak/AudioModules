@@ -28,6 +28,11 @@ SOURCES = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(SOURCE)))
 OBJECTS = $(addsuffix $(BINARY), $(notdir $(basename $(SOURCES))))
 INCLUDE = $(foreach DIR, $(DIRLIST),-I$(DIR))
 
+all: $(EXE)
+
+clean:
+	rm -rf $(EXE) *.o
+	
 $(EXE): $(OBJECTS)
 	$(CXX) $(CFLAGS) $(OBJECTS) -o $(EXE) $(LDFLAGS) $(PAFLAGS) $(PMFLAGS)
 
@@ -52,8 +57,6 @@ force: clean $(EXE)
 	$(CXX) $(CFLAGS) $(INCLUDE) -c $< $(LDFLAGS) -o $@
 
 
-clean:
-	rm -rf $(EXE) *.o
 	
 depend:
 	gccmakedep -- $(LDFLAGS3) -- $(SOURCES) $(HEADERS)

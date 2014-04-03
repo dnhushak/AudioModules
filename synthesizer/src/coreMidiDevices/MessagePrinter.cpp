@@ -61,7 +61,9 @@ namespace synth {
 			case SYSTEM:
 				// 0b1111
 				// System Message
-				std::cout << "System Message ";
+				switch (message->channel){
+					case 0:
+				}
 				break;
 			default:
 				std::cout << "Unrecognized   ";

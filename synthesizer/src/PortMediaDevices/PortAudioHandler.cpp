@@ -162,12 +162,15 @@ namespace synth {
 			const PaStreamCallbackTimeInfo* timeInfo,
 			PaStreamCallbackFlags statusFlags, void *userData) {
 
+		// Not used, just removing -Wunused flags
+		float *in = (float*) inputBuffer;
+
 		//TODO: get multichannel to work right
 		float *out = (float*) outputBuffer;
 		// Grab the supplied user data
 		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
 
-		for (int i = 0; i < framesPerBuffer; i++) {
+		for (unsigned int i = 0; i < framesPerBuffer; i++) {
 			*out++ = *(audio->advance(1));
 		}
 

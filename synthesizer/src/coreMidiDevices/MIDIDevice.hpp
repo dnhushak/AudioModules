@@ -26,6 +26,21 @@ namespace synth {
 		SYSTEM = 15
 	};
 
+	enum SystemType{
+		SYSEX = 0,
+		MTC = 1,
+		SONGPOSITION = 2,
+		SONGSELECT = 3,
+		TUNEREQUEST = 6,
+		SYSEXEND = 7,
+		TIMECLOCK = 8,
+		START = 10,
+		CONTINUE = 11,
+		STOP = 12,
+		ACTIVESENSE = 14,
+		RESET = 15
+	};
+
 	class MIDIDevice: public virtual Device {
 		public:
 			MIDIDevice();
