@@ -29,7 +29,7 @@ namespace chip {
 
 	class ChipSongboxControl {
 		public:
-			ChipSongboxControl(SongboxControlPins * initPins, synth::ArduinoMIDIHandler * initAMHandler);
+			ChipSongboxControl(SongboxControlPins * pinout, synth::ArduinoMIDIHandler * initAMHandler);
 			void begin();
 			void poll();
 			virtual ~ChipSongboxControl();
