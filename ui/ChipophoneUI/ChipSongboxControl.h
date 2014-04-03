@@ -34,6 +34,7 @@ namespace chip {
 			void poll();
 			virtual ~ChipSongboxControl();
 		private:
+			void updateLED();
 			ArduinoUI::Button * pauseButton;
 			ArduinoUI::Button * playButton;
 			ArduinoUI::Button * stopButton;
@@ -43,11 +44,10 @@ namespace chip {
 			ArduinoUI::LED * stopLED;
 			ArduinoUI::LED * recordLED;
 			ArduinoUI::Encoder * tempoEncoder;
-			synth::ArduinoMIDIHandler * initAMHandler;
-			int state;
-			int recordState;
-			unsigned long currentTime;
-			unsigned long lastTime;
+			synth::ArduinoMIDIHandler * AMHandler;
+			int playbackState, lastPlaybackState;
+			int recordState, lastRecordState;
+			int tempo;
 	};
 
 }
