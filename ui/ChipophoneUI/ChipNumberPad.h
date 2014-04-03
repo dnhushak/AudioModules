@@ -33,10 +33,14 @@ namespace chip {
 			// The current value of successive keypresses
 			// Pressing 2, 3, 6 will fill digits with 2, 3, and 6,
 			// and set this value to 236
-			int keyedVal;
+			int selectionValue;
 
 			// The keypad object to poll
 			Keypad * keypad;
+			// The polled key
+			char key;
+			// The value of the polled key
+			int keyValue;
 
 			// The Arduino MIDI Handler to handle MIDI out
 			synth::ArduinoMIDIHandler * AMHandler;
