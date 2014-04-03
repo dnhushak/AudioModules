@@ -19,12 +19,17 @@ namespace chip {
 		bluLED = new ArduinoUI::LED(pinout->bluLEDPin);
 		whtLED = new ArduinoUI::LED(pinout->whtLEDPin);
 		arpButton = new ArduinoUI::Button(pinout->arpButtonPin);
-		arpLED = new ArduinoUI::RGBLED(pinout->arpRedLEDPin, pinout->arpGrnLEDPin, pinout->arpBluLEDPin);
-		arpEncoder = new ArduinoUI::Encoder(pinout->arpEncoderPinA, pinout->arpEncoderPinB);
+		arpLED = new ArduinoUI::RGBLED(pinout->arpRedLEDPin,
+				pinout->arpGrnLEDPin, pinout->arpBluLEDPin);
+		arpEncoder = new ArduinoUI::Encoder(pinout->arpEncoderPinA,
+				pinout->arpEncoderPinB);
 		glissButton = new ArduinoUI::Button(pinout->arpButtonPin);
-		glissLED = new ArduinoUI::RGBLED(pinout->glissRedLEDPin, pinout->glissGrnLEDPin, pinout->glissBluLEDPin);
-		glissEncoder = new ArduinoUI::Encoder(pinout->arpEncoderPinA, pinout->arpEncoderPinB);
-		volumeEncoder = new ArduinoUI::Encoder(pinout->volEncoderPinA, pinout->volEncoderPinB);
+		glissLED = new ArduinoUI::RGBLED(pinout->glissRedLEDPin,
+				pinout->glissGrnLEDPin, pinout->glissBluLEDPin);
+		glissEncoder = new ArduinoUI::Encoder(pinout->arpEncoderPinA,
+				pinout->arpEncoderPinB);
+		volumeEncoder = new ArduinoUI::Encoder(pinout->volEncoderPinA,
+				pinout->volEncoderPinB);
 		
 		currentModule = RED;
 		lastModule = RED;
@@ -87,12 +92,76 @@ namespace chip {
 		 *
 		 * Turning any of the encoders affects the encoder's parameter for the active state
 		 */
+		redButton->poll();
+		yelButton->poll();
+		grnButton->poll();
+		bluButton->poll();
+		whtButton->poll();
+		arpButton->poll();
+		arpEncoder->poll();
+		glissButton->poll();
+		glissEncoder->poll();
+		volumeEncoder->poll();
 
-		if (currentModule == lastModule) {
-			if (redButton->isPressed()) {
-				currentModule = RED;
-			}
+		// Check buttons and change module accordingly
+		if (redButton->hasChanged() && redButton->isPressed()) {
+			currentModule = RED;
 		}
+		if (yelButton->hasChanged() && yelButton->isPressed()) {
+			currentModule = YEL;
+		}
+		if (grnButton->hasChanged() && grnButton->isPressed()) {
+			currentModule = GRN;
+		}
+		if (bluButton->hasChanged() && bluButton->isPressed()) {
+			currentModule = BLU;
+		}
+		if (whtButton->hasChanged() && whtButton->isPressed()) {
+			currentModule = WHT;
+		}
+
+		// Check arp button
+		if (arpButton->hasChanged()) {
+			arpState[currentModule] = arpButton->isPressed();
+			message->channel = currentModule;
+			message->data1 = ARPTOGGLE;
+			message->data2 = arpState[currentModule] * 127;
+			AMHandler->writeMIDI(message);
+		}
+
+		// Check gliss button
+		if (glissButton->hasChanged()) {
+			glissState[currentModule] = glissButton->isPressed();
+			message->channel = currentModule;
+			message->data1 = GLISSTOGGLE;
+			message->data2 = glissState[currentModule] * 127;
+			AMHandler->writeMIDI(message);
+		}
+
+		if (arpEncoder->hasChanged()) {
+			arpTime[currentModule] = arpEncoder->getCurrentVal();
+			message->channel = currentModule;
+			message->data1 = ARPTIME;
+			message->data2 = arpTime[currentModule];
+			AMHandler->writeMIDI(message);
+		}
+
+		if (glissEncoder->hasChanged()) {
+			glissTime[currentModule] = glissEncoder->getCurrentVal();
+			message->channel = currentModule;
+			message->data1 = GLISSTIME;
+			message->data2 = glissTime[currentModule];
+			AMHandler->writeMIDI(message);
+		}
+
+		if (volumeEncoder->hasChanged()) {
+			volume[currentModule] = volumeEncoder->getCurrentVal();
+			message->channel = currentModule;
+			message->data1 = VOLUME;
+			message->data2 = volume[currentModule];
+			AMHandler->writeMIDI(message);
+		}
+
 		updateLED();
 	}
 	
