@@ -19,21 +19,21 @@ namespace chip {
 			int tempoEncoderPinB;
 	} SongboxControlPins;
 	
-	enum SongboxState{
-		STOPPED, PLAYING, PAUSED
-	};
-
-	enum SongboxRecordState{
-		OFF, ARMED
-	};
-
 	class ChipSongboxControl {
 		public:
-			ChipSongboxControl(SongboxControlPins * pinout, synth::ArduinoMIDIHandler * initAMHandler);
+			ChipSongboxControl(SongboxControlPins * pinout,
+					synth::ArduinoMIDIHandler * initAMHandler);
 			void begin();
 			void poll();
 			virtual ~ChipSongboxControl();
 		private:
+			enum SongboxState {
+				STOPPED, PLAYING, PAUSED
+			};
+
+			enum SongboxRecordState {
+				OFF, ARMED
+			};
 			void updateLED();
 			void setRecordState();
 			ArduinoUI::Button * pauseButton;
@@ -47,7 +47,7 @@ namespace chip {
 			ArduinoUI::Encoder * tempoEncoder;
 			synth::ArduinoMIDIHandler * AMHandler;
 			synth::MIDIMessage MIDIStop, MIDIStart, MIDIContinue, MIDIRecord;
-			int playbackState, lastPlaybackState;
+			int playbackState, lastPlaybackStateLED;
 			int recordState, lastRecordState;
 			int tempo;
 	};

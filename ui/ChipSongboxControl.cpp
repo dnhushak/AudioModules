@@ -45,7 +45,7 @@ namespace chip {
 				pinout->tempoEncoderPinB);
 
 		// Playback states
-		playbackState = lastPlaybackState = STOPPED;
+		playbackState = lastPlaybackStateLED = STOPPED;
 		recordState = lastRecordState = OFF;
 		tempo = 120;
 
@@ -142,12 +142,15 @@ namespace chip {
 				else {
 					recordLED->off();
 				}
-				// Turn the Play LED off
-				playLED->off();
-				// Turn the Stop LED on
-				stopLED->on();
-				// Turn the pause LED off
-				pauseLED->off();
+				if (lastPlaybackStateLED != STOPPED) {
+					// Turn the Play LED off
+					playLED->off();
+					// Turn the Stop LED on
+					stopLED->on();
+					// Turn the pause LED off
+					pauseLED->off();
+					lastPlaybackStateLED = STOPPED;
+				}
 				break;
 			case PAUSED:
 				// If in record arm mode, blink the record button
@@ -158,9 +161,13 @@ namespace chip {
 				else {
 					recordLED->off();
 				}
-
 				// Blink the playLED
 				playLED->blink();
+				if (lastPlaybackStateLED != PAUSED) {
+					stopLED->off();
+					pauseLED->on();
+					lastPlaybackStateLED = PAUSED;
+				}
 				break;
 			case PLAYING:
 				// Playing mode
@@ -170,9 +177,12 @@ namespace chip {
 				} else {
 					recordLED->off();
 				}
-				playLED->on();
-				stopLED->off();
-				pauseLED->off();
+				if (lastPlaybackStateLED != PLAYING) {
+					playLED->on();
+					stopLED->off();
+					pauseLED->off();
+					lastPlaybackStateLED = PLAYING;
+				}
 				break;
 		}
 
