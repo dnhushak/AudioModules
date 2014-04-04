@@ -7,11 +7,12 @@ namespace ArduinoUI {
 		LEDstate = OFF;
 		currentTime = millis();
 		lastTime = currentTime;
-		blinkTime = 1000;
+		blinkTime = 300;
 	}
 
 	void LED::begin() {
 		pinMode(pin, OUTPUT);
+		on();
 		off();
 	}
 
