@@ -54,6 +54,12 @@ namespace chip {
 			// The value of the polled key
 			int keyValue;
 
+			byte rows;
+			byte cols;
+			char * keys;
+			byte * rowPins;
+			byte * colPins;
+
 			// The Arduino MIDI Handler to handle MIDI out
 			synth::ArduinoMIDIHandler * AMHandler;
 

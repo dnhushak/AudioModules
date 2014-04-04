@@ -7,17 +7,35 @@ namespace chip {
 	ChipNumberPad::ChipNumberPad(KeypadPins * pinout,
 			synth::ArduinoMIDIHandler * initAMHandler) {
 		// Initialize the keypad object
-		byte rows = 4; //four rows
-		byte cols = 3; //three columns
-		char keys[4][3] = { { '1', '2', '3' }, { '4', '5', '6' }, { '7',
-				'8', '9' }, { '*', '0', '#' } };
-		byte rowPins[4] = {pinout->row1Pin, pinout->row2Pin, pinout->row3Pin, pinout->row4Pin};
-		byte colPins[3] = {pinout->col1Pin, pinout->col2Pin, pinout->col3Pin};
+		rows = 4; //four rows
+		cols = 3; //three columns
+		keys = (char *) malloc(sizeof(char) * rows * cols);
+		keys[0] = '1';
+		keys[1] = '2';
+		keys[2] = '3';
+		keys[3] = '4';
+		keys[4] = '5';
+		keys[5] = '6';
+		keys[6] = '7';
+		keys[7] = '8';
+		keys[8] = '9';
+		keys[9] = '*';
+		keys[10] = '0';
+		keys[11] = '#';
+		rowPins = (byte *) malloc(sizeof(byte) * rows);
+		rowPins[0] = pinout->row1Pin;
+		rowPins[1] = pinout->row2Pin;
+		rowPins[2] = pinout->row3Pin;
+		rowPins[3] = pinout->row4Pin;
+		colPins = (byte *) malloc(sizeof(byte) * cols);
+		colPins[0] = pinout->col1Pin;
+		colPins[1] = pinout->col2Pin;
+		colPins[2] = pinout->col3Pin;
 		keypad = new Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
 
 		// Initialize key input info
 		selectionValue = 0;
-		key = '0';
+		key = '\0';
 		keyValue = 0;
 		numKeysPressed = 0;
 		digits[0] = digits[1] = digits[2] = 0;
@@ -33,7 +51,7 @@ namespace chip {
 		//Get Keypress
 		key = keypad->getKey();
 		// ASCII to integer calculation (saves a LUT or stupid long switch case)
-		keyValue = key - 30;
+		keyValue = key - 48;
 
 		/*
 		 * Behavior: A slight bit convoluted but here we go.
