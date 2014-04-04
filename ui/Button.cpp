@@ -11,8 +11,8 @@ namespace ArduinoUI {
 
 	Button::Button(int initPin) {
 		pin = initPin;
-		//Default debounce thresh is 5
-		debounceThreshold = 5;
+		//Default debounce thresh is 25
+		debounceThreshold = 25;
 		currentState = 0;
 		polledState = 0;
 		lastState = 0;
@@ -40,9 +40,9 @@ namespace ArduinoUI {
 
 	int Button::pollDebounce() {
 		// Poll the button state
-		polledState = poll();
+		polledState = (digitalRead(pin) == LOW);
 		// If the button is in the same state as the current state, do nothing
-		if (polledState != currentState)
+		if (polledState != currentState) {
 			// Else...
 
 			// Same as last state, checking for continual states
@@ -59,25 +59,24 @@ namespace ArduinoUI {
 					debounceCounter++;
 				}
 			}
-
+		}
 		// Set the next last state as this state, for next polling cycle
 		lastState = polledState;
 		return currentState;
 	}
 
 	int Button::hasChanged() {
+
 		// XOR for a not equal check, represents a change since the last time button was checked
-		int notEqual = currentState ^ lastCheckedState;
-		if(notEqual){
-			// If they are not equal, update the last state to current state so the next immediate check returns false
-			lastCheckedState = currentState;
-		}
+		int notEqual = (currentState ^ lastCheckedState);
+		lastCheckedState = currentState;
 		return notEqual;
 	}
 
 // Set the debounce threshold to a new threshold other than the default 5
 	void Button::setDebounceThreshold(int newThreshold) {
 		debounceThreshold = newThreshold;
+		Serial.println(newThreshold, DEC);
 	}
 
 }
