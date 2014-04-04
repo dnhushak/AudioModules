@@ -167,21 +167,17 @@ void setup() {
 	
 	AMHandler = new synth::ArduinoMIDIHandler(&Serial1);
 	AMHandler->begin();
-//
-//	pinupModules();
-//	moduleController = new chip::ChipModuleControl(modulePinout, AMHandler);
-//	moduleController->begin();
-//
-//	pinupNumPad();
-//	numPadController = new chip::ChipNumberPad(numPadPinout, AMHandler);
-//
+
+	pinupModules();
+	moduleController = new chip::ChipModuleControl(modulePinout, AMHandler);
+	moduleController->begin();
+
+	pinupNumPad();
+	numPadController = new chip::ChipNumberPad(numPadPinout, AMHandler);
+
 	pinupSongbox();
 	songboxController = new chip::ChipSongboxControl(songboxPinout, AMHandler);
 	songboxController->begin();
-
-//	recordButton = new ArduinoUI::Button(RECDBUTTON);
-//	recordButton->begin();
-//	recordButton->setDebounceThreshold(20000);
 
 	delete modulePinout;
 	delete numPadPinout;
@@ -189,11 +185,9 @@ void setup() {
 }
 
 void loop() {
-	//moduleController->poll();
-	//currentModule = moduleController->getCurrentModule();
-	//numPadController->poll(currentModule);
+	moduleController->poll();
+	currentModule = moduleController->getCurrentModule();
+	numPadController->poll(currentModule);
 	songboxController->poll();
-
-	//delay(10);
 }
 

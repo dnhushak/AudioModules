@@ -43,7 +43,7 @@ namespace chip {
 		RED, YEL, GRN, BLU, WHT
 	};
 
-	class ChipModuleControl {
+	class ChipModuleControl: public synth::MIDIDevice {
 		public:
 			ChipModuleControl(ModuleControlPins* pinout,
 					synth::ArduinoMIDIHandler * initAMHandler);
