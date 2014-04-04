@@ -26,6 +26,7 @@ namespace ArduinoUI {
 		redLED->begin();
 		grnLED->begin();
 		bluLED->begin();
+		off();
 	}
 	void RGBLED::on() {
 		redLED->on();
@@ -35,9 +36,9 @@ namespace ArduinoUI {
 	}
 
 	void RGBLED::off() {
-		redLED->on();
-		grnLED->on();
-		bluLED->on();
+		redLED->off();
+		grnLED->off();
+		bluLED->off();
 		RGBLEDstate = OFF;
 	}
 
