@@ -41,7 +41,7 @@ namespace chip {
 				pinout->tempoEncoderPinB);
 
 		// Playback states
-		playbackState = PAUSED;
+		playbackState = STOPPED;
 		lastPlaybackStateLED = PLAYING;
 		recordState = lastRecordState = OFF;
 		tempo = 120;
