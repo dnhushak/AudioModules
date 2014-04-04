@@ -25,15 +25,37 @@ namespace synth {
 		// Channel is the LS nibble
 		statusByte |= message->channel;
 
-		// Write the status byte
-		MIDIport->write(statusByte);
+		Serial.println(statusByte, BIN);
+		// Filter out Sysex
+		if (message->statusType == SYSTEM
+				&& (message->channel == SYSEX || message->channel == SYSEXEND)) {
 
-		// Write data 1
-		MIDIport->write(message->data1);
+		} else {
+			// Non sysex data
 
-		// Write data 2
-		MIDIport->write(message->data2);
+			// Write the status byte
+			MIDIport->write(statusByte);
 
+			// Don't send data 1 for anything other than non system, MTC, song select, or song poitner messages
+			if (message->statusType == SYSTEM
+					&& message->channel > SONGSELECT) {
+
+			} else {
+				// Write data 1
+				MIDIport->write(message->data1);
+				Serial.println(message->data1, BIN);
+
+				// Only write data two on a song position message and non program/monophonic touch messages
+				if ((message->statusType == SYSTEM
+						&& message->channel == SONGPOSITION)
+						&& message->statusType != PROGRAM
+						&& message->statusType != MONOTOUCH) {
+					// Write data 2
+					MIDIport->write(message->data2);
+					Serial.println(message->data2, BIN);
+				}
+			}
+		}
 	}
 }
 
