@@ -41,7 +41,8 @@ namespace chip {
 				pinout->tempoEncoderPinB);
 
 		// Playback states
-		playbackState = lastPlaybackStateLED = STOPPED;
+		playbackState = PAUSED;
+		lastPlaybackStateLED = PLAYING;
 		recordState = lastRecordState = OFF;
 		tempo = 120;
 
@@ -76,17 +77,18 @@ namespace chip {
 		 * Pressing stop at any time stops Ã
 		 * Pressing record while in play mode does nothing, Otherwise toggles record arm mode Ã
 		 */
-		pauseButton->poll();
-		playButton->poll();
-		stopButton->poll();
-		recordButton->poll();
+		pauseButton->pollDebounce();
+		playButton->pollDebounce();
+		stopButton->pollDebounce();
+		recordButton->pollDebounce();
 
 		switch (playbackState) {
 			case PLAYING:
 				if (stopButton->isPressed()) {
 					playbackState = STOPPED;
 					AMHandler->writeMIDI(&MIDIStop);
-				} else if (pauseButton->isPressed()) {
+				}
+				else if (pauseButton->isPressed()) {
 					playbackState = PAUSED;
 					AMHandler->writeMIDI(&MIDIStop);
 				}
@@ -95,7 +97,7 @@ namespace chip {
 				if (stopButton->isPressed()) {
 					playbackState = STOPPED;
 				}
-				if (playButton->isPressed()) {
+				else if (playButton->isPressed()) {
 					playbackState = PLAYING;
 					AMHandler->writeMIDI(&MIDIContinue);
 					if (recordState == ARMED) {
@@ -114,7 +116,6 @@ namespace chip {
 				}
 				setRecordState();
 				break;
-
 		}
 		updateLED();
 	}
@@ -145,7 +146,6 @@ namespace chip {
 					stopLED->on();
 					// Turn the pause LED off
 					pauseLED->off();
-					lastPlaybackStateLED = STOPPED;
 				}
 				break;
 			case PAUSED:
@@ -162,7 +162,6 @@ namespace chip {
 				if (lastPlaybackStateLED != PAUSED) {
 					stopLED->off();
 					pauseLED->on();
-					lastPlaybackStateLED = PAUSED;
 				}
 				break;
 			case PLAYING:
@@ -177,10 +176,10 @@ namespace chip {
 					playLED->on();
 					stopLED->off();
 					pauseLED->off();
-					lastPlaybackStateLED = PLAYING;
 				}
 				break;
 		}
+		lastPlaybackStateLED = playbackState;
 
 	}
 
