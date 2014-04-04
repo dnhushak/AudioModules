@@ -61,8 +61,43 @@ namespace synth {
 			case SYSTEM:
 				// 0b1111
 				// System Message
-				switch (message->channel){
-					case 0:
+				switch (message->channel) {
+					case SYSEX:
+						std::cout << "SYSEX          ";
+						break;
+					case MTC:
+						std::cout << "MIDI Time Code ";
+						break;
+					case SONGPOSITION:
+						std::cout << "Song Position  ";
+						break;
+					case SONGSELECT:
+						std::cout << "Song Select    ";
+						break;
+					case TUNEREQUEST:
+						std::cout << "Tune Request   ";
+						break;
+					case SYSEXEND:
+						std::cout << "SYSEX End      ";
+						break;
+					case TIMECLOCK:
+						std::cout << "Time Clock     ";
+						break;
+					case START:
+						std::cout << "Start Song     ";
+						break;
+					case CONTINUE:
+						std::cout << "Continue Song  ";
+						break;
+					case STOP:
+						std::cout << "Stop Song      ";
+						break;
+					case ACTIVESENSE:
+						std::cout << "Active Sense   ";
+						break;
+					case RESET:
+						std::cout << "Reset          ";
+						break;
 				}
 				break;
 			default:
