@@ -50,7 +50,7 @@ namespace chip {
 			virtual ~ChipModuleControl();
 			void begin();
 			void poll();
-			int getState();
+			int getCurrentModule();
 		private:
 			enum paramState {
 				OFF, ON

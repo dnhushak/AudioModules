@@ -1,3 +1,5 @@
+#ifndef RGBLED_H
+#define RGBLED_H
 #include "Arduino.h"
 #include "LED.h"
 
@@ -28,3 +30,4 @@ namespace ArduinoUI {
 	};
 
 }
+#endif

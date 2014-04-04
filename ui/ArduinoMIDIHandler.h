@@ -1,3 +1,5 @@
+#ifndef ARDUINOMIDIHANDLER_H
+#define ARDUINOMIDIHANDLER_H
 #include "MIDIDevice.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -25,3 +27,5 @@ namespace synth {
 	};
 
 }
+
+#endif

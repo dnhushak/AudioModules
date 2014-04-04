@@ -164,6 +164,10 @@ namespace chip {
 		updateLED();
 	}
 	
+	int ChipModuleControl::getCurrentModule(){
+		return currentModule;
+	}
+
 	void ChipModuleControl::updateLED() {
 		if (currentModule != lastLEDModule) {
 			switch (currentModule) {

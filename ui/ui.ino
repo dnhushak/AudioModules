@@ -180,7 +180,7 @@ void setup() {
 
 void loop() {
 	moduleController->poll();
-	currentModule = moduleController->getState();
+	currentModule = moduleController->getCurrentModule();
 	numPadController->poll(currentModule);
 	songboxController->poll();
 }

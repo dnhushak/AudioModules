@@ -11,6 +11,11 @@ namespace ArduinoUI {
 		lastTime = currentTime;
 		blinkTime = 1000;
 	}
+	RGBLED::~RGBLED(){
+		delete redLED;
+		delete grnLED;
+		delete bluLED;
+	}
 	void RGBLED::setColor(unsigned char newRedIntensity,
 			unsigned char newGrnIntensity, unsigned char newBluIntensity) {
 		redLED->setIntensity(newRedIntensity);

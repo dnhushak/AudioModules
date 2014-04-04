@@ -1,5 +1,5 @@
-#ifndef DEVICE_HPP_
-#define DEVICE_HPP_
+#ifndef DEVICE_H_
+#define DEVICE_H_
 #include <stdio.h>
 #include <cstdlib>
 #include "Arduino.h"
@@ -23,4 +23,4 @@ class Device {
 
 }
 
-#endif /* DEVICE_HPP_ */
+#endif /* DEVICE_H_ */
