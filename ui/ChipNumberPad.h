@@ -1,6 +1,8 @@
 #ifndef NUMBERPAD_H_
 #define NUMBERPAD_H_
 #include <Keypad.h>
+#include "Arduino.h"
+#include "ArduinoMIDIHandler.h"
 
 namespace chip {
 	/*

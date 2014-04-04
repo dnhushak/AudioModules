@@ -1,5 +1,10 @@
 #ifndef CHIPMODULECONTROL_H_
 #define CHIPMODULECONTROL_H_
+#include "Button.h"
+#include "Encoder.h"
+#include "LED.h"
+#include "RGBLED.h"
+#include "ArduinoMIDIHandler.h"
 
 namespace chip {
 	typedef struct ModuleControlPins {

@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "Encoder.h"
 #include "LED.h"
+#include "ArduinoMIDIHandler.h"
 
 namespace chip {
 	typedef struct SongboxControlPins {
