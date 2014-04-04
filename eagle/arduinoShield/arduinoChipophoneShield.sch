@@ -10250,8 +10250,8 @@ Source: www.kingbright.com</description>
 <pinref part="S1" gate="S" pin="3"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="7"/>
-<wire x1="175.26" y1="134.62" x2="172.72" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="8"/>
+<wire x1="190.5" y1="134.62" x2="193.04" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3.3" class="0">
@@ -10284,10 +10284,6 @@ Source: www.kingbright.com</description>
 <wire x1="175.26" y1="142.24" x2="172.72" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="8"/>
-<wire x1="190.5" y1="134.62" x2="193.04" y2="134.62" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="OK1" gate="G$1" pin="VCC"/>
 <wire x1="137.16" y1="55.88" x2="137.16" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="R7" gate="G$1" pin="2"/>
@@ -10304,6 +10300,10 @@ Source: www.kingbright.com</description>
 <segment>
 <pinref part="SV3" gate="G$1" pin="1"/>
 <wire x1="30.48" y1="83.82" x2="25.4" y2="83.82" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="9"/>
+<wire x1="175.26" y1="132.08" x2="172.72" y2="132.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -10335,14 +10335,6 @@ Source: www.kingbright.com</description>
 <wire x1="116.84" y1="170.18" x2="116.84" y2="172.72" width="0.1524" layer="91"/>
 <label x="117.602" y="172.72" size="1.778" layer="95" rot="R90"/>
 <pinref part="JP3" gate="1" pin="7"/>
-</segment>
-<segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="6"/>
-<wire x1="190.5" y1="137.16" x2="193.04" y2="137.16" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="9"/>
-<wire x1="175.26" y1="132.08" x2="172.72" y2="132.08" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="MIDI_OUT" gate="G$1" pin="2"/>
@@ -10422,6 +10414,10 @@ Source: www.kingbright.com</description>
 <pinref part="PUSHBUTTONS" gate="1" pin="1"/>
 <pinref part="GND16" gate="1" pin="GND"/>
 </segment>
+<segment>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="10"/>
+<wire x1="190.5" y1="132.08" x2="193.04" y2="132.08" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="VIN" class="0">
 <segment>
@@ -10437,8 +10433,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="1"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="10"/>
-<wire x1="190.5" y1="132.08" x2="193.04" y2="132.08" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="11"/>
+<wire x1="175.26" y1="129.54" x2="172.72" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A1" class="0">
@@ -10448,8 +10444,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="2"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="11"/>
-<wire x1="175.26" y1="129.54" x2="172.72" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="12"/>
+<wire x1="190.5" y1="129.54" x2="193.04" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A2" class="0">
@@ -10459,8 +10455,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="3"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="12"/>
-<wire x1="190.5" y1="129.54" x2="193.04" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="13"/>
+<wire x1="175.26" y1="127" x2="172.72" y2="127" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A3" class="0">
@@ -10470,8 +10466,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="4"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="13"/>
-<wire x1="175.26" y1="127" x2="172.72" y2="127" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="14"/>
+<wire x1="190.5" y1="127" x2="193.04" y2="127" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A4" class="0">
@@ -10481,8 +10477,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="5"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="14"/>
-<wire x1="190.5" y1="127" x2="193.04" y2="127" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="15"/>
+<wire x1="175.26" y1="124.46" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A5" class="0">
@@ -10492,8 +10488,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="6"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="15"/>
-<wire x1="175.26" y1="124.46" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="16"/>
+<wire x1="190.5" y1="124.46" x2="193.04" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A6" class="0">
@@ -10503,8 +10499,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="7"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="16"/>
-<wire x1="190.5" y1="124.46" x2="193.04" y2="124.46" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="17"/>
+<wire x1="175.26" y1="121.92" x2="172.72" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A7" class="0">
@@ -10514,8 +10510,8 @@ Source: www.kingbright.com</description>
 <pinref part="JP1" gate="1" pin="8"/>
 </segment>
 <segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="17"/>
-<wire x1="175.26" y1="121.92" x2="172.72" y2="121.92" width="0.1524" layer="91"/>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="18"/>
+<wire x1="190.5" y1="121.92" x2="193.04" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A8" class="0">
@@ -10523,10 +10519,6 @@ Source: www.kingbright.com</description>
 <wire x1="175.26" y1="88.9" x2="175.26" y2="91.44" width="0.1524" layer="91"/>
 <label x="175.26" y="88.9" size="1.778" layer="95" rot="R90"/>
 <pinref part="JP2" gate="1" pin="1"/>
-</segment>
-<segment>
-<pinref part="SCREEN_NUMPAD" gate="G$1" pin="18"/>
-<wire x1="190.5" y1="121.92" x2="193.04" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="A9" class="0">
@@ -10942,6 +10934,10 @@ Source: www.kingbright.com</description>
 <label x="211.328" y="116.078" size="1.778" layer="95"/>
 <pinref part="SV1" gate="G$1" pin="27"/>
 </segment>
+<segment>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="6"/>
+<wire x1="190.5" y1="137.16" x2="193.04" y2="137.16" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="D50" class="0">
 <segment>
@@ -11090,6 +11086,10 @@ Source: www.kingbright.com</description>
 <wire x1="233.68" y1="116.84" x2="236.22" y2="116.84" width="0.1524" layer="91"/>
 <label x="241.808" y="117.856" size="1.778" layer="95" rot="R180"/>
 <pinref part="SV1" gate="G$1" pin="28"/>
+</segment>
+<segment>
+<pinref part="SCREEN_NUMPAD" gate="G$1" pin="7"/>
+<wire x1="175.26" y1="134.62" x2="172.72" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="D51" class="0">
