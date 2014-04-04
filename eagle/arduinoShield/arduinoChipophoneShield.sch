@@ -10481,7 +10481,7 @@ Source: www.kingbright.com</description>
 <wire x1="175.26" y1="124.46" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="A5" class="0">
+<net name="N$9" class="0">
 <segment>
 <wire x1="160.02" y1="88.9" x2="160.02" y2="91.44" width="0.1524" layer="91"/>
 <label x="160.02" y="88.646" size="1.778" layer="95" rot="R90"/>
