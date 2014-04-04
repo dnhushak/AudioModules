@@ -5,6 +5,7 @@
 #Chipophone Specifics
 /bin
 chipophone
+Chipophone
 printMidiDevices
 readMidiData
 *.save
