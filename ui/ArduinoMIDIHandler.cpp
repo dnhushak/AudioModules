@@ -48,11 +48,14 @@ namespace synth {
 				// Only write data two on a song position message and non program/monophonic touch messages
 				if ((message->statusType == SYSTEM
 						&& message->channel == SONGPOSITION)
-						&& message->statusType != PROGRAM
-						&& message->statusType != MONOTOUCH) {
+						|| (message->statusType != PROGRAM
+								&& message->statusType != MONOTOUCH)) {
+					Serial.println("Printing Second Status byte");
 					// Write data 2
 					MIDIport->write(message->data2);
 					Serial.println(message->data2, BIN);
+				} else {
+					Serial.println("NOT Printing Second Status byte");
 				}
 			}
 		}
