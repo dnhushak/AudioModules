@@ -6,10 +6,6 @@ namespace chip {
 			synth::ArduinoMIDIHandler* initAMHandler) {
 		// MIDI Handling
 		AMHandler = initAMHandler;
-		MIDIStop = new synth::MIDIMessage;
-		MIDIStart = new synth::MIDIMessage;
-		MIDIContinue = new synth::MIDIMessage;
-		MIDIRecord = new synth::MIDIMessage;
 		MIDIStop.statusType = synth::SYSTEM;
 		MIDIStart.statusType = synth::SYSTEM;
 		MIDIContinue.statusType = synth::SYSTEM;

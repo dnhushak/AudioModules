@@ -158,7 +158,7 @@ void setup() {
 // Start serial comm for debugging
 	Serial.begin(9600);
 	Serial.println("Start");
-	
+
 	AMHandler = new synth::ArduinoMIDIHandler(&Serial1);
 	AMHandler->begin();
 

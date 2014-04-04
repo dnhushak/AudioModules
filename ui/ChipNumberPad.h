@@ -3,6 +3,7 @@
 #include <Keypad.h>
 #include "Arduino.h"
 #include "ArduinoMIDIHandler.h"
+#include "Keypad.h"
 
 namespace chip {
 	/*

@@ -26,14 +26,14 @@ namespace ArduinoUI {
 		redLED->on();
 		grnLED->on();
 		bluLED->on();
-		RGBLED = ON;
+		RGBLEDstate = ON;
 	}
 
 	void RGBLED::off() {
 		redLED->on();
 		grnLED->on();
 		bluLED->on();
-		RGBLED = OFF;
+		RGBLEDstate = OFF;
 	}
 
 	// These are intended to be called in the loop
@@ -56,7 +56,7 @@ namespace ArduinoUI {
 
 	void RGBLED::toggle() {
 		// If LEDstate is on, then turn off
-		if (RGBLED) {
+		if (RGBLEDstate) {
 			off();
 		}
 		// Else turn on

@@ -9,10 +9,10 @@ namespace chip {
 		// Initialize the keypad object
 		byte rows = 4; //four rows
 		byte cols = 3; //three columns
-		char keys[rows][cols] = { { '1', '2', '3' }, { '4', '5', '6' }, { '7',
+		char keys[4][3] = { { '1', '2', '3' }, { '4', '5', '6' }, { '7',
 				'8', '9' }, { '*', '0', '#' } };
-		rowPins[rows] = {pinout->row1Pin, pinout->row2Pin, pinout->row3Pin, pinout->row4Pin};
-		colPins[cols] = {pinout->col1Pin, pinout->col2Pin, pinout->col3Pin};
+		byte rowPins[4] = {pinout->row1Pin, pinout->row2Pin, pinout->row3Pin, pinout->row4Pin};
+		byte colPins[3] = {pinout->col1Pin, pinout->col2Pin, pinout->col3Pin};
 		keypad = new Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
 
 		// Initialize key input info
