@@ -44,13 +44,13 @@ namespace synth {
 		private:
 
 			// Main oscillator
-			Oscillator * osc;
+			Oscillator osc;
 			// Vibrato oscillator
-			Oscillator * vib;
+			Oscillator vib;
 			// Main Envelope
-			Envelope * osc_env;
+			Envelope osc_env;
 			// Vibrato Ramp
-			Ramp * vib_ramp;
+			Ramp vib_ramp;
 			// Vibrato multiplier
 			float vibmult;
 			// Base frequency
