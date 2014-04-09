@@ -2,22 +2,28 @@
 # Install packages
 ####################
 
+pacman -Syu
+
+pacman -S gcc make git
+
+pacman -S portmidi
+
 # Get the git
 git clone https://github.com/dnhushak/chipophone
 
 # Install portMedia
-sudo apt-get uninstall remove jackd1 jackd2
-sudo apt-get install libasound2-dev libportmidi-dev libportmidi0
-wget http://www.portaudio.com/archives/pa_stable_v19_20110326.tgz
-tar -xvf pa_stable_v19_20110326.tgz
+#sudo apt-get uninstall remove jackd1 jackd2
+#sudo apt-get install libasound2-dev libportmidi-dev libportmidi0
+
+wget http://www.portaudio.com/archives/pa_stable_v19_20140130.tgz
+tar -xvf pa_stable_v19_20140130.tgz
 cd portaudio
 ./configure
 make
-sudo make install
+make install
 cd ..
-rm -r portaudio
 rm pa_stable_v19_20110326.tgz
-sudo mv /usr/local/lib/libportaudio.* /usr/lib/
+sudo cp /usr/local/lib/libportaudio.* /usr/lib/
 
 #wget http://downloads.sourceforge.net/project/portmedia/portmidi/217/portmidi-src-217.zip
 #unzip portmidi-src-217.zip
@@ -47,19 +53,6 @@ ctl.!default {
 ' >> /etc/asound.conf
 
 ####################
-# TTYMidi Install
-####################
-
-wget http://www.varal.org/ttymidi/ttymidi.tar.gz
-tar -zxvf ttymidi.tar.gz
-cd ttymidi/
-make
-sudo make install
-cd ..
-rm -r ttymidi
-cd ~/
-
-####################
 # Baud Rate Trickery
 ####################
 
@@ -74,8 +67,7 @@ init_uart_baud=38400' >> /boot/config.txt
 sudo echo 'dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait bcm2708.uart_clock=3000000' > /boot/cmdline.txt
 
 # Disable GETTY on 
-sudo sed -i '/T0:23:respawn:\/sbin\/getty -L ttyAMA0 115200 vt100/ s/^/# /' /etc/inittab > /dev/null
-
+#sudo sed -i '/T0:23:respawn:\/sbin\/getty -L ttyAMA0 115200 vt100/ s/^/# /' /etc/inittab > /dev/null
 
 
 ####################
