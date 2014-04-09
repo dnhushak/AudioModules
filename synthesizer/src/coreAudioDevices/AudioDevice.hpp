@@ -3,46 +3,71 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include <string.h>
 #include "Device.hpp"
+#include "DeviceManager.hpp"
+#include "AudioUtils.hpp"
 
 namespace synth {
-	typedef float bufType ;
 
 	class AudioDevice: public virtual Device {
 		public:
 			AudioDevice();
 
 			// The advance call used to fill a buffer
-			virtual float * advance(int);
+			virtual sample_t * advance(int);
 
 			// Perform whatever cleanup is necessary
 			virtual void cleanup();
 
 			// Resize the buffer of the audio device
-			virtual void resizeBuffer(int);
+			static void setBufferSize(int);
+			// Return the size of the buffer
+			static int getBufferSize();
 
 			// Change the sample rate of the audio device
-			void changeSampleRate(int);
-
-			// Return the size of the buffer
-			int getBufferSize();
-
+			static void setSampleRate(int);
 			// Return the sample rate
-			int getSampleRate();
+			static int getSampleRate();
+
+			// Audio Device Management
+
+			// Adding AudioDevices
+			void addAudioDevice(AudioDevice * newAudioDevice);
+			void addAudioDevice(int loc, AudioDevice * newAudioDevice);
+			void addAudioDevices(std::list<AudioDevice *> * newAudioDeviceList);
+
+			// Replacing AudioDevices
+			void replaceAudioDevice(int loc, AudioDevice * newAudioDevice);
+			void replaceAudioDevice(AudioDevice * oldAudioDevice, AudioDevice * newAudioDevice);
+
+			// Removing AudioDevices
+			void removeAudioDevice(AudioDevice * removeAudioDevice);
+			void removeAudioDevice(int loc);
+			void removeAllAudioDevices();
+
+			int hasSpace();
+			int getNumAudioDevices();
+			int getMaxNumAudioDevices();
+			void setMaxNumAudioDevices(int newMax);
 
 			virtual ~AudioDevice();
-
 		protected:
+			// Size of buffer
+			static int bufferSize;
+
+			// Sampling rate of the device
+			static int sampleRate;
+
 			// Set every value in the buffer to 0
 			void zeroBuffer();
 
-			// Size of buffer
-			int bufferSize;
-
 			// The buffer itself
-			float * buffer;
-			// Sampling rate of the device
-			int sampleRate;
+			sample_t * buffer;
+
+			// Device Manager
+			DeviceManager deviceMan;
+			std::list<Device *>::iterator audIter;
 
 	};
 }
