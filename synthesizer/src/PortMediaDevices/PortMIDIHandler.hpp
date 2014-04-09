@@ -36,6 +36,7 @@ namespace synth {
 			void StartCallback();
 			void StopCallback();
 		private:
+			void forward(MIDIMessage * message);
 
 			static void * Callback(void * args);
 

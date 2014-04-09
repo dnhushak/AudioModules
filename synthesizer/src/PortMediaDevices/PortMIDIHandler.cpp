@@ -14,12 +14,8 @@ namespace synth {
 
 	}
 
-	void PortMIDIHandler::affect(MIDIMessage* message){
-		deviceIter = begin();
-		while(deviceIter != end()) {
-			(*deviceIter)->affect(message);
-			deviceIter++;
-		}
+	void PortMIDIHandler::affect(MIDIMessage* message) {
+		writeMIDI(message);
 	}
 
 	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
@@ -37,7 +33,7 @@ namespace synth {
 	}
 
 	PmError PortMIDIHandler::disconnectMIDIStream() {
-		state=INACTIVE;
+		state = INACTIVE;
 		PmError err = Pm_Close(mstream);
 		if (err != pmNoError) {
 			return errorPortMIDI(err);
@@ -49,15 +45,14 @@ namespace synth {
 	}
 
 	void PortMIDIHandler::readMIDI() {
-		//std::cout << Pm_Poll(mstream);
 		while (Pm_Poll(mstream)) {
 			// Grab all MIDI events still in the queue
 			int count = Pm_Read(mstream, event, 32);
 			// Interpret each
 			for (int i = 0; i < count; i++) {
-				// Parse the MIDI and pass it to the affect method
+				// Parse the MIDI and forward it to each attached MIDI Device
 				MIDIMessage * message = parseMIDI(&event[i]);
-				affect(message);
+				forward(message);
 				free(message);
 			}
 		}
@@ -158,4 +153,11 @@ namespace synth {
 		return err;
 	}
 
+	void PortMIDIHandler::forward(MIDIMessage* message) {
+		deviceIter = begin();
+		while (deviceIter != end()) {
+			(*deviceIter)->affect(message);
+			deviceIter++;
+		}
+	}
 }
