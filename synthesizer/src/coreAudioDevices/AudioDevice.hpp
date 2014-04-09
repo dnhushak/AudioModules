@@ -8,6 +8,11 @@
 #include "AudioUtils.hpp"
 
 namespace synth {
+	// Size of buffer
+	static int bufferSize = 64;
+
+	// Sampling rate of the device
+	static int sampleRate = 44100;
 
 	class AudioDevice: public virtual Device {
 		public:
