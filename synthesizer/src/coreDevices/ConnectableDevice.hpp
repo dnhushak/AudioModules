@@ -2,6 +2,7 @@
 #define DEVICEMANAGER_HPP_
 #include <cstdlib>
 #include <list>
+#include <algorithm>
 
 namespace synth {
 	template<class A>
