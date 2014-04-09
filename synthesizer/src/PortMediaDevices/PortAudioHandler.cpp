@@ -165,16 +165,17 @@ namespace synth {
 			PaStreamCallbackFlags statusFlags, void *userData) {
 
 		// Not used, just removing -Wunused flags
-		inputBuffer = (sample_t*) inputBuffer;
+		inputBuffer = (float*) inputBuffer;
 
 		//TODO: get multichannel to work right
-		sample_t *out = (sample_t*) outputBuffer;
+		float *out = (float*) outputBuffer;
 		// Grab the supplied user data
 		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
 
-		for (unsigned int i = 0; i < framesPerBuffer; i++) {
-			*out++ = *(audio->advance(1));
-		}
+		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
+//		for (unsigned int i = 0; i < framesPerBuffer; i++) {
+//			*out++ = *(audio->advance(1));
+//		}
 
 		// Continue
 		return paContinue;
