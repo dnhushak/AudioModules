@@ -1,6 +1,8 @@
 #pragma once
 #include "MIDIDevice.hpp"
 #include <stdio.h>
+#include <cstdlib>
+#include <iostream>
 
 namespace synth {
 	

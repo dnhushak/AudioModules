@@ -15,6 +15,7 @@ namespace synth {
 		glissTime = 1000;
 		setMaxNumDevices(10);
 		sustain = PEDALUP;
+		pthread_mutex_init(&listLock, NULL);
 
 	}
 
@@ -156,12 +157,12 @@ namespace synth {
 				++deviceIter;
 			}
 		}
-		unlockList();
 
-		if (isEmpty()) {
+		if (polyMixer.isEmpty()) {
 			// Deactivate the Module
 			state = INACTIVE;
 		}
+		unlockList();
 
 	}
 
@@ -172,8 +173,8 @@ namespace synth {
 	void * Module::Cleaner(void * args) {
 		Module * mod = (Module *) args;
 		while (mod->getState() == ACTIVE) {
+			usleep(1000);
 			mod->cleanup();
-			usleep(100000);
 		}
 		return NULL;
 	}

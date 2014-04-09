@@ -9,7 +9,14 @@ namespace synth {
 	static const sample_t sampleMax = 1.0;
 	static const sample_t sampleMin = -1.0;
 
+	// Size of buffer
+	static int bufferSize = 64;
+
+	// Sampling rate of the device
+	static int sampleRate = 44100;
+
 }
+
 // Converts a straight I/O ratio to a db gain
 float ratioToDb(float ratio);
 

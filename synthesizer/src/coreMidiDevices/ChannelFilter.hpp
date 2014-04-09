@@ -1,9 +1,10 @@
 #pragma once
 #include "MIDIDevice.hpp"
+#include "ConnectableDevice.hpp"
 
 namespace synth {
 	
-	class ChannelFilter: public synth::MIDIDevice {
+	class ChannelFilter: public MIDIDevice, public ConnectableDevice<MIDIDevice> {
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);
@@ -14,6 +15,7 @@ namespace synth {
 			// Set the new channel, checking for correct channel numbers
 			void setChannel(int);
 		private:
+			int channelMatches(int);
 			int channel;
 	};
 

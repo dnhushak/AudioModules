@@ -225,9 +225,9 @@ int main(int argc, char *argv[]) {
 		// Create a midi Channel filter
 		synth::ChannelFilter * moduleFilter = new synth::ChannelFilter(i);
 		// Add the module to the channel filter outputs
-		moduleFilter->addMIDIDevice(newModule);
+		moduleFilter->addDevice(newModule);
 		// Add the channel filter to the PMhandler outputs
-		PMHandler->addMIDIDevice(moduleFilter);
+		PMHandler->addDevice(moduleFilter);
 		// Add the module to the master mixer
 		masterMixer->addDevice(newModule);
 		// Add a new module to the vector of modules
@@ -239,7 +239,7 @@ int main(int argc, char *argv[]) {
 	// Print incoming MIDI Connections
 	if (verbose) {
 		synth::MessagePrinter * printer = new synth::MessagePrinter();
-		PMHandler->addMIDIDevice(printer);
+		PMHandler->addDevice(printer);
 	}
 
 	/*** Set up the PA Handler. This is where the audio callback is ***/

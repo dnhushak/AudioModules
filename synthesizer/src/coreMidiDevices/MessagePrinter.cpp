@@ -2,8 +2,6 @@
 
 namespace synth {
 	MessagePrinter::MessagePrinter() {
-		// Cannot add devices to the Printer, nothing to do.
-		maxNumMIDIDevices = 0;
 	}
 
 	void MessagePrinter::affect(MIDIMessage * message) {

@@ -28,9 +28,12 @@ namespace synth {
 		 *  /                \
 		 * /                  \
 		 */
+
+		zeroBuffer();
 		if (!isEmpty()) {
 			// Initialize the buffer to the first audio device
-			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
+			memcpy(buffer, front()->advance(numSamples),
+					sizeof(sample_t) * numSamples);
 
 			for (int i = 0; i < numSamples; i++) {
 				switch (envState) {
@@ -70,7 +73,7 @@ namespace synth {
 						break;
 
 				}
-				// Apply the envelope multiplie (and cast it accordingly)
+				// Apply the envelope multiplier (and cast it accordingly)
 				buffer[i] *= (sample_t) envmult;
 				// Advance the envelope location
 				envloc++;
@@ -97,7 +100,7 @@ namespace synth {
 
 // Releases the envelope
 	void Envelope::releaseEnv() {
-		state = ACTIVE;
+		//state = ACTIVE;
 		envState = RELEASE;
 		envloc = 0;
 		Rslope = -(envmult / RsampCount);

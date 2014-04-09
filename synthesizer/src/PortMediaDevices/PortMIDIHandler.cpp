@@ -14,6 +14,14 @@ namespace synth {
 
 	}
 
+	void PortMIDIHandler::affect(MIDIMessage* message){
+		deviceIter = begin();
+		while(deviceIter != end()) {
+			(*deviceIter)->affect(message);
+			deviceIter++;
+		}
+	}
+
 	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
 
 		int count = Pm_CountDevices();
@@ -29,7 +37,7 @@ namespace synth {
 	}
 
 	PmError PortMIDIHandler::disconnectMIDIStream() {
-		MIDIstate = 0;
+		state=INACTIVE;
 		PmError err = Pm_Close(mstream);
 		if (err != pmNoError) {
 			return errorPortMIDI(err);
@@ -125,19 +133,16 @@ namespace synth {
 	}
 
 	void PortMIDIHandler::StopCallback() {
-		MIDIstate = 0;
-
-		printf("\nSet state to 0...");
+		state = INACTIVE;
 		pthread_join(callback_tid, NULL);
-
-		printf("\nCallback ended, closing stream...");
+		printf("\nMIDI Callback ended, closing stream...");
 	}
 
 	void * PortMIDIHandler::Callback(void * args) {
 		PortMIDIHandler * PMHandler = (PortMIDIHandler *) args;
-		while (PMHandler->getMIDIState()) {
+		while (PMHandler->getState()) {
 			PMHandler->readMIDI();
-			usleep(100	);
+			usleep(1000);
 		}
 
 		return NULL;

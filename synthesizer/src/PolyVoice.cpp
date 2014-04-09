@@ -15,8 +15,8 @@ namespace synth {
 	}
 
 	sample_t * PolyVoice::advance(int numSamples) {
+		zeroBuffer();
 		if (state == INACTIVE) {
-			zeroBuffer();
 			return buffer;
 		}
 

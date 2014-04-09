@@ -16,11 +16,12 @@ namespace synth {
 		if (message->statusType == SYSTEM) {
 			//System messages are channel independent
 		} else {
-			if (channel == -1 || message->channel == channel) {
-				//TODO: Make this an iterator
+			if (channelMatches(message->channel)) {
 				// If it is, forward it to all MIDI Devices
-				for (int i = 0; i < numMIDIDevices; i++) {
-					(*MIDIDeviceList)[i]->affect(message);
+				deviceIter = begin();
+				while(deviceIter != end()) {
+					(*deviceIter)->affect(message);
+					deviceIter++;
 				}
 			}
 		}
@@ -31,6 +32,10 @@ namespace synth {
 		if (newChannel > -2 && newChannel < 16) {
 			channel = newChannel;
 		}
+	}
+
+	int ChannelFilter::channelMatches(int channelToCheck){
+		return (channel == -1 || channelToCheck == channel);
 	}
 
 }

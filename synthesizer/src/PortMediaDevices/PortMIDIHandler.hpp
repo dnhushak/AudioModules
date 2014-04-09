@@ -1,17 +1,22 @@
 #include "portmidi.h"
 #include "MIDIDevice.hpp"
+#include "ConnectableDevice.hpp"
 #include <stdio.h>
 #include <unistd.h>
+#include <pthread.h>
+#include <iostream>
 
 namespace synth {
 	
-	class PortMIDIHandler: public MIDIDevice {
+	class PortMIDIHandler: public MIDIDevice, public ConnectableDevice<MIDIDevice> {
 		public:
 			PortMIDIHandler();
 
 			PmError connectMIDIStream(PmDeviceID devID);
 
 			PmError disconnectMIDIStream();
+
+			void affect(MIDIMessage * message);
 
 			// Read from the FIFO serial stream
 			void readMIDI();
@@ -33,7 +38,6 @@ namespace synth {
 		private:
 
 			static void * Callback(void * args);
-
 
 			PmError err;
 
