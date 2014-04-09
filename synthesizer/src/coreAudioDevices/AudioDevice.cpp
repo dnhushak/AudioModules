@@ -40,6 +40,6 @@ namespace synth {
 	}
 
 	AudioDevice::~AudioDevice() {
-		//free(buffer);
+		free(buffer);
 	}
 }

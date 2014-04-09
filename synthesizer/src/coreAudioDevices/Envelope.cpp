@@ -30,7 +30,8 @@ namespace synth {
 		 */
 		if (!isEmpty()) {
 			// Initialize the buffer to the first audio device
-			buffer = front()->advance(numSamples);
+			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
+
 			for (int i = 0; i < numSamples; i++) {
 				switch (envState) {
 					default:

@@ -12,7 +12,7 @@ namespace synth {
 		if (isEmpty()) {
 			zeroBuffer();
 		} else {
-			buffer = front()->advance(numSamples);
+			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
 			for (int i = 0; i < numSamples; i++) {
 				buffer[i] *= gain;
 			}

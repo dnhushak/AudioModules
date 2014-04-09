@@ -23,7 +23,8 @@ namespace synth {
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
 	sample_t * Ramp::advance(int numSamples) {
 		if (!isEmpty()) {
-			buffer = front()->advance(numSamples);
+			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
+
 			for (int i = 0; i < numSamples; i++) {
 				if (state == ACTIVE) {
 					rampmult += slope;
