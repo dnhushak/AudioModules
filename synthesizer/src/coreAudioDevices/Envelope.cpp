@@ -29,7 +29,6 @@ namespace synth {
 		 * /                  \
 		 */
 
-		zeroBuffer();
 		if (!isEmpty()) {
 			// Initialize the buffer to the first audio device
 			memcpy(buffer, front()->advance(numSamples),

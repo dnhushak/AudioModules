@@ -157,12 +157,12 @@ namespace synth {
 				++deviceIter;
 			}
 		}
+		unlockList();
 
 		if (polyMixer.isEmpty()) {
 			// Deactivate the Module
 			state = INACTIVE;
 		}
-		unlockList();
 
 	}
 
