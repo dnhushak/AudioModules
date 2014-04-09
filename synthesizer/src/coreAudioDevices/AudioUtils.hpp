@@ -2,12 +2,13 @@
 #define AUDIOUTILS_HPP_
 
 #include <math.h>
+#include <limits.h>
 
 namespace synth {
 	// Sample type, min, and max
-	typedef float sample_t;
-	static const sample_t sampleMax = 1.0;
-	static const sample_t sampleMin = -1.0;
+	typedef int sample_t;
+	static const sample_t sampleMax = INT_MAX;
+	static const sample_t sampleMin = INT_MIN;
 
 	// Size of buffer
 	static int bufferSize = 64;

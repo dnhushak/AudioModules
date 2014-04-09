@@ -9,7 +9,7 @@ namespace synth {
 		public:
 			Limiter();
 			sample_t * advance(int);
-			void setThreshold(sample_t);
+			void setThreshold(float);
 		private:
 			sample_t thresholdHi;
 			sample_t thresholdLo;

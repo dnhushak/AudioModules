@@ -32,45 +32,48 @@ std::vector<synth::Wavetable *> * GeneratesynthTables() {
 	tables->push_back(vibrasin);
 
 	//Divide 16 into four regions
-	int quarter = 4;
-	int half = 2 * quarter;
-	int three_fourths = 3 * quarter;
+	float quarter = 4;
+	float half = 2 * quarter;
+	float three_fourths = 3 * quarter;
 
 	//Cycle through the entirety of 16 and generate triangle, and square waves
 	//The triangle wave statement takes the current index of the for loop, casts it to a float (to do division), and scales it to do the correct math in triangle wave generation
-	for (int i = 0; i < 16; i++) {
-		sawtooth->setSample(i, (((float) i / 8) - 1));
+	for (float i = 0; i < 16; i++) {
+		sawtooth->setSample(i, (synth::sample_t) (synth::sampleMax * (((float) i / 8) - 1)));
 
 		//First half of the wave
 		if (i < half) {
-			square50->setSample(i, -1);
-			square25->setSample(i, -1);
-			triangle->setSample(i, -1 + (((float) i / 4)));
+			square50->setSample(i, synth::sampleMin);
+			square25->setSample(i, synth::sampleMin);
+			triangle->setSample(i, synth::sampleMin + (i/(quarter)) * synth::sampleMax);
 		}
 		//Third quarter of the wave
 		else if (i < three_fourths) {
-			square50->setSample(i, 1);
-			square25->setSample(i, -1);
-			triangle->setSample(i, 1 - ((((float) i - half) / 4)));
+			square50->setSample(i, synth::sampleMax);
+			square25->setSample(i, synth::sampleMin);
+			triangle->setSample(i, synth::sampleMax - ((i-half)/(quarter)) * synth::sampleMax);
 		}
 		//Fourth quarter of the wave
 		else {
-			square50->setSample(i, 1);
-			square25->setSample(i, 1);
-			triangle->setSample(i, 1 - ((((float) i - half) / 4)));
+			square50->setSample(i, synth::sampleMax);
+			square25->setSample(i, synth::sampleMax);
+			triangle->setSample(i, synth::sampleMax - ((i-half)/(quarter)) * synth::sampleMax);
 		}
+		std::cout << "Triangle sample #" << i << ": " << triangle->getSample(i) << " || "<< (i/(quarter))  <<"\n";
 	}
+	triangle->setSample(8, synth::sampleMax);
 	float rnd;
 	for (int i = 0; i < noise->getTableSize(); i++) {
-		rnd = ((-2) * ((float) rand() / RAND_MAX)) + 1;
+		rnd =((synth::sample_t)  ((-2) * ((float) rand() / RAND_MAX)) + 1);
 		noise->setSample(i, rnd);
 	}
 	float pi = 3.14159265359;
 	float samp;
 	for (int i = 0; i < 256; i++) {
-		samp = (sin((pi * 2 * (float) i) / 256));
+		samp = (synth::sample_t) (sin((pi * 2 * (float) i) / 256));
 		// Scale the vibrato
 		samp *= .01;
+		samp *= synth::sampleMax;
 		vibrasin->setSample(i, samp);
 	}
 	return tables;

@@ -32,7 +32,7 @@ namespace synth {
 	}
 
 	void Limiter::setThreshold(float newThreshold) {
-		thresholdHi = dbToRatio(newThreshold);
+		thresholdHi = dbToRatio(newThreshold) * sampleMax;
 		thresholdLo = -thresholdHi;
 		//std::cout << "New threshold is " << thresholdHi << "\n";
 	}

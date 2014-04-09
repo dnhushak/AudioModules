@@ -172,10 +172,10 @@ namespace synth {
 		// Grab the supplied user data
 		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
 
-		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
-//		for (unsigned int i = 0; i < framesPerBuffer; i++) {
-//			*out++ = *(audio->advance(1));
-//		}
+//		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
+		for (unsigned int i = 0; i < framesPerBuffer; i++) {
+			*out++ = ((float)(*(audio->advance(1))))/sampleMax;
+		}
 
 		// Continue
 		return paContinue;

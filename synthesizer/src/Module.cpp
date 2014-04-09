@@ -68,7 +68,7 @@ namespace synth {
 		polyGain.setGain(voice->volume);
 	}
 
-	float * Module::advance(int numSamples) {
+	sample_t * Module::advance(int numSamples) {
 		lockList();
 		buffer = polyGain.advance(numSamples);
 		unlockList();
