@@ -1,5 +1,6 @@
 #pragma once
 #include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 #include <vector>
 #include <iostream>
 
@@ -9,13 +10,13 @@ namespace synth {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
-	class Envelope: public AudioDevice {
+	class Envelope: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
-			Envelope(int, int);
+			Envelope();
 
 			// Advance/fill the buffer
-			float * advance(int);
+			sample_t * advance(int);
 
 			// Gets the current state
 			envState_t getEnvState();

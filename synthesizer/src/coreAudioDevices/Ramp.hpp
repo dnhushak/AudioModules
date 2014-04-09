@@ -1,19 +1,17 @@
 #pragma once
 #include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 #include <vector>
 #include <iostream>
 
 namespace synth {
-	class Ramp: public AudioDevice {
+	class Ramp: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
-			Ramp(int, int);
+			Ramp();
 
 			// Advance/fill the buffer
-			float * advance(int);
-
-			// Gets the current state
-			devState_t getState();
+			sample_t * advance(int);
 
 			// Starts the Ramp
 			void startRamp();
@@ -21,22 +19,18 @@ namespace synth {
 			// Stops the Ramp
 			void stopRamp();
 
-			// Sets/gets the envelope properties
+			// Sets/gets the ramp properties
 			void setTime(int);
 			int getTime();
 
 		private:
-
-			// Current state of ramp
-			devState_t state;
-
-			// time of ramp
+			// time of Ramp in ms
 			int time;
 
-			// Envelope location
+			// Ramp location
 			int ramploc;
 
-			// The current envelope multiplier (goes from 0 to 1)
+			// The current ramp multiplier (goes from 0 to 1)
 			float rampmult;
 
 			// Length (in samples) of the ramp

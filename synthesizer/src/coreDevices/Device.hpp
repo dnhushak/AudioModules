@@ -8,6 +8,7 @@ namespace synth {
 		INACTIVE, ACTIVE
 	};
 	
+	static int devIDCounter;
 	class Device {
 		public:
 			Device();
@@ -15,8 +16,12 @@ namespace synth {
 			// Return the state
 			virtual devState_t getState();
 
+			int getDevID();
+
 			virtual ~Device();
+
 		protected:
+			int devID;
 			devState_t state;
 	};
 

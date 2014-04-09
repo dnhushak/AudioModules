@@ -4,18 +4,20 @@
 
 namespace synth {
 	
-	class PortAudioHandler {
+	class PortAudioHandler : AudioDevice {
 		public:
+			sample_t * advance(int numSamples);
+
 			// Setup and start a PortAudio Stream
-			PaError connectAudioStream(int bufferSize, int sampleRate,
-					PaDeviceIndex outDevID, PaDeviceIndex inDevID,
-					int numOutChannels, int numInChannels, void *userData);
+			PaError connectAudioStream(PaDeviceIndex outDevID,
+					PaDeviceIndex inDevID, int numOutChannels,
+					int numInChannels, void *userData);
 
 			// Stop a PortAudio stream
 			PaError disconnectAudioStream();
 
 			// PortAudio Callback
-			static int paCallback(const void *inputBuffer,  void *outputBuffer,
+			static int paCallback(const void *inputBuffer, void *outputBuffer,
 					unsigned long framesPerBuffer,
 					const PaStreamCallbackTimeInfo* timeInfo,
 					PaStreamCallbackFlags statusFlags, void *userData);

@@ -1,11 +1,13 @@
 #include "PortAudioHandler.hpp"
 
 namespace synth {
-
+	sample_t * PortAudioHandler::advance(int numSamples){
+		return buffer;
+	}
 	// Setup and start a PortAudio Stream
-	PaError PortAudioHandler::connectAudioStream(int bufferSize, int sampleRate,
-			PaDeviceIndex outDevID, PaDeviceIndex inDevID, int numOutChannels,
-			int numInChannels, void *userData) {
+	PaError PortAudioHandler::connectAudioStream(PaDeviceIndex outDevID,
+			PaDeviceIndex inDevID, int numOutChannels, int numInChannels,
+			void *userData) {
 
 		// Declare output parameters
 		PaStreamParameters * outputParameters, *inputParameters;
@@ -163,10 +165,10 @@ namespace synth {
 			PaStreamCallbackFlags statusFlags, void *userData) {
 
 		// Not used, just removing -Wunused flags
-		float *in = (float*) inputBuffer;
+		inputBuffer = (sample_t*) inputBuffer;
 
 		//TODO: get multichannel to work right
-		float *out = (float*) outputBuffer;
+		sample_t *out = (sample_t*) outputBuffer;
 		// Grab the supplied user data
 		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
 

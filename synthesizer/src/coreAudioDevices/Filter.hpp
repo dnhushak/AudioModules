@@ -1,10 +1,11 @@
-#include "AudioEffect.hpp"
+#include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 namespace synth {
 
-	class Filter: public AudioEffect {
+	class Filter: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
 			Filter();
 
-			float * advance(int);
+			sample_t * advance(int);
 	};
 }

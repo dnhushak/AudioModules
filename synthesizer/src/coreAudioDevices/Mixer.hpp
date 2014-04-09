@@ -1,19 +1,17 @@
 #pragma once
-#include "AudioEffect.hpp"
+#include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 #include <list>
 #include <iterator>
 #include <iostream>
 
 namespace synth {
-	class Mixer: public AudioEffect {
+	class Mixer: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
-			Mixer(int, int);
+			Mixer();
 			// Advance by a given number of samples (in this case summing all in the AudioList
-			float * advance(int);
-
-			// Sets the maximum number of devices
-			void setMaxNumAudioDevices(int);
+			sample_t * advance(int);
 
 	};
 }

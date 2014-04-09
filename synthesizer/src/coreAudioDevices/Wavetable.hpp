@@ -1,5 +1,8 @@
-#pragma once
+#ifndef WAVETABLE_HPP_
+#define WAVETABLE_HPP_
 #include <cstdlib>
+#include <string.h>
+#include "AudioUtils.hpp"
 
 namespace synth {
 	
@@ -9,27 +12,29 @@ namespace synth {
 			Wavetable(int);
 
 			// Return the sample value at a given location in the table
-			float getSample(int);
+			sample_t getSample(int);
 
 			// Set a sample to a value at a location
-			void setSample(int, float);
+			void setSample(int, sample_t);
 
 			// Return the whole table
-			float * getTable();
+			sample_t * getTable();
 
 			// Return the table size
 			// Note, no setting of table size, very bad to do this. Remake a new wavetable if using a different size
 			int getTableSize();
 
 			// Insert a new table
-			void populateTable(float *, int);
+			void populateTable(sample_t *, int);
 
 			~Wavetable();
 
 		protected:
 			int tableSize;
 
-			float * table;
+			sample_t * table;
 	};
 
 }
+
+#endif //WAVETABLE_HPP_

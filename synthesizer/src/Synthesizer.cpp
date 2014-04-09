@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include "Limiter.hpp"
 #include "AudioDevice.hpp"
-#include "AudioEffect.hpp"
 #include <pthread.h>
 
 std::vector<synth::Wavetable *> * GeneratesynthTables() {
@@ -85,8 +84,6 @@ int main(int argc, char *argv[]) {
 	printf("Generating PortAudio Handler...\n");
 	synth::PortAudioHandler * PAHandler = new synth::PortAudioHandler();
 
-	int bufferSize = 1024;
-	int sampleRate = 41000;
 	int numOutChannels = 1;
 	int numInChannels = 0;
 	int numModules = 5;
@@ -121,11 +118,11 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'b':
 				// Buffer Size Argument
-				bufferSize = atoi(optarg);
+				synth::AudioDevice::setBufferSize(atoi(optarg));
 				break;
 			case 's':
 				// Sample Rate argument
-				sampleRate = atoi(optarg);
+				synth::AudioDevice::setSampleRate(atoi(optarg));
 				break;
 			case 'c':
 				// Audio Channels
@@ -145,10 +142,10 @@ int main(int argc, char *argv[]) {
 
 	// The master mixer for the whole synth
 	printf("Generating mixer\n");
-	synth::Limiter * masterLimiter = new synth::Limiter(bufferSize, sampleRate);
-	synth::Mixer * masterMixer = new synth::Mixer(bufferSize, sampleRate);
+	synth::Limiter * masterLimiter = new synth::Limiter();
+	synth::Mixer * masterMixer = new synth::Mixer();
 
-	masterLimiter->addAudioDevice(masterMixer);
+	masterLimiter->addDevice(masterMixer);
 	// All of the wavetables for the synthophone
 	printf("Generating wavetables\n");
 	std::vector<synth::Wavetable *> * tables = GeneratesynthTables();
@@ -222,7 +219,7 @@ int main(int argc, char *argv[]) {
 	printf("Generating modules\n");
 	// Modules
 	for (int i = 0; i < numModules; i++) {
-		synth::Module * newModule = new synth::Module(bufferSize, sampleRate);
+		synth::Module * newModule = new synth::Module();
 		// Set voice for each module
 		newModule->setVoice(voices->at(i));
 		// Create a midi Channel filter
@@ -232,7 +229,7 @@ int main(int argc, char *argv[]) {
 		// Add the channel filter to the PMhandler outputs
 		PMHandler->addMIDIDevice(moduleFilter);
 		// Add the module to the master mixer
-		masterMixer->addAudioDevice(newModule);
+		masterMixer->addDevice(newModule);
 		// Add a new module to the vector of modules
 		modules->push_back(newModule);
 	}
@@ -247,8 +244,8 @@ int main(int argc, char *argv[]) {
 
 	/*** Set up the PA Handler. This is where the audio callback is ***/
 	PaError paerr;
-	paerr = PAHandler->connectAudioStream(bufferSize, sampleRate, AudioOutDevID,
-			AudioInDevID, numOutChannels, numInChannels, masterLimiter);
+	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
+			numOutChannels, numInChannels, masterLimiter);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);

@@ -2,23 +2,27 @@
 
 namespace synth {
 	
-	Limiter::Limiter(int initBufferSize, int initSampleRate) {
-		resizeBuffer(initBufferSize);
-		changeSampleRate(initSampleRate);
+	Limiter::Limiter() {
 		setThreshold(-3);
-		maxNumAudioDevices = 1;
+		setMaxNumDevices(1);
 	}
 
-	float * Limiter::advance(int numSamples) {
-		if ((int) audioDeviceList->size() > 0) {
-			buffer = audioDeviceList->front()->advance(numSamples);
+	sample_t * Limiter::advance(int numSamples) {
+		if (!isEmpty()) {
+
+			// Get the buffer from the connected device
+			buffer = front()->advance(numSamples);
+
+			// Go through each sample in the buffer
 			for (int i = 0; i < numSamples; i++) {
-				if (buffer[i] < 0 && buffer[i] < thresholdLo) {
+				// If lower than low threshold...
+				if (buffer[i] < thresholdLo) {
+					// ... Set value to the low threshold
 					buffer[i] = thresholdLo;
-					//std::cout << "Lowthresh\n";
-				} else if (buffer[i] > 0 && buffer[i] > thresholdHi) {
+				// Else if higher than the high threshold...
+				} else if (buffer[i] > thresholdHi) {
+					// ... Set value to high threshold
 					buffer[i] = thresholdHi;
-					//std::cout << "Hithresh\n";
 				}
 			}
 		} else {

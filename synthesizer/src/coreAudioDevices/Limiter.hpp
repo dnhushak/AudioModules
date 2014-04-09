@@ -1,18 +1,18 @@
 #ifndef LIMITER_HPP_
 #define LIMITER_HPP_
-#include "AudioEffect.hpp"
-#include "AudioUtils.hpp"
+#include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 
 namespace synth {
 	
-	class Limiter: public synth::AudioEffect {
+	class Limiter: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
-			Limiter(int, int);
-			float * advance(int);
-			void setThreshold(float);
+			Limiter();
+			sample_t * advance(int);
+			void setThreshold(sample_t);
 		private:
-			float thresholdHi;
-			float thresholdLo;
+			sample_t thresholdHi;
+			sample_t thresholdLo;
 	};
 
 }

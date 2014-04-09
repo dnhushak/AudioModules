@@ -2,20 +2,10 @@
 
 namespace synth {
 
-	Module::Module(int initBufferSize, int initSampleRate) :
-					MIDIDevice(), AudioEffect() {
-
+	Module::Module() {
 		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
 		// ModuleGain inputs to the gliss/arpegg/polyMixer outputs
-
-		resizeBuffer(initBufferSize);
-		changeSampleRate(initSampleRate);
-
-		polyMixer = new Mixer(bufferSize, sampleRate);
-		// We use the Module's device list so we can access and edit later
-		polyMixer->setAudioDeviceList(audioDeviceList);
-		ModuleGain = new Gain(bufferSize, sampleRate);
-		ModuleGain->addAudioDevice(polyMixer);
+		polyGain.addDevice(&polyMixer);
 		state = INACTIVE;
 		voice = NULL;
 		cleaner_tid = NULL;
@@ -23,8 +13,7 @@ namespace synth {
 		gliss_en = false;
 		arpTime = 100;
 		glissTime = 1000;
-
-		numAudioDevices = 0;
+		setMaxNumDevices(10);
 		sustain = PEDALUP;
 
 	}
@@ -75,18 +64,17 @@ namespace synth {
 		gliss_en = voice->gliss_en;
 		arpTime = voice->arpTime;
 		glissTime = voice->glissTime;
-		ModuleGain->setGain(voice->volume);
+		polyGain.setGain(voice->volume);
 	}
 
 	float * Module::advance(int numSamples) {
 		lockList();
-		buffer = ModuleGain->advance(numSamples);
+		buffer = polyGain.advance(numSamples);
 		unlockList();
 		return buffer;
 	}
 
 	void Module::activatePolyVoice(int note) {
-
 		// Start the cleaner thread if currently inactive
 		if (state == INACTIVE) {
 			state = ACTIVE;
@@ -94,37 +82,34 @@ namespace synth {
 		}
 
 		// Check for existing note in the active polyvoices
-		if (numAudioDevices > 0) {
+		if (!isEmpty()) {
 			lockList();
-			audIter = audioDeviceList->begin();
+			deviceIter = polyMixer.begin();
 			// Go from beginning to end of the list
-			while (audIter != audioDeviceList->end()) {
+			while (deviceIter != polyMixer.end()) {
 
 				// If the polyvoice has the same note as the new incoming note...
-				if (((PolyVoice*) (*audIter))->getNote() == note) {
-
+				if (((PolyVoice*) (*deviceIter))->getNote() == note) {
 					// ... Restart the polyVoice, unlock and return
-					((PolyVoice*) (*audIter))->startPolyVoice(note);
+					((PolyVoice*) (*deviceIter))->startPolyVoice(note);
 					unlockList();
 					return;
 				} else {
 					// ...Or just advance the iterator
-					++audIter;
+					++deviceIter;
 				}
 			}
 			unlockList();
 		}
 
-		if (numAudioDevices < 10) {
+		if (hasSpace()) {
 			// If polyVoice with that note wasn't found, Create new polyvoice, and set its parameters
-			PolyVoice * newPolyVoice = new PolyVoice(bufferSize, sampleRate);
+			PolyVoice * newPolyVoice = new PolyVoice;
 			newPolyVoice->setVoice(voice);
 			newPolyVoice->startPolyVoice(note);
-
 			lockList();
 			// Add new polyvoice to the device list
-			audioDeviceList->push_front(newPolyVoice);
-			numAudioDevices = audioDeviceList->size();
+			polyMixer.addDevice(newPolyVoice);
 			unlockList();
 		}
 	}
@@ -132,19 +117,19 @@ namespace synth {
 	void Module::releasePolyVoice(int note) {
 		// Release the polyVoice
 		lockList();
-		audIter = audioDeviceList->begin();
+		deviceIter = polyMixer.begin();
 		// Go from beginning to end of the list
-		while (audIter != audioDeviceList->end()) {
+		while (deviceIter != polyMixer.end()) {
 
 			// Find the polyvoice with the given note...
-			if (((PolyVoice*) (*audIter))->getNote() == note) {
+			if (((PolyVoice*) (*deviceIter))->getNote() == note) {
 				// ... Release the polyVoice, unlock and return
-				((PolyVoice*) (*audIter))->releasePolyVoice();
+				((PolyVoice*) (*deviceIter))->releasePolyVoice();
 				unlockList();
 				return;
 			} else {
 				// ...Or just advance the iterator
-				++audIter;
+				++deviceIter;
 			}
 		}
 		unlockList();
@@ -154,27 +139,26 @@ namespace synth {
 		// Lock the list to prevent data races
 
 		lockList();
-		audIter = audioDeviceList->begin();
+		deviceIter = polyMixer.begin();
 
 		// Go from beginning to end of the list
-		while (audIter != audioDeviceList->end()) {
+		while (deviceIter != polyMixer.end()) {
 			// If the polyvoice is inactive...
-			if ((*audIter)->getState() == INACTIVE) {
-				PolyVoice * toErase = (PolyVoice*) *audIter;
+			if ((*deviceIter)->getState() == INACTIVE) {
+				PolyVoice * toErase = (PolyVoice*) *deviceIter;
 				// ... Erase it and set the iterator to the next item
-				audIter = audioDeviceList->erase(audIter);
-
+				++deviceIter;
+				// This is runtime O(n^2) right now...
+				polyMixer.removeDevice(toErase);
 				delete toErase;
 			} else {
 				// Or just advance the iterator
-				++audIter;
+				++deviceIter;
 			}
 		}
-		// Recount the number of devices
-		numAudioDevices = audioDeviceList->size();
 		unlockList();
 
-		if (numAudioDevices == 0) {
+		if (isEmpty()) {
 			// Deactivate the Module
 			state = INACTIVE;
 		}
@@ -194,9 +178,15 @@ namespace synth {
 		return NULL;
 	}
 
+	void Module::lockList() {
+		pthread_mutex_lock(&listLock);
+	}
+
+	void Module::unlockList() {
+		pthread_mutex_unlock(&listLock);
+	}
+
 	Module::~Module() {
 		pthread_join(cleaner_tid, NULL);
-		delete polyMixer;
-		delete ModuleGain;
 	}
 }

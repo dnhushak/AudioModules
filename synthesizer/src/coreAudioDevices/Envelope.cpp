@@ -1,12 +1,11 @@
 #include "Envelope.hpp"
 namespace synth {
-	Envelope::Envelope(int initBufferSize, int initSampleRate) {
-		resizeBuffer(initBufferSize);
-		changeSampleRate(initSampleRate);
+	Envelope::Envelope() {
+		// Restrict to only one audio device;
+		setMaxNumDevices(1);
 
 		// Initialize state to INIT
 		envState = INIT;
-
 		envmult = 0.0;
 		setRelease(100);
 		setAttack(100);
@@ -14,8 +13,8 @@ namespace synth {
 		setSustain(.7);
 	}
 
-// Advance the envelope. Returns a buffer holding the envelope multiplier values
-	float * Envelope::advance(int numSamples) {
+	// Advance the envelope. Returns a buffer holding the envelope multiplier values
+	sample_t * Envelope::advance(int numSamples) {
 
 		/**
 		 * This is the ADSR "state machine"
@@ -29,46 +28,55 @@ namespace synth {
 		 *  /                \
 		 * /                  \
 		 */
-		for (int i = 0; i < numSamples; i++) {
-			switch (envState) {
-				default:
-					envmult = 0.0;
-					break;
-				case ATTACK:
-					envmult += Aslope;
-					// When the evelope location has hit the number of samples, do a state transition
-					if (envloc >= AsampCount) {
-						envloc = 0;
-						envState = DECAY;
-					}
-					break;
+		if (!isEmpty()) {
+			// Initialize the buffer to the first audio device
+			buffer = front()->advance(numSamples);
+			for (int i = 0; i < numSamples; i++) {
+				switch (envState) {
+					default:
+						envmult = 0.0;
+						break;
+					case ATTACK:
+						envmult += Aslope;
+						// When the evelope location has hit the number of samples, do a state transition
+						if (envloc >= AsampCount) {
+							envloc = 0;
+							envState = DECAY;
+						}
+						break;
 
-				case DECAY:
-					envmult += Dslope;
-					// When the evelope location has hit the number of samples, do a state transition
-					if (envloc >= DsampCount) {
-						envloc = 0;
-						envState = SUSTAIN;
-					}
-					break;
+					case DECAY:
+						envmult += Dslope;
+						// When the evelope location has hit the number of samples, do a state transition
+						if (envloc >= DsampCount) {
+							envloc = 0;
+							envState = SUSTAIN;
+						}
+						break;
 
-				case SUSTAIN:
-					// Sustain won't automatically transition the state. The state will change on note release.
-					envmult = sustain;
-					break;
+					case SUSTAIN:
+						// Sustain won't automatically transition the state. The state will change on note release.
+						envmult = sustain;
+						break;
 
-				case RELEASE:
-					envmult += Rslope;
-					// When the evelope location has hit the number of samples, do a state transition
-					if (envloc >= RsampCount) {
-						state = INACTIVE;
-						envState = DONE;
-					}
-					break;
+					case RELEASE:
+						envmult += Rslope;
+						// When the evelope location has hit the number of samples, do a state transition
+						if (envloc >= RsampCount) {
+							state = INACTIVE;
+							envState = DONE;
+						}
+						break;
 
+				}
+				// Apply the envelope multiplie (and cast it accordingly)
+				buffer[i] *= (sample_t) envmult;
+				// Advance the envelope location
+				envloc++;
 			}
-			buffer[i] = envmult;
-			envloc++;
+		} else {
+			// If no devices connected to envelope
+			zeroBuffer();
 		}
 		return buffer;
 	}

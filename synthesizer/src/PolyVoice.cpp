@@ -2,23 +2,19 @@
 
 namespace synth {
 
-	PolyVoice::PolyVoice(int initBufferSize, int initSampleRate) {
-		resizeBuffer(initBufferSize);
-		changeSampleRate(initSampleRate);
-		osc = Oscillator(bufferSize, sampleRate);
-		vib = Oscillator(bufferSize, sampleRate);
-		osc_env = Envelope(bufferSize, sampleRate);
-		vib_ramp = Ramp(bufferSize, sampleRate);
+	PolyVoice::PolyVoice() {
 		note = 0;
 		baseFrequency = 0;
 		vibmult = 0;
 		vib_en = true;
+		osc_env.addDevice(&osc);
+		vib_ramp.addDevice(&vib);
 	}
 
 	PolyVoice::~PolyVoice() {
 	}
 
-	float * PolyVoice::advance(int numSamples) {
+	sample_t * PolyVoice::advance(int numSamples) {
 		if (state == INACTIVE) {
 			zeroBuffer();
 			return buffer;
@@ -29,15 +25,10 @@ namespace synth {
 		 * oscillator within the callback
 		 */
 		for (int i = 0; i < numSamples; i++) {
-			// Grab the oscillator sample
-			buffer[i] = (osc.advance(1))[0];
-			// Apply the oscillator envelope
-			buffer[i] *= (osc_env.advance(1))[0];
+			// Grab the oscillator/envelope sample
+			buffer[i] = (osc_env.advance(1))[0];
 
 			if (vib_en) {
-				// Grab the sine oscillator
-				vibmult = (vib.advance(1))[0];
-				// Grab the envelope for vibrato
 				vibmult *= (vib_ramp.advance(1))[0];
 				// Add 1 (to prevent 0 and negative frequencies!)
 				vibmult += 1;

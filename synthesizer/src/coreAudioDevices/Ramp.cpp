@@ -1,11 +1,8 @@
 #include "Ramp.hpp"
 namespace synth {
-	Ramp::Ramp(int initBufferSize, int initSampleRate) {
-		changeSampleRate(initSampleRate);
-		resizeBuffer(initBufferSize);
-
-		// Initialize state to INIT
-		state = ACTIVE;
+	Ramp::Ramp() {
+		// Restrict to only one audio device;
+		setMaxNumDevices(1);
 
 		// time of ramp
 		time = 0;
@@ -23,29 +20,30 @@ namespace synth {
 		slope = .01;
 	}
 
-// Advance the rampelope. Returns a buffer holding the rampelope multiplier values
-	float * Ramp::advance(int numSamples) {
-		for (int i = 0; i < numSamples; i++) {
-			if (state == ACTIVE) {
-				rampmult += slope;
-				// When the evelope location has hit the number of samples, do a state transition
-				if (ramploc >= sampCount) {
-					state = INACTIVE;
-					ramploc = 0;
+	// Advance the ramp. Returns a buffer of the new ramp-scaled values
+	sample_t * Ramp::advance(int numSamples) {
+		if (!isEmpty()) {
+			buffer = front()->advance(numSamples);
+			for (int i = 0; i < numSamples; i++) {
+				if (state == ACTIVE) {
+					rampmult += slope;
+					// When the evelope location has hit the number of samples, do a state transition
+					if (ramploc >= sampCount) {
+						state = INACTIVE;
+						ramploc = 0;
+					}
 				}
+				buffer[i] *= (sample_t) rampmult;
+				ramploc++;
 			}
-			buffer[i] = rampmult;
-			ramploc++;
+		} else {
+			// If no devices connected
+			zeroBuffer();
 		}
 		return buffer;
 	}
 
-// Gets the state of the ramp
-	devState_t Ramp::getState() {
-		return state;
-	}
-
-// Starts the rampelope
+	// Starts the ramp
 	void Ramp::startRamp() {
 		state = ACTIVE;
 		rampmult = 0.0;
@@ -53,7 +51,7 @@ namespace synth {
 		slope = (1.0 - rampmult) / sampCount;
 	}
 
-// Releases the rampelope
+	// Releases the ramp
 	void Ramp::stopRamp() {
 		state = INACTIVE;
 		ramploc = 0;
@@ -61,8 +59,10 @@ namespace synth {
 
 	/*** Getters and setters ***/
 	void Ramp::setTime(int newTime) {
-		time = newTime;
-		sampCount = (time * sampleRate) / 1000;
+		if (newTime > 0) {
+			time = newTime;
+			sampCount = (time * sampleRate) / 1000;
+		}
 	}
 
 	int Ramp::getTime() {

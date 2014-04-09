@@ -1,15 +1,15 @@
-#include "AudioEffect.hpp"
-#include "AudioUtils.hpp"
-#include <vector>
 #include <iostream>
+#include <vector>
+#include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 
 namespace synth {
 	
-	class Gain: public AudioEffect {
+	class Gain: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
-			Gain(int, int);
+			Gain();
 
-			float * advance(int);
+			sample_t * advance(int);
 
 			void setGain(float);
 

@@ -13,10 +13,10 @@ namespace synth {
 	class PolyVoice: public AudioDevice {
 		public:
 			// Constructor
-			PolyVoice(int, int);
+			PolyVoice();
 
 			// Advance for callback
-			float * advance(int);
+			sample_t * advance(int);
 
 			// Return the current state of the polyvoice
 			devState_t getState();

@@ -1,8 +1,9 @@
 #pragma once
 #include "PolyVoice.hpp"
 #include "Mixer.hpp"
-#include "AudioEffect.hpp"
+#include "AudioDevice.hpp"
 #include "MIDIDevice.hpp"
+#include "ConnectableDevice.hpp"
 #include "Voice.hpp"
 #include "Gain.hpp"
 #include <vector>
@@ -16,11 +17,11 @@ namespace synth {
 		PEDALUP, PEDALDOWN
 	};
 
-	class Module: public MIDIDevice, public AudioEffect {
+	class Module: public MIDIDevice, public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
-			Module(int, int);
+			Module();
 
-			float * advance(int);
+			sample_t * advance(int);
 
 			void affect(MIDIMessage *);
 
@@ -32,6 +33,10 @@ namespace synth {
 
 			// Removes any inactive polyVoices
 			void cleanup();
+
+			void lockList();
+
+			void unlockList();
 
 			~Module();
 
@@ -51,8 +56,9 @@ namespace synth {
 			int arpTime;
 			int glissTime;
 			sustain_t sustain;
-			synth::Mixer * polyMixer;
-			synth::Gain * ModuleGain;
+			synth::Mixer polyMixer;
+			synth::Gain polyGain;
 
+			pthread_mutex_t listLock;
 	};
 }

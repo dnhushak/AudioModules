@@ -4,9 +4,9 @@ namespace synth {
 
 	}
 	
-	float * Filter::advance(int numSamples) {
-		if (getNumAudioDevices() > 0) {
-			return audioDeviceList->front()->advance(numSamples);
+	sample_t * Filter::advance(int numSamples) {
+		if (!isEmpty()) {
+			return front()->advance(numSamples);
 		} else {
 			zeroBuffer();
 			return buffer;

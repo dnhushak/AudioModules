@@ -3,7 +3,7 @@ CXX = g++
 LDFLAGS = -Wall -pedantic -Wextra
 PAFLAGS = -lportaudio
 PMFLAGS = -lportmidi
-CFLAGS = -O3 -g 
+CFLAGS = -O3 -g
 
 #File Extensions
 HEADER = .hpp

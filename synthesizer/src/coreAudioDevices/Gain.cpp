@@ -2,22 +2,20 @@
 
 namespace synth {
 
-	Gain::Gain(int initBufferSize, int initSampleRate) {
-		resizeBuffer(initBufferSize);
-		changeSampleRate(initSampleRate);
-		maxNumAudioDevices = 1;
+	Gain::Gain() {
+		setMaxNumDevices(1);
 		// Default gain to -6 db
 		setGain(-6);
 	}
 
-	float * Gain::advance(int numSamples) {
-		if (numAudioDevices > 0) {
-			buffer = audioDeviceList->front()->advance(numSamples);
+	sample_t * Gain::advance(int numSamples) {
+		if (isEmpty()) {
+			zeroBuffer();
+		} else {
+			buffer = front()->advance(numSamples);
 			for (int i = 0; i < numSamples; i++) {
 				buffer[i] *= gain;
 			}
-		} else {
-			zeroBuffer();
 		}
 		return buffer;
 	}

@@ -2,9 +2,7 @@
 
 namespace synth {
 // Constructor. Sets buffer size and sample rate
-	Oscillator::Oscillator(int initBufferSize, int initSampleRate) {
-		resizeBuffer(initBufferSize);
-		changeSampleRate(initSampleRate);
+	Oscillator::Oscillator() {
 
 		phase = 0;
 
@@ -32,7 +30,7 @@ namespace synth {
 	}
 
 // Returns a buffer of sample values based on oscillation
-	float * Oscillator::advance(int numSamples) {
+	sample_t * Oscillator::advance(int numSamples) {
 		for (int i = 0; i < numSamples; i++) {
 			phaseTruncated = phase >> phaseTruncateAmt;
 			buffer[i] = wavetable->getSample(phaseTruncated);

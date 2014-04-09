@@ -4,11 +4,11 @@ namespace synth {
 	
 	Wavetable::Wavetable(int initTableSize) {
 		tableSize = initTableSize;
-		table = (float*) malloc(sizeof(float) * tableSize);
+		table = (sample_t*) malloc(sizeof(sample_t) * tableSize);
 	}
 
-// Get a sample value at a specified index
-	float Wavetable::getSample(int index) {
+	// Get a sample value at a specified index
+	sample_t Wavetable::getSample(int index) {
 		if (index < tableSize) {
 			return table[index];
 		} else {
@@ -16,27 +16,30 @@ namespace synth {
 		}
 	}
 
-// Set a sample to a value at a specified index
-	void Wavetable::setSample(int index, float newVal) {
+	// Set a sample to a value at a specified index
+	void Wavetable::setSample(int index, sample_t newVal) {
 		if (index < tableSize) {
 			table[index] = newVal;
 		}
 	}
 
-// Get the whole table
-	float * Wavetable::getTable() {
+	// Get the whole table
+	sample_t * Wavetable::getTable() {
 		return table;
 	}
 
-// Get the wavetable size
+	// Get the wavetable size
 	int Wavetable::getTableSize() {
 		return tableSize;
 	}
 
-// Set the table to a new table
-	void Wavetable::populateTable(float * newTable, int newSize) {
-		tableSize = newSize;
-		table = newTable;
+	// Copies a table from another table
+	void Wavetable::populateTable(sample_t * newTable, int newSize) {
+		if(newSize!=tableSize){
+			table = (sample_t*) realloc(table, sizeof(sample_t) * newSize);
+			tableSize = newSize;
+		}
+		memcpy(table, newTable, tableSize);
 	}
 
 	Wavetable::~Wavetable() {

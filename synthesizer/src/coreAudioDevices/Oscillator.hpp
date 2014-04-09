@@ -1,5 +1,5 @@
 #pragma once
-#include "AudioEffect.hpp"
+#include "AudioDevice.hpp"
 #include "Wavetable.hpp"
 #include <vector>
 #include <iostream>
@@ -10,10 +10,10 @@ namespace synth {
 	class Oscillator: public AudioDevice {
 		public:
 			// Constructor
-			Oscillator(int, int);
+			Oscillator();
 
 			// Advance by a given number of samples (in this case summing all in the AudioList
-			float * advance(int);
+			sample_t * advance(int);
 
 			// Based on the frequency and sample rate, determine how much to advance the phase register
 			void setFrequency(float);
