@@ -11,9 +11,7 @@ namespace synth {
 	}
 	// Set every value in buffer to 0
 	void AudioDevice::zeroBuffer() {
-		for (int i = 0; i < bufferSize; i++) {
-			buffer[i] = 0.0;
-		}
+		memset(buffer, 0.0, sizeof(sample_t)*bufferSize);
 	}
 
 	// Resize the buffer of the audio device
