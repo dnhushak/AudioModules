@@ -262,7 +262,7 @@ int main(int argc, char *argv[]) {
 	/*** Set up the PM handler ***/
 	PMHandler->StartCallback();
 	PmError pmerr;
-	pmerr = PMHandler->connectMIDIStream(MIDIDevID);
+	pmerr = PMHandler->openMIDIInput(MIDIDevID);
 	if (pmerr != pmNoError) {
 		std::cout << "Port MIDI Error";
 		exit(0);

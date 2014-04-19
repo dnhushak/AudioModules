@@ -17,41 +17,41 @@
 /******************************************************************************/
 /* Channel Selection Buttons and LEDs                                         */
 /******************************************************************************/
-const int REDBUTTON = A1;
-const int YELBUTTON = A0;
-const int GRNBUTTON = A3;
-const int BLUBUTTON = A2;
-const int WHTBUTTON = A5;
+const int REDBUTTON = 22;
+const int YELBUTTON = 23;
+const int GRNBUTTON = 24;
+const int BLUBUTTON = 25;
+const int WHTBUTTON = 26;
 
-const int REDLED = 39;
-const int YELLED = 38;
-const int GRNLED = 37;
-const int BLULED = 36;
-const int WHTLED = 35;
+const int REDLED = 2;
+const int YELLED = 3;
+const int GRNLED = 4;
+const int BLULED = 5;
+const int WHTLED = 6;
 
 /******************************************************************************/
 /* Channel Edit Buttons, Encoders and LEDs                                    */
 /******************************************************************************/
 
 // Arpgeggio Controls
-const int ARPBUTTON = A4; // Button
-const int ARPLEDRED = 34; // Red LED
-const int ARPLEDGRN = 33; // Green LED
-const int ARPLEDBLU = 32; // Blue LED
-const int ARPENCODERA = 4; // Encoder A pin
-const int ARPENCODERB = 5; // Encoder B pin
+const int ARPBUTTON = 27; // Button
+const int ARPLEDRED = 7; // Red LED
+const int ARPLEDGRN = 8; // Green LED
+const int ARPLEDBLU = 9; // Blue LED
+const int ARPENCODERA = 35; // Encoder A pin
+const int ARPENCODERB = 36; // Encoder B pin
 
 // Glissando Controls
-const int GLISSBUTTON = A7; // Button
-const int GLISSLEDRED = 31; // Red LED
-const int GLISSLEDGRN = 30; // Green LED
-const int GLISSLEDBLU = 29; // Blue LED
-const int GLISSENCODERA = 6; // Encoder A pin
-const int GLISSENCODERB = 7; // Encoder B pin
+const int GLISSBUTTON = 28; // Button
+const int GLISSLEDRED = 10; // Red LED
+const int GLISSLEDGRN = 11; // Green LED
+const int GLISSLEDBLU = 12; // Blue LED
+const int GLISSENCODERA = 37; // Encoder A pin
+const int GLISSENCODERB = 38; // Encoder B pin
 
 // Volume Controls
-const int VOLENCODERA = 2; // Encoder A pin
-const int VOLENCODERB = 3; // Encoder B pin
+const int VOLENCODERA = 33; // Encoder A pin
+const int VOLENCODERB = 34; // Encoder B pin
 
 /******************************************************************************/
 /* Songbox Controls						                                      */
@@ -70,13 +70,13 @@ const int TEMPOENCODERB = 9;
 /******************************************************************************/
 /* Numpad Pins							                                      */
 /******************************************************************************/
-const int ROW1 = 41;
-const int ROW2 = 46;
-const int ROW3 = 45;
-const int ROW4 = 43;
-const int COL1 = 42;
-const int COL2 = 40;
-const int COL3 = 44;
+const int ROW1 = A1;
+const int ROW2 = A6;
+const int ROW3 = A5;
+const int ROW4 = A3;
+const int COL1 = A2;
+const int COL2 = A0;
+const int COL3 = A4;
 
 // MIDI Handler
 synth::ArduinoMIDIHandler * AMHandler;
@@ -92,9 +92,6 @@ chip::ChipNumberPad * numPadController;
 chip::ChipSongboxControl * songboxController;
 
 int currentModule;
-/**
- *
- */
 
 ArduinoUI::Button * recordButton;
 int presses=0;

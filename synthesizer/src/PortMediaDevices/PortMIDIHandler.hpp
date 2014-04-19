@@ -12,7 +12,9 @@ namespace synth {
 		public:
 			PortMIDIHandler();
 
-			PmError connectMIDIStream(PmDeviceID devID);
+			PmError openMIDIInput(PmDeviceID devID);
+
+			PmError openMIDIOutput(PmDeviceID devID);
 
 			PmError disconnectMIDIStream();
 

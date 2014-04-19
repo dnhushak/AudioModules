@@ -18,12 +18,26 @@ namespace synth {
 		writeMIDI(message);
 	}
 
-	PmError PortMIDIHandler::connectMIDIStream(PmDeviceID devID) {
+	PmError PortMIDIHandler::openMIDIInput(PmDeviceID devID) {
 
 		int count = Pm_CountDevices();
 		if (count == 0)
-			fprintf(stderr, "No MIDI devices found\n");
+			fprintf(stderr, "No MIDI devices found!\n");
 		err = Pm_OpenInput(&mstream, devID, NULL, 512L, NULL, NULL);
+
+		if (err != pmNoError)
+			return errorPortMIDI(err);
+
+		printf("Bound to port %d\n", devID);
+		return err;
+	}
+
+	PmError PortMIDIHandler::openMIDIOutput(PmDeviceID devID) {
+
+		int count = Pm_CountDevices();
+		if (count == 0)
+			fprintf(stderr, "No MIDI devices found!\n");
+		err = Pm_OpenOutput(&mstream, devID, NULL, 512L, NULL, NULL, 0);
 
 		if (err != pmNoError)
 			return errorPortMIDI(err);
@@ -59,8 +73,19 @@ namespace synth {
 		return;
 	}
 
-	void PortMIDIHandler::writeMIDI(MIDIMessage* message) {
+	void PortMIDIHandler::writeMIDI(MIDIMessage* inputMessage) {
 		//TODO: complete behavior for midi writing
+		if (inputMessage->statusType == SYSTEM
+				&& (inputMessage->channel == SYSEX || inputMessage->channel == SYSEXEND)) {
+			// Do not send sysex messages
+			return;
+		} else {
+			PmEvent msg;
+			msg.message = Pm_Message(
+					inputMessage->statusType << 4 || inputMessage->channel,
+					inputMessage->data1, inputMessage->data2);
+			Pm_WriteShort(mstream, 0, msg.message);
+		}
 	}
 
 	MIDIMessage * PortMIDIHandler::parseMIDI(PmEvent * data) {

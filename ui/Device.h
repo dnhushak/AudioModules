@@ -1,26 +1,30 @@
-#ifndef DEVICE_H_
-#define DEVICE_H_
+#ifndef DEVICE_HPP_
+#define DEVICE_HPP_
 #include <stdio.h>
 #include <cstdlib>
-#include "Arduino.h"
 
 namespace synth {
-enum devState_t {
-  INACTIVE, ACTIVE
-};
+	enum devState_t {
+		INACTIVE, ACTIVE
+	};
 
-class Device {
-  public:
-    Device();
+	static int devIDCounter;
+	class Device {
+		public:
+			Device();
 
-    // Return the state
-    virtual devState_t getState();
+			// Return the state
+			virtual devState_t getState();
 
-    virtual ~Device();
-  protected:
-    devState_t state;
-};
+			int getDevID();
+
+			virtual ~Device();
+
+		protected:
+			int devID;
+			devState_t state;
+	};
 
 }
 
-#endif /* DEVICE_H_ */
+#endif /* DEVICE_HPP_ */
