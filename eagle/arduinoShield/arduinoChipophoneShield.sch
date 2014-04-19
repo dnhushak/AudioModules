@@ -10576,22 +10576,12 @@ Source: www.kingbright.com</description>
 <label x="163.068" y="172.974" size="1.778" layer="95" rot="R90"/>
 <pinref part="JP4" gate="1" pin="1"/>
 </segment>
-<segment>
-<pinref part="OK1" gate="G$1" pin="VO"/>
-<wire x1="137.16" y1="50.8" x2="144.78" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="144.78" y1="50.8" x2="144.78" y2="58.42" width="0.1524" layer="91"/>
-<pinref part="R7" gate="G$1" pin="1"/>
-</segment>
 </net>
 <net name="TX1" class="0">
 <segment>
 <wire x1="160.02" y1="172.72" x2="160.02" y2="170.18" width="0.1524" layer="91"/>
 <label x="160.528" y="172.72" size="1.778" layer="95" rot="R90"/>
 <pinref part="JP4" gate="1" pin="2"/>
-</segment>
-<segment>
-<pinref part="MIDI_OUT" gate="G$1" pin="5"/>
-<wire x1="58.42" y1="83.82" x2="53.34" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="D2" class="0">
@@ -10767,12 +10757,22 @@ Source: www.kingbright.com</description>
 <label x="183.896" y="172.72" size="1.778" layer="95" rot="R90"/>
 <pinref part="JP5" gate="1" pin="4"/>
 </segment>
+<segment>
+<pinref part="MIDI_OUT" gate="G$1" pin="5"/>
+<wire x1="58.42" y1="83.82" x2="53.34" y2="83.82" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="D19" class="0">
 <segment>
 <wire x1="185.42" y1="172.72" x2="185.42" y2="170.18" width="0.1524" layer="91"/>
 <label x="186.182" y="172.72" size="1.778" layer="95" rot="R90"/>
 <pinref part="JP5" gate="1" pin="3"/>
+</segment>
+<segment>
+<pinref part="OK1" gate="G$1" pin="VO"/>
+<wire x1="137.16" y1="50.8" x2="144.78" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="144.78" y1="50.8" x2="144.78" y2="58.42" width="0.1524" layer="91"/>
+<pinref part="R7" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="SDA" class="0">
