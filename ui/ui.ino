@@ -9,6 +9,10 @@
 #include "ChipSongboxControl.h"
 #include "ChipModuleControl.h"
 #include "ChipNumberPad.h"
+#include "ChipScreenControl.h"
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_ST7735.h> // Hardware-specific library
+#include <SPI.h>
 
 /******************************************************************************/
 /* Pinouts - Make any changes to pin assignments below                        */
@@ -35,17 +39,17 @@ const int WHTLED = 6;
 
 // Arpgeggio Controls
 const int ARPBUTTON = 27; // Button
-const int ARPLEDRED = 7; // Red LED
+const int ARPLEDRED = 9; // Red LED
 const int ARPLEDGRN = 8; // Green LED
-const int ARPLEDBLU = 9; // Blue LED
+const int ARPLEDBLU = 7; // Blue LED
 const int ARPENCODERA = 35; // Encoder A pin
 const int ARPENCODERB = 36; // Encoder B pin
 
 // Glissando Controls
 const int GLISSBUTTON = 28; // Button
-const int GLISSLEDRED = 10; // Red LED
+const int GLISSLEDRED = 12; // Red LED
 const int GLISSLEDGRN = 11; // Green LED
-const int GLISSLEDBLU = 12; // Blue LED
+const int GLISSLEDBLU = 10; // Blue LED
 const int GLISSENCODERA = 37; // Encoder A pin
 const int GLISSENCODERB = 38; // Encoder B pin
 
@@ -56,16 +60,16 @@ const int VOLENCODERB = 34; // Encoder B pin
 /******************************************************************************/
 /* Songbox Controls						                                      */
 /******************************************************************************/
-const int PLAYBUTTON = A9;
-const int PLAYLED = 26;
-const int PAUSBUTTON = A8;
-const int PAUSLED = 25;
-const int STOPBUTTON = A6;
-const int STOPLED = 27;
-const int RECDBUTTON = A10;
-const int RECDLED = 28;
-const int TEMPOENCODERA = 8;
-const int TEMPOENCODERB = 9;
+const int PLAYBUTTON = 29;
+const int PLAYLED = 13;
+const int PAUSBUTTON = 30;
+const int PAUSLED = 44;
+const int STOPBUTTON = 31;
+const int STOPLED = 45;
+const int RECDBUTTON = 32;
+const int RECDLED = 46;
+const int TEMPOENCODERA = 39;
+const int TEMPOENCODERB = 40;
 
 /******************************************************************************/
 /* Numpad Pins							                                      */
@@ -78,23 +82,29 @@ const int COL1 = A2;
 const int COL2 = A0;
 const int COL3 = A4;
 
+/******************************************************************************/
+/* Screen Pins							                                      */
+/******************************************************************************/
+const int CS = 53;
+const int DC = 49;
+const int RST = 0;
+
 // MIDI Handler
 synth::ArduinoMIDIHandler * AMHandler;
 
 // Pinout structs
 chip::ModuleControlPins * modulePinout;
 chip::KeypadPins * numPadPinout;
+chip::ScreenPins * screenPinout;
 chip::SongboxControlPins * songboxPinout;
 
 // Controller classes
 chip::ChipModuleControl * moduleController;
 chip::ChipNumberPad * numPadController;
 chip::ChipSongboxControl * songboxController;
+chip::ChipScreenControl * screenController;
 
 int currentModule;
-
-ArduinoUI::Button * recordButton;
-int presses=0;
 
 void pinupModules() {
 
@@ -157,6 +167,14 @@ void pinupSongbox() {
 	songboxPinout->tempoEncoderPinB = TEMPOENCODERB;
 }
 
+void pinupScreen() {
+	screenPinout = new chip::ScreenPins;
+	screenPinout->cs = CS;
+	screenPinout->dc = DC;
+	screenPinout->rst = RST;
+
+}
+
 void setup() {
 // Start serial comm for debugging
 	Serial.begin(9600);
@@ -165,16 +183,25 @@ void setup() {
 	AMHandler = new synth::ArduinoMIDIHandler(&Serial1);
 	AMHandler->begin();
 
+	pinupScreen();
+	screenController = new chip::ChipScreenControl(screenPinout);
+	screenController->begin();
+//	screenController->setBlu();
+//	screenController->writeTextTop("Gliss");
+//	screenController->writeTextMid("Speed");
+//	screenController->writeTextBot("135");
+
 	pinupModules();
-	moduleController = new chip::ChipModuleControl(modulePinout, AMHandler);
+	moduleController = new chip::ChipModuleControl(modulePinout, AMHandler, screenController);
 	moduleController->begin();
 
 	pinupNumPad();
-	numPadController = new chip::ChipNumberPad(numPadPinout, AMHandler);
+	numPadController = new chip::ChipNumberPad(numPadPinout, AMHandler, screenController);
 
 	pinupSongbox();
-	songboxController = new chip::ChipSongboxControl(songboxPinout, AMHandler);
+	songboxController = new chip::ChipSongboxControl(songboxPinout, AMHandler, screenController);
 	songboxController->begin();
+
 
 	delete modulePinout;
 	delete numPadPinout;

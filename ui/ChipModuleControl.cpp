@@ -3,7 +3,8 @@
 namespace chip {
 	
 	ChipModuleControl::ChipModuleControl(ModuleControlPins* pinout,
-			synth::ArduinoMIDIHandler * initAMHandler) {
+			synth::ArduinoMIDIHandler * initAMHandler,
+			chip::ChipScreenControl * initScreenController) {
 		AMHandler = initAMHandler;
 		message = new synth::MIDIMessage;
 		message->statusType = synth::CC;
@@ -42,6 +43,8 @@ namespace chip {
 		}
 		currentModule = RED;
 		lastLEDModule = WHT;
+
+		screenController = initScreenController;
 
 	}
 	
@@ -89,7 +92,7 @@ namespace chip {
 		volumeEncoder->setCurrentVal(64);
 		updateLED();
 	}
-	
+
 	void ChipModuleControl::poll() {
 		/*
 		 * Behavior:
@@ -114,18 +117,43 @@ namespace chip {
 		// Check buttons and change module accordingly
 		if (redButton->hasChanged() && redButton->isPressed()) {
 			currentModule = RED;
+			screenController->setRed();
+			screenController->writeTextTop("Red");
+			screenController->writeTextMid("Channel");
+			screenController->writeTextBot("");
+			Serial.println("Red");
 		}
 		if (yelButton->hasChanged() && yelButton->isPressed()) {
 			currentModule = YEL;
+			screenController->setYel();
+			screenController->writeTextTop("Yellow");
+			screenController->writeTextMid("Channel");
+			screenController->writeTextBot("");
+			Serial.println("Yellow");
 		}
 		if (grnButton->hasChanged() && grnButton->isPressed()) {
 			currentModule = GRN;
+			screenController->setGrn();
+			screenController->writeTextTop("Green");
+			screenController->writeTextMid("Channel");
+			screenController->writeTextBot("");
+			Serial.println("Green");
 		}
 		if (bluButton->hasChanged() && bluButton->isPressed()) {
 			currentModule = BLU;
+			screenController->setBlu();
+			screenController->writeTextTop("Blue");
+			screenController->writeTextMid("Channel");
+			screenController->writeTextBot("");
+			Serial.println("Blue");
 		}
 		if (whtButton->hasChanged() && whtButton->isPressed()) {
 			currentModule = WHT;
+			screenController->setWht();
+			screenController->writeTextTop("White");
+			screenController->writeTextMid("Channel");
+			screenController->writeTextBot("");
+			Serial.println("White");
 		}
 
 		// Check arp button
@@ -136,6 +164,14 @@ namespace chip {
 			message->data1 = ARPTOGGLE;
 			message->data2 = arpState[currentModule] * 127;
 			AMHandler->writeMIDI(message);
+			Serial.println("Arp");
+			screenController->writeTextTop("Arp");
+			if (arpState[currentModule]) {
+				screenController->writeTextMid("On");
+			} else {
+				screenController->writeTextMid("Off");
+			}
+			screenController->writeTextBot("");
 		}
 
 		// Check gliss button
@@ -146,33 +182,54 @@ namespace chip {
 			message->data1 = GLISSTOGGLE;
 			message->data2 = glissState[currentModule] * 127;
 			AMHandler->writeMIDI(message);
+			Serial.println("Gliss");
+			screenController->writeTextTop("Gliss");
+			if (glissState[currentModule]) {
+				screenController->writeTextMid("On");
+			} else {
+				screenController->writeTextMid("Off");
+			}
+			screenController->writeTextBot("");
 		}
 
-		 if (arpEncoder->hasChanged()) {
-		 arpTime[currentModule] = scaleValue(arpEncoder->getCurrentVal(), 50, 1000);
-		 message->channel = currentModule;
-		 message->data1 = ARPTIME;
-		 message->data2 = arpEncoder->getCurrentVal();
-		 AMHandler->writeMIDI(message);
-		 }
-		/*
+		if (arpEncoder->hasChanged()) {
+			arpTime[currentModule] = scaleValue(arpEncoder->getCurrentVal(), 50,
+					1000);
+			message->channel = currentModule;
+			message->data1 = ARPTIME;
+			message->data2 = arpEncoder->getCurrentVal();
+			AMHandler->writeMIDI(message);
+			screenController->writeTextTop("Arp");
+			screenController->writeTextMid("Speed");
+			sprintf(buf, "%d", arpTime[currentModule]);
+			screenController->writeTextBot(buf);
+		}
 
-		 if (glissEncoder->hasChanged()) {
-		 glissTime[currentModule] = scaleValue(glissEncoder->getCurrentVal(), 50, 1000);
-		 message->channel = currentModule;
-		 message->data1 = GLISSTIME;
-		 message->data2 = glissEncoder->getCurrentVal();
-		 AMHandler->writeMIDI(message);
-		 }
+		if (glissEncoder->hasChanged()) {
+			glissTime[currentModule] = scaleValue(glissEncoder->getCurrentVal(),
+					50, 1000);
+			message->channel = currentModule;
+			message->data1 = GLISSTIME;
+			message->data2 = glissEncoder->getCurrentVal();
+			AMHandler->writeMIDI(message);
+			screenController->writeTextTop("Gliss");
+			screenController->writeTextMid("Speed");
+			sprintf(buf, "%d", glissTime[currentModule]);
+			screenController->writeTextBot(buf);
+		}
 
-		 if (volumeEncoder->hasChanged()) {
-		 volume[currentModule] = volumeEncoder->getCurrentVal();
-		 message->channel = currentModule;
-		 message->data1 = VOLUME;
-		 message->data2 = volume[currentModule];
-		 AMHandler->writeMIDI(message);
-		 }
-		 */
+		if (volumeEncoder->hasChanged()) {
+			volume[currentModule] = volumeEncoder->getCurrentVal();
+			message->channel = currentModule;
+			message->data1 = VOLUME;
+			message->data2 = volume[currentModule];
+			AMHandler->writeMIDI(message);
+			screenController->writeTextTop("Channel");
+			screenController->writeTextMid("Volume");
+			sprintf(buf, "%d", volume[currentModule]);
+			screenController->writeTextBot(buf);
+		}
+
 		updateLED();
 	}
 	

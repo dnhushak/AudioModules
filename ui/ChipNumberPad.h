@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "ArduinoMIDIHandler.h"
 #include "Keypad.h"
+#include "ChipScreenControl.h"
 
 namespace chip {
 	/*
@@ -27,11 +28,16 @@ namespace chip {
 			};
 		public:
 			ChipNumberPad(KeypadPins * pinout,
-					synth::ArduinoMIDIHandler * initAMHandler);
+					synth::ArduinoMIDIHandler * initAMHandler,
+					chip::ChipScreenControl * initScreenController);
 			void poll(int state);
 			~ChipNumberPad();
 
 		private:
+			void UpdateScreen(int voiceOrSong, int num);
+			void CancelScreen();
+			void SentScreen(int voiceOrSong, int num);
+
 			// Selection of voice or song state
 			// Ultimately just changes what MIDI Channels it sends
 			int voiceOrSong;
@@ -65,6 +71,10 @@ namespace chip {
 
 			// The message to send
 			synth::MIDIMessage * message;
+
+			// Screen Handler
+			ChipScreenControl * screenController;
+			char buf[10];
 	};
 
 }

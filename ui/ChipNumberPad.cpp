@@ -5,7 +5,8 @@ namespace chip {
 //Keypad Initialization
 
 	ChipNumberPad::ChipNumberPad(KeypadPins * pinout,
-			synth::ArduinoMIDIHandler * initAMHandler) {
+			synth::ArduinoMIDIHandler * initAMHandler,
+			chip::ChipScreenControl * initScreenController) {
 		// Initialize the keypad object
 		rows = 4; //four rows
 		cols = 3; //three columns
@@ -45,6 +46,8 @@ namespace chip {
 		AMHandler = initAMHandler;
 		message = new synth::MIDIMessage;
 		message->data2 = 0;
+
+		screenController = initScreenController;
 	}
 
 	void ChipNumberPad::poll(int state) {
@@ -119,6 +122,9 @@ namespace chip {
 					// Reset key info
 					numKeysPressed = 0;
 					digits[0] = digits[1] = digits[2] = 0;
+					SentScreen(voiceOrSong, selectionValue);
+					selectionValue = 0;
+					return;
 				}
 				//Press other one to cancel
 				else if ((key == '#' && voiceOrSong == VOICE)
@@ -126,6 +132,9 @@ namespace chip {
 					//reset digits
 					numKeysPressed = 0;
 					digits[0] = digits[1] = digits[2] = 0;
+					selectionValue = 0;
+					CancelScreen();
+					return;
 				}
 			} else if (numKeysPressed > 0) {
 				/**
@@ -151,7 +160,38 @@ namespace chip {
 
 			// Set the keyed value to represent the digits typed
 			selectionValue = (100 * digits[2]) + (10 * digits[1]) + (digits[0]);
+			UpdateScreen(voiceOrSong, selectionValue);
 		}
+	}
+
+	void ChipNumberPad::UpdateScreen(int voiceOrSong, int num) {
+		screenController->writeTextTop("Select");
+		if (voiceOrSong == VOICE) {
+			screenController->writeTextMid("Voice:");
+		}
+		if (voiceOrSong == SONG) {
+			screenController->writeTextMid("Song:");
+		}
+		sprintf(buf, "%d", num);
+		screenController->writeTextBot(buf);
+	}
+
+	void ChipNumberPad::SentScreen(int voiceOrSong, int num) {
+		screenController->writeTextTop("Selected");
+		if (voiceOrSong == VOICE) {
+			screenController->writeTextMid("Voice #");
+		}
+		if (voiceOrSong == SONG) {
+			screenController->writeTextMid("Song #");
+		}
+		sprintf(buf, "%d", num);
+		screenController->writeTextBot(buf);
+	}
+
+	void ChipNumberPad::CancelScreen() {
+		screenController->writeTextTop("*CANCEL*");
+		screenController->writeTextMid("");
+		screenController->writeTextBot("");
 	}
 
 	ChipNumberPad::~ChipNumberPad() {

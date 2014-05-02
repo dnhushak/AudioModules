@@ -14,6 +14,10 @@ namespace synth {
 		MIDIport->end();
 	}
 
+	void ArduinoMIDIHandler::affect(MIDIMessage * message){
+		//do nothing
+	}
+
 	void ArduinoMIDIHandler::readMIDI() {
 		return;
 	}

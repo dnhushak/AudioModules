@@ -3,7 +3,8 @@
 namespace chip {
 	
 	ChipSongboxControl::ChipSongboxControl(SongboxControlPins* pinout,
-			synth::ArduinoMIDIHandler* initAMHandler) {
+			synth::ArduinoMIDIHandler* initAMHandler,
+			chip::ChipScreenControl * initScreenController) {
 		// MIDI Handling
 		AMHandler = initAMHandler;
 		MIDIStop.statusType = synth::SYSTEM;
@@ -46,6 +47,8 @@ namespace chip {
 		recordState = lastRecordState = OFF;
 		tempo = 120;
 
+		screenController = initScreenController;
+
 	}
 	
 	void ChipSongboxControl::begin() {
@@ -87,21 +90,37 @@ namespace chip {
 				if (stopButton->isPressed()) {
 					playbackState = STOPPED;
 					AMHandler->writeMIDI(&MIDIStop);
+					screenController->writeTextTop("* STOP *");
+					screenController->writeTextMid("");
+					screenController->writeTextBot("");
 				}
 				else if (pauseButton->isPressed()) {
 					playbackState = PAUSED;
 					AMHandler->writeMIDI(&MIDIStop);
+					screenController->writeTextTop("*PAUSE *");
+					screenController->writeTextMid("");
+					screenController->writeTextBot("");
 				}
 				break;
 			case PAUSED:
 				if (stopButton->isPressed()) {
 					playbackState = STOPPED;
+					screenController->writeTextTop("* STOP *");
+					screenController->writeTextMid("");
+					screenController->writeTextBot("");
 				}
 				else if (playButton->isPressed()) {
 					playbackState = PLAYING;
 					AMHandler->writeMIDI(&MIDIContinue);
 					if (recordState == ARMED) {
 						AMHandler->writeMIDI(&MIDIRecord);
+						screenController->writeTextTop("*RECORD*");
+						screenController->writeTextMid("");
+						screenController->writeTextBot("");
+					}else{
+						screenController->writeTextTop("* PLAY *");
+						screenController->writeTextMid("");
+						screenController->writeTextBot("");
 					}
 				}
 				setRecordState();
@@ -112,6 +131,13 @@ namespace chip {
 					AMHandler->writeMIDI(&MIDIStart);
 					if (recordState == ARMED) {
 						AMHandler->writeMIDI(&MIDIRecord);
+						screenController->writeTextTop("*RECORD*");
+						screenController->writeTextMid("");
+						screenController->writeTextBot("");
+					}else{
+						screenController->writeTextTop("* PLAY *");
+						screenController->writeTextMid("");
+						screenController->writeTextBot("");
 					}
 				}
 				setRecordState();
@@ -203,6 +229,9 @@ namespace chip {
 			// Button press in "Armed"
 			else if (lastRecordState == ARMED && recordButton->isPressed()) {
 				recordState = OFF;
+				screenController->writeTextTop("*RECORD*");
+				screenController->writeTextMid("DISARMED");
+				screenController->writeTextBot("");
 			}
 		} else if (recordState == OFF) {
 			// Button release in "Off and still pressed"
@@ -212,6 +241,9 @@ namespace chip {
 			// Button press in "Off"
 			else if (lastRecordState == OFF && recordButton->isPressed()) {
 				recordState = ARMED;
+				screenController->writeTextTop("*RECORD*");
+				screenController->writeTextMid(" ARMED  ");
+				screenController->writeTextBot("");
 			}
 		}
 	}

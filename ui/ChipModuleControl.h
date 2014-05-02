@@ -2,9 +2,11 @@
 #define CHIPMODULECONTROL_H_
 #include "Button.h"
 #include "Encoder.h"
+#include "MIDIUtils.h"
 #include "LED.h"
 #include "RGBLED.h"
 #include "ArduinoMIDIHandler.h"
+#include "ChipScreenControl.h"
 
 namespace chip {
 	typedef struct ModuleControlPins {
@@ -43,10 +45,11 @@ namespace chip {
 		RED, YEL, GRN, BLU, WHT
 	};
 
-	class ChipModuleControl: public synth::MIDIDevice {
+	class ChipModuleControl {
 		public:
 			ChipModuleControl(ModuleControlPins* pinout,
-					synth::ArduinoMIDIHandler * initAMHandler);
+					synth::ArduinoMIDIHandler * initAMHandler,
+					chip::ChipScreenControl * initScreenController);
 			virtual ~ChipModuleControl();
 			void begin();
 			void poll();
@@ -91,6 +94,10 @@ namespace chip {
 			synth::ArduinoMIDIHandler * AMHandler;
 			synth::MIDIMessage * message;
 
+			// Screen Handler
+			ChipScreenControl * screenController;
+			char buf[10];
+
 			// State tracking (lastLEDModule is used to keep track of LED updates)
 			int currentModule, lastLEDModule;
 			int arpState[5];
@@ -98,6 +105,7 @@ namespace chip {
 			int arpTime[5];
 			int glissTime[5];
 			int volume[5];
+
 
 	}
 	;

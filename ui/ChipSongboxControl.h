@@ -5,6 +5,7 @@
 #include "Encoder.h"
 #include "LED.h"
 #include "ArduinoMIDIHandler.h"
+#include "ChipScreenControl.h"
 
 namespace chip {
 	typedef struct SongboxControlPins {
@@ -23,7 +24,8 @@ namespace chip {
 	class ChipSongboxControl {
 		public:
 			ChipSongboxControl(SongboxControlPins * pinout,
-					synth::ArduinoMIDIHandler * initAMHandler);
+					synth::ArduinoMIDIHandler * initAMHandler,
+					chip::ChipScreenControl * initScreenController);
 			void begin();
 			void poll();
 			virtual ~ChipSongboxControl();
@@ -51,6 +53,9 @@ namespace chip {
 			int playbackState, lastPlaybackStateLED;
 			int recordState, lastRecordState;
 			int tempo;
+			// Screen Handler
+			ChipScreenControl * screenController;
+			char buf[10];
 	};
 
 }
