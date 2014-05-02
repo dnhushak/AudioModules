@@ -93,8 +93,7 @@ namespace chip {
 					screenController->writeTextTop("* STOP *");
 					screenController->writeTextMid("");
 					screenController->writeTextBot("");
-				}
-				else if (pauseButton->isPressed()) {
+				} else if (pauseButton->isPressed()) {
 					playbackState = PAUSED;
 					AMHandler->writeMIDI(&MIDIStop);
 					screenController->writeTextTop("*PAUSE *");
@@ -108,8 +107,7 @@ namespace chip {
 					screenController->writeTextTop("* STOP *");
 					screenController->writeTextMid("");
 					screenController->writeTextBot("");
-				}
-				else if (playButton->isPressed()) {
+				} else if (playButton->isPressed()) {
 					playbackState = PLAYING;
 					AMHandler->writeMIDI(&MIDIContinue);
 					if (recordState == ARMED) {
@@ -117,7 +115,7 @@ namespace chip {
 						screenController->writeTextTop("*RECORD*");
 						screenController->writeTextMid("");
 						screenController->writeTextBot("");
-					}else{
+					} else {
 						screenController->writeTextTop("* PLAY *");
 						screenController->writeTextMid("");
 						screenController->writeTextBot("");
@@ -134,7 +132,7 @@ namespace chip {
 						screenController->writeTextTop("*RECORD*");
 						screenController->writeTextMid("");
 						screenController->writeTextBot("");
-					}else{
+					} else {
 						screenController->writeTextTop("* PLAY *");
 						screenController->writeTextMid("");
 						screenController->writeTextBot("");
@@ -248,6 +246,14 @@ namespace chip {
 		}
 	}
 
+	//TODO: Tempo Encoder and screen update of tempo
+	/**
+	 *
+	 screenController->writeTextTop("Arp");
+	 screenController->writeTextMid("Speed");
+	 sprintf(buf, "%d", arpTime[currentModule]);
+	 screenController->writeTextBot(buf);
+	 */
 	ChipSongboxControl::~ChipSongboxControl() {
 		delete playButton;
 		delete pauseButton;

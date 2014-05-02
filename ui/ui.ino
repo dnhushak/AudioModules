@@ -186,10 +186,6 @@ void setup() {
 	pinupScreen();
 	screenController = new chip::ChipScreenControl(screenPinout);
 	screenController->begin();
-//	screenController->setBlu();
-//	screenController->writeTextTop("Gliss");
-//	screenController->writeTextMid("Speed");
-//	screenController->writeTextBot("135");
 
 	pinupModules();
 	moduleController = new chip::ChipModuleControl(modulePinout, AMHandler, screenController);
