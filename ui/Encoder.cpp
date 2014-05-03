@@ -58,10 +58,10 @@ namespace ArduinoUI {
 		return currentVal;
 	}
 
-	int Encoder::hasChanged(){
+	int Encoder::hasChanged() {
 		// XOR for a not equal check, represents a change since the last time button was checked
 		int notEqual = currentVal ^ lastCheckedVal;
-		if(notEqual){
+		if (notEqual) {
 			// If they are not equal, update the last state to current state so the next immediate check returns false
 			lastCheckedVal = currentVal;
 			// Sets to 1 to represent not equal
@@ -88,7 +88,9 @@ namespace ArduinoUI {
 		bPolledState = digitalRead(pinB);
 		// Edge on the A pin
 		if (aPolledState != aLastState) {
-			bLastState ^ aLastState ? currentVal++ : currentVal--;
+			if (aLastState) {
+				bLastState ^ aLastState ? currentVal++ : currentVal--;
+			}
 			aLastState = aPolledState;
 			normalizeCurrentVal();
 		}
