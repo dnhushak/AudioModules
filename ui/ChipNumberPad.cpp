@@ -108,6 +108,7 @@ namespace chip {
 						message->statusType = synth::PROGRAM;
 					} else {
 						// Song select system message (less significant nibble is 3)
+						// TODO: Figure out song select sending issues
 						message->channel = synth::SONGSELECT;
 						// Send a system message
 						message->statusType = synth::SYSTEM;
