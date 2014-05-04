@@ -101,7 +101,7 @@ namespace chip {
 						|| (key == '#' && voiceOrSong == SONG)) {
 					//Switch to correct MIDI channel - state for currently selected state, channel 15 for songbox
 					byte channel;
-					if (voiceOrSong) {
+					if (voiceOrSong == VOICE) {
 						//If Voice, set the channel to the input state
 						message->channel = state;
 						// Set the message to be a program change
