@@ -14,7 +14,7 @@ namespace synth {
 		MIDIport->end();
 	}
 
-	void ArduinoMIDIHandler::affect(MIDIMessage * message){
+	void ArduinoMIDIHandler::affect(MIDIMessage * message) {
 		//do nothing
 	}
 
@@ -29,16 +29,17 @@ namespace synth {
 		// Channel is the LS nibble
 		statusByte |= message->channel;
 
-		Serial.println(statusByte, BIN);
 		// Filter out Sysex
 		if (message->statusType == SYSTEM
 				&& (message->channel == SYSEX || message->channel == SYSEXEND)) {
+			Serial.println("Sysex");
 
 		} else {
 			// Non sysex data
 
 			// Write the status byte
 			MIDIport->write(statusByte);
+			Serial.println(statusByte, BIN);
 
 			// Don't send data 1 for anything other than non system, MTC, song select, or song poitner messages
 			if (message->statusType == SYSTEM
@@ -50,17 +51,15 @@ namespace synth {
 				Serial.println(message->data1, BIN);
 
 				// Only write data two on a song position message and non program/monophonic touch messages
-				if ((message->statusType == SYSTEM
-						&& message->channel == SONGPOSITION)
-						|| (message->statusType != PROGRAM
-								&& message->statusType != MONOTOUCH)) {
-					Serial.println("Printing Second Status byte");
+//				if ((message->statusType == SYSTEM
+//						&& (message->channel == SONGPOSITION
+//								|| message->channel == SONGSELECT))
+//						|| (message->statusType != PROGRAM
+//								&& message->statusType != MONOTOUCH)) {
 					// Write data 2
 					MIDIport->write(message->data2);
 					Serial.println(message->data2, BIN);
-				} else {
-					Serial.println("NOT Printing Second Status byte");
-				}
+//				}
 			}
 		}
 	}
