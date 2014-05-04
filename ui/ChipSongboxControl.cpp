@@ -84,6 +84,7 @@ namespace chip {
 		playButton->pollDebounce();
 		stopButton->pollDebounce();
 		recordButton->pollDebounce();
+		tempoEncoder->poll();
 
 		switch (playbackState) {
 			case PLAYING:
@@ -140,6 +141,14 @@ namespace chip {
 				}
 				setRecordState();
 				break;
+		}
+		if (tempoEncoder->hasChanged()) {
+			tempo = scaleValue(tempoEncoder->getCurrentVal(), 40, 200);
+			screenController->writeTextTop("Tempo");
+			screenController->writeTextMid("");
+			sprintf(buf, "%d", tempo);
+			screenController->writeTextBot(buf);
+
 		}
 		updateLED();
 	}
@@ -246,14 +255,6 @@ namespace chip {
 		}
 	}
 
-	//TODO: Tempo Encoder and screen update of tempo
-	/**
-	 *
-	 screenController->writeTextTop("Arp");
-	 screenController->writeTextMid("Speed");
-	 sprintf(buf, "%d", arpTime[currentModule]);
-	 screenController->writeTextBot(buf);
-	 */
 	ChipSongboxControl::~ChipSongboxControl() {
 		delete playButton;
 		delete pauseButton;
