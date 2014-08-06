@@ -1,8 +1,11 @@
 #ifndef WAVETABLE_HPP_
 #define WAVETABLE_HPP_
-#include <cstdlib>
-#include <string.h>
+
 #include "AudioUtils.hpp"
+// For malloc, realloc
+#include <cstdlib>
+// For memset, memcpy, etc..
+#include <string.h>
 
 namespace modules {
 	

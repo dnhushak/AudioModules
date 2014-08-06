@@ -1,9 +1,12 @@
-#pragma once
+#ifndef OSCILLATOR_HPP_
+#define OSCILLATOR_HPP_
+
 #include "AudioDevice.hpp"
 #include "Wavetable.hpp"
-#include <vector>
-#include <iostream>
+
+//For phase register maximum
 #include <limits.h>
+//For the log2 in the table location truncation
 #include <math.h>
 
 namespace modules {
@@ -51,3 +54,5 @@ namespace modules {
 			Wavetable * wavetable;
 	};
 }
+
+#endif //OSCILLATOR_HPP_

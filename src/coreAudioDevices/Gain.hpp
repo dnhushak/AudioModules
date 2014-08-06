@@ -1,5 +1,6 @@
-#include <iostream>
-#include <vector>
+#ifndef GAIN_HPP_
+#define GAIN_HPP_
+
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
@@ -16,5 +17,6 @@ namespace modules {
 		private:
 			float gain;
 	};
-
 }
+
+#endif //GAIN_HPP_

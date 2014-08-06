@@ -1,17 +1,20 @@
 //Audio Device Class
-#pragma once
-#include <vector>
-#include <iostream>
-#include <cstdlib>
-#include <string.h>
+#ifndef AUDIOUDEVICE_HPP_
+#define AUDIOUDEVICE_HPP_
+
 #include "Device.hpp"
 #include "AudioUtils.hpp"
+
+// For memset, memcpy, etc..
+#include <string.h>
+// For malloc, realloc
+#include <cstdlib>
 
 namespace modules {
 	// Size of buffer
 	static int bufferSize = 64;
 
-	// Sampling rate of the device
+	// Sampling rate of the audio system
 	static int sampleRate = 44100;
 
 	class AudioDevice: public virtual Device {
@@ -45,4 +48,5 @@ namespace modules {
 
 	};
 }
+#endif //AUDIOUDEVICE_HPP_
 

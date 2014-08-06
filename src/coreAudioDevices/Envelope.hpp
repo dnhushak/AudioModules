@@ -1,8 +1,7 @@
-#pragma once
+#ifndef ENVELOPE_HPP_
+#define ENVELOPE_HPP_
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
-#include <vector>
-#include <iostream>
 
 namespace modules {
 
@@ -73,3 +72,5 @@ namespace modules {
 			float Rslope;
 	};
 }
+
+#endif //ENVELOPE_HPP_

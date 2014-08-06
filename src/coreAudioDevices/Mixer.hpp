@@ -1,9 +1,8 @@
-#pragma once
+#ifndef MIXER_HPP_
+#define MIXER_HPP_
+
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
-#include <list>
-#include <iterator>
-#include <iostream>
 
 namespace modules {
 	class Mixer: public AudioDevice, public ConnectableDevice<AudioDevice> {
@@ -15,3 +14,5 @@ namespace modules {
 
 	};
 }
+
+#endif //MIXER_HPP_

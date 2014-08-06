@@ -1,8 +1,8 @@
-#pragma once
+#ifndef RAMP_HPP_
+#define RAMP_HPP_
+
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
-#include <vector>
-#include <iostream>
 
 namespace modules {
 	class Ramp: public AudioDevice, public ConnectableDevice<AudioDevice> {
@@ -40,3 +40,4 @@ namespace modules {
 			float slope;
 	};
 }
+#endif //RAMP_HPP_

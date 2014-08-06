@@ -34,7 +34,6 @@ namespace modules {
 	void Limiter::setThreshold(float newThreshold) {
 		thresholdHi = (sample_t) (dbToRatio(newThreshold) * sampleMax);
 		thresholdLo = -thresholdHi;
-		std::cout << "New threshold is " << thresholdHi << "\n";
 	}
 
 }

@@ -1,6 +1,7 @@
+// Generic Device class
 #ifndef DEVICE_HPP_
 #define DEVICE_HPP_
-#include <stdio.h>
+#include <iostream>
 #include <cstdlib>
 
 namespace modules {
