@@ -1,5 +1,5 @@
-#ifndef DEVICEMANAGER_HPP_
-#define DEVICEMANAGER_HPP_
+#ifndef CONNECTABLEDEVICE_HPP_
+#define CONNECTABLEDEVICE_HPP_
 #include <cstdlib>
 #include <list>
 #include <algorithm>
@@ -125,7 +125,7 @@ namespace modules {
 					return;
 				}
 				// Shrink list if max is now smaller
-				if (newMax < maxNumDevices) {
+				if (newMax < maxNumDevices && newMax != -1) {
 					deviceList.resize(newMax);
 				}
 				// Set the maxnum to the new maximum
@@ -143,4 +143,4 @@ namespace modules {
 
 }
 
-#endif /* DEVICEMANAGER_HPP_ */
+#endif /* CONNECTABLEDEVICE_HPP_ */
