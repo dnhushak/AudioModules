@@ -1,6 +1,6 @@
 #include "Device.hpp"
 
-namespace synth {
+namespace modules {
 	
 	Device::Device() {
 		// State

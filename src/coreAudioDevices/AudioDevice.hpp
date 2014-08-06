@@ -7,7 +7,7 @@
 #include "Device.hpp"
 #include "AudioUtils.hpp"
 
-namespace synth {
+namespace modules {
 	// Size of buffer
 	static int bufferSize = 64;
 

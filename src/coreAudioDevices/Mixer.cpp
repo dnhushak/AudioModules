@@ -1,5 +1,5 @@
 #include "Mixer.hpp"
-namespace synth {
+namespace modules {
 	Mixer::Mixer() {
 	}
 

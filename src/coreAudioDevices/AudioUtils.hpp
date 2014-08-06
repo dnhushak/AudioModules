@@ -4,7 +4,7 @@
 #include <math.h>
 #include <limits.h>
 
-namespace synth {
+namespace modules {
 //	// Sample type, min, and max
 	typedef int sample_t;
 	static const sample_t sampleMax = INT_MAX/32;

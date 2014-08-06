@@ -3,7 +3,7 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace synth {
+namespace modules {
 	
 	class Gain: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:

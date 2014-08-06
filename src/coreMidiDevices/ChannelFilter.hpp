@@ -2,7 +2,7 @@
 #include "MIDIDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace synth {
+namespace modules {
 	
 	class ChannelFilter: public MIDIDevice, public ConnectableDevice<MIDIDevice> {
 		public:

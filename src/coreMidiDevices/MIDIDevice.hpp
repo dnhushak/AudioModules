@@ -4,7 +4,7 @@
 #include "MIDIUtils.hpp"
 #include "Device.hpp"
 
-namespace synth {
+namespace modules {
 
 	class MIDIDevice: public virtual Device {
 		public:

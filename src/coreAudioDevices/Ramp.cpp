@@ -1,5 +1,5 @@
 #include "Ramp.hpp"
-namespace synth {
+namespace modules {
 	Ramp::Ramp() {
 		// Restrict to only one audio device;
 		setMaxNumDevices(1);

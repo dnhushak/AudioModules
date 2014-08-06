@@ -1,6 +1,6 @@
 #include "Wavetable.hpp"
 
-namespace synth {
+namespace modules {
 	
 	Wavetable::Wavetable(int initTableSize) {
 		tableSize = initTableSize;

@@ -1,6 +1,6 @@
 #include "Oscillator.hpp"
 
-namespace synth {
+namespace modules {
 // Constructor. Sets buffer size and sample rate
 	Oscillator::Oscillator() {
 

@@ -5,7 +5,7 @@
 #include <iterator>
 #include <iostream>
 
-namespace synth {
+namespace modules {
 	class Mixer: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor

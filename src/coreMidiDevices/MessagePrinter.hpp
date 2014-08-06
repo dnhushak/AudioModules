@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-namespace synth {
+namespace modules {
 	
 	class MessagePrinter: public MIDIDevice {
 		public:

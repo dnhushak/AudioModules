@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 
-namespace synth {
+namespace modules {
 	struct Voice {
 			/*** Module/Instrument level parameters go here: ***/
 			bool arp_en;

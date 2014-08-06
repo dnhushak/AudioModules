@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-namespace synth {
+namespace modules {
 
 	enum envState_t {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE

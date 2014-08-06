@@ -4,7 +4,7 @@
 #include <string.h>
 #include "AudioUtils.hpp"
 
-namespace synth {
+namespace modules {
 	
 	class Wavetable {
 		public:

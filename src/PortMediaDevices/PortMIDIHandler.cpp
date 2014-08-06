@@ -1,6 +1,6 @@
 #include "PortMIDIHandler.hpp"
 
-namespace synth {
+namespace modules {
 
 	PortMIDIHandler::PortMIDIHandler() {
 		callback_tid = NULL;

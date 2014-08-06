@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <iostream>
 
-namespace synth {
+namespace modules {
 	
 	class PortMIDIHandler: public MIDIDevice, public ConnectableDevice<MIDIDevice> {
 		public:

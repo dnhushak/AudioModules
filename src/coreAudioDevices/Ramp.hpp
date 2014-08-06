@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-namespace synth {
+namespace modules {
 	class Ramp: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor

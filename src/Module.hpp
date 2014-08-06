@@ -12,7 +12,7 @@
 #include <AudioUtils.hpp>
 #include <unistd.h>
 
-namespace synth {
+namespace modules {
 	enum sustain_t {
 		PEDALUP, PEDALDOWN
 	};
@@ -56,8 +56,8 @@ namespace synth {
 			int arpTime;
 			int glissTime;
 			sustain_t sustain;
-			synth::Mixer polyMixer;
-			synth::Gain polyGain;
+			modules::Mixer polyMixer;
+			modules::Gain polyGain;
 
 			pthread_mutex_t listLock;
 	};

@@ -1,5 +1,5 @@
 #include "Filter.hpp"
-namespace synth {
+namespace modules {
 	Filter::Filter() {
 
 	}

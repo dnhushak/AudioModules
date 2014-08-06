@@ -4,7 +4,7 @@
 #include <list>
 #include <algorithm>
 
-namespace synth {
+namespace modules {
 	template<class A>
 	class ConnectableDevice {
 		public:

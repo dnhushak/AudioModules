@@ -1,6 +1,6 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
-namespace synth {
+namespace modules {
 
 	class Filter: public AudioDevice, public ConnectableDevice<AudioDevice> {
 		public:

@@ -1,6 +1,6 @@
 #include "MessagePrinter.hpp"
 
-namespace synth {
+namespace modules {
 	MessagePrinter::MessagePrinter() {
 	}
 

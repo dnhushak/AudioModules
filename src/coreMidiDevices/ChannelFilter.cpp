@@ -1,6 +1,6 @@
 #include "ChannelFilter.hpp"
 
-namespace synth {
+namespace modules {
 	
 	ChannelFilter::ChannelFilter(int initChannel) {
 		// Channel of -1 indicates omni (passes all messages)

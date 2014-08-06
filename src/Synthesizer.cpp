@@ -14,15 +14,15 @@
 #include "AudioDevice.hpp"
 #include <pthread.h>
 
-std::vector<synth::Wavetable *> * GeneratesynthTables() {
-	std::vector<synth::Wavetable *> * tables = new std::vector<
-			synth::Wavetable *>;
-	synth::Wavetable* sawtooth = new synth::Wavetable(16);
-	synth::Wavetable* triangle = new synth::Wavetable(16);
-	synth::Wavetable* square50 = new synth::Wavetable(16);
-	synth::Wavetable* square25 = new synth::Wavetable(16);
-	synth::Wavetable* noise = new synth::Wavetable(8192);
-	synth::Wavetable* vibrasin = new synth::Wavetable(256);
+std::vector<modules::Wavetable *> * GeneratesynthTables() {
+	std::vector<modules::Wavetable *> * tables = new std::vector<
+			modules::Wavetable *>;
+	modules::Wavetable* sawtooth = new modules::Wavetable(16);
+	modules::Wavetable* triangle = new modules::Wavetable(16);
+	modules::Wavetable* square50 = new modules::Wavetable(16);
+	modules::Wavetable* square25 = new modules::Wavetable(16);
+	modules::Wavetable* noise = new modules::Wavetable(8192);
+	modules::Wavetable* vibrasin = new modules::Wavetable(256);
 
 	tables->push_back(sawtooth);
 	tables->push_back(triangle);
@@ -40,45 +40,45 @@ std::vector<synth::Wavetable *> * GeneratesynthTables() {
 	//The triangle wave statement takes the current index of the for loop, casts it to a float (to do division), and scales it to do the correct math in triangle wave generation
 	for (float i = 0; i < 16; i++) {
 		sawtooth->setSample(i,
-				(synth::sample_t) (synth::sampleMax * (((float) i / 8) - 1)));
+				(modules::sample_t) (modules::sampleMax * (((float) i / 8) - 1)));
 
 		//First half of the wave
 		if (i < half) {
-			square50->setSample(i, synth::sampleMin);
-			square25->setSample(i, synth::sampleMin);
+			square50->setSample(i, modules::sampleMin);
+			square25->setSample(i, modules::sampleMin);
 			triangle->setSample(i,
-					synth::sampleMin + (i / (quarter)) * synth::sampleMax);
+					modules::sampleMin + (i / (quarter)) * modules::sampleMax);
 		}
 		//Third quarter of the wave
 		else if (i < three_fourths) {
-			square50->setSample(i, synth::sampleMax);
-			square25->setSample(i, synth::sampleMin);
+			square50->setSample(i, modules::sampleMax);
+			square25->setSample(i, modules::sampleMin);
 			triangle->setSample(i,
-					synth::sampleMax
-							- ((i - half) / (quarter)) * synth::sampleMax);
+					modules::sampleMax
+							- ((i - half) / (quarter)) * modules::sampleMax);
 		}
 		//Fourth quarter of the wave
 		else {
-			square50->setSample(i, synth::sampleMax);
-			square25->setSample(i, synth::sampleMax);
+			square50->setSample(i, modules::sampleMax);
+			square25->setSample(i, modules::sampleMax);
 			triangle->setSample(i,
-					synth::sampleMax
-							- ((i - half) / (quarter)) * synth::sampleMax);
+					modules::sampleMax
+							- ((i - half) / (quarter)) * modules::sampleMax);
 		}
 	}
-	triangle->setSample(8, synth::sampleMax);
+	triangle->setSample(8, modules::sampleMax);
 	float rnd;
 	for (int i = 0; i < noise->getTableSize(); i++) {
-		rnd = ((synth::sample_t) ((-2) * ((float) rand() / RAND_MAX)) + 1);
+		rnd = ((modules::sample_t) ((-2) * ((float) rand() / RAND_MAX)) + 1);
 		noise->setSample(i, rnd);
 	}
 	float pi = 3.14159265359;
 	float samp;
 	for (int i = 0; i < 256; i++) {
-		samp = (synth::sample_t) (sin((pi * 2 * (float) i) / 256));
+		samp = (modules::sample_t) (sin((pi * 2 * (float) i) / 256));
 		// Scale the vibrato
 		samp *= .01;
-		samp *= synth::sampleMax;
+		samp *= modules::sampleMax;
 		vibrasin->setSample(i, samp);
 	}
 	return tables;
@@ -88,9 +88,9 @@ std::vector<synth::Wavetable *> * GeneratesynthTables() {
 int main(int argc, char *argv[]) {
 
 	printf("Generating PortMIDI Handler...\n");
-	synth::PortMIDIHandler * PMHandler = new synth::PortMIDIHandler();
+	modules::PortMIDIHandler * PMHandler = new modules::PortMIDIHandler();
 	printf("Generating PortAudio Handler...\n");
-	synth::PortAudioHandler * PAHandler = new synth::PortAudioHandler();
+	modules::PortAudioHandler * PAHandler = new modules::PortAudioHandler();
 
 	int numOutChannels = 1;
 	int numInChannels = 0;
@@ -126,11 +126,11 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'b':
 				// Buffer Size Argument
-				synth::AudioDevice::setBufferSize(atoi(optarg));
+				modules::AudioDevice::setBufferSize(atoi(optarg));
 				break;
 			case 's':
 				// Sample Rate argument
-				synth::AudioDevice::setSampleRate(atoi(optarg));
+				modules::AudioDevice::setSampleRate(atoi(optarg));
 				break;
 			case 'c':
 				// Audio Channels
@@ -150,24 +150,24 @@ int main(int argc, char *argv[]) {
 
 	// The master mixer for the whole synth
 	printf("Generating mixer\n");
-	synth::Limiter * masterLimiter = new synth::Limiter();
-	synth::Mixer * masterMixer = new synth::Mixer();
+	modules::Limiter * masterLimiter = new modules::Limiter();
+	modules::Mixer * masterMixer = new modules::Mixer();
 
 	masterLimiter->addDevice(masterMixer);
 	// All of the wavetables for the synthophone
 	printf("Generating wavetables\n");
-	std::vector<synth::Wavetable *> * tables = GeneratesynthTables();
+	std::vector<modules::Wavetable *> * tables = GeneratesynthTables();
 
 	printf("Generating voices\n");
-	std::vector<synth::Voice *> * voices = new std::vector<synth::Voice *>;
+	std::vector<modules::Voice *> * voices = new std::vector<modules::Voice *>;
 
-	std::vector<synth::Module *> * modules = new std::vector<synth::Module *>;
+	std::vector<modules::Module *> * modules = new std::vector<modules::Module *>;
 
 	printf("Setting voice defaults\n");
 	// Set defaults for voices
 	for (int i = 0; i < numModules; i++) {
 		// TODO: Handle this in a voice reader class
-		synth::Voice * newVoice = new synth::Voice;
+		modules::Voice * newVoice = new modules::Voice;
 		newVoice->arpTime = 100;
 		newVoice->arp_en = false;
 		newVoice->glissTime = 100;
@@ -227,11 +227,11 @@ int main(int argc, char *argv[]) {
 	printf("Generating modules\n");
 	// Modules
 	for (int i = 0; i < numModules; i++) {
-		synth::Module * newModule = new synth::Module();
+		modules::Module * newModule = new modules::Module();
 		// Set voice for each module
 		newModule->setVoice(voices->at(i));
 		// Create a midi Channel filter
-		synth::ChannelFilter * moduleFilter = new synth::ChannelFilter(i);
+		modules::ChannelFilter * moduleFilter = new modules::ChannelFilter(i);
 		// Add the module to the channel filter outputs
 		moduleFilter->addDevice(newModule);
 		// Add the channel filter to the PMhandler outputs
@@ -246,7 +246,7 @@ int main(int argc, char *argv[]) {
 
 	// Print incoming MIDI Connections
 	if (verbose) {
-		synth::MessagePrinter * printer = new synth::MessagePrinter();
+		modules::MessagePrinter * printer = new modules::MessagePrinter();
 		PMHandler->addDevice(printer);
 	}
 

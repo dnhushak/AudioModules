@@ -1,6 +1,6 @@
 #include "MIDIDevice.hpp"
 
-namespace synth {
+namespace modules {
 	MIDIDevice::MIDIDevice() {
 	}
 

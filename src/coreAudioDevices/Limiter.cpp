@@ -1,6 +1,6 @@
 #include "Limiter.hpp"
 
-namespace synth {
+namespace modules {
 	
 	Limiter::Limiter() {
 		setThreshold(-3);

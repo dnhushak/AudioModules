@@ -1,6 +1,6 @@
 #include "PortAudioHandler.hpp"
 
-namespace synth {
+namespace modules {
 	sample_t * PortAudioHandler::advance(int numSamples){
 		return buffer;
 	}
@@ -170,7 +170,7 @@ namespace synth {
 		//TODO: get multichannel to work right
 		float *out = (float*) outputBuffer;
 		// Grab the supplied user data
-		synth::AudioDevice * audio = (synth::AudioDevice*) userData;
+		modules::AudioDevice * audio = (modules::AudioDevice*) userData;
 
 //		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {

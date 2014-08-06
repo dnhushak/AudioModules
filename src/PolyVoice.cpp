@@ -1,6 +1,6 @@
 #include "PolyVoice.hpp"
 
-namespace synth {
+namespace modules {
 
 	PolyVoice::PolyVoice() {
 		note = 0;

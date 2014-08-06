@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <cstdlib>
 
-namespace synth {
+namespace modules {
 	enum devState_t {
 		INACTIVE, ACTIVE
 	};

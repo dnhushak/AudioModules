@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <math.h>
 
-namespace synth {
+namespace modules {
 	class Oscillator: public AudioDevice {
 		public:
 			// Constructor

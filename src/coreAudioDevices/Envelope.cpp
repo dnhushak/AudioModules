@@ -1,5 +1,5 @@
 #include "Envelope.hpp"
-namespace synth {
+namespace modules {
 	Envelope::Envelope() {
 		// Restrict to only one audio device;
 		setMaxNumDevices(1);

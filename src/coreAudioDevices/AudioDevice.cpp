@@ -1,6 +1,6 @@
 #include "AudioDevice.hpp"
 
-namespace synth {
+namespace modules {
 	AudioDevice::AudioDevice() {
 		buffer = (sample_t *) malloc(sizeof(sample_t) * bufferSize);
 		zeroBuffer();

@@ -1,6 +1,6 @@
 #include "Gain.hpp"
 
-namespace synth {
+namespace modules {
 
 	Gain::Gain() {
 		setMaxNumDevices(1);

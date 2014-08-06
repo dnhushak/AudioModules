@@ -1,6 +1,6 @@
 #include "Module.hpp"
 
-namespace synth {
+namespace modules {
 
 	Module::Module() {
 		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
