@@ -7,6 +7,7 @@ namespace modules {
 	sample_t * Filter::advance(int numSamples) {
 		if (!isEmpty()) {
 			return front()->advance(numSamples);
+			//todo: FILTER CODE!!
 		} else {
 			zeroBuffer();
 			return buffer;
