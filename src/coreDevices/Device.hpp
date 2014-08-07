@@ -13,6 +13,7 @@ namespace modules {
 	};
 	
 	static int devIDCounter;
+
 	class Device {
 		public:
 			Device();
@@ -26,6 +27,7 @@ namespace modules {
 
 		protected:
 			int devID;
+
 			devState_t state;
 	};
 
