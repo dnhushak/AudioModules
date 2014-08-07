@@ -21,8 +21,8 @@ namespace modules {
 	}
 
 	void Gain::setGain(float volume) {
-		// Volume is coming it in dbFs
-		// 0 dbFs => gain of 1
+		// Volume is coming in dbs
+		// 0 dbs => gain of 1
 		gain = dbToRatio(volume);
 	}
 }
