@@ -2,14 +2,13 @@
 #define WAVETABLE_HPP_
 
 #include "AudioUtils.hpp"
-// For malloc, realloc
-#include <cstdlib>
+#include "Device.hpp"
 // For memset, memcpy, etc..
 #include <string.h>
 
 namespace modules {
 	
-	class Wavetable {
+	class Wavetable : public Device {
 		public:
 			// Constructor. Takes a table size as input
 			Wavetable(int);
