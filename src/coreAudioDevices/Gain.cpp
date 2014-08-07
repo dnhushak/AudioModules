@@ -4,15 +4,16 @@ namespace modules {
 
 	Gain::Gain() {
 		setMaxNumDevices(1);
-		// Default gain to -6 db
-		setGain(-6);
+		// Default gain to 0 db
+		setGain(0);
 	}
 
 	sample_t * Gain::advance(int numSamples) {
 		if (isEmpty()) {
 			zeroBuffer();
 		} else {
-			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
+			memcpy(buffer, front()->advance(numSamples),
+					sizeof(sample_t) * numSamples);
 			for (int i = 0; i < numSamples; i++) {
 				buffer[i] *= gain;
 			}
