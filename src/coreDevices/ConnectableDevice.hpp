@@ -13,6 +13,43 @@ namespace modules {
 				maxNumDevices = -1;
 			}
 
+			typename std::list<A *>::iterator begin() {
+				return deviceList.begin();
+			}
+
+			typename std::list<A *>::iterator end() {
+				return deviceList.end();
+			}
+
+			A * front() {
+				return deviceList.front();
+			}
+
+			A * back() {
+				return deviceList.back();
+			}
+
+			A * getDeviceByLoc(int loc) {
+				// If loc is a valid number (device exists)
+				if (loc >= 0 && loc < getNumDevices()) {
+					// Start at the beginning
+					typename std::list<A *>::iterator iter = begin();
+					// Advance to the location
+					for (int i = 0; i < loc; i++) {
+						iter++;
+					}
+					// Return a pointer to the device
+					return *iter;
+				} else if (loc >= getNumDevices()) {
+					// If requested location is too large, return the last device
+					return back();
+				} else {
+					// If it's too small, return the first device
+					return front();
+				}
+
+			}
+
 			// Adding Devices
 			void addDevice(A * newDevice) {
 				// If there is space left (maximum checks)
