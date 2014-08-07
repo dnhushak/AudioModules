@@ -1,7 +1,10 @@
 // Generic Device class
 #ifndef DEVICE_HPP_
 #define DEVICE_HPP_
+
+// For std::cout messages (debugging and message printing)
 #include <iostream>
+// For malloc, realloc
 #include <cstdlib>
 
 namespace modules {

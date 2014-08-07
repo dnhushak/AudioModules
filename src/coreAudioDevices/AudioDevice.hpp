@@ -7,8 +7,6 @@
 
 // For memset, memcpy, etc..
 #include <string.h>
-// For malloc, realloc
-#include <cstdlib>
 
 namespace modules {
 	// Size of buffer
