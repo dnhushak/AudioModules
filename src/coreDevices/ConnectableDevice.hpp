@@ -25,7 +25,30 @@ namespace modules {
 				return deviceList.front();
 			}
 
+			A * back() {
+				return deviceList.back();
+			}
 
+			A * getDeviceByLoc(int loc) {
+				// If loc is a valid number (device exists)
+				if (loc >= 0 && loc < getNumDevices()) {
+					// Start at the beginning
+					std::list<A *>::iterator iter = begin();
+					// Advance to the location
+					for (int i = 0; i < loc; i++) {
+						iter++;
+					}
+					// Return a pointer to the device
+					return *iter;
+				} else if (loc >= getNumDevices()) {
+					// If requested location is too large, return the last device
+					return back();
+				} else {
+					// If it's too small, return the first device
+					return front();
+				}
+
+			}
 
 			// Adding Devices
 			void addDevice(A * newDevice) {
@@ -107,7 +130,7 @@ namespace modules {
 				return (getNumDevices() < maxNumDevices || maxNumDevices == -1);
 			}
 
-			int isEmpty(){
+			int isEmpty() {
 				return (getNumDevices() == 0);
 			}
 
@@ -119,6 +142,9 @@ namespace modules {
 				return maxNumDevices;
 			}
 
+			~ConnectableDevice() {
+			}
+		protected:
 			void setMaxNumDevices(int newMax) {
 				// Check for valid input
 				if (newMax < -1) {
@@ -131,10 +157,6 @@ namespace modules {
 				// Set the maxnum to the new maximum
 				maxNumDevices = newMax;
 			}
-
-			~ConnectableDevice() {
-			}
-		protected:
 			// List info
 			typename std::list<A *> deviceList;
 			typename std::list<A *>::iterator deviceIter;
