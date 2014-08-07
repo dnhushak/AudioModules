@@ -4,6 +4,7 @@ namespace modules {
 
 	VCA::VCA() {
 		setMaxNumDevices(2);
+		setGain(0);
 	}
 
 	sample_t * VCA::advance(int numSamples) {
@@ -16,12 +17,26 @@ namespace modules {
 
 			// If there are two connected devices, matrix multiply the two
 			if (getNumDevices() == 2) {
-				sample_t multBuffer = getDeviceByLoc(1)->advance(numSamples);
+				// Get the second connected device
+				deviceIter = begin();
+				deviceIter++;
+				// Multiply every sample of the first buffer by the second buffer
 				for (int i = 0; i < numSamples; i++) {
-					buffer[i] *= multBuffer[i];
+					buffer[i] *= (*(*deviceIter)->advance(1));
 				}
+			}
+
+			//Multiply the final buffer by the VCA gain
+			for (int i = 0; i < numSamples; i++) {
+				buffer[i] *= gain;
 			}
 		}
 		return buffer;
+	}
+
+	void VCA::setGain(float volume) {
+		// Volume is coming in dbs
+		// 0 dbs => gain of 1
+		gain = dbToRatio(volume);
 	}
 }

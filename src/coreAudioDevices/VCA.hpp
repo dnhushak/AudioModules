@@ -11,6 +11,11 @@ namespace modules {
 			VCA();
 
 			sample_t * advance(int);
+
+			void setGain(float);
+
+		private:
+			float gain;
 	};
 }
 
