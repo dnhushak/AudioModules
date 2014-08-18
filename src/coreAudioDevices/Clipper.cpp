@@ -1,13 +1,13 @@
-#include "Limiter.hpp"
+#include "Clipper.hpp"
 
 namespace audio {
 	
-	Limiter::Limiter() {
+	Clipper::Clipper() {
 		setThreshold(-3);
 		setMaxNumDevices(1);
 	}
 
-	sample_t * Limiter::advance(int numSamples) {
+	sample_t * Clipper::advance(int numSamples) {
 		if (!isEmpty()) {
 
 			// Get the buffer from the connected device
@@ -31,7 +31,7 @@ namespace audio {
 		return buffer;
 	}
 
-	void Limiter::setThreshold(float newThreshold) {
+	void Clipper::setThreshold(float newThreshold) {
 		thresholdHi = (sample_t) (dbToRatio(newThreshold) * sampleMax);
 		thresholdLo = -thresholdHi;
 	}
