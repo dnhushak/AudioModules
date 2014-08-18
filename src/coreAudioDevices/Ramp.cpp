@@ -1,10 +1,6 @@
 #include "Ramp.hpp"
 namespace audio {
 	Ramp::Ramp() {
-		initParameters(3);
-//		device::parameterFunction startRamp;
-		parameter[0] = startRamp;
-//		setParameter(0, startRamp);
 
 		// Restrict to only one audio device;
 		setMaxNumDevices(1);
@@ -64,10 +60,6 @@ namespace audio {
 		ramploc = 0;
 	}
 
-	/**
-	 * Sets the time that the ramp takes from start to finish
-	 * @param newTime Time in milliseconds of ramp. Must be > 0
-	 */
 	void Ramp::setTime(int newTime) {
 		if (newTime > 0) {
 			time = newTime;

@@ -12,13 +12,16 @@ namespace device {
 		INACTIVE, ACTIVE
 	};
 	
-	static int devIDCounter;
+	static int devIDCounter = 0;
 
 	class Device {
 		public:
 			Device();
 
-			// Return the state
+			/**
+			 * Get the current device state
+			 * @return Current device state, generally either ```INACTIVE``` (0), or ```ACTIVE``` (1)
+			 */
 			virtual devState_t getState();
 
 			int getDevID();
@@ -29,6 +32,12 @@ namespace device {
 			int devID;
 
 			devState_t state;
+
+			/**
+			 * Number of parameters available to the outside world
+			 */
+			int numParameters;
+
 	};
 
 }

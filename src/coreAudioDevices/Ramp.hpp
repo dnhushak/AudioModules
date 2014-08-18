@@ -20,7 +20,10 @@ namespace audio {
 			// Stops the Ramp
 			void stopRamp(int);
 
-			// Sets/gets the ramp properties
+			/**
+			 * Sets the time that the ramp takes from start to finish
+			 * @param newTime Time in milliseconds of ramp. Must be > 0
+			 */
 			void setTime(int);
 			int getTime();
 

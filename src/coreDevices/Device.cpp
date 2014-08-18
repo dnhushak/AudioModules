@@ -3,6 +3,7 @@
 namespace device {
 	
 	Device::Device() {
+		initParameters(0);
 		// State
 		state = ACTIVE;
 		// Device ID
@@ -11,7 +12,7 @@ namespace device {
 
 	}
 
-	int Device::getDevID(){
+	int Device::getDevID() {
 		return devID;
 	}
 
@@ -21,6 +22,7 @@ namespace device {
 
 	Device::~Device() {
 		state = INACTIVE;
+		free(parameter);
 	}
 
 }
