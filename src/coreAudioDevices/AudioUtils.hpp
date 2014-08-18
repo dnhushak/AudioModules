@@ -23,4 +23,20 @@ float dbToRatio(float db);
 //Midi Note number to Frequency
 float MtoF(int note);
 
+/**
+ * Converts a number of samples to milliseconds
+ * @param samples Number of samples
+ * @param sampleRate The desired sample rate, in samples per second
+ * @return Time the input samples represents, in milliseconds
+ */
+int sampToMs(int samples, int sampleRate);
+
+/**
+ * Converts a time in milliseconds to a number of samples
+ * @param ms Time in milliseconds
+ * @param sampleRate Desired sample rate, in samples per second
+ * @return Number of samples that the given time represents
+ */
+int msToSamp(int ms, int sampleRate);
+
 #endif //AUDIOUTILS_HPP_

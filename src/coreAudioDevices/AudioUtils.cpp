@@ -16,3 +16,11 @@ float dbToRatio(float db) {
 float MtoF(int note) {
 	return (float) pow(2, (((double) note - 69) / 12.0)) * 440.0;
 }
+
+int sampToMs(int samples, int sampleRate) {
+	return (1000 * samples) / sampleRate;
+}
+
+int msToSamp(int ms, int sampleRate) {
+	return (ms * sampleRate) / 1000;
+}

@@ -107,8 +107,10 @@ namespace audio {
 
 	/*** Getters and setters ***/
 	void Envelope::setAttack(int newAttack) {
-		attack = newAttack;
-		AsampCount = (attack * sampleRate) / 1000;
+		if (newAttack >= 0) {
+			attack = newAttack;
+			AsampCount = msToSamp(attack, sampleRate);
+		}
 	}
 
 	int Envelope::getAttack() {
@@ -116,28 +118,32 @@ namespace audio {
 	}
 
 	void Envelope::setDecay(int newDecay) {
-		decay = newDecay;
-		DsampCount = (decay * sampleRate) / 1000;
-		Dslope = ((sustain - 1.0) / DsampCount);
-
+		if (newDecay >= 0) {
+			decay = newDecay;
+			DsampCount = msToSamp(decay, sampleRate);
+			Dslope = ((sustain - 1.0) / DsampCount);
+		}
 	}
 	int Envelope::getDecay() {
 		return decay;
 	}
 
 	void Envelope::setSustain(float newSustain) {
-		sustain = newSustain;
-		// Decay calculation relies on the sustain value, need to set it here
-		setDecay(decay);
+		if (newSustain >= 0 && newSustain <= 1.0) {
+			sustain = newSustain;
+			// Decay calculation relies on the sustain value, need to set it here
+			setDecay(decay);
+		}
 	}
 	float Envelope::getSustain() {
 		return sustain;
 	}
 
 	void Envelope::setRelease(int newRelease) {
-		release = newRelease;
-		RsampCount = (release * sampleRate) / 1000;
-
+		if (newRelease >= 0) {
+			release = newRelease;
+			RsampCount = msToSamp(release, sampleRate);
+		}
 	}
 	int Envelope::getRelease() {
 		return release;

@@ -5,7 +5,8 @@
 #include "ConnectableDevice.hpp"
 
 namespace audio {
-	class Ramp: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
+	class Ramp: public AudioDevice,
+			public device::ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
 			Ramp();
@@ -14,10 +15,10 @@ namespace audio {
 			sample_t * advance(int);
 
 			// Starts the Ramp
-			void startRamp();
+			void startRamp(int);
 
 			// Stops the Ramp
-			void stopRamp();
+			void stopRamp(int);
 
 			// Sets/gets the ramp properties
 			void setTime(int);

@@ -1,6 +1,11 @@
 #include "Ramp.hpp"
 namespace audio {
 	Ramp::Ramp() {
+		initParameters(3);
+//		device::parameterFunction startRamp;
+		parameter[0] = startRamp;
+//		setParameter(0, startRamp);
+
 		// Restrict to only one audio device;
 		setMaxNumDevices(1);
 
@@ -23,7 +28,8 @@ namespace audio {
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
 	sample_t * Ramp::advance(int numSamples) {
 		if (!isEmpty()) {
-			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
+			memcpy(buffer, front()->advance(numSamples),
+					sizeof(sample_t) * numSamples);
 
 			for (int i = 0; i < numSamples; i++) {
 				if (state == device::ACTIVE) {
@@ -45,7 +51,7 @@ namespace audio {
 	}
 
 	// Starts the ramp
-	void Ramp::startRamp() {
+	void Ramp::startRamp(int unused) {
 		state = device::ACTIVE;
 		rampmult = 0.0;
 		ramploc = 0;
@@ -53,16 +59,19 @@ namespace audio {
 	}
 
 	// Releases the ramp
-	void Ramp::stopRamp() {
+	void Ramp::stopRamp(int unused) {
 		state = device::INACTIVE;
 		ramploc = 0;
 	}
 
-	/*** Getters and setters ***/
+	/**
+	 * Sets the time that the ramp takes from start to finish
+	 * @param newTime Time in milliseconds of ramp. Must be > 0
+	 */
 	void Ramp::setTime(int newTime) {
 		if (newTime > 0) {
 			time = newTime;
-			sampCount = (time * sampleRate) / 1000;
+			sampCount = msToSamp(time,sampleRate);
 		}
 	}
 
