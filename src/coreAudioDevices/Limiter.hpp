@@ -4,9 +4,9 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
+namespace audio {
 	
-	class Limiter: public AudioDevice, public ConnectableDevice<AudioDevice> {
+	class Limiter: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			Limiter();
 			sample_t * advance(int);

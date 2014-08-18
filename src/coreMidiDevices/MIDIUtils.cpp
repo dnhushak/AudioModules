@@ -1,6 +1,6 @@
 #include "MIDIUtils.hpp"
 
-namespace modules {
+namespace midi {
 	
 	// Scale a MIDI message to an int
 	int scaleValue(int value, int min, int max) {

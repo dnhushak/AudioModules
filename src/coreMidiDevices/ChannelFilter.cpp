@@ -1,6 +1,6 @@
 #include "ChannelFilter.hpp"
 
-namespace modules {
+namespace midi {
 	
 	ChannelFilter::ChannelFilter(int initChannel) {
 		// Channel of -1 indicates omni (passes all messages)

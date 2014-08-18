@@ -1,5 +1,5 @@
 #include "Filter.hpp"
-namespace modules {
+namespace audio {
 	Filter::Filter() {
 
 	}

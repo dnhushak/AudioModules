@@ -1,5 +1,5 @@
 #include "Ramp.hpp"
-namespace modules {
+namespace audio {
 	Ramp::Ramp() {
 		// Restrict to only one audio device;
 		setMaxNumDevices(1);
@@ -26,11 +26,11 @@ namespace modules {
 			memcpy(buffer, front()->advance(numSamples), sizeof(sample_t) * numSamples);
 
 			for (int i = 0; i < numSamples; i++) {
-				if (state == ACTIVE) {
+				if (state == device::ACTIVE) {
 					rampmult += slope;
 					// When the evelope location has hit the number of samples, do a state transition
 					if (ramploc >= sampCount) {
-						state = INACTIVE;
+						state = device::INACTIVE;
 						ramploc = 0;
 					}
 				}
@@ -46,7 +46,7 @@ namespace modules {
 
 	// Starts the ramp
 	void Ramp::startRamp() {
-		state = ACTIVE;
+		state = device::ACTIVE;
 		rampmult = 0.0;
 		ramploc = 0;
 		slope = (1.0 - rampmult) / sampCount;
@@ -54,7 +54,7 @@ namespace modules {
 
 	// Releases the ramp
 	void Ramp::stopRamp() {
-		state = INACTIVE;
+		state = device::INACTIVE;
 		ramploc = 0;
 	}
 

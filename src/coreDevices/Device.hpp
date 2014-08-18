@@ -7,7 +7,7 @@
 // For malloc, realloc
 #include <cstdlib>
 
-namespace modules {
+namespace device {
 	enum devState_t {
 		INACTIVE, ACTIVE
 	};

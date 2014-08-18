@@ -6,9 +6,9 @@
 // For memset, memcpy, etc..
 #include <string.h>
 
-namespace modules {
+namespace audio {
 	
-	class Wavetable : public Device {
+	class Wavetable : public device::Device {
 		public:
 			// Constructor. Takes a table size as input
 			Wavetable(int);

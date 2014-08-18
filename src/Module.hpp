@@ -12,53 +12,59 @@
 #include <AudioUtils.hpp>
 #include <unistd.h>
 
-namespace modules {
-	enum sustain_t {
-		PEDALUP, PEDALDOWN
-	};
+namespace audio {
+		enum sustain_t {
+			PEDALUP, PEDALDOWN
+		};
 
-	class Module: public MIDIDevice, public AudioDevice, public ConnectableDevice<AudioDevice> {
-		public:
-			Module();
+		class Module: public midi::MIDIDevice,
+				public AudioDevice,
+				public device::ConnectableDevice<AudioDevice> {
+			public:
+				Module();
 
-			sample_t * advance(int);
+				sample_t * advance(int);
 
-			void affect(MIDIMessage *);
+				void affect(midi::MIDIMessage *);
 
-			void setVoice(Voice * voice);
+				void setVoice(Voice * voice);
 
-			// Activate and release PolyVoices
-			void activatePolyVoice(int note);
-			void releasePolyVoice(int note);
+				// Activate and release PolyVoices
+				void activatePolyVoice(int note);
+				void releasePolyVoice(int note);
 
-			// Removes any inactive polyVoices
-			void cleanup();
+				// Removes any inactive polyVoices
+				void cleanup();
 
-			void lockList();
+				void lockList();
 
-			void unlockList();
+				void unlockList();
 
-			~Module();
+				~Module();
 
-		private:
+			private:
 
-			pthread_t cleaner_tid;
+				pthread_t cleaner_tid;
 
-			void StartCleaner();
+				void StartCleaner();
 
-			static void * Cleaner(void * args);
+				static void * Cleaner(void * args);
 
-			/*** Voice ***/
-			Voice * voice;
+				/*** Voice ***/
+				Voice * voice;
 
-			bool arp_en;
-			bool gliss_en;
-			int arpTime;
-			int glissTime;
-			sustain_t sustain;
-			modules::Mixer polyMixer;
-			modules::Gain polyGain;
+				bool arp_en;
+				bool gliss_en;
+				int arpTime;
+				int glissTime;
+				sustain_t sustain;
+				Mixer polyMixer;
+				Gain polyGain;
 
-			pthread_mutex_t listLock;
-	};
+				pthread_mutex_t listLock;
+		}
+		;
+
+	}
+
 }

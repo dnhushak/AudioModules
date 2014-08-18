@@ -1,6 +1,6 @@
 #include "PortMIDIHandler.hpp"
 
-namespace modules {
+namespace midi {
 
 	PortMIDIHandler::PortMIDIHandler() {
 		callback_tid = NULL;
@@ -47,7 +47,7 @@ namespace modules {
 	}
 
 	PmError PortMIDIHandler::disconnectMIDIStream() {
-		state = INACTIVE;
+		state = device::INACTIVE;
 		PmError err = Pm_Close(mstream);
 		if (err != pmNoError) {
 			return errorPortMIDI(err);
@@ -153,7 +153,7 @@ namespace modules {
 	}
 
 	void PortMIDIHandler::StopCallback() {
-		state = INACTIVE;
+		state = device::INACTIVE;
 		pthread_join(callback_tid, NULL);
 		printf("\nMIDI Callback ended, closing stream...");
 	}

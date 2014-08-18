@@ -1,6 +1,6 @@
 #include "MessagePrinter.hpp"
 
-namespace modules {
+namespace midi {
 	MessagePrinter::MessagePrinter() {
 	}
 

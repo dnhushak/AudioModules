@@ -6,9 +6,9 @@
 #include <pthread.h>
 #include <iostream>
 
-namespace modules {
+namespace midi {
 	
-	class PortMIDIHandler: public MIDIDevice, public ConnectableDevice<MIDIDevice> {
+	class PortMIDIHandler: public MIDIDevice, public device::ConnectableDevice<MIDIDevice> {
 		public:
 			PortMIDIHandler();
 

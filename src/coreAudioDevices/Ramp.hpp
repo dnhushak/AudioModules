@@ -4,8 +4,8 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
-	class Ramp: public AudioDevice, public ConnectableDevice<AudioDevice> {
+namespace audio {
+	class Ramp: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
 			Ramp();

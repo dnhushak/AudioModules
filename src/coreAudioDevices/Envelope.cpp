@@ -1,5 +1,5 @@
 #include "Envelope.hpp"
-namespace modules {
+namespace audio {
 	Envelope::Envelope() {
 		// Restrict to only one audio device;
 		setMaxNumDevices(1);
@@ -66,7 +66,7 @@ namespace modules {
 						envmult += Rslope;
 						// When the evelope location has hit the number of samples, do a state transition
 						if (envloc >= RsampCount) {
-							state = INACTIVE;
+							state = device::INACTIVE;
 							envState = DONE;
 						}
 						break;
@@ -91,7 +91,7 @@ namespace modules {
 
 // Starts the envelope
 	void Envelope::startEnv() {
-		state = ACTIVE;
+		state = device::ACTIVE;
 		envState = ATTACK;
 		envloc = 0;
 		Aslope = ((1.0 - envmult) / AsampCount);

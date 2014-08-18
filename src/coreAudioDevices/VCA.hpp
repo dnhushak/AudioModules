@@ -4,9 +4,9 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
+namespace audio {
 	
-	class VCA: public AudioDevice, public ConnectableDevice<AudioDevice> {
+	class VCA: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			VCA();
 

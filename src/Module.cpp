@@ -1,12 +1,12 @@
 #include "Module.hpp"
 
-namespace modules {
+namespace audio {
 
 	Module::Module() {
 		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
 		// ModuleGain inputs to the gliss/arpegg/polyMixer outputs
 		polyGain.addDevice(&polyMixer);
-		state = INACTIVE;
+		state = device::INACTIVE;
 		voice = NULL;
 		cleaner_tid = NULL;
 		arp_en = false;
@@ -19,13 +19,13 @@ namespace modules {
 
 	}
 
-	void Module::affect(MIDIMessage * message) {
+	void Module::affect(midi::MIDIMessage * message) {
 		switch (message->statusType) {
-			case NOTEOFF:
+			case midi::NOTEOFF:
 				// Note Off
 				releasePolyVoice(message->data1);
 				break;
-			case NOTEON:
+			case midi::NOTEON:
 				// Note On
 				if (message->data2 == 0) {
 					releasePolyVoice(message->data1);
@@ -33,7 +33,7 @@ namespace modules {
 					activatePolyVoice(message->data1);
 				}
 				break;
-			case CC:
+			case midi::CC:
 				if (message->data1 == 64) {
 					if (message->data2 == 0) {
 						sustain = PEDALUP;
@@ -42,16 +42,16 @@ namespace modules {
 					}
 				}
 				break;
-			case PROGRAM:
+			case midi::PROGRAM:
 				// Program Change
 				break;
-			case POLYTOUCH:
+			case midi::POLYTOUCH:
 				// Aftertouch (Monophonic)
 				break;
-			case PITCHBEND:
+			case midi::PITCHBEND:
 				// Pitch Bend
 				break;
-			case SYSTEM:
+			case midi::SYSTEM:
 				// System Message
 				break;
 			default:
@@ -77,8 +77,8 @@ namespace modules {
 
 	void Module::activatePolyVoice(int note) {
 		// Start the cleaner thread if currently inactive
-		if (state == INACTIVE) {
-			state = ACTIVE;
+		if (state == device::INACTIVE) {
+			state = device::ACTIVE;
 			StartCleaner();
 		}
 
@@ -145,7 +145,7 @@ namespace modules {
 		// Go from beginning to end of the list
 		while (deviceIter != polyMixer.end()) {
 			// If the polyvoice is inactive...
-			if ((*deviceIter)->getState() == INACTIVE) {
+			if ((*deviceIter)->getState() == device::INACTIVE) {
 				PolyVoice * toErase = (PolyVoice*) *deviceIter;
 				// ... Erase it and set the iterator to the next item
 				++deviceIter;
@@ -161,7 +161,7 @@ namespace modules {
 
 		if (polyMixer.isEmpty()) {
 			// Deactivate the Module
-			state = INACTIVE;
+			state = device::INACTIVE;
 		}
 
 	}
@@ -172,7 +172,7 @@ namespace modules {
 
 	void * Module::Cleaner(void * args) {
 		Module * mod = (Module *) args;
-		while (mod->getState() == ACTIVE) {
+		while (mod->getState() == device::ACTIVE) {
 			usleep(1000);
 			mod->cleanup();
 		}

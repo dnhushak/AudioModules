@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 
-namespace modules {
+namespace midi {
 	
 	class MessagePrinter: public MIDIDevice {
 		public:

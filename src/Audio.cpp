@@ -17,17 +17,17 @@
 
 // Main
 int main(int argc, char *argv[]) {
-	modules::Gain * gain = new modules::Gain();
+	audio::Gain * gain = new audio::Gain();
 	printf("Gain 1:  %d\n", gain->getDevID());
-	modules::Gain * gain2 = new modules::Gain();
+	audio::Gain * gain2 = new audio::Gain();
 	printf("Gain 2:  %d\n", gain2->getDevID());
-	modules::Gain * gain3 = new modules::Gain();
+	audio::Gain * gain3 = new audio::Gain();
 	printf("Gain 3:  %d\n", gain3->getDevID());
 	//delete gain3;
-	modules::Gain * gain4 = new modules::Gain();
+	audio::Gain * gain4 = new audio::Gain();
 	printf("Gain 4:  %d\n", gain4->getDevID());
 
-	modules::Mixer * mixer = new modules::Mixer();
+	audio::Mixer * mixer = new audio::Mixer();
 	printf("Mixer:   %d\n", mixer->getDevID());
 	mixer->addDevice(gain);
 	mixer->addDevice(gain2);

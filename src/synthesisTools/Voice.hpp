@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 
-namespace modules {
+namespace audio {
 	struct Voice {
 			/*** Module/Instrument level parameters go here: ***/
 			bool arp_en;

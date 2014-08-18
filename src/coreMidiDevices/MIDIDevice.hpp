@@ -4,9 +4,9 @@
 #include "MIDIUtils.hpp"
 #include "Device.hpp"
 
-namespace modules {
+namespace midi {
 
-	class MIDIDevice: public virtual Device {
+	class MIDIDevice: public virtual device::Device {
 		public:
 			MIDIDevice();
 

@@ -1,6 +1,6 @@
 #include "PortAudioHandler.hpp"
 
-namespace modules {
+namespace audio {
 	sample_t * PortAudioHandler::advance(int numSamples){
 		return buffer;
 	}
@@ -170,7 +170,7 @@ namespace modules {
 		//TODO: get multichannel to work right
 		float *out = (float*) outputBuffer;
 		// Grab the supplied user data
-		modules::AudioDevice * audio = (modules::AudioDevice*) userData;
+		audio::AudioDevice * audio = (audio::AudioDevice*) userData;
 
 //		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {

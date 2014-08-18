@@ -1,6 +1,6 @@
 #include "Limiter.hpp"
 
-namespace modules {
+namespace audio {
 	
 	Limiter::Limiter() {
 		setThreshold(-3);

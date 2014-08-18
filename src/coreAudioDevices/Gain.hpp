@@ -4,9 +4,9 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
+namespace audio {
 	
-	class Gain: public AudioDevice, public ConnectableDevice<AudioDevice> {
+	class Gain: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			Gain();
 

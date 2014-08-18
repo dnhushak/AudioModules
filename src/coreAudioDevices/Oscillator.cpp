@@ -1,6 +1,6 @@
 #include "Oscillator.hpp"
 
-namespace modules {
+namespace audio {
 // Constructor. Sets buffer size and sample rate
 	Oscillator::Oscillator() {
 

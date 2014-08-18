@@ -4,8 +4,8 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
-	class Mixer: public AudioDevice, public ConnectableDevice<AudioDevice> {
+namespace audio {
+	class Mixer: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
 			Mixer();

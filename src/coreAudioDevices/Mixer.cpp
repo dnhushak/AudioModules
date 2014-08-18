@@ -1,5 +1,5 @@
 #include "Mixer.hpp"
-namespace modules {
+namespace audio {
 	Mixer::Mixer() {
 	}
 

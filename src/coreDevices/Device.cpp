@@ -1,6 +1,6 @@
 #include "Device.hpp"
 
-namespace modules {
+namespace device {
 	
 	Device::Device() {
 		// State

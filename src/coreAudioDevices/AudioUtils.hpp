@@ -4,11 +4,11 @@
 #include <math.h>
 #include <limits.h>
 
-namespace modules {
+namespace audio {
 //	// Sample type, min, and max
 	typedef int sample_t;
-	static const sample_t sampleMax = INT_MAX/32;
-	static const sample_t sampleMin = INT_MIN/32;
+	static const sample_t sampleMax = INT_MAX / 32;
+	static const sample_t sampleMin = INT_MIN / 32;
 //	typedef float sample_t;
 //	static const sample_t sampleMax = 1.0;
 //	static const sample_t sampleMin = -1.0;

@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 
-namespace modules {
+namespace audio {
 	class PolyVoice: public AudioDevice {
 		public:
 			// Constructor
@@ -19,7 +19,7 @@ namespace modules {
 			sample_t * advance(int);
 
 			// Return the current state of the polyvoice
-			devState_t getState();
+			device::devState_t getState();
 
 			// Enable vibrato
 			void enableVibrato();
@@ -34,7 +34,7 @@ namespace modules {
 			void releasePolyVoice();
 
 			// Sets the parameters of the polyvoice
-			void setVoice(modules::Voice *);
+			void setVoice(Voice *);
 
 			// Gets the MIDI note number tied to this polyVoice
 			int getNote();

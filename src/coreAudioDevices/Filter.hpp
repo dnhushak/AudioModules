@@ -3,9 +3,9 @@
 
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
-namespace modules {
+namespace audio {
 
-	class Filter: public AudioDevice, public ConnectableDevice<AudioDevice> {
+	class Filter: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			Filter();
 

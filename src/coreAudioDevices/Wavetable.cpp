@@ -1,6 +1,6 @@
 #include "Wavetable.hpp"
 
-namespace modules {
+namespace audio {
 	
 	Wavetable::Wavetable(int initTableSize) {
 		tableSize = initTableSize;

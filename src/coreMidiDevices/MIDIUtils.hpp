@@ -2,7 +2,7 @@
 #define MIDIUTILS_HPP_
 #include <stdint.h>
 
-namespace modules {
+namespace midi {
 
 	struct MIDIMessage {
 			unsigned char statusType;

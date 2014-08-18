@@ -1,10 +1,12 @@
 #ifndef CONNECTABLEDEVICE_HPP_
 #define CONNECTABLEDEVICE_HPP_
 #include <cstdlib>
+// For lists
 #include <list>
+// For iterators
 #include <algorithm>
 
-namespace modules {
+namespace device {
 	template<class A>
 	class ConnectableDevice {
 		public:

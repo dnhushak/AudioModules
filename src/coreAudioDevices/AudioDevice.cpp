@@ -1,33 +1,33 @@
 #include "AudioDevice.hpp"
 
-namespace modules {
+namespace audio {
 	AudioDevice::AudioDevice() {
 		buffer = (sample_t *) malloc(sizeof(sample_t) * bufferSize);
 		zeroBuffer();
 	}
 
-	void AudioDevice::cleanup(){
+	void AudioDevice::cleanup() {
 		return;
 	}
-	// Set every value in buffer to 0
-	void AudioDevice::zeroBuffer() {
-		memset(buffer, 0, sizeof(sample_t)*bufferSize);
+
+	sample_t * AudioDevice::read(){
+		return buffer;
 	}
 
-	// Resize the buffer of the audio device
+	void AudioDevice::zeroBuffer() {
+		memset(buffer, 0, sizeof(sample_t) * bufferSize);
+	}
+
 	void AudioDevice::setBufferSize(int newSize) {
 		if (newSize > 0) {
 			bufferSize = newSize;
 		}
-
 	}
 
-	// Return the buffer size
 	int AudioDevice::getBufferSize() {
 		return bufferSize;
 	}
 
-	// Change the sample rate of the device
 	void AudioDevice::setSampleRate(int newRate) {
 		if (newRate > 0) {
 			sampleRate = newRate;

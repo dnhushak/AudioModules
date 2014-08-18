@@ -1,6 +1,6 @@
 #include "Gain.hpp"
 
-namespace modules {
+namespace audio {
 
 	Gain::Gain() {
 		setMaxNumDevices(1);

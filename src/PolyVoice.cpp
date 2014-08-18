@@ -1,6 +1,6 @@
 #include "PolyVoice.hpp"
 
-namespace modules {
+namespace audio {
 
 	PolyVoice::PolyVoice() {
 		note = 0;
@@ -15,7 +15,7 @@ namespace modules {
 	}
 
 	sample_t * PolyVoice::advance(int numSamples) {
-		if (state == INACTIVE) {
+		if (state == device::INACTIVE) {
 			return buffer;
 		}
 
@@ -38,7 +38,7 @@ namespace modules {
 	}
 
 	// Using the state of the envelope instead of the polyVoice
-	devState_t PolyVoice::getState() {
+	device::devState_t PolyVoice::getState() {
 		return osc_env.getState();
 	}
 
@@ -55,7 +55,7 @@ namespace modules {
 // Start the polyvoice
 	void PolyVoice::startPolyVoice(int newNote) {
 		if (newNote > 0 && newNote <= 127) {
-			state = ACTIVE;
+			state = device::ACTIVE;
 			note = newNote;
 			baseFrequency = MtoF(note);
 			osc.setFrequency(baseFrequency);

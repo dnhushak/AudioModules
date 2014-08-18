@@ -1,6 +1,6 @@
 #include "VCA.hpp"
 
-namespace modules {
+namespace audio {
 
 	VCA::VCA() {
 		setMaxNumDevices(2);

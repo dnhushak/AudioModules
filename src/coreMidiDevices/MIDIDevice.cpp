@@ -1,6 +1,6 @@
 #include "MIDIDevice.hpp"
 
-namespace modules {
+namespace midi {
 	MIDIDevice::MIDIDevice() {
 	}
 

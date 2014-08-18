@@ -2,7 +2,7 @@
 #include "AudioDevice.hpp"
 #include <stdio.h>
 
-namespace modules {
+namespace audio {
 	
 	class PortAudioHandler : AudioDevice {
 		public:

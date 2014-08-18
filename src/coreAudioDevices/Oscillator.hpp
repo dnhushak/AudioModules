@@ -9,7 +9,7 @@
 //For the log2 in the table location truncation
 #include <math.h>
 
-namespace modules {
+namespace audio {
 	class Oscillator: public AudioDevice {
 		public:
 			// Constructor

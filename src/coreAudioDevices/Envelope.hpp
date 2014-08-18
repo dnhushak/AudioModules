@@ -3,13 +3,13 @@
 #include "AudioDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
+namespace audio {
 
 	enum envState_t {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
-	class Envelope: public AudioDevice, public ConnectableDevice<AudioDevice> {
+	class Envelope: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			// Constructor
 			Envelope();

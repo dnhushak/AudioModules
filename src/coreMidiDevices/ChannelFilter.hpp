@@ -2,9 +2,9 @@
 #include "MIDIDevice.hpp"
 #include "ConnectableDevice.hpp"
 
-namespace modules {
+namespace midi {
 	
-	class ChannelFilter: public MIDIDevice, public ConnectableDevice<MIDIDevice> {
+	class ChannelFilter: public MIDIDevice, public device::ConnectableDevice<MIDIDevice> {
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);
