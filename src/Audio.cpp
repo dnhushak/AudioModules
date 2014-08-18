@@ -11,7 +11,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "Limiter.hpp"
+#include "Clipper.hpp"
 #include "AudioDevice.hpp"
 #include <pthread.h>
 

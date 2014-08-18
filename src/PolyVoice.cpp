@@ -61,7 +61,7 @@ namespace audio {
 			osc.setFrequency(baseFrequency);
 			vib.setFrequency(5);
 			osc_env.startEnv();
-			vib_ramp.startRamp();
+			vib_ramp.startRamp(0);
 		}
 	}
 
