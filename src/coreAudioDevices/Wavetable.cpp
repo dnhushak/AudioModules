@@ -30,8 +30,8 @@ namespace audio {
 
 	void Wavetable::setTableSize(int newSize) {
 		if (newSize > 0) {
-			bufferSize = newSize;
-			table = (sample_t *) realloc(table, sizeof(sample_t) * bufferSize);
+			tableSize = newSize;
+			table = (sample_t *) realloc(table, sizeof(sample_t) * tableSize);
 		}
 	}
 	// Get the wavetable size
