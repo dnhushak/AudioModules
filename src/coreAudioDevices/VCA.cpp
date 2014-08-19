@@ -17,12 +17,11 @@ namespace audio {
 
 			// If there are two connected devices, matrix multiply the two
 			if (getNumDevices() == 2) {
-				// Get the second connected device
-				deviceIter = begin();
-				deviceIter++;
+				// Advance the second device
+				back()->advance(numSamples);
 				// Multiply every sample of the first buffer by the second buffer
 				for (int i = 0; i < numSamples; i++) {
-					buffer[i] *= (*(*deviceIter)->advance(1));
+					buffer[i] *= back()->read()[i];
 				}
 			}
 
