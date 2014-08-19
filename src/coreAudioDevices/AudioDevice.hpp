@@ -37,20 +37,20 @@ namespace audio {
 			 * Resize the buffer of the audio device
 			 * @param newSize New size of buffer in samples. Must be > 0
 			 */
-			static void setBufferSize(int);
+			void setBufferSize(int);
 			/**
 			 * Return the buffer size
 			 * @return Number of samples making up the audio buffer
 			 */
-			static int getBufferSize();
+			int getBufferSize();
 
 			/**
 			 * Change the sample rate of the device
 			 * @param newRate New sample rate, in samples per second. Must be > 0
 			 */
-			static void setSampleRate(int);
+			void setSampleRate(int);
 			// Return the sample rate
-			static int getSampleRate();
+			int getSampleRate();
 
 			virtual ~AudioDevice();
 

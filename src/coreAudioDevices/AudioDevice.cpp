@@ -21,6 +21,7 @@ namespace audio {
 	void AudioDevice::setBufferSize(int newSize) {
 		if (newSize > 0) {
 			bufferSize = newSize;
+			buffer = (sample_t *) realloc(buffer, sizeof(sample_t) * bufferSize);
 		}
 	}
 
