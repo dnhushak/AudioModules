@@ -6,7 +6,8 @@
 
 namespace audio {
 	
-	class Delay: public audio::AudioDevice, public device::ConnectableDevice<AudioDevice> {
+	class Delay: public audio::AudioDevice, public device::ConnectableDevice<
+			AudioDevice> {
 		public:
 			Delay();
 			sample_t * advance(int);
