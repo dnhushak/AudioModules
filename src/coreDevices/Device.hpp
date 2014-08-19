@@ -6,6 +6,8 @@
 #include <iostream>
 // For malloc, realloc
 #include <cstdlib>
+// For bind
+#include <functional>
 
 namespace device {
 	enum devState_t {
@@ -32,11 +34,6 @@ namespace device {
 			int devID;
 
 			devState_t state;
-
-			/**
-			 * Number of parameters available to the outside world
-			 */
-			int numParameters;
 
 	};
 
