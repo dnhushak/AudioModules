@@ -13,15 +13,16 @@ namespace audio {
 			deviceIter++;
 			// Start at the second item
 			while (deviceIter != end()) {
+				// Advance each connected device
+				(*deviceIter)->advance(numSamples);
 				// Add each element into the mixdown buffer
 				for (int j = 0; j < numSamples; j++) {
 					// Sum each advanced AudioDevice to the master mixed vector
-					buffer[j] += *((*deviceIter)->advance(1));
+					buffer[j] += (*deviceIter)->read()[j];
 				}
 				deviceIter++;
 			}
-		}
-		else{
+		} else {
 			// Zero out the buffer
 			zeroBuffer();
 		}
