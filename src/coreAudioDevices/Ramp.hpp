@@ -5,6 +5,7 @@
 #include "ConnectableDevice.hpp"
 
 namespace audio {
+
 	class Ramp: public AudioDevice,
 			public device::ConnectableDevice<AudioDevice> {
 		public:

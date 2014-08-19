@@ -63,7 +63,7 @@ namespace audio {
 	void Ramp::setTime(int newTime) {
 		if (newTime > 0) {
 			time = newTime;
-			sampCount = msToSamp(time,sampleRate);
+			sampCount = msToSamp(time, sampleRate);
 		}
 	}
 
