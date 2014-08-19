@@ -28,6 +28,12 @@ namespace audio {
 		return table;
 	}
 
+	void Wavetable::setTableSize(int newSize) {
+		if (newSize > 0) {
+			bufferSize = newSize;
+			table = (sample_t *) realloc(table, sizeof(sample_t) * bufferSize);
+		}
+	}
 	// Get the wavetable size
 	int Wavetable::getTableSize() {
 		return tableSize;
@@ -35,7 +41,7 @@ namespace audio {
 
 	// Copies a table from another table
 	void Wavetable::populateTable(sample_t * newTable, int newSize) {
-		if(newSize!=tableSize){
+		if (newSize != tableSize) {
 			table = (sample_t*) realloc(table, sizeof(sample_t) * newSize);
 			tableSize = newSize;
 		}

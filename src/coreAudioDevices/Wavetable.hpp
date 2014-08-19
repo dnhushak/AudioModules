@@ -19,6 +19,8 @@ namespace audio {
 			// Set a sample to a value at a location
 			void setSample(int, sample_t);
 
+			void setTableSize(int);
+
 			// Return the whole table
 			sample_t * getTable();
 
