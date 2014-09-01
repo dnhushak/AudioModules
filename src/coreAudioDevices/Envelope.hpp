@@ -40,6 +40,11 @@ namespace audio {
 			int getRelease();
 
 		private:
+			/**
+			 * Calculates the current envelope multiplier and returns it
+			 * @return
+			 */
+			float calcEnvMult();
 
 			// Current state of envelope
 			envState_t envState;
@@ -54,7 +59,7 @@ namespace audio {
 			int envloc;
 
 			// The current envelope multiplier
-			float envmult;
+			float envMult;
 
 			// Length (in samples) of the attack
 			int AsampCount;

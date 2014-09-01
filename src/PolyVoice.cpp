@@ -31,7 +31,7 @@ namespace audio {
 				vibmult *= (vib_ramp.advance(1))[0];
 				// Add 1 (to prevent 0 and negative frequencies!)
 				vibmult += 1;
-				osc.setFrequency(baseFrequency * vibmult);
+				osc.setBaseFrequency(baseFrequency * vibmult);
 			}
 		}
 		return buffer;
@@ -58,8 +58,8 @@ namespace audio {
 			state = device::ACTIVE;
 			note = newNote;
 			baseFrequency = MtoF(note);
-			osc.setFrequency(baseFrequency);
-			vib.setFrequency(5);
+			osc.setBaseFrequency(baseFrequency);
+			vib.setBaseFrequency(5);
 			osc_env.startEnv();
 			vib_ramp.startRamp(0);
 		}

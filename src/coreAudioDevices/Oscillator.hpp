@@ -19,7 +19,7 @@ namespace audio {
 			sample_t * advance(int);
 
 			// Based on the frequency and sample rate, determine how much to advance the phase register
-			void setFrequency(float);
+			void setBaseFrequency(float);
 
 			// Return the oscillator's current frequency
 			float getFrequency();

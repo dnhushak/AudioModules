@@ -24,6 +24,14 @@ float dbToRatio(float db);
 float MtoF(int note);
 
 /**
+ * Converts a semitone value to a multiplicative ratio
+ * @param semitones Number of semitones (up or down)
+ * @return Ratio to multiply a frequency by to raise or
+ * lower by input number of semitones
+ */
+float semitonesToRatio(float semitones);
+
+/**
  * Converts a number of samples to milliseconds
  * @param samples Number of samples
  * @param sampleRate The desired sample rate, in samples per second

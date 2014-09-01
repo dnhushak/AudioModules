@@ -26,7 +26,7 @@ namespace audio {
 			// Fill the delay buffer with appropriate samples from input
 			if (!isEmpty()) {
 				// Attached device, sample by sample
-				delayBuffer[curSample++] = front()->read()[i];
+				delayBuffer[curSample++] = front()->read(numSamples)[i];
 			} else {
 				// No attached device, buffer is filled with zeros
 				delayBuffer[curSample++] = 0;

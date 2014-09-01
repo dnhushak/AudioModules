@@ -11,7 +11,7 @@ namespace audio {
 		if (!isEmpty()) {
 
 			// Get the buffer from the connected device
-			buffer = front()->advance(numSamples);
+			copyToBuffer(front()->read(numSamples), numSamples);
 
 			// Go through each sample in the buffer
 			for (int i = 0; i < numSamples; i++) {

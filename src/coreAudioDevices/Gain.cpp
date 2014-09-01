@@ -12,8 +12,7 @@ namespace audio {
 		if (isEmpty()) {
 			zeroBuffer();
 		} else {
-			memcpy(buffer, front()->advance(numSamples),
-					sizeof(sample_t) * numSamples);
+			copyToBuffer(front()->read(numSamples), numSamples);
 			for (int i = 0; i < numSamples; i++) {
 				buffer[i] *= gain;
 			}

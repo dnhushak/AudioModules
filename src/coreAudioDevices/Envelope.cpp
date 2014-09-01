@@ -6,7 +6,7 @@ namespace audio {
 
 		// Initialize state to INIT
 		envState = INIT;
-		envmult = 0.0;
+		envMult = 0.0;
 		setRelease(100);
 		setAttack(100);
 		setDecay(100);
@@ -16,7 +16,7 @@ namespace audio {
 	// Advance the envelope. Returns a buffer holding the envelope multiplier values
 	sample_t * Envelope::advance(int numSamples) {
 
-		/**
+		/*
 		 * This is the ADSR "state machine"
 		 * Attack goes from current volume to 1
 		 * Decay goes from 1 to the Sustain volume
@@ -31,55 +31,17 @@ namespace audio {
 
 		if (!isEmpty()) {
 			// Initialize the buffer to the first audio device
-			memcpy(buffer, front()->advance(numSamples),
-					sizeof(sample_t) * numSamples);
-
+			copyToBuffer(front()->read(numSamples), numSamples);
 			for (int i = 0; i < numSamples; i++) {
-				switch (envState) {
-					default:
-						envmult = 0.0;
-						break;
-					case ATTACK:
-						envmult += Aslope;
-						// When the evelope location has hit the number of samples, do a state transition
-						if (envloc >= AsampCount) {
-							envloc = 0;
-							envState = DECAY;
-						}
-						break;
-
-					case DECAY:
-						envmult += Dslope;
-						// When the evelope location has hit the number of samples, do a state transition
-						if (envloc >= DsampCount) {
-							envloc = 0;
-							envState = SUSTAIN;
-						}
-						break;
-
-					case SUSTAIN:
-						// Sustain won't automatically transition the state. The state will change on note release.
-						envmult = sustain;
-						break;
-
-					case RELEASE:
-						envmult += Rslope;
-						// When the evelope location has hit the number of samples, do a state transition
-						if (envloc >= RsampCount) {
-							state = device::INACTIVE;
-							envState = DONE;
-						}
-						break;
-
-				}
-				// Apply the envelope multiplier (and cast it accordingly)
-				buffer[i] *= (sample_t) envmult;
+				// Calculate and apply the envelope multiplier (and cast it accordingly)
+				buffer[i] *= (sample_t) calcEnvMult();
 				// Advance the envelope location
 				envloc++;
 			}
 		} else {
 			// If no devices connected to envelope
 			zeroBuffer();
+			envloc += numSamples;
 		}
 		return buffer;
 	}
@@ -94,7 +56,7 @@ namespace audio {
 		state = device::ACTIVE;
 		envState = ATTACK;
 		envloc = 0;
-		Aslope = ((1.0 - envmult) / AsampCount);
+		Aslope = ((1.0 - envMult) / AsampCount);
 	}
 
 // Releases the envelope
@@ -102,7 +64,7 @@ namespace audio {
 		//state = ACTIVE;
 		envState = RELEASE;
 		envloc = 0;
-		Rslope = -(envmult / RsampCount);
+		Rslope = -(envMult / RsampCount);
 	}
 
 	/*** Getters and setters ***/
@@ -126,6 +88,47 @@ namespace audio {
 	}
 	int Envelope::getDecay() {
 		return decay;
+	}
+
+	float Envelope::calcEnvMult() {
+		switch (envState) {
+			default:
+				envMult = 0.0;
+				break;
+			case ATTACK:
+				envMult += Aslope;
+				// When the evelope location has hit the number of samples, do a state transition
+				if (envloc >= AsampCount) {
+					envloc = 0;
+					envState = DECAY;
+				}
+				break;
+
+			case DECAY:
+				envMult += Dslope;
+				// When the evelope location has hit the number of samples, do a state transition
+				if (envloc >= DsampCount) {
+					envloc = 0;
+					envState = SUSTAIN;
+				}
+				break;
+
+			case SUSTAIN:
+				// Sustain won't automatically transition the state. The state will change on note release.
+				envMult = sustain;
+				break;
+
+			case RELEASE:
+				envMult += Rslope;
+				// When the evelope location has hit the number of samples, do a state transition
+				if (envloc >= RsampCount) {
+					state = device::INACTIVE;
+					envState = DONE;
+				}
+				break;
+
+		}
+		return envMult;
 	}
 
 	void Envelope::setSustain(float newSustain) {

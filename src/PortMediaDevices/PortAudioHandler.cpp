@@ -172,9 +172,11 @@ namespace audio {
 		// Grab the supplied user data
 		audio::AudioDevice * audio = (audio::AudioDevice*) userData;
 
+		audio->advance(framesPerBuffer);
+
 //		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {
-			*out++ = ((float)(*(audio->advance(1))))/sampleMax;
+			*out++ = ((float)(audio->read(1)[i]))/sampleMax;
 		}
 
 		// Continue

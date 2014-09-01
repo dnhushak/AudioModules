@@ -6,8 +6,7 @@ namespace audio {
 	sample_t * Mixer::advance(int numSamples) {
 		if (!isEmpty()) {
 			// Grab the first item in the list and copy its buffer over first
-			memcpy(buffer, front()->advance(numSamples),
-					sizeof(sample_t) * numSamples);
+			copyToBuffer(front()->read(numSamples), numSamples);
 
 			deviceIter = begin();
 			deviceIter++;
@@ -18,12 +17,12 @@ namespace audio {
 				// Add each element into the mixdown buffer
 				for (int j = 0; j < numSamples; j++) {
 					// Sum each advanced AudioDevice to the master mixed vector
-					buffer[j] += (*deviceIter)->read()[j];
+					buffer[j] += (*deviceIter)->read(numSamples)[j];
 				}
 				deviceIter++;
 			}
 		} else {
-			// Zero out the buffer
+			// No connected devices; zero out the buffer
 			zeroBuffer();
 		}
 		//Pointer to the summed buffer

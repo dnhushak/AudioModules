@@ -45,7 +45,7 @@ namespace audio {
 	}
 
 // Set the oscillator's frequency (recalculates phase stepsize)
-	void Oscillator::setFrequency(float newFrequency) {
+	void Oscillator::setBaseFrequency(float newFrequency) {
 		if (newFrequency == 0) {
 			return;
 		} else if (newFrequency < 0) {
