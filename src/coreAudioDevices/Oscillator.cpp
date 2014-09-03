@@ -26,10 +26,11 @@ namespace audio {
 		// The current frequency of the oscillator
 		frequency = 0;
 
+		freqRatio = 1.0;
 		wavetable = NULL;
 	}
 
-// Returns a buffer of sample values based on oscillation
+	// Returns a buffer of sample values based on oscillation
 	sample_t * Oscillator::advance(int numSamples) {
 		for (int i = 0; i < numSamples; i++) {
 			phaseTruncated = phase >> phaseTruncateAmt;
@@ -39,12 +40,12 @@ namespace audio {
 		return buffer;
 	}
 
-// Return the oscillator's current frequency
+	// Return the oscillator's current frequency
 	float Oscillator::getFrequency() {
 		return frequency;
 	}
 
-// Set the oscillator's frequency (recalculates phase stepsize)
+	// Set the oscillator's frequency (recalculates phase stepsize)
 	void Oscillator::setBaseFrequency(float newFrequency) {
 		if (newFrequency == 0) {
 			return;
@@ -53,8 +54,12 @@ namespace audio {
 		} else {
 			frequency = newFrequency;
 		}
+		calcStepSize(frequency);
+	}
+
+	void Oscillator::calcStepSize(float curFrequency) {
 		// Step size calculation
-		stepSize = (int) (((frequency) * (float) phaseMax) / sampleRate);
+		stepSize = (int) (((curFrequency) * (float) phaseMax) / sampleRate);
 
 		/* Step size is an advancement of phase once every sample
 		 * So, its units are technically cycles per sample
@@ -77,10 +82,9 @@ namespace audio {
 		 * cycles/sample (< 1) value by the maximum value of the phase register
 		 *
 		 */
-
 	}
 
-// Sets the wavetable (calculates truncation amount for indexing from the phase)
+	// Sets the wavetable (calculates truncation amount for indexing from the phase)
 	void Oscillator::setWavetable(Wavetable * newTable) {
 		wavetable = newTable;
 

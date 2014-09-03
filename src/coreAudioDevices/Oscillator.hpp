@@ -27,7 +27,11 @@ namespace audio {
 			// Sets the pointer to the wavetable
 			void setWavetable(Wavetable *);
 
+		protected:
+
 		private:
+			void calcStepSize(float);
+
 			// Current phase of the oscillator
 			unsigned int phase;
 
@@ -50,6 +54,7 @@ namespace audio {
 
 			// The current frequency of the oscillator
 			float frequency;
+			float freqRatio;
 
 			Wavetable * wavetable;
 	};
