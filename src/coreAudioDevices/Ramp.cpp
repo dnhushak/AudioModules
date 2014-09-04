@@ -24,8 +24,7 @@ namespace audio {
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
 	sample_t * Ramp::advance(int numSamples) {
 		if (!isEmpty()) {
-			memcpy(buffer, front()->advance(numSamples),
-					sizeof(sample_t) * numSamples);
+			copyToBuffer(front()->read(numSamples), numSamples);
 
 			for (int i = 0; i < numSamples; i++) {
 				if (state == device::ACTIVE) {
