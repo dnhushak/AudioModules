@@ -33,8 +33,11 @@ namespace audio {
 	// Returns a buffer of sample values based on oscillation
 	sample_t * Oscillator::advance(int numSamples) {
 		for (int i = 0; i < numSamples; i++) {
+			// Grab the truncated current phase value
 			phaseTruncated = phase >> phaseTruncateAmt;
+			// Use said truncated phase value to read from the wavetable
 			buffer[i] = wavetable->getSample(phaseTruncated);
+			// Advance the phase
 			phase += stepSize;
 		}
 		return buffer;
