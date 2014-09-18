@@ -7,7 +7,7 @@ namespace audio {
 		
 	}
 	
-	sample_t * AudioEngine::advance(int numSamples){
+	sample_t * AudioEngine::advance(){
 		return buffer;
 	}
 

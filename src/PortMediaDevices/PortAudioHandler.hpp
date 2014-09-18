@@ -6,7 +6,7 @@ namespace audio {
 	
 	class PortAudioHandler : AudioDevice {
 		public:
-			sample_t * advance(int numSamples);
+			sample_t * advance();
 
 			// Setup and start a PortAudio Stream
 			PaError connectAudioStream(PaDeviceIndex outDevID,

@@ -68,9 +68,9 @@ namespace audio {
 		polyGain.setGain(voice->volume);
 	}
 
-	sample_t * Module::advance(int numSamples) {
+	sample_t * Module::advance() {
 		lockList();
-		buffer = polyGain.advance(numSamples);
+		buffer = polyGain.read();
 		unlockList();
 		return buffer;
 	}

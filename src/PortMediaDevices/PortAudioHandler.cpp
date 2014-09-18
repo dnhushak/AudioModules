@@ -1,7 +1,7 @@
 #include "PortAudioHandler.hpp"
 
 namespace audio {
-	sample_t * PortAudioHandler::advance(int numSamples){
+	sample_t * PortAudioHandler::advance(){
 		return buffer;
 	}
 	// Setup and start a PortAudio Stream
@@ -172,11 +172,9 @@ namespace audio {
 		// Grab the supplied user data
 		audio::AudioDevice * audio = (audio::AudioDevice*) userData;
 
-		audio->advance(framesPerBuffer);
-
 //		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {
-			*out++ = ((float)(audio->read(1)[i]))/sampleMax;
+			*out++ = ((float)(audio->read()[i]))/sampleMax;
 		}
 
 		// Continue

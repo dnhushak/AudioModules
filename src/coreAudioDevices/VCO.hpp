@@ -2,6 +2,7 @@
 #define VCO_HPP_
 
 #include "Oscillator.hpp"
+#include "ConnectableDevice.hpp"
 
 namespace audio {
 	

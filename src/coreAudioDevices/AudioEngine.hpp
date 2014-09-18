@@ -2,6 +2,7 @@
 #define AUDIOENGINE_HPP_
 
 #include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 
 namespace audio {
 	
@@ -9,6 +10,7 @@ namespace audio {
 			public device::ConnectableDevice<AudioDevice> {
 		public:
 			AudioEngine();
+			sample_t * advance();
 			virtual ~AudioEngine();
 	};
 

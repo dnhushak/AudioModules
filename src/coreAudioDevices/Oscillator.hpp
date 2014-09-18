@@ -29,7 +29,6 @@ namespace audio {
 
 		protected:
 
-		private:
 			void calcStepSize(float);
 
 			// Current phase of the oscillator

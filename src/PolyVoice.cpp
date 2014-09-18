@@ -14,7 +14,7 @@ namespace audio {
 	PolyVoice::~PolyVoice() {
 	}
 
-	sample_t * PolyVoice::advance(int numSamples) {
+	sample_t * PolyVoice::advance() {
 		if (state == device::INACTIVE) {
 			return buffer;
 		}
@@ -23,12 +23,12 @@ namespace audio {
 		 * the vibrato is also time-based, and needs to alter the frequency of the
 		 * oscillator within the callback
 		 */
-		for (int i = 0; i < numSamples; i++) {
+		for (int i = 0; i < bufferSize; i++) {
 			// Grab the oscillator/envelope sample
-			buffer[i] = (osc_env.advance(1))[0];
+			buffer[i] = osc_env.read()[0];
 
 			if (vib_en) {
-				vibmult *= (vib_ramp.advance(1))[0];
+				vibmult *= vib_ramp.read()[0];
 				// Add 1 (to prevent 0 and negative frequencies!)
 				vibmult += 1;
 				osc.setBaseFrequency(baseFrequency * vibmult);
@@ -61,7 +61,7 @@ namespace audio {
 			osc.setBaseFrequency(baseFrequency);
 			vib.setBaseFrequency(5);
 			osc_env.startEnv();
-			vib_ramp.startRamp(0);
+			vib_ramp.startRamp();
 		}
 	}
 

@@ -23,7 +23,7 @@ namespace audio {
 		public:
 			Module();
 
-			sample_t * advance(int);
+			sample_t * advance();
 
 			void affect(midi::MIDIMessage *);
 

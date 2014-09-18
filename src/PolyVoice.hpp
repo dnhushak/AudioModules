@@ -16,7 +16,7 @@ namespace audio {
 			PolyVoice();
 
 			// Advance for callback
-			sample_t * advance(int);
+			sample_t * advance();
 
 			// Return the current state of the polyvoice
 			device::devState_t getState();

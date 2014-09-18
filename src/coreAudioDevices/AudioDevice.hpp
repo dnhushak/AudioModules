@@ -31,6 +31,15 @@ namespace audio {
 			AudioDevice();
 
 			/**
+			 * The advance for all audio devices that actually does the 'work.'
+			 * Fills the output buffer with updated samples based on the characteristics of the device,
+			 * generally manipulating samples taken from other devices' buffers.
+			 * Note that this method is pure virtual, and must be implemented on all audio devices
+			 * @return A pointer to the buffer of samples of type ```sample_t```
+			 */
+			virtual sample_t * advance() = 0;
+
+			/**
 			 * Reads the buffer. If the device has not yet been advanced, it advances it
 			 * Can be used to create "multiple outputs," where two devices read
 			 * the buffer of another without needing to change the buffer
@@ -85,14 +94,6 @@ namespace audio {
 			virtual ~AudioDevice();
 
 		protected:
-			/**
-			 * The advance for all audio devices that actually does the 'work.'
-			 * Fills the output buffer with updated samples based on the characteristics of the device,
-			 * generally manipulating samples taken from other devices' buffers.
-			 * Note that this method is pure virtual, and must be implemented on all audio devices
-			 * @return A pointer to the buffer of samples of type ```sample_t```
-			 */
-			virtual sample_t * advance() = 0;
 
 			/**
 			 * Quickly set every sample in the buffer to 0
