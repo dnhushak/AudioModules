@@ -8,6 +8,7 @@ namespace audio {
 	}
 	
 	void AudioEngine::endOfBuffer() {
+
 		deviceIter = begin();
 		deviceIter++;
 		// Start at the second item

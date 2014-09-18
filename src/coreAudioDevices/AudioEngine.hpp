@@ -2,7 +2,6 @@
 #define AUDIOENGINE_HPP_
 
 #include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
 
 namespace audio {
 	
