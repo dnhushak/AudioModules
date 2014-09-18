@@ -14,7 +14,7 @@ namespace audio {
 	}
 
 	// Advance the envelope. Returns a buffer holding the envelope multiplier values
-	sample_t * Envelope::advance(int numSamples) {
+	sample_t * Envelope::advance() {
 
 		/*
 		 * This is the ADSR "state machine"
@@ -31,18 +31,17 @@ namespace audio {
 
 		if (!isEmpty()) {
 			// Initialize the buffer to the first audio device
-			copyToBuffer(front()->read(numSamples), numSamples);
-			for (int i = 0; i < numSamples; i++) {
+			copyToBuffer(front()->read(), bufferSize);
+			for (int i = 0; i < bufferSize; i++) {
 				// Calculate and apply the envelope multiplier (and cast it accordingly)
 				buffer[i] *= (sample_t) calcEnvMult();
 				// Advance the envelope location
-				envloc++;
 			}
 		} else {
 			// If no devices connected to envelope
 			zeroBuffer();
-			envloc += numSamples;
 		}
+		envloc += bufferSize;
 		return buffer;
 	}
 
