@@ -36,12 +36,13 @@ namespace audio {
 				// Calculate and apply the envelope multiplier (and cast it accordingly)
 				buffer[i] *= (sample_t) calcEnvMult();
 				// Advance the envelope location
+				envloc++;
 			}
 		} else {
 			// If no devices connected to envelope
 			zeroBuffer();
+			envloc += bufferSize;
 		}
-		envloc += bufferSize;
 		return buffer;
 	}
 
