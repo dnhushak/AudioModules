@@ -7,19 +7,19 @@ namespace audio {
 		setMaxNumDevices(1);
 	}
 
-	sample_t * Clipper::advance(int numSamples) {
+	sample_t * Clipper::advance() {
 		if (!isEmpty()) {
 
 			// Get the buffer from the connected device
-			copyToBuffer(front()->read(numSamples), numSamples);
+			copyToBuffer(front()->read(), bufferSize);
 
 			// Go through each sample in the buffer
-			for (int i = 0; i < numSamples; i++) {
+			for (int i = 0; i < bufferSize; i++) {
 				// If lower than low threshold...
 				if (buffer[i] < thresholdLo) {
 					// ... Set value to the low threshold
 					buffer[i] = thresholdLo;
-				// Else if higher than the high threshold...
+					// Else if higher than the high threshold...
 				} else if (buffer[i] > thresholdHi) {
 					// ... Set value to high threshold
 					buffer[i] = thresholdHi;

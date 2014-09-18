@@ -4,10 +4,10 @@ namespace audio {
 
 	}
 	
-	sample_t * Filter::advance(int numSamples) {
+	sample_t * Filter::advance() {
 		if (!isEmpty()) {
-			copyToBuffer(front()->read(numSamples), numSamples);
-			//todo: FILTER CODE!!
+			copyToBuffer(front()->read(), bufferSize);
+			//TODO: FILTER CODE!!
 		} else {
 			zeroBuffer();
 		}

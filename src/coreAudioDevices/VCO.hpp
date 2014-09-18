@@ -8,7 +8,7 @@ namespace audio {
 	class VCO: public audio::Oscillator, device::ConnectableDevice<AudioDevice> {
 		public:
 			VCO();
-			sample_t * advance(int numSamples);
+			sample_t * advance();
 
 			/**
 			 * Sets the sensitivity of the VCO, in semitones. Default is 1.0

@@ -8,12 +8,12 @@ namespace audio {
 		setGain(0);
 	}
 
-	sample_t * Gain::advance(int numSamples) {
+	sample_t * Gain::advance() {
 		if (isEmpty()) {
 			zeroBuffer();
 		} else {
-			copyToBuffer(front()->read(numSamples), numSamples);
-			for (int i = 0; i < numSamples; i++) {
+			copyToBuffer(front()->read(), bufferSize);
+			for (int i = 0; i < bufferSize; i++) {
 				buffer[i] *= gain;
 			}
 		}

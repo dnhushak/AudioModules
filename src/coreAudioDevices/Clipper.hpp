@@ -9,7 +9,7 @@ namespace audio {
 	class Clipper: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
 		public:
 			Clipper();
-			sample_t * advance(int);
+			sample_t * advance();
 			void setThreshold(float);
 		private:
 			sample_t thresholdHi;

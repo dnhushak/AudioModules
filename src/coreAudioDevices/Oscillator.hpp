@@ -16,7 +16,7 @@ namespace audio {
 			Oscillator();
 
 			// Advance by a given number of samples (in this case summing all in the AudioList
-			sample_t * advance(int);
+			sample_t * advance();
 
 			// Based on the frequency and sample rate, determine how much to advance the phase register
 			void setBaseFrequency(float);

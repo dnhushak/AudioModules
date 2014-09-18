@@ -13,13 +13,13 @@ namespace audio {
 			Ramp();
 
 			// Advance/fill the buffer
-			sample_t * advance(int);
+			sample_t * advance();
 
 			// Starts the Ramp
-			void startRamp(int);
+			void startRamp();
 
 			// Stops the Ramp
-			void stopRamp(int);
+			void stopRamp();
 
 			/**
 			 * Sets the time that the ramp takes from start to finish

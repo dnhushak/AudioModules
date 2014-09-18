@@ -22,11 +22,11 @@ namespace audio {
 	}
 
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
-	sample_t * Ramp::advance(int numSamples) {
+	sample_t * Ramp::advance() {
 		if (!isEmpty()) {
-			copyToBuffer(front()->read(numSamples), numSamples);
+			copyToBuffer(front()->read(), bufferSize);
 
-			for (int i = 0; i < numSamples; i++) {
+			for (int i = 0; i < bufferSize; i++) {
 				if (state == device::ACTIVE) {
 					rampmult += slope;
 					// When the evelope location has hit the number of samples, do a state transition
@@ -46,7 +46,7 @@ namespace audio {
 	}
 
 	// Starts the ramp
-	void Ramp::startRamp(int unused) {
+	void Ramp::startRamp() {
 		state = device::ACTIVE;
 		rampmult = 0.0;
 		ramploc = 0;
@@ -54,7 +54,7 @@ namespace audio {
 	}
 
 	// Releases the ramp
-	void Ramp::stopRamp(int unused) {
+	void Ramp::stopRamp() {
 		state = device::INACTIVE;
 		ramploc = 0;
 	}

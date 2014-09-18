@@ -17,16 +17,12 @@ namespace audio {
 		setDelaySamples(0);
 	}
 	
-	sample_t* Delay::advance(int numSamples) {
-		if(!isEmpty()){
-			front()->advance(numSamples);
-		}
-
-		for (int i = 0; i < numSamples; i++) {
+	sample_t* Delay::advance() {
+		for (int i = 0; i < bufferSize; i++) {
 			// Fill the delay buffer with appropriate samples from input
 			if (!isEmpty()) {
 				// Attached device, sample by sample
-				delayBuffer[curSample++] = front()->read(numSamples)[i];
+				delayBuffer[curSample++] = front()->read()[i];
 			} else {
 				// No attached device, buffer is filled with zeros
 				delayBuffer[curSample++] = 0;

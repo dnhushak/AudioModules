@@ -12,10 +12,10 @@ namespace audio {
 		return;
 	}
 
-	sample_t * AudioDevice::read(int numSamples) {
-		// Check if buffer is updated - if it isn't, updated it
+	sample_t * AudioDevice::read() {
+		// Check if buffer is updated - if it isn't, update it
 		if (!advanced) {
-			advance(numSamples);
+			advance();
 			advanced = 1;
 		}
 		return buffer;

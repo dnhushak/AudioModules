@@ -31,8 +31,8 @@ namespace audio {
 	}
 
 	// Returns a buffer of sample values based on oscillation
-	sample_t * Oscillator::advance(int numSamples) {
-		for (int i = 0; i < numSamples; i++) {
+	sample_t * Oscillator::advance() {
+		for (int i = 0; i < bufferSize; i++) {
 			// Grab the truncated current phase value
 			phaseTruncated = phase >> phaseTruncateAmt;
 			// Use said truncated phase value to read from the wavetable

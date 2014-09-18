@@ -11,7 +11,7 @@ namespace audio {
 		public:
 			Delay();
 
-			sample_t * advance(int);
+			sample_t * advance();
 
 			void setMaxDelayTime(int);
 

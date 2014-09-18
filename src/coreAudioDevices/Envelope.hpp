@@ -15,7 +15,7 @@ namespace audio {
 			Envelope();
 
 			// Advance/fill the buffer
-			sample_t * advance(int);
+			sample_t * advance();
 
 			// Gets the current state
 			envState_t getEnvState();

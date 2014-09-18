@@ -9,7 +9,7 @@ namespace audio {
 		public:
 			Filter();
 
-			sample_t * advance(int);
+			sample_t * advance();
 	};
 }
 #endif //FILTER_HPP_

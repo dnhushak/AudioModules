@@ -10,7 +10,7 @@ namespace audio {
 		public:
 			VCA();
 
-			sample_t * advance(int);
+			sample_t * advance();
 
 			void setGain(float);
 

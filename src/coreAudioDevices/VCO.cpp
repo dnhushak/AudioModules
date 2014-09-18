@@ -7,17 +7,17 @@ namespace audio {
 		setSensitivity(1);
 	}
 	
-	sample_t * VCO::advance(int numSamples) {
+	sample_t * VCO::advance() {
 		// If there is a connected device...
 		if(!isEmpty()){
 			// Copy its buffer to the VCO's buffer
-			copyToBuffer(front()->read(numSamples), numSamples);
+			copyToBuffer(front()->read(), bufferSize);
 		}
 		else{
 			// Otherwise, zero the VCO's buffer
 			zeroBuffer();
 		}
-		for (int i = 0; i < numSamples; i++) {
+		for (int i = 0; i < bufferSize; i++) {
 			// The frequency adjustments are currently held in each buffer position
 			// They will either be the connected objects buffer, if such an object exists,
 			// Else they will all be zero.
