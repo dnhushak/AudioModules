@@ -7,8 +7,13 @@ namespace audio {
 		
 	}
 	
-	sample_t * AudioEngine::advance(){
-		return buffer;
+	void AudioEngine::endOfBuffer() {
+		deviceIter = begin();
+		deviceIter++;
+		// Start at the second item
+		while (deviceIter != end()) {
+			(*deviceIter)->resetAdvanceBit();
+		}
 	}
 
 	AudioEngine::~AudioEngine() {

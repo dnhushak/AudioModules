@@ -6,11 +6,10 @@
 
 namespace audio {
 	
-	class AudioEngine: public audio::AudioDevice,
-			public device::ConnectableDevice<AudioDevice> {
+	class AudioEngine: public device::ConnectableDevice<AudioDevice> {
 		public:
 			AudioEngine();
-			sample_t * advance();
+			void endOfBuffer();
 			virtual ~AudioEngine();
 	};
 

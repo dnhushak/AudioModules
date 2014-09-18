@@ -1,7 +1,7 @@
 #include "PortAudioHandler.hpp"
 
 namespace audio {
-	sample_t * PortAudioHandler::advance(){
+	sample_t * PortAudioHandler::advance() {
 		return buffer;
 	}
 	// Setup and start a PortAudio Stream
@@ -174,8 +174,9 @@ namespace audio {
 
 //		memcpy(out, audio->advance(framesPerBuffer), sizeof(sample_t) * framesPerBuffer);
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {
-			*out++ = ((float)(audio->read()[i]))/sampleMax;
+			*out++ = ((float) (audio->read()[i])) / sampleMax;
 		}
+		engine.endOfBuffer();
 
 		// Continue
 		return paContinue;

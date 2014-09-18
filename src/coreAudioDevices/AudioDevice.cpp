@@ -2,6 +2,10 @@
 
 namespace audio {
 	AudioDevice::AudioDevice() {
+		// Add the device to the audio engine, so that at the end of every buffer update,
+		// all audio devices can be remarked as "not advanced"
+		engine.addDevice(this);
+
 		// Allocate space for the device's output buffer
 		buffer = (sample_t *) malloc(sizeof(sample_t) * bufferSize);
 		resetAdvanceBit();
@@ -65,6 +69,7 @@ namespace audio {
 	}
 
 	AudioDevice::~AudioDevice() {
+		engine.removeDevice(this);
 		free(buffer);
 	}
 }

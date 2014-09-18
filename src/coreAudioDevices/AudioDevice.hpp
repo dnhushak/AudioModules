@@ -15,6 +15,8 @@ namespace audio {
 	// Sampling rate of the audio system
 	static int sampleRate = 44100;
 
+	static AudioEngine engine;
+
 	/**
 	 * This is the master class for all audio devices.
 	 * Each device has an output buffer of samples, intended to be read
