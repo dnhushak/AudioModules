@@ -40,7 +40,6 @@ namespace audio {
 
 			virtual ~VCO();
 		private:
-			float curFrequency;
 			float sensitivity;
 	};
 
