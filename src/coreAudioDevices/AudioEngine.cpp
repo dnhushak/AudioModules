@@ -3,22 +3,20 @@
 namespace audio {
 	
 	AudioEngine::AudioEngine() {
-		// TODO Auto-generated constructor stub
 		
 	}
 	
 	void AudioEngine::endOfBuffer() {
-
+		//TODO: Actually make this work. Every audio device needs to be added to the AudioEngine list
 		deviceIter = begin();
 		deviceIter++;
 		// Start at the second item
 		while (deviceIter != end()) {
-			(*deviceIter)->resetAdvanceBit();
+			(*deviceIter)->cleanup();
 		}
 	}
 
 	AudioEngine::~AudioEngine() {
-		// TODO Auto-generated destructor stub
 	}
 
 }

@@ -51,7 +51,6 @@ namespace audio {
 	}
 
 	VCO::~VCO() {
-		// TODO Auto-generated destructor stub
 	}
 
 }

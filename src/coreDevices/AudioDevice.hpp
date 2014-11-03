@@ -49,7 +49,7 @@ namespace audio {
 			sample_t * read();
 
 			/**
-			 * Performs whatever cleanup is necessary. If not implemented, does nothing
+			 * Performs whatever cleanup is necessary. If not implemented, just resets the advanced bit.
 			 */
 			virtual void cleanup();
 
@@ -63,13 +63,6 @@ namespace audio {
 			 * @return Number of samples making up the audio buffer
 			 */
 			int getBufferSize();
-
-			/**
-			 * Resets the advance bit, to be done at the end of a buffer size, when all devices
-			 * have been advanced. This allows a device to be read multiple times in a single buffer
-			 * duration, for multiple outputs.
-			 */
-			void resetAdvanceBit();
 
 			/**
 			 * Change the sample rate of the device
