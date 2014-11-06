@@ -176,6 +176,7 @@ namespace audio {
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {
 			*out++ = ((float) (audio->read()[i])) / sampleMax;
 		}
+		endOfBuffer();
 
 		// Continue
 		return paContinue;
