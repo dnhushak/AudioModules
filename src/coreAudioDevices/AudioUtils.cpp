@@ -24,7 +24,7 @@ namespace audio {
 		return (float) pow(2, (((double) semitones) / 12.0));
 	}
 
-//Midi Note to Frequency
+	//Midi Note to Frequency
 	float MtoF(int note) {
 		return (float) pow(2, (((double) note - 69) / 12.0)) * 440.0;
 	}
