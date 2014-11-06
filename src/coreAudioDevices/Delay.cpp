@@ -1,7 +1,7 @@
 #include "Delay.hpp"
 
 namespace audio {
-	
+	//TODO: Fix Delay time
 	Delay::Delay() {
 		setMaxNumDevices(1);
 
