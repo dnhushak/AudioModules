@@ -10,7 +10,6 @@ namespace audio {
 	}
 
 	void AudioDevice::cleanup() {
-		advanced = 0;
 	}
 
 	sample_t * AudioDevice::read() {
@@ -65,10 +64,15 @@ namespace audio {
 		buffer = (sample_t *) realloc(buffer, sizeof(sample_t) * bufferSize);
 	}
 
-	void AudioDevice::endOfBuffer(){
+	void AudioDevice::endOfBuffer() {
 		for (AudioDevice * audioDevice : audioDeviceList) {
+			audioDevice->resetAdvanceBit();
 			audioDevice->cleanup();
 		}
+	}
+
+	void AudioDevice::resetAdvanceBit() {
+		advanced = 0;
 	}
 
 	AudioDevice::~AudioDevice() {

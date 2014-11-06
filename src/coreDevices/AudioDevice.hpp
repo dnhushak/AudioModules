@@ -117,6 +117,12 @@ namespace audio {
 			void resizeBuffer();
 
 			/**
+			 * Resets the ```advanced``` bit to 0, called by ```endOfBuffer()``` at the end of
+			 * a buffer calculation/callback
+			 */
+			void resetAdvanceBit();
+
+			/**
 			 * The output buffer of samples
 			 */
 			sample_t * buffer;
