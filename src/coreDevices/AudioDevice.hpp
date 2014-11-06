@@ -7,12 +7,16 @@
 
 // For memset, memcpy, etc..
 #include <string.h>
+// For device list
+#include <list>
 
 namespace audio {
 	// Size of buffer
+	//TODO: Change buffer of all audio devices
 	static int bufferSize = 64;
 
 	// Sampling rate of the audio system
+	//TODO: Ability to used mixed sample rates
 	static int sampleRate = 44100;
 
 	/**
@@ -54,10 +58,11 @@ namespace audio {
 			virtual void cleanup();
 
 			/**
-			 * Resize the buffer of the audio device
+			 * Resize the buffer of all audio devices
 			 * @param newSize New size of buffer in samples. Must be > 0
 			 */
 			void setBufferSize(int newSize);
+
 			/**
 			 * Return the buffer size
 			 * @return Number of samples making up the audio buffer
@@ -85,6 +90,12 @@ namespace audio {
 			 */
 			void copyToBuffer(sample_t * otherBuffer, int numSamples);
 
+			/**
+			 * Called at the end of any audio callback/buffer calculation. Resets the ```advanced```
+			 * bit in all audio devices
+			 */
+			static void endOfBuffer();
+
 			virtual ~AudioDevice();
 
 		protected:
@@ -101,6 +112,11 @@ namespace audio {
 			void setBuffer(sample_t sampVal);
 
 			/**
+			 * Resizes the buffer of this AudioDevice
+			 */
+			void resizeBuffer();
+
+			/**
 			 * The output buffer of samples
 			 */
 			sample_t * buffer;
@@ -111,5 +127,10 @@ namespace audio {
 			int advanced;
 
 	};
+
+	/**
+	 * List of all audio devices. Used for buffer resizing and ```advanced``` bit resetting
+	 */
+	static std::list<AudioDevice *> audioDeviceList;
 }
 #endif //AUDIOUDEVICE_HPP_
