@@ -23,7 +23,7 @@ namespace midi {
 		SYSTEM = 15
 	};
 
-	enum SystemType{
+	enum SystemType {
 		SYSEX = 0,
 		MTC = 1,
 		SONGPOSITION = 2,
@@ -38,12 +38,11 @@ namespace midi {
 		RESET = 15
 	};
 
+	// Scale a MIDI message to an int
+	int scaleValue(int value, int min, int max);
+
+	// Scale a MIDI message to a float
+	float scaleValue(int value, float min, float max);
 
 }
-
-// Scale a MIDI message to an int
-int scaleValue(int value, int min, int max);
-
-// Scale a MIDI message to a float
-float scaleValue(int value, float min, float max);
 #endif /* MIDIUTILS_HPP_ */
