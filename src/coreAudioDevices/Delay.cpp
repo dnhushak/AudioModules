@@ -1,7 +1,6 @@
 #include "Delay.hpp"
 
 namespace audio {
-	//TODO: Fix Delay time
 	Delay::Delay() {
 		setMaxNumDevices(1);
 
@@ -10,7 +9,6 @@ namespace audio {
 		// Default maximum delay is 2 seconds
 		setMaxDelayTime(2000);
 		zeroDelayBuffer();
-
 		// Start the input writing at the beginning of the delay buffer;
 		curSample = 0;
 		// Default to 0 delay;
@@ -65,7 +63,7 @@ namespace audio {
 			delaySamples = msToSamp(newTime, sampleRate);
 
 			// Adjust the delay pointer to delay correctly
-			curDelaySample = curSample + delaySamples;
+			curDelaySample = curSample - delaySamples;
 			normalizeDelayPointer();
 		}
 	}
@@ -77,7 +75,7 @@ namespace audio {
 			delaySamples = newSamples;
 
 			// Adjust the delay pointer to delay correctly
-			curDelaySample = curSample + delaySamples;
+			curDelaySample = curSample - delaySamples;
 			normalizeDelayPointer();
 		}
 	}
