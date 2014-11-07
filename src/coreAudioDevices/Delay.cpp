@@ -9,8 +9,10 @@ namespace audio {
 		// Default maximum delay is 2 seconds
 		setMaxDelayTime(2000);
 		zeroDelayBuffer();
+
 		// Start the input writing at the beginning of the delay buffer;
 		curSample = 0;
+
 		// Default to 0 delay;
 		setDelaySamples(0);
 	}
@@ -53,6 +55,10 @@ namespace audio {
 	}
 
 	void Delay::normalizeDelayPointer() {
+		//Prevents negative modulous errors
+		while (curDelaySample < 0) {
+			curDelaySample += delayBufferSize;
+		}
 		curDelaySample %= delayBufferSize;
 	}
 
