@@ -6,7 +6,7 @@
 
 namespace audio {
 	
-	class VCO: public audio::Oscillator, device::ConnectableDevice<AudioDevice> {
+	class VCO: public audio::Oscillator, public device::ConnectableDevice<AudioDevice> {
 		public:
 			VCO();
 			sample_t * advance();

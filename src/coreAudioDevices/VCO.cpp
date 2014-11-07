@@ -9,11 +9,10 @@ namespace audio {
 	
 	sample_t * VCO::advance() {
 		// If there is a connected device...
-		if(!isEmpty()){
+		if (!isEmpty()) {
 			// Copy its buffer to the VCO's buffer
 			copyToBuffer(front()->read(), bufferSize);
-		}
-		else{
+		} else {
 			// Otherwise, zero the VCO's buffer
 			zeroBuffer();
 		}
@@ -23,7 +22,7 @@ namespace audio {
 			// Else they will all be zero.
 
 			// Use these values currently in the buffer to adjust the frequency
-			adjustFrequency(buffer[i]);
+			adjustFrequency((float)buffer[i]/(float)sampleMax);
 
 			// Grab the truncated current phase value
 			phaseTruncated = phase >> phaseTruncateAmt;
