@@ -19,6 +19,8 @@ namespace audio {
 
 		// Slope of the ramp curve
 		slope = .01;
+
+		stopRamp();
 	}
 
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
@@ -35,7 +37,7 @@ namespace audio {
 						ramploc = 0;
 					}
 				}
-				buffer[i] *= (sample_t) rampmult;
+				buffer[i] *= rampmult;
 				ramploc++;
 			}
 		} else {
