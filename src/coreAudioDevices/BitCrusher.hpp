@@ -1,5 +1,7 @@
 #ifndef BITCRUSHER_HPP_
 #define BITCRUSHER_HPP_
+#include "AudioDevice.hpp"
+#include "ConnectableDevice.hpp"
 
 namespace audio {
 	

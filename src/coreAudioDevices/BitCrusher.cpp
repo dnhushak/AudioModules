@@ -7,7 +7,7 @@ namespace audio {
 	}
 	
 	sample_t * BitCrusher::advance() {
-		if (!isEmpty) {
+		if (!isEmpty()) {
 			copyToBuffer(front()->read(), bufferSize);
 			// Multiply by INT max, divide by sample max, cast to
 		} else {
