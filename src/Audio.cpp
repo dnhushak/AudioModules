@@ -7,6 +7,8 @@
 #include "MessagePrinter.hpp"
 #include "Module.hpp"
 #include "Voice.hpp"
+#include "VCO.hpp"
+#include "Delay.hpp"
 #include "Gain.hpp"
 #include <math.h>
 #include <unistd.h>
@@ -76,9 +78,7 @@ std::vector<audio::Wavetable *> * GenerateSynthTables() {
 	float pi = 3.14159265359;
 	float samp;
 	for (int i = 0; i < 256; i++) {
-		samp = (audio::sample_t) (sin((pi * 2 * (float) i) / 256));
-		// Scale the vibrato
-		samp *= .01;
+		samp = (sin((pi * 2 * (float) i) / 256));
 		samp *= audio::sampleMax;
 		vibrasin->setSample(i, samp);
 	}
@@ -146,48 +146,70 @@ int main(int argc, char *argv[]) {
 	}
 
 	audio::Gain * gain = new audio::Gain();
-	printf("Gain 1:  %d\n", gain->getDevID());
-	audio::Gain * gain2 = new audio::Gain();
-	printf("Gain 2:  %d\n", gain2->getDevID());
-	audio::Gain * gain3 = new audio::Gain();
-	printf("Gain 3:  %d\n", gain3->getDevID());
-	//delete gain3;
-	audio::Gain * gain4 = new audio::Gain();
-	printf("Gain 4:  %d\n", gain4->getDevID());
 
 	std::vector<audio::Wavetable *> * tables = GenerateSynthTables();
 
-	audio::Oscillator * saw = new audio::Oscillator();
-	saw->setWavetable(tables->at(1));
-	printf("Osc  :  %d\n", saw->getDevID());
-	saw->setBaseFrequency(300);
+	audio::Oscillator * sin = new audio::Oscillator();
+	sin->setWavetable(tables->at(5));
+	sin->setBaseFrequency(4);
+
+	audio::Ramp * ramp = new audio::Ramp();
+	ramp->setTime(3000);
+	ramp->addDevice(sin);
+
+	audio::VCO * wobble = new audio::VCO();
+	wobble->setWavetable(tables->at(3));
+	wobble->addDevice(ramp);
+	wobble->setSensitivity(.4);
+	wobble->setBaseFrequency(400);
+
+	audio::Delay * dly = new audio::Delay();
+	dly->addDevice(gain);
+	dly->setDelayTime(500);
+
+	audio::Delay * dly2 = new audio::Delay();
+	dly2->addDevice(gain);
+	dly2->setDelayTime(1000);
+
+	audio::Delay * dly3 = new audio::Delay();
+	dly3->addDevice(gain);
+	dly3->setDelayTime(1500);
 
 	audio::Mixer * mixer = new audio::Mixer();
-	printf("Mixer:   %d\n", mixer->getDevID());
 	mixer->addDevice(gain);
-	mixer->addDevice(gain2);
-	mixer->addDevice(gain3);
-//	printf("Mixer 1: %d\n",mixer->getDeviceByLoc(0)->getDevID());
-//	printf("Mixer 2: %d\n",mixer->getDeviceByLoc(1)->getDevID());
-//	printf("Mixer 3: %d\n",mixer->getDeviceByLoc(2)->getDevID());
-//	printf("Mixer 6: %d\n",mixer->getDeviceByLoc(5)->getDevID());
-//	printf("Mixer-2: %d\n",mixer->getDeviceByLoc(-3)->getDevID());
-	mixer->addDevice(1, gain4);
-//	printf("Mixer 2: %d\n",mixer->getDeviceByLoc(1)->getDevID());
-//	printf("Mixer 3: %d\n",mixer->getDeviceByLoc(2)->getDevID());
+//	mixer->addDevice(dly);
+//	mixer->addDevice(dly2);
+//	mixer->addDevice(dly3);
 
+	gain->setGain(-12);
+	gain->addDevice(wobble);
 	/*** Set up the PA Handler. This is where the audio callback is ***/
+
+//	audio::sample_t * buffer;
+//
+//	audio::AudioDevice::endOfBuffer();
+//	buffer = sin->read();
+//	printf("\n\nBuffer:\n");
+//	for (int i = 0; i < gain->getBufferSize(); i++) {
+//		printf("%d||%d\n", i, buffer[i]);
+//	}
+//
+//	printf("\n\n");
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-			numOutChannels, numInChannels, saw);
+			numOutChannels, numInChannels, mixer);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);
 	}
-
-	for (int i = 100; i < 900; i++) {
-		saw->setBaseFrequency(i);
-		usleep(1000);
-	}
+	usleep(1000000);
+ramp->startRamp();
+//	for (int i = 100; i < 900; i++) {
+////		sin->setBaseFrequency(i);
+//		usleep(10000);
+//	}
+//	gain->setGain(-128);
+	std::cout << "\nChipophone running, press enter to end program\n";
+	std::cin.ignore(255, '\n');
 
 }
