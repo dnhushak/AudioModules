@@ -4,10 +4,13 @@ namespace arduino {
 	
 	ArduinoMIDI::ArduinoMIDI(HardwareSerial* port) {
 		MIDIport = port;
+		buffer = 0;
 	}
 
 	void ArduinoMIDI::begin() {
 		MIDIport->begin(31250);
+		MIDIport->flush();
+		MIDIport->setTimeout(100);
 	}
 
 	ArduinoMIDI::~ArduinoMIDI() {
@@ -25,6 +28,32 @@ namespace arduino {
 	}
 
 	void ArduinoMIDI::readMIDI() {
+		// Find the first status byte
+		do
+			MIDIport->readBytes(&buffer, 1);
+		while (buffer >> 7 == 0);
+
+		midi::MIDIMessage * message = (midi::MIDIMessage*) malloc(
+				sizeof(midi::MIDIMessage));
+		message->statusType = buffer >> 4;
+		message->channel = buffer &= 0b00001111;
+		message->data1 = 0;
+		message->data2 = 0;
+
+		// Check for system messages that do not have a data byte
+		if (buffer < 0b11110100) {
+
+			// Read the first data byte
+			MIDIport->readBytes(&buffer, 1);
+			message->data1 = buffer;
+
+		}
+
+		// Send the message down the pipe
+		affect(message);
+
+		// Clear that message from memory
+		free(message);
 		return;
 	}
 	

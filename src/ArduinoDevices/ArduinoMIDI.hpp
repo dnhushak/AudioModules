@@ -7,7 +7,8 @@
 
 namespace arduino {
 	
-	class ArduinoMIDI: public midi::MIDIDevice, public device::ConnectableDevice<midi::MIDIDevice> {
+	class ArduinoMIDI: public midi::MIDIDevice,
+			public device::ConnectableDevice<midi::MIDIDevice> {
 		public:
 
 			ArduinoMIDI(HardwareSerial * port);
@@ -22,10 +23,12 @@ namespace arduino {
 			// Write to the output stream
 			void writeMIDI(midi::MIDIMessage* message);
 
+			virtual ~ArduinoMIDI();
 
 		private:
 			HardwareSerial * MIDIport;
-			virtual ~ArduinoMIDI();
+			char buffer;
+
 	};
 
 }
