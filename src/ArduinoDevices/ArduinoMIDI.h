@@ -1,6 +1,6 @@
-#ifndef ARDUINOMIDI_HPP_
-#define ARDUINOMIDI_HPP_
-#include "MIDIDevice.hpp"
+#ifndef ARDUINOMIDI_h_
+#define ARDUINOMIDI_h_
+#include "MIDIDevice.h"
 #include <stdio.h>
 #include "Arduino.h"
 #include <HardwareSerial.h>
@@ -33,4 +33,4 @@ namespace arduino {
 
 }
 
-#endif /* ARDUINOMIDI_HPP_ */
+#endif /* ARDUINOMIDI_h_ */

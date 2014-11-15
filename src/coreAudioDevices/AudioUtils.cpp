@@ -1,4 +1,4 @@
-#include "AudioUtils.hpp"
+#include "AudioUtils.h"
 namespace audio {
 	float ratioToDb(float ratio) {
 		return 20 * log10f(ratio);

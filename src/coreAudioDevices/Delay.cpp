@@ -1,4 +1,4 @@
-#include "Delay.hpp"
+#include "Delay.h"
 
 namespace audio {
 	Delay::Delay() {

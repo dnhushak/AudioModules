@@ -1,7 +1,7 @@
-#ifndef BITCRUSHER_HPP_
-#define BITCRUSHER_HPP_
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#ifndef BITCRUSHER_h_
+#define BITCRUSHER_h_
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	
@@ -19,4 +19,4 @@ namespace audio {
 
 }
 
-#endif /* BITCRUSHER_HPP_ */
+#endif /* BITCRUSHER_h_ */

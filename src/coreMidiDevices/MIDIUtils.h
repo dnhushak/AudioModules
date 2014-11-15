@@ -1,5 +1,5 @@
-#ifndef MIDIUTILS_HPP_
-#define MIDIUTILS_HPP_
+#ifndef MIDIUTILS_h_
+#define MIDIUTILS_h_
 #include <stdint.h>
 
 namespace midi {
@@ -45,4 +45,4 @@ namespace midi {
 	float scaleValue(int value, float min, float max);
 
 }
-#endif /* MIDIUTILS_HPP_ */
+#endif /* MIDIUTILS_h_ */

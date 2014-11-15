@@ -1,5 +1,5 @@
-#ifndef AUDIOUTILS_HPP_
-#define AUDIOUTILS_HPP_
+#ifndef AUDIOUTILS_h_
+#define AUDIOUTILS_h_
 
 #include <math.h>
 #include <limits.h>
@@ -46,4 +46,4 @@ namespace audio {
 	 */
 	int msToSamp(int ms, int sampleRate);
 }
-#endif //AUDIOUTILS_HPP_
+#endif //AUDIOUTILS_h_

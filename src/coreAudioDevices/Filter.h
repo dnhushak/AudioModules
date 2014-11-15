@@ -1,8 +1,8 @@
-#ifndef FILTER_HPP_
-#define FILTER_HPP_
+#ifndef FILTER_h_
+#define FILTER_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 namespace audio {
 
 	class Filter: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
@@ -12,4 +12,4 @@ namespace audio {
 			sample_t * advance();
 	};
 }
-#endif //FILTER_HPP_
+#endif //FILTER_h_

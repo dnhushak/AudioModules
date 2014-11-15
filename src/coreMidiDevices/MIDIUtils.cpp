@@ -1,4 +1,4 @@
-#include "MIDIUtils.hpp"
+#include "MIDIUtils.h"
 
 namespace midi {
 	// Scale a MIDI message to an int

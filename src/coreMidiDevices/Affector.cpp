@@ -1,4 +1,4 @@
-#include "Affector.hpp"
+#include "Affector.h"
 
 namespace midi {
 	

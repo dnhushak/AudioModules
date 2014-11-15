@@ -1,8 +1,8 @@
-#ifndef GAIN_HPP_
-#define GAIN_HPP_
+#ifndef GAIN_h_
+#define GAIN_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	
@@ -19,4 +19,4 @@ namespace audio {
 	};
 }
 
-#endif //GAIN_HPP_
+#endif //GAIN_h_

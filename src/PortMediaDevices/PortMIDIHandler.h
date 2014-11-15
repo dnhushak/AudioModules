@@ -1,6 +1,6 @@
 #include "portmidi.h"
-#include "MIDIDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "MIDIDevice.h"
+#include "ConnectableDevice.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>

@@ -1,4 +1,4 @@
-#include "Clipper.hpp"
+#include "Clipper.h"
 
 namespace audio {
 	

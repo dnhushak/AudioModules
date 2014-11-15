@@ -1,6 +1,6 @@
 // Generic Device class
-#ifndef DEVICE_HPP_
-#define DEVICE_HPP_
+#ifndef DEVICE_h_
+#define DEVICE_h_
 
 // For std::cout messages (debugging and message printing)
 #include <iostream>
@@ -39,4 +39,4 @@ namespace device {
 
 }
 
-#endif /* DEVICE_HPP_ */
+#endif /* DEVICE_h_ */

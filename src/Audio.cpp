@@ -1,20 +1,20 @@
-#include "PortAudioHandler.hpp"
-#include "PortMIDIHandler.hpp"
-#include "Mixer.hpp"
-#include "ChannelFilter.hpp"
-#include "Wavetable.hpp"
-#include "Oscillator.hpp"
-#include "MessagePrinter.hpp"
-#include "Module.hpp"
-#include "Voice.hpp"
-#include "VCO.hpp"
-#include "Delay.hpp"
-#include "Gain.hpp"
+#include "PortAudioHandler.h"
+#include "PortMIDIHandler.h"
+#include "Mixer.h"
+#include "ChannelFilter.h"
+#include "Wavetable.h"
+#include "Oscillator.h"
+#include "MessagePrinter.h"
+#include "Module.h"
+#include "Voice.h"
+#include "VCO.h"
+#include "Delay.h"
+#include "Gain.h"
 #include <math.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "Clipper.hpp"
-#include "AudioDevice.hpp"
+#include "Clipper.h"
+#include "AudioDevice.h"
 #include <pthread.h>
 
 std::vector<audio::Wavetable *> * GenerateSynthTables() {

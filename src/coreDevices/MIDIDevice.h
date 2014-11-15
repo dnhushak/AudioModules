@@ -1,8 +1,8 @@
 //MIDI Device Class
 #ifndef MIDIDEVICE_H
 #define MIDIDEVICE_H
-#include "MIDIUtils.hpp"
-#include "Device.hpp"
+#include "MIDIUtils.h"
+#include "Device.h"
 
 namespace midi {
 

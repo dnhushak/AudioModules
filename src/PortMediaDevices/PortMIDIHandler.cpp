@@ -1,4 +1,4 @@
-#include "PortMIDIHandler.hpp"
+#include "PortMIDIHandler.h"
 
 namespace midi {
 

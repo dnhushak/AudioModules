@@ -1,4 +1,4 @@
-#include "BitCrusher.hpp"
+#include "BitCrusher.h"
 
 namespace audio {
 	

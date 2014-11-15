@@ -1,4 +1,4 @@
-#include "MessagePrinter.hpp"
+#include "MessagePrinter.h"
 
 namespace midi {
 	MessagePrinter::MessagePrinter() {

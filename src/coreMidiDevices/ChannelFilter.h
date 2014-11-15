@@ -1,6 +1,6 @@
 #pragma once
-#include "MIDIDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "MIDIDevice.h"
+#include "ConnectableDevice.h"
 
 namespace midi {
 	

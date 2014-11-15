@@ -1,8 +1,8 @@
-#ifndef WAVETABLE_HPP_
-#define WAVETABLE_HPP_
+#ifndef WAVETABLE_h_
+#define WAVETABLE_h_
 
-#include "AudioUtils.hpp"
-#include "Device.hpp"
+#include "AudioUtils.h"
+#include "Device.h"
 // For memset, memcpy, etc..
 #include <string.h>
 
@@ -41,4 +41,4 @@ namespace audio {
 
 }
 
-#endif //WAVETABLE_HPP_
+#endif //WAVETABLE_h_

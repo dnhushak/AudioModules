@@ -1,4 +1,4 @@
-#include "Gain.hpp"
+#include "Gain.h"
 
 namespace audio {
 

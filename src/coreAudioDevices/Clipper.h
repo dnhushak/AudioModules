@@ -1,8 +1,8 @@
-#ifndef LIMITER_HPP_
-#define LIMITER_HPP_
+#ifndef LIMITER_h_
+#define LIMITER_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	
@@ -18,4 +18,4 @@ namespace audio {
 
 }
 
-#endif /* LIMITER_HPP_ */
+#endif /* LIMITER_h_ */

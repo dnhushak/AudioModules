@@ -1,4 +1,4 @@
-#include "ArduinoMIDI.hpp"
+#include "ArduinoMIDI.h"
 
 namespace arduino {
 	

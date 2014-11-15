@@ -1,8 +1,8 @@
-#ifndef OSCILLATOR_HPP_
-#define OSCILLATOR_HPP_
+#ifndef OSCILLATOR_h_
+#define OSCILLATOR_h_
 
-#include "AudioDevice.hpp"
-#include "Wavetable.hpp"
+#include "AudioDevice.h"
+#include "Wavetable.h"
 
 //For phase register maximum
 #include <limits.h>
@@ -59,4 +59,4 @@ namespace audio {
 	};
 }
 
-#endif //OSCILLATOR_HPP_
+#endif //OSCILLATOR_h_

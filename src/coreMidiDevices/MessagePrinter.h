@@ -1,5 +1,5 @@
 #pragma once
-#include "MIDIDevice.hpp"
+#include "MIDIDevice.h"
 #include <stdio.h>
 #include <cstdlib>
 #include <iostream>

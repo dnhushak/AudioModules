@@ -1,4 +1,4 @@
-#include "ChannelFilter.hpp"
+#include "ChannelFilter.h"
 
 namespace midi {
 	

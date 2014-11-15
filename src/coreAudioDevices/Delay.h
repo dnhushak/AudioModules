@@ -1,8 +1,8 @@
-#ifndef DELAY_HPP_
-#define DELAY_HPP_
+#ifndef DELAY_h_
+#define DELAY_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	
@@ -48,4 +48,4 @@ namespace audio {
 
 }
 
-#endif /* DELAY_HPP_ */
+#endif /* DELAY_h_ */

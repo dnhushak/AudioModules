@@ -1,15 +1,15 @@
 #pragma once
-#include "PolyVoice.hpp"
-#include "Mixer.hpp"
-#include "AudioDevice.hpp"
-#include "MIDIDevice.hpp"
-#include "ConnectableDevice.hpp"
-#include "Voice.hpp"
-#include "Gain.hpp"
+#include "PolyVoice.h"
+#include "Mixer.h"
+#include "AudioDevice.h"
+#include "MIDIDevice.h"
+#include "ConnectableDevice.h"
+#include "Voice.h"
+#include "Gain.h"
 #include <vector>
 #include <iostream>
 #include <math.h>
-#include <AudioUtils.hpp>
+#include <AudioUtils.h>
 #include <unistd.h>
 
 namespace audio {

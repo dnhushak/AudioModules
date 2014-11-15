@@ -1,8 +1,8 @@
-#ifndef VCO_HPP_
-#define VCO_HPP_
+#ifndef VCO_h_
+#define VCO_h_
 
-#include "Oscillator.hpp"
-#include "ConnectableDevice.hpp"
+#include "Oscillator.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	
@@ -45,4 +45,4 @@ namespace audio {
 
 }
 
-#endif /* VCO_HPP_ */
+#endif /* VCO_h_ */

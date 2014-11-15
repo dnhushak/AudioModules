@@ -1,11 +1,11 @@
 #pragma once
-#include "AudioDevice.hpp"
-#include "Wavetable.hpp"
-#include "AudioUtils.hpp"
-#include "Oscillator.hpp"
-#include "Envelope.hpp"
-#include "Voice.hpp"
-#include "Ramp.hpp"
+#include "AudioDevice.h"
+#include "Wavetable.h"
+#include "AudioUtils.h"
+#include "Oscillator.h"
+#include "Envelope.h"
+#include "Voice.h"
+#include "Ramp.h"
 #include <vector>
 #include <iostream>
 

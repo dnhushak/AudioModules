@@ -1,4 +1,4 @@
-#include "PortAudioHandler.hpp"
+#include "PortAudioHandler.h"
 
 namespace audio {
 	sample_t * PortAudioHandler::advance() {

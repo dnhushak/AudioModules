@@ -1,9 +1,9 @@
 //Audio Device Class
-#ifndef AUDIOUDEVICE_HPP_
-#define AUDIOUDEVICE_HPP_
+#ifndef AUDIOUDEVICE_h_
+#define AUDIOUDEVICE_h_
 
-#include "Device.hpp"
-#include "AudioUtils.hpp"
+#include "Device.h"
+#include "AudioUtils.h"
 
 // For memset, memcpy, etc..
 #include <string.h>
@@ -139,4 +139,4 @@ namespace audio {
 	 */
 	static std::list<AudioDevice *> audioDeviceList;
 }
-#endif //AUDIOUDEVICE_HPP_
+#endif //AUDIOUDEVICE_h_

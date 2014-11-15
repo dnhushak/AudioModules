@@ -1,5 +1,5 @@
-#ifndef CONNECTABLEDEVICE_HPP_
-#define CONNECTABLEDEVICE_HPP_
+#ifndef CONNECTABLEDEVICE_h_
+#define CONNECTABLEDEVICE_h_
 #include <cstdlib>
 // For lists
 #include <list>
@@ -167,4 +167,4 @@ namespace device {
 
 }
 
-#endif /* CONNECTABLEDEVICE_HPP_ */
+#endif /* CONNECTABLEDEVICE_h_ */

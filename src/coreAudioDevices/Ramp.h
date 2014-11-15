@@ -1,8 +1,8 @@
-#ifndef RAMP_HPP_
-#define RAMP_HPP_
+#ifndef RAMP_h_
+#define RAMP_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 
@@ -45,4 +45,4 @@ namespace audio {
 			float slope;
 	};
 }
-#endif //RAMP_HPP_
+#endif //RAMP_h_

@@ -1,5 +1,5 @@
-#ifndef AFFECTOR_HPP_
-#define AFFECTOR_HPP_
+#ifndef AFFECTOR_h_
+#define AFFECTOR_h_
 
 namespace midi {
 	
@@ -76,4 +76,4 @@ namespace midi {
 
 }
 
-#endif /* AFFECTOR_HPP_ */
+#endif /* AFFECTOR_h_ */

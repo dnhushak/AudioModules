@@ -1,4 +1,4 @@
-#include "Wavetable.hpp"
+#include "Wavetable.h"
 
 namespace audio {
 	

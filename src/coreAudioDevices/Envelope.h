@@ -1,7 +1,7 @@
-#ifndef ENVELOPE_HPP_
-#define ENVELOPE_HPP_
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#ifndef ENVELOPE_h_
+#define ENVELOPE_h_
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 
@@ -78,4 +78,4 @@ namespace audio {
 	};
 }
 
-#endif //ENVELOPE_HPP_
+#endif //ENVELOPE_h_

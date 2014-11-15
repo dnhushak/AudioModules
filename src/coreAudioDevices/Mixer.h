@@ -1,8 +1,8 @@
-#ifndef MIXER_HPP_
-#define MIXER_HPP_
+#ifndef MIXER_h_
+#define MIXER_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	class Mixer: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
@@ -15,4 +15,4 @@ namespace audio {
 	};
 }
 
-#endif //MIXER_HPP_
+#endif //MIXER_h_

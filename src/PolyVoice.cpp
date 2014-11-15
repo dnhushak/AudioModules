@@ -1,4 +1,4 @@
-#include "PolyVoice.hpp"
+#include "PolyVoice.h"
 
 namespace audio {
 

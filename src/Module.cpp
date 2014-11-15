@@ -1,4 +1,4 @@
-#include "Module.hpp"
+#include "Module.h"
 
 namespace audio {
 

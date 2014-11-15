@@ -1,5 +1,5 @@
 #include "portaudio.h"
-#include "AudioDevice.hpp"
+#include "AudioDevice.h"
 #include <stdio.h>
 
 namespace audio {

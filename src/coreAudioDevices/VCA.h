@@ -1,8 +1,8 @@
-#ifndef VCA_HPP_
-#define VCA_HPP_
+#ifndef VCA_h_
+#define VCA_h_
 
-#include "AudioDevice.hpp"
-#include "ConnectableDevice.hpp"
+#include "AudioDevice.h"
+#include "ConnectableDevice.h"
 
 namespace audio {
 	
@@ -19,4 +19,4 @@ namespace audio {
 	};
 }
 
-#endif //VCA_HPP_
+#endif //VCA_h_

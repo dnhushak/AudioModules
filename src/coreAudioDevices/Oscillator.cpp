@@ -1,4 +1,4 @@
-#include "Oscillator.hpp"
+#include "Oscillator.h"
 
 namespace audio {
 // Constructor. Sets buffer size and sample rate
