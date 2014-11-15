@@ -1,5 +1,7 @@
 #ifndef AFFECTOR_h_
 #define AFFECTOR_h_
+#include "MIDIDevice.h"
+#include "ConnectableDevice.h"
 
 namespace midi {
 	
@@ -52,7 +54,7 @@ namespace midi {
 			 * @param status The status type to listen for
 			 * @param data1 The first data bit to listen for (for cc type messages)
 			 */
-			void setTrigger(StatusType status, char data1);
+			void setTrigger(StatusType status, unsigned char data1);
 
 			/**
 			 * Sets the router to route by ```data1```, instead of passing it. Generally used for

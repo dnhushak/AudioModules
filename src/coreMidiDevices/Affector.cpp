@@ -56,8 +56,8 @@ namespace midi {
 		}
 	}
 
-	void Affector::setTrigger(StatusType status, char data1) {
-		if (data1 >= 0 && data1 < 128) {
+	void Affector::setTrigger(StatusType status, unsigned char data1) {
+		if ((data1 >= 0) && (data1 < 128)) {
 			listen.statusType = status;
 			listen.data1 = 0;
 		}
