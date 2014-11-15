@@ -1,17 +1,6 @@
 #Eclipse Nonsense
 .project
 
-
-#Chipophone Specifics
-/bin
-chipophone
-Chipophone
-printMidiDevices
-readMidiData
-*.save
-readmidi
-/synthesizer/bin/Synthesizer
-
 # Compiled source #
 ###################
 *.com
