@@ -8,6 +8,8 @@
 #include <cstdlib>
 // For bind
 #include <functional>
+// For list
+#include <list>
 
 namespace device {
 	enum devState_t {
@@ -28,13 +30,17 @@ namespace device {
 
 			int getDevID();
 
+			virtual Device * clone();
+
 			virtual ~Device();
 
 		protected:
-			int devID;
 
 			devState_t state;
 
+		private:
+
+			int devID;
 	};
 
 }
