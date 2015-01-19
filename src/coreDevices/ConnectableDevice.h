@@ -8,7 +8,7 @@
 
 namespace device {
 	template<class A>
-	class ConnectableDevice: public Device {
+	class ConnectableDevice {
 		public:
 
 			ConnectableDevice() {
@@ -148,10 +148,10 @@ namespace device {
 			 * Recursively searches for and returns a list of pointers to all devices connected to this one
 			 * @return
 			 */
-			std::list<Device *> * getAllConnectedDevices() {
+//			std::list<Device *> * getAllConnectedDevices() {
 //				// Create list
-				std::list<Device *> connectedDeviceList =
-						new std::list<Device *>();
+//				std::list<Device *> connectedDeviceList =
+//						new std::list<Device *>();
 //				// Add self to list
 //				connectedDeviceList.add(this);
 //
@@ -165,18 +165,22 @@ namespace device {
 ////						connected
 //
 //				}
-				return connectedDeviceList;
-//
-			}
-//			/**
-//			 * Recursively copies every connected device and returns the head of the tree
-//			 * @return A pointer to the head of the newly copied tree
-//			 */
-//			A * copyConnectedTree() {
-//				A * head = this.clone();
-//
+//				return connectedDeviceList;
 //
 //			}
+
+			/**
+			 * Recursively copies every connected device and returns the head of the tree
+			 * @return A pointer to the head of the newly copied tree
+			 */
+			A * copyConnectedTree() {
+				// Clone this object, using the device's clone call
+				A * head = new Device(this);
+				//
+//				head->setMaxumDevices(maxNumDevices);
+
+				return head;
+			}
 
 			~ConnectableDevice() {
 			}
