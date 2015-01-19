@@ -155,34 +155,34 @@ int main(int argc, char *argv[]) {
 
 	audio::Ramp * ramp = new audio::Ramp();
 	ramp->setTime(3000);
-	ramp->addDevice(sin);
+	ramp->connectDevice(sin);
 
 	audio::VCO * wobble = new audio::VCO();
 	wobble->setWavetable(tables->at(3));
-	wobble->addDevice(ramp);
+	wobble->connectDevice(ramp);
 	wobble->setSensitivity(.4);
 	wobble->setBaseFrequency(400);
 
 	audio::Delay * dly = new audio::Delay();
-	dly->addDevice(gain);
+	dly->connectDevice(gain);
 	dly->setDelayTime(500);
 
 	audio::Delay * dly2 = new audio::Delay();
-	dly2->addDevice(gain);
+	dly2->connectDevice(gain);
 	dly2->setDelayTime(1000);
 
 	audio::Delay * dly3 = new audio::Delay();
-	dly3->addDevice(gain);
+	dly3->connectDevice(gain);
 	dly3->setDelayTime(1500);
 
 	audio::Mixer * mixer = new audio::Mixer();
-	mixer->addDevice(gain);
-//	mixer->addDevice(dly);
-//	mixer->addDevice(dly2);
-//	mixer->addDevice(dly3);
+	mixer->connectDevice(gain);
+//	mixer->connectDevice(dly);
+//	mixer->connectDevice(dly2);
+//	mixer->connectDevice(dly3);
 
 	gain->setGain(-12);
-	gain->addDevice(wobble);
+	gain->connectDevice(wobble);
 	/*** Set up the PA Handler. This is where the audio callback is ***/
 
 //	audio::sample_t * buffer;

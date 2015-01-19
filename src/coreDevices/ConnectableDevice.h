@@ -53,7 +53,7 @@ namespace device {
 			}
 
 			// Adding Devices
-			void addDevice(A * newDevice) {
+			void connectDevice(A * newDevice) {
 				// If there is space left (maximum checks)
 				if (hasSpace()) {
 					// Add the device to the end of the list
@@ -61,7 +61,7 @@ namespace device {
 				}
 			}
 
-			void addDevice(int loc, A * newDevice) {
+			void connectDevice(int loc, A * newDevice) {
 				// If there is space left
 				if (hasSpace() && loc < getNumDevices()) {
 					// Start at the beginning, and advance to the location indicated
@@ -74,13 +74,13 @@ namespace device {
 				}
 			}
 
-			void addDevices(std::list<A *> * newDeviceList) {
+			void connectDevices(std::list<A *> * newDeviceList) {
 				// Start at the beginning of the new device list
 				deviceIter = newDeviceList->begin();
 				// Make sure we have space in our device list, and that there are still devices in the new one
 				while (hasSpace() && deviceIter != newDeviceList->end()) {
 					// Add the device and increment the iterator
-					addDevice((*deviceIter));
+					connectDevice((*deviceIter));
 					deviceIter++;
 				}
 			}
@@ -105,12 +105,12 @@ namespace device {
 			}
 
 			// Removing Devices
-			void removeDevice(A * removeDevice) {
+			void disconnectDevice(A * disconnectDevice) {
 				// Remove device by equality
-				deviceList.remove(removeDevice);
+				deviceList.remove(disconnectDevice);
 			}
 
-			void removeDevice(int loc) {
+			void disconnectDevice(int loc) {
 				if (loc < getNumDevices()) {
 					// Remove device by location
 					deviceIter = deviceList.begin();
@@ -121,7 +121,7 @@ namespace device {
 				}
 			}
 
-			void removeAllDevices() {
+			void disconnectAllDevices() {
 				// Remove all Devices
 				deviceList.clear();
 			}

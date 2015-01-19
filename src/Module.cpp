@@ -5,7 +5,7 @@ namespace audio {
 	Module::Module() {
 		//TODO: Implement glissando and arpeggiation - split into separate AudioEffect Modules, and reroute the
 		// ModuleGain inputs to the gliss/arpegg/polyMixer outputs
-		polyGain.addDevice(&polyMixer);
+		polyGain.connectDevice(&polyMixer);
 		state = device::INACTIVE;
 		voice = NULL;
 		cleaner_tid = NULL;
@@ -110,7 +110,7 @@ namespace audio {
 			newPolyVoice->startPolyVoice(note);
 			lockList();
 			// Add new polyvoice to the device list
-			polyMixer.addDevice(newPolyVoice);
+			polyMixer.connectDevice(newPolyVoice);
 			unlockList();
 		}
 	}
@@ -150,7 +150,7 @@ namespace audio {
 				// ... Erase it and set the iterator to the next item
 				++deviceIter;
 				// This is runtime O(n^2) right now...
-				polyMixer.removeDevice(toErase);
+				polyMixer.disconnectDevice(toErase);
 				delete toErase;
 			} else {
 				// Or just advance the iterator

@@ -7,8 +7,8 @@ namespace audio {
 		baseFrequency = 0;
 		vibmult = 0;
 		vib_en = true;
-		osc_env.addDevice(&osc);
-		vib_ramp.addDevice(&vib);
+		osc_env.connectDevice(&osc);
+		vib_ramp.connectDevice(&vib);
 	}
 
 	PolyVoice::~PolyVoice() {

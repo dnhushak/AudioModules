@@ -59,7 +59,7 @@ namespace device {
 
 				// If there is an upstream device, attach the new timbre tree to upstream
 				if (upstream != 0) {
-					upstream->addDevice(NewTree);
+					upstream->connectDevice(NewTree);
 				}
 			}
 		}
