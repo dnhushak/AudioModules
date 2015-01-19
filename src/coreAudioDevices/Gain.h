@@ -6,7 +6,8 @@
 
 namespace audio {
 	
-	class Gain: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
+	class Gain: public AudioDevice,
+			public device::ConnectableDevice<AudioDevice> {
 		public:
 			Gain();
 
