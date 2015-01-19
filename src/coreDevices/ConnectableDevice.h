@@ -173,7 +173,7 @@ namespace device {
 			 * Recursively copies every connected device and returns the head of the tree
 			 * @return A pointer to the head of the newly copied tree
 			 */
-			A * copyConnectedTree() {
+			ConnectableDevice<A> * copyConnectedTree() {
 				// Clone this object, using the device's clone call
 				A * head = new Device(this);
 				//
