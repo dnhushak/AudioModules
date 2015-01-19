@@ -20,12 +20,6 @@ namespace device {
 		return state;
 	}
 
-	Device * Device::clone() {
-		Device * cloned = new Device();
-		cloned->state = state;
-		return cloned;
-	}
-
 	Device::~Device() {
 		state = INACTIVE;
 	}
