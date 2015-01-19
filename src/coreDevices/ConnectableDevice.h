@@ -8,7 +8,7 @@
 
 namespace device {
 	template<class A>
-	class ConnectableDevice {
+	class ConnectableDevice: public Device {
 		public:
 
 			ConnectableDevice() {
@@ -144,6 +144,40 @@ namespace device {
 				return maxNumDevices;
 			}
 
+			/**
+			 * Recursively searches for and returns a list of pointers to all devices connected to this one
+			 * @return
+			 */
+			std::list<Device *> * getAllConnectedDevices() {
+//				// Create list
+				std::list<Device *> connectedDeviceList =
+						new std::list<Device *>();
+//				// Add self to list
+//				connectedDeviceList.add(this);
+//
+//				// Start with the first device
+//				deviceIter = deviceList->begin();
+//				while (deviceIter != deviceList->end()) {
+//					// Try a recursive call to getAllConnectedDevices(), indicating it is a connectable device
+//
+////						connectedDeviceList.add((*deviceIter)->getAllConnectedDevices());
+//
+////						connected
+//
+//				}
+				return connectedDeviceList;
+//
+			}
+//			/**
+//			 * Recursively copies every connected device and returns the head of the tree
+//			 * @return A pointer to the head of the newly copied tree
+//			 */
+//			A * copyConnectedTree() {
+//				A * head = this.clone();
+//
+//
+//			}
+
 			~ConnectableDevice() {
 			}
 		protected:
@@ -163,7 +197,8 @@ namespace device {
 			typename std::list<A *> deviceList;
 			typename std::list<A *>::iterator deviceIter;
 			int maxNumDevices;
-	};
+	}
+	;
 
 }
 
