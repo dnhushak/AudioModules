@@ -2,11 +2,11 @@
 #define VCA_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 	
-	class VCA: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class VCA: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			VCA();
 

@@ -1,10 +1,10 @@
 #pragma once
 #include "MIDIDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace midi {
 	
-	class ChannelFilter: public MIDIDevice, public device::ConnectableDevice<MIDIDevice, MIDIDevice> {
+	class ChannelFilter: public MIDIDevice, public device::Connectable<MIDIDevice, MIDIDevice> {
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);

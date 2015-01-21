@@ -2,11 +2,11 @@
 #define VCO_h_
 
 #include "Oscillator.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 	
-	class VCO: public device::ConnectableDevice<Oscillator, AudioDevice> {
+	class VCO: public device::Connectable<Oscillator, AudioDevice> {
 		public:
 			VCO();
 

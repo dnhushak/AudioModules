@@ -1,11 +1,11 @@
 #ifndef AFFECTOR_h_
 #define AFFECTOR_h_
 #include "MIDIDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace midi {
 	
-	class Affector: public device::ConnectableDevice<device::Device, MIDIDevice> {
+	class Affector: public device::Connectable<device::Device, MIDIDevice> {
 		public:
 			Affector();
 

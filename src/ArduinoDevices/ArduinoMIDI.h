@@ -8,7 +8,7 @@
 namespace arduino {
 	
 	class ArduinoMIDI: public midi::MIDIDevice,
-			public device::ConnectableDevice<midi::MIDIDevice> {
+			public device::Connectable<midi::MIDIDevice> {
 		public:
 
 			ArduinoMIDI(HardwareSerial * port);

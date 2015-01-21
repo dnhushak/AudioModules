@@ -1,6 +1,6 @@
 #include "portmidi.h"
 #include "MIDIDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
@@ -8,7 +8,7 @@
 
 namespace midi {
 	
-	class PortMIDIHandler: public MIDIDevice, public device::ConnectableDevice<MIDIDevice, MIDIDevice> {
+	class PortMIDIHandler: public MIDIDevice, public device::Connectable<MIDIDevice, MIDIDevice> {
 		public:
 			PortMIDIHandler();
 

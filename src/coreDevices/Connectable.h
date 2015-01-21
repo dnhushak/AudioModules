@@ -1,5 +1,5 @@
-#ifndef CONNECTABLEDEVICE_h_
-#define CONNECTABLEDEVICE_h_
+#ifndef CONNECTABLE_h_
+#define CONNECTABLE_h_
 #include <cstdlib>
 // For lists
 #include <list>
@@ -8,9 +8,9 @@
 
 namespace device {
 	template<class InheritType, class ConnectType>
-	class ConnectableDevice: public InheritType {
+	class Connectable: public InheritType {
 		public:
-			ConnectableDevice() {
+			Connectable() {
 				maxNumDevices = -1;
 			}
 
@@ -41,9 +41,9 @@ namespace device {
 //				return (SelfType *) newDevice;
 //			}
 
-			virtual InheritType * cloneAndConnect() {
+			virtual Connectable<InheritType, ConnectType> * cloneAndConnect() {
 				// Clone self
-				ConnectableDevice<InheritType, ConnectType> * newDevice = this->clone();
+				Connectable<InheritType, ConnectType> * newDevice = this->clone();
 				if (!isEmpty()) {
 					// Start at the beginning of the device list
 					deviceIter = begin();
@@ -190,7 +190,7 @@ namespace device {
 				return maxNumDevices;
 			}
 
-			virtual ~ConnectableDevice() {
+			virtual ~Connectable() {
 			}
 
 		protected:
@@ -216,4 +216,4 @@ namespace device {
 
 }
 
-#endif /* CONNECTABLEDEVICE_h_ */
+#endif /* CONNECTABLE_h_ */

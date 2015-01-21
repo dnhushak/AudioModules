@@ -1,11 +1,11 @@
 #ifndef BITCRUSHER_h_
 #define BITCRUSHER_h_
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 	
-	class BitCrusher: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class BitCrusher: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			BitCrusher();
 			virtual BitCrusher * clone();

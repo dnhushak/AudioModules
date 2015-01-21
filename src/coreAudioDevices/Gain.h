@@ -2,11 +2,11 @@
 #define GAIN_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 	
-	class Gain: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Gain: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			Gain();
 

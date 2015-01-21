@@ -2,11 +2,11 @@
 #define RAMP_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 
-	class Ramp: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Ramp: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Ramp();

@@ -1,14 +1,14 @@
 #ifndef POLYPHONICHANDLER_H_
 #define POLYPHONICHANDLER_H_
 
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 #include "Device.h"
 #include <map>
 
 namespace device {
 	
 	class PolyphonicHandler: public device::Device,
-			public device::ConnectableDevice<Device, Device> {
+			public device::Connectable<Device, Device> {
 		public:
 			PolyphonicHandler();
 
@@ -32,7 +32,7 @@ namespace device {
 			 * handles the creation, connection, and deletion of voices, and not the actual audio or I/O actions of said devices.
 			 * @param upstream
 			 */
-			void setUpstream(ConnectableDevice<Device, Device> * newUpstream);
+			void setUpstream(Connectable<Device, Device> * newUpstream);
 
 			/**
 			 * Disconnects the voices from the upstream device, and prevents any further created voices from being connected
@@ -69,7 +69,7 @@ namespace device {
 			int numVoices;
 			std::map<int, Device *> voiceMap;
 			std::map<int, Device *>::iterator voiceIter;
-			ConnectableDevice<Device, Device> * upstream;
+			Connectable<Device, Device> * upstream;
 	};
 
 }

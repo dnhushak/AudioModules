@@ -2,11 +2,11 @@
 #define LIMITER_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 	
-	class Clipper: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Clipper: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			Clipper();
 			virtual Clipper * clone();

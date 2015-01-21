@@ -2,10 +2,10 @@
 #define FILTER_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 namespace audio {
 
-	class Filter: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Filter: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			Filter();
 

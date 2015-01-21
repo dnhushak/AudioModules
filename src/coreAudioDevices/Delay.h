@@ -2,11 +2,11 @@
 #define DELAY_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 	
-	class Delay: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Delay: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			Delay();
 

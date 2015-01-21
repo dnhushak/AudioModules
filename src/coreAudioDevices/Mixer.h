@@ -2,10 +2,10 @@
 #define MIXER_h_
 
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
-	class Mixer: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Mixer: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Mixer();

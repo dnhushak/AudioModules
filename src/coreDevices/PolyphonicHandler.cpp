@@ -23,7 +23,7 @@ namespace device {
 	}
 
 	void PolyphonicHandler::setUpstream(
-			ConnectableDevice<Device, Device> * newUpstream) {
+			Connectable<Device, Device> * newUpstream) {
 		upstream = newUpstream;
 	}
 

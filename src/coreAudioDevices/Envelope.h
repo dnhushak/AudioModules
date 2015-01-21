@@ -1,7 +1,7 @@
 #ifndef ENVELOPE_h_
 #define ENVELOPE_h_
 #include "AudioDevice.h"
-#include "ConnectableDevice.h"
+#include "Connectable.h"
 
 namespace audio {
 
@@ -9,7 +9,7 @@ namespace audio {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
-	class Envelope: public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Envelope: public device::Connectable<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Envelope();
