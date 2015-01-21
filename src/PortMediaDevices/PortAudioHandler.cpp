@@ -4,6 +4,12 @@ namespace audio {
 	sample_t * PortAudioHandler::advance() {
 		return buffer;
 	}
+
+	PortAudioHandler * PortAudioHandler::clone(){
+		//TODO: Clone for PAHandler
+		return this;
+	}
+
 	// Setup and start a PortAudio Stream
 	PaError PortAudioHandler::connectAudioStream(PaDeviceIndex outDevID,
 			PaDeviceIndex inDevID, int numOutChannels, int numInChannels,

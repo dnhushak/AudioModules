@@ -6,11 +6,11 @@
 
 namespace audio {
 	
-	class VCA: public AudioDevice, public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class VCA: public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			VCA();
 
-			VCA * clone();
+			virtual VCA * clone();
 
 			sample_t * advance();
 

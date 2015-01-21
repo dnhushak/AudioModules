@@ -6,12 +6,11 @@
 
 namespace audio {
 	
-	class Gain: public AudioDevice,
-			public device::ConnectableDevice<AudioDevice, Gain> {
+	class Gain: public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			Gain();
 
-			Gain * clone();
+			virtual Gain * clone();
 
 			sample_t * advance();
 

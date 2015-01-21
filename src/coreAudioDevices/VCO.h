@@ -6,11 +6,11 @@
 
 namespace audio {
 	
-	class VCO: public audio::Oscillator, public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class VCO: public device::ConnectableDevice<Oscillator, AudioDevice> {
 		public:
 			VCO();
 
-			VCO * clone();
+			virtual VCO * clone();
 
 			sample_t * advance();
 

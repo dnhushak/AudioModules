@@ -27,13 +27,15 @@ namespace audio {
 	 *
 	 * Most audio devices in the library utilize the ```ConnectableDevice``` class, allowing multiple
 	 * devices to be connected to each other. Typically in the ```advance``` call of one device, the ```advance```
-	 * call of a connected device will also be called, to retain sample coherency and sampler-by-sample
+	 * call of a connected device will also be called, to retain sample coherency and sample-by-sample
 	 * effects, such as VCAs, etc.
 	 */
 	class AudioDevice: public virtual device::Device {
 
 		public:
 			AudioDevice();
+
+			virtual AudioDevice * clone() =0;
 
 			/**
 			 * The advance for all audio devices that actually does the 'work.'
@@ -43,6 +45,7 @@ namespace audio {
 			 * @return A pointer to the buffer of samples of type ```sample_t```
 			 */
 			virtual sample_t * advance() = 0;
+
 
 			/**
 			 * Reads the buffer. If the device has not yet been advanced, it advances it

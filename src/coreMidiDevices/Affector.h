@@ -5,8 +5,7 @@
 
 namespace midi {
 	
-	class Affector: public midi::MIDIDevice, public device::ConnectableDevice<
-			device::Device, Affector> {
+	class Affector: public device::ConnectableDevice<device::Device, MIDIDevice> {
 		public:
 			Affector();
 

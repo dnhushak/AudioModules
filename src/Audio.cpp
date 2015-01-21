@@ -5,9 +5,10 @@
 #include "Wavetable.h"
 #include "Oscillator.h"
 #include "MessagePrinter.h"
-#include "Module.h"
+#include <vector>
 #include "Voice.h"
 #include "VCO.h"
+#include "Ramp.h"
 #include "Delay.h"
 #include "Gain.h"
 #include <math.h>
@@ -190,7 +191,7 @@ int main(int argc, char *argv[]) {
 	mixer->connectDevice(gain);
 
 	audio::Mixer * mixer2 = mixer->clone();
-	audio::Mixer * mixer3 = mixer->cloneWithConnected();
+	audio::Mixer * mixer3 = mixer->cloneAndConnect();
 //	mixer->connectDevice(dly);
 //	mixer->connectDevice(dly2);
 //	mixer->connectDevice(dly3);

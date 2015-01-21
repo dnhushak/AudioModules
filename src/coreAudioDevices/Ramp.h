@@ -6,13 +6,12 @@
 
 namespace audio {
 
-	class Ramp: public AudioDevice,
-			public device::ConnectableDevice<AudioDevice, AudioDevice> {
+	class Ramp: public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Ramp();
 
-			Ramp * clone();
+			virtual Ramp * clone();
 
 			// Advance/fill the buffer
 			sample_t * advance();

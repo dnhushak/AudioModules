@@ -5,11 +5,11 @@
 #include "ConnectableDevice.h"
 namespace audio {
 
-	class Filter: public AudioDevice, public device::ConnectableDevice<AudioDevice, Filter> {
+	class Filter: public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			Filter();
 
-			Filter * clone();
+			virtual Filter * clone();
 
 			sample_t * advance();
 	};

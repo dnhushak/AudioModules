@@ -5,8 +5,7 @@
 
 namespace audio {
 	
-	class BitCrusher: public audio::AudioDevice,
-			public device::ConnectableDevice<AudioDevice, BitCrusher> {
+	class BitCrusher: public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			BitCrusher();
 			virtual BitCrusher * clone();

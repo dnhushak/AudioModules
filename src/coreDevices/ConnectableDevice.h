@@ -7,8 +7,8 @@
 #include <algorithm>
 
 namespace device {
-	template<class ConnectType, class Self>
-	class ConnectableDevice {
+	template<class InheritType, class ConnectType>
+	class ConnectableDevice: public InheritType {
 		public:
 			ConnectableDevice() {
 				maxNumDevices = -1;
@@ -21,29 +21,29 @@ namespace device {
 			 * @param children Determines behavior: 1 - recursively duplicate children, and then attach to ```newDevice```;
 			 * 2 - simply attach all children of ```this``` to ```newDevice```
 			 */
-			Self * cloneWithConnected() {
-				// Clone self
-				Self * newDevice = this->clone();
+//			virtual SelfType * cloneWithConnected() {
+//				// Clone self
+//				SelfType * newDevice = (SelfType *) this->clone();
+//
+//				if (!isEmpty()) {
+//					// Start at the beginning of the device list
+//					deviceIter = begin();
+//					while (deviceIter != end()) {
+//						// Recursively call cloneWithConnected on each connected device
+//						ConnectType * newChild =
+//								(ConnectType *) ((ConnectableDevice *) (*deviceIter))->cloneWithConnected();
+//						// Connect newly cloned child device to the parent clone
+//						newDevice->connectDevice(newChild);
+//						// Increment the iterator
+//						deviceIter++;
+//					}
+//				}
+//				return (SelfType *) newDevice;
+//			}
 
-				if (!isEmpty()) {
-					// Start at the beginning of the device list
-					deviceIter = begin();
-					while (deviceIter != end()) {
-						// Recursively call cloneWithConnected on each connected device
-						ConnectType * newChild =
-								(ConnectType *) ((ConnectableDevice * )(*deviceIter))->cloneWithConnected();
-						// Connect newly cloned child device to the parent clone
-						newDevice->connectDevice(newChild);
-						// Increment the iterator
-						deviceIter++;
-					}
-				}
-				return newDevice;
-			}
-
-			Self * cloneAndConnect() {
+			virtual InheritType * cloneAndConnect() {
 				// Clone self
-				Self * newDevice = this->clone();
+				ConnectableDevice<InheritType, ConnectType> * newDevice = this->clone();
 				if (!isEmpty()) {
 					// Start at the beginning of the device list
 					deviceIter = begin();
@@ -56,11 +56,6 @@ namespace device {
 						deviceIter++;
 					}
 				}
-				return newDevice;
-			}
-
-			Self * clone() {
-				Self * newDevice = new Self();
 				return newDevice;
 			}
 
@@ -195,7 +190,7 @@ namespace device {
 				return maxNumDevices;
 			}
 
-			~ConnectableDevice() {
+			virtual ~ConnectableDevice() {
 			}
 
 		protected:

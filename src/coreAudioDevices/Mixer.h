@@ -5,12 +5,12 @@
 #include "ConnectableDevice.h"
 
 namespace audio {
-	class Mixer: public AudioDevice, public device::ConnectableDevice<AudioDevice, Mixer> {
+	class Mixer: public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Mixer();
 
-			Mixer * clone();
+			virtual Mixer * clone();
 
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			sample_t * advance();

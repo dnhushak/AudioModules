@@ -6,6 +6,8 @@ namespace audio {
 	
 	class PortAudioHandler : AudioDevice {
 		public:
+			virtual PortAudioHandler * clone();
+
 			sample_t * advance();
 
 			// Setup and start a PortAudio Stream
