@@ -12,6 +12,12 @@ namespace device {
 
 	}
 
+	Device * Device::clone() {
+		Device * newDevice = new Device();
+		newDevice->state = this->getState();
+		return newDevice;
+	}
+
 	int Device::getDevID() {
 		return devID;
 	}

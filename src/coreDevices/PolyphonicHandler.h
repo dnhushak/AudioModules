@@ -8,7 +8,7 @@
 namespace device {
 	
 	class PolyphonicHandler: public device::Device,
-			public device::ConnectableDevice<Device> {
+			public device::ConnectableDevice<Device, PolyphonicHandler> {
 		public:
 			PolyphonicHandler();
 
@@ -32,7 +32,7 @@ namespace device {
 			 * handles the creation, connection, and deletion of voices, and not the actual audio or I/O actions of said devices.
 			 * @param upstream
 			 */
-			void setUpstream(ConnectableDevice<Device> * newUpstream);
+			void setUpstream(ConnectableDevice<Device, Device> * newUpstream);
 
 			/**
 			 * Disconnects the voices from the upstream device, and prevents any further created voices from being connected
@@ -69,7 +69,7 @@ namespace device {
 			int numVoices;
 			std::map<int, Device *> voiceMap;
 			std::map<int, Device *>::iterator voiceIter;
-			ConnectableDevice<Device> * upstream;
+			ConnectableDevice<Device, Device> * upstream;
 	};
 
 }

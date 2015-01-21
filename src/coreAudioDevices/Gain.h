@@ -7,9 +7,11 @@
 namespace audio {
 	
 	class Gain: public AudioDevice,
-			public device::ConnectableDevice<AudioDevice> {
+			public device::ConnectableDevice<AudioDevice, Gain> {
 		public:
 			Gain();
+
+			Gain * clone();
 
 			sample_t * advance();
 

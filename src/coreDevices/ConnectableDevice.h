@@ -7,35 +7,84 @@
 #include <algorithm>
 
 namespace device {
-	template<class A>
+	template<class ConnectType, class Self>
 	class ConnectableDevice {
 		public:
-
 			ConnectableDevice() {
 				maxNumDevices = -1;
 			}
 
-			typename std::list<A *>::iterator begin() {
+			/**
+			 * Handles duplication/simultaneous connection of children, called in devices' ```duplicate()``` function
+			 *
+			 * @param newDevice The new device that has been duplicated - the one to attach the children to
+			 * @param children Determines behavior: 1 - recursively duplicate children, and then attach to ```newDevice```;
+			 * 2 - simply attach all children of ```this``` to ```newDevice```
+			 */
+			Self * cloneWithConnected() {
+				// Clone self
+				Self * newDevice = this->clone();
+
+				if (!isEmpty()) {
+					// Start at the beginning of the device list
+					deviceIter = begin();
+					while (deviceIter != end()) {
+						// Recursively call cloneWithConnected on each connected device
+						ConnectType * newChild =
+								(ConnectType *) ((ConnectableDevice * )(*deviceIter))->cloneWithConnected();
+						// Connect newly cloned child device to the parent clone
+						newDevice->connectDevice(newChild);
+						// Increment the iterator
+						deviceIter++;
+					}
+				}
+				return newDevice;
+			}
+
+			Self * cloneAndConnect() {
+				// Clone self
+				Self * newDevice = this->clone();
+				if (!isEmpty()) {
+					// Start at the beginning of the device list
+					deviceIter = begin();
+					while (deviceIter != end()) {
+						// Select each connected device
+						ConnectType * newChild = (*deviceIter);
+						// Connect child device to the parent clone
+						newDevice->connectDevice(newChild);
+						// Increment the iterator
+						deviceIter++;
+					}
+				}
+				return newDevice;
+			}
+
+			Self * clone() {
+				Self * newDevice = new Self();
+				return newDevice;
+			}
+
+			typename std::list<ConnectType *>::iterator begin() {
 				return deviceList.begin();
 			}
 
-			typename std::list<A *>::iterator end() {
+			typename std::list<ConnectType *>::iterator end() {
 				return deviceList.end();
 			}
 
-			A * front() {
+			ConnectType * front() {
 				return deviceList.front();
 			}
 
-			A * back() {
+			ConnectType * back() {
 				return deviceList.back();
 			}
 
-			A * getDeviceByLoc(int loc) {
+			ConnectType * getDeviceByLoc(int loc) {
 				// If loc is a valid number (device exists)
 				if (loc >= 0 && loc < getNumDevices()) {
 					// Start at the beginning
-					typename std::list<A *>::iterator iter = begin();
+					typename std::list<ConnectType *>::iterator iter = begin();
 					// Advance to the location
 					for (int i = 0; i < loc; i++) {
 						iter++;
@@ -53,7 +102,7 @@ namespace device {
 			}
 
 			// Adding Devices
-			void connectDevice(A * newDevice) {
+			void connectDevice(ConnectType * newDevice) {
 				// If there is space left (maximum checks)
 				if (hasSpace()) {
 					// Add the device to the end of the list
@@ -61,7 +110,7 @@ namespace device {
 				}
 			}
 
-			void connectDevice(int loc, A * newDevice) {
+			void connectDevice(int loc, ConnectType * newDevice) {
 				// If there is space left
 				if (hasSpace() && loc < getNumDevices()) {
 					// Start at the beginning, and advance to the location indicated
@@ -74,7 +123,7 @@ namespace device {
 				}
 			}
 
-			void connectDevices(std::list<A *> * newDeviceList) {
+			void connectDevices(std::list<ConnectType *> * newDeviceList) {
 				// Start at the beginning of the new device list
 				deviceIter = newDeviceList->begin();
 				// Make sure we have space in our device list, and that there are still devices in the new one
@@ -86,7 +135,7 @@ namespace device {
 			}
 
 			// Replacing Devices
-			void replaceDevice(int loc, A * newDevice) {
+			void replaceDevice(int loc, ConnectType * newDevice) {
 				// If there is space left
 				if (loc < getNumDevices()) {
 					// Start at the beginning, and advance to the location indicated
@@ -99,13 +148,15 @@ namespace device {
 				}
 
 			}
-			void replaceDevice(A * oldDevice, A * newDevice) {
+
+			void replaceDevice(ConnectType * oldDevice,
+					ConnectType * newDevice) {
 				std::replace(deviceList.begin(), deviceList.end(), oldDevice,
 						newDevice);
 			}
 
 			// Removing Devices
-			void disconnectDevice(A * disconnectDevice) {
+			void disconnectDevice(ConnectType * disconnectDevice) {
 				// Remove device by equality
 				deviceList.remove(disconnectDevice);
 			}
@@ -132,7 +183,7 @@ namespace device {
 				return (getNumDevices() < maxNumDevices || maxNumDevices == -1);
 			}
 
-			int isEmpty() {
+			bool isEmpty() {
 				return (getNumDevices() == 0);
 			}
 
@@ -144,46 +195,9 @@ namespace device {
 				return maxNumDevices;
 			}
 
-			/**
-			 * Recursively searches for and returns a list of pointers to all devices connected to this one
-			 * @return
-			 */
-//			std::list<Device *> * getAllConnectedDevices() {
-//				// Create list
-//				std::list<Device *> connectedDeviceList =
-//						new std::list<Device *>();
-//				// Add self to list
-//				connectedDeviceList.add(this);
-//
-//				// Start with the first device
-//				deviceIter = deviceList->begin();
-//				while (deviceIter != deviceList->end()) {
-//					// Try a recursive call to getAllConnectedDevices(), indicating it is a connectable device
-//
-////						connectedDeviceList.add((*deviceIter)->getAllConnectedDevices());
-//
-////						connected
-//
-//				}
-//				return connectedDeviceList;
-//
-//			}
-
-			/**
-			 * Recursively copies every connected device and returns the head of the tree
-			 * @return A pointer to the head of the newly copied tree
-			 */
-			ConnectableDevice<A> * copyConnectedTree() {
-				// Clone this object, using the device's clone call
-				A * head = new Device(this);
-				//
-//				head->setMaxumDevices(maxNumDevices);
-
-				return head;
-			}
-
 			~ConnectableDevice() {
 			}
+
 		protected:
 			void setMaxNumDevices(int newMax) {
 				// Check for valid input
@@ -197,9 +211,10 @@ namespace device {
 				// Set the maxnum to the new maximum
 				maxNumDevices = newMax;
 			}
+
 			// List info
-			typename std::list<A *> deviceList;
-			typename std::list<A *>::iterator deviceIter;
+			typename std::list<ConnectType *> deviceList;
+			typename std::list<ConnectType *>::iterator deviceIter;
 			int maxNumDevices;
 	}
 	;

@@ -13,6 +13,22 @@ namespace audio {
 		setSustain(.7);
 	}
 
+	Envelope * Envelope::clone(){
+		// Create new device
+		Envelope * newDevice = new Envelope();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setAttack(this->attack);
+		newDevice->setDecay(this->decay);
+		newDevice->setSustain(this->sustain);
+		newDevice->setRelease(this->release);
+		newDevice->envloc = this->envloc;
+		newDevice->envState = this->envState;
+		newDevice->calcEnvMult();
+
+		return newDevice;
+	}
+
 	// Advance the envelope. Returns a buffer holding the envelope multiplier values
 	sample_t * Envelope::advance() {
 

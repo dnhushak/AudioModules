@@ -7,6 +7,16 @@ namespace audio {
 		setGain(0);
 	}
 
+	VCA * VCA::clone(){
+		// Create new device
+		VCA * newDevice = new VCA();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->gain = this->gain;
+
+		return newDevice;
+	}
+
 	sample_t * VCA::advance() {
 		if (isEmpty()) {
 			zeroBuffer();

@@ -9,10 +9,12 @@ namespace audio {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
-	class Envelope: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
+	class Envelope: public AudioDevice, public device::ConnectableDevice<AudioDevice, Envelope> {
 		public:
 			// Constructor
 			Envelope();
+
+			Envelope * clone();
 
 			// Advance/fill the buffer
 			sample_t * advance();

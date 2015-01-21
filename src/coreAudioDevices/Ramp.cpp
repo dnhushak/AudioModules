@@ -23,6 +23,18 @@ namespace audio {
 		stopRamp();
 	}
 
+	Ramp * Ramp::clone() {
+		// Create new device
+		Ramp * newDevice = new Ramp();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setTime(this->time);
+		newDevice->ramploc = this->ramploc;
+
+		return newDevice;
+
+	}
+
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
 	sample_t * Ramp::advance() {
 		if (!isEmpty()) {
@@ -33,8 +45,7 @@ namespace audio {
 					rampmult += slope;
 					// When the evelope location has hit the number of samples, do a state transition
 					if (ramploc >= sampCount) {
-						state = device::INACTIVE;
-						ramploc = 0;
+						stopRamp();
 					}
 				}
 				buffer[i] *= rampmult;
@@ -65,6 +76,8 @@ namespace audio {
 		if (newTime > 0) {
 			time = newTime;
 			sampCount = msToSamp(time, sampleRate);
+			// Adjust the slope to the new time, if the ramp still hasn't completed
+			slope = (1.0 - rampmult) / (sampCount - ramploc);
 		}
 	}
 

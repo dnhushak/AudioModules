@@ -23,7 +23,7 @@ namespace device {
 	}
 
 	void PolyphonicHandler::setUpstream(
-			ConnectableDevice<Device> * newUpstream) {
+			ConnectableDevice<Device, Device> * newUpstream) {
 		upstream = newUpstream;
 	}
 
@@ -49,7 +49,7 @@ namespace device {
 				numVoices++;
 
 				// Copy the current timbre tree (hehe)
-				Device * NewTree = (this->copyConnectedTree())->getDeviceByLoc(curTimbre);
+//				Device * NewTree = (this->copyConnectedTree())->getDeviceByLoc(curTimbre);
 				//TODO: Figure out the best way to do this without copying all timbre trees (maybe clone is the best option?)
 
 				// Increment the timbre counter
@@ -59,7 +59,7 @@ namespace device {
 
 				// If there is an upstream device, attach the new timbre tree to upstream
 				if (upstream != 0) {
-					upstream->connectDevice(NewTree);
+//					upstream->connectDevice(NewTree);
 				}
 			}
 		}

@@ -4,12 +4,24 @@ namespace audio {
 	
 	BitCrusher::BitCrusher() {
 		bitDepth = 24;
+		setMaxNumDevices(1);
 	}
 	
+	BitCrusher * BitCrusher::clone() {
+		// Create new device
+		BitCrusher * newDevice = new BitCrusher();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->bitDepth = this->bitDepth;
+
+		return newDevice;
+	}
+
 	sample_t * BitCrusher::advance() {
 		if (!isEmpty()) {
 			copyToBuffer(front()->read(), bufferSize);
 			// Multiply by INT max, divide by sample max, cast to
+			//TODO: Fix bitcrush
 		} else {
 			zeroBuffer();
 		}

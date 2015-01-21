@@ -3,6 +3,15 @@ namespace audio {
 	Mixer::Mixer() {
 	}
 
+	Mixer * Mixer::clone() {
+		// Create new device
+		Mixer * newDevice = new Mixer();
+		// Set all member variables
+		newDevice->state = this->state;
+
+		return newDevice;
+	}
+
 	sample_t * Mixer::advance() {
 		if (!isEmpty()) {
 			// Grab the first item in the list and copy its buffer over first

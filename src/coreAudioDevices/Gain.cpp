@@ -8,6 +8,16 @@ namespace audio {
 		setGain(0);
 	}
 
+	Gain * Gain::clone(){
+		// Create new device
+		Gain * newDevice = new Gain();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->gain = this->gain;
+
+		return newDevice;
+	}
+
 	sample_t * Gain::advance() {
 		if (isEmpty()) {
 			zeroBuffer();

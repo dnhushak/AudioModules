@@ -17,6 +17,20 @@ namespace audio {
 		setDelaySamples(0);
 	}
 	
+	Delay * Delay::clone(){
+		// Create new device
+		Delay * newDevice = new Delay();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->curDelaySample = this->curDelaySample;
+		newDevice->curSample = this->curSample;
+		newDevice->delaySamples = this->delaySamples;
+		newDevice->delayTime = this->delayTime;
+		newDevice->setMaxDelayTime(delayBufferSize);
+
+		return newDevice;
+	}
+
 	sample_t* Delay::advance() {
 		for (int i = 0; i < bufferSize; i++) {
 			// Fill the delay buffer with appropriate samples from input

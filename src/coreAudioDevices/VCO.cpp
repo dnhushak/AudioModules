@@ -7,6 +7,21 @@ namespace audio {
 		setSensitivity(1);
 	}
 	
+	VCO * VCO::clone() {
+		// Create new device
+		VCO * newDevice = new VCO();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setWavetable(this->wavetable);
+		newDevice->setBaseFrequency(this->frequency);
+		newDevice->phase = this->phase;
+		newDevice->setSensitivity(this->sensitivity);
+		newDevice->freqRatio = this->freqRatio;
+
+		return newDevice;
+
+	}
+
 	sample_t * VCO::advance() {
 		// If there is a connected device...
 		if (!isEmpty()) {

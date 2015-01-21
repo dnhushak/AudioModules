@@ -7,6 +7,17 @@ namespace audio {
 		setMaxNumDevices(1);
 	}
 
+	Clipper * Clipper::clone() {
+		// Create new device
+		Clipper * newDevice = new Clipper();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->thresholdHi = this->thresholdHi;
+		newDevice->thresholdLo = this->thresholdLo;
+
+		return newDevice;
+	}
+
 	sample_t * Clipper::advance() {
 		if (!isEmpty()) {
 

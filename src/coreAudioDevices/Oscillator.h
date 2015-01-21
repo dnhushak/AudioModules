@@ -15,6 +15,8 @@ namespace audio {
 			// Constructor
 			Oscillator();
 
+			Oscillator * clone();
+
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			sample_t * advance();
 
@@ -45,15 +47,11 @@ namespace audio {
 			// The amount to truncate the phase by every step increase
 			int phaseTruncateAmt;
 
-			// The scale
-			int phaseScale;
-
 			// The amount to increase the phase by every sample
 			unsigned int stepSize;
 
 			// The current frequency of the oscillator
 			float frequency;
-			float freqRatio;
 
 			Wavetable * wavetable;
 	};

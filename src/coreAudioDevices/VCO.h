@@ -6,9 +6,12 @@
 
 namespace audio {
 	
-	class VCO: public audio::Oscillator, public device::ConnectableDevice<AudioDevice> {
+	class VCO: public audio::Oscillator, public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			VCO();
+
+			VCO * clone();
+
 			sample_t * advance();
 
 			/**
@@ -41,6 +44,7 @@ namespace audio {
 			virtual ~VCO();
 		private:
 			float sensitivity;
+			float freqRatio;
 	};
 
 }

@@ -145,6 +145,17 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+//	device::Device * device = new device::Device();
+//	device::Device * dupeDevice = device->clone();
+//
+//	std::cout << "\n\n";
+//	std::cout << "Device 1 ID: ";
+//	std::cout << device->getDevID();
+//	std::cout << "\n\n";
+//	std::cout << "Device 2 ID: ";
+//	std::cout << dupeDevice->getDevID();
+//	std::cout << "\n\n";
+
 	audio::Gain * gain = new audio::Gain();
 
 	std::vector<audio::Wavetable *> * tables = GenerateSynthTables();
@@ -177,12 +188,17 @@ int main(int argc, char *argv[]) {
 
 	audio::Mixer * mixer = new audio::Mixer();
 	mixer->connectDevice(gain);
+
+	audio::Mixer * mixer2 = mixer->clone();
+	audio::Mixer * mixer3 = mixer->cloneWithConnected();
 //	mixer->connectDevice(dly);
 //	mixer->connectDevice(dly2);
 //	mixer->connectDevice(dly3);
 
 	gain->setGain(-12);
 	gain->connectDevice(wobble);
+
+//	audio::Gain * gain2 = gain->clone();
 	/*** Set up the PA Handler. This is where the audio callback is ***/
 
 //	audio::sample_t * buffer;
@@ -197,13 +213,13 @@ int main(int argc, char *argv[]) {
 //	printf("\n\n");
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-			numOutChannels, numInChannels, mixer);
+			numOutChannels, numInChannels, mixer3);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);
 	}
 	usleep(1000000);
-ramp->startRamp();
+	ramp->startRamp();
 //	for (int i = 100; i < 900; i++) {
 ////		sin->setBaseFrequency(i);
 //		usleep(10000);

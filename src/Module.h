@@ -19,7 +19,7 @@ namespace audio {
 
 	class Module: public midi::MIDIDevice,
 			public AudioDevice,
-			public device::ConnectableDevice<AudioDevice> {
+			public device::ConnectableDevice<AudioDevice, AudioDevice> {
 		public:
 			Module();
 

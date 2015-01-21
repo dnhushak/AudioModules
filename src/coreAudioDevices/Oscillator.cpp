@@ -17,17 +17,26 @@ namespace audio {
 		// The amount to truncate the phase by every step increase
 		phaseTruncateAmt = 0;
 
-		// The scale
-		phaseScale = 0;
-
 		// The amount to increase the phase by every sample
 		stepSize = 0;
 
 		// The current frequency of the oscillator
 		frequency = 0;
 
-		freqRatio = 1.0;
 		wavetable = NULL;
+	}
+
+	Oscillator * Oscillator::clone() {
+		// Create new device
+		Oscillator * newDevice = new Oscillator();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setWavetable(this->wavetable);
+		newDevice->setBaseFrequency(this->frequency);
+		newDevice->phase = this->phase;
+
+		return newDevice;
+
 	}
 
 	// Returns a buffer of sample values based on oscillation

@@ -6,9 +6,10 @@
 
 namespace audio {
 	
-	class Clipper: public AudioDevice, public device::ConnectableDevice<AudioDevice> {
+	class Clipper: public AudioDevice, public device::ConnectableDevice<AudioDevice, Clipper> {
 		public:
 			Clipper();
+			Clipper * clone();
 			sample_t * advance();
 			void setThreshold(float);
 		private:

@@ -30,6 +30,8 @@ namespace device {
 
 			int getDevID();
 
+			virtual Device * clone();
+
 			virtual ~Device();
 
 		protected:
