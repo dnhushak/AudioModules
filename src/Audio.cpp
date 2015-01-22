@@ -190,8 +190,8 @@ int main(int argc, char *argv[]) {
 	audio::Mixer * mixer = new audio::Mixer();
 	mixer->connectDevice(gain);
 
-	audio::Mixer * mixer2 = mixer->clone();
-	audio::Mixer * mixer3 = mixer->cloneAndConnect();
+	audio::Mixer * mixer3 = mixer->clone();
+//	audio::Mixer * mixer3 = mixer->cloneAndConnect();
 //	mixer->connectDevice(dly);
 //	mixer->connectDevice(dly2);
 //	mixer->connectDevice(dly3);
