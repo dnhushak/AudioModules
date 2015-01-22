@@ -3,41 +3,80 @@
 namespace device {
 	
 	Parameter::Parameter() {
-		p1.i = 0;
-		p2.i = 0;
+		param start;
+		// Zero the first param
+		memset(&start, 0, sizeof(start));
+		paramList.push_back(start);
 	}
 	
-	Parameter::param Parameter::getParam1() {
-		return p1;
-	}
-	Parameter::param Parameter::getParam2() {
-		return p2;
-	}
-
-	void Parameter::setParam1(int newParam) {
-		p1.i = newParam;
-	}
-	void Parameter::setParam1(long newParam) {
-		p1.l = newParam;
-	}
-	void Parameter::setParam1(float newParam) {
-		p1.f = newParam;
-	}
-	void Parameter::setParam1(double newParam) {
-		p1.d = newParam;
+	Parameter::param Parameter::getParam(int paramNum) {
+		if (paramNum < getNumParams()) {
+			return paramList[paramNum];
+		} else {
+			param empty;
+			empty.i = 0;
+			return empty;
+		}
 	}
 
-	void Parameter::setParam2(int newParam) {
-		p2.i = newParam;
+	Parameter::param Parameter::getParam() {
+		return paramList[0];
 	}
-	void Parameter::setParam2(long newParam) {
-		p2.l = newParam;
+
+	void Parameter::setParam(int paramNum, int newParamVal) {
+		// If param exists in the vector
+		if (paramNum < getNumParams()) {
+			// Update it
+			paramList[paramNum].i = newParamVal;
+		} else {
+			// Otherwise add a new parameter
+			param newParam;
+			newParam.i = newParamVal;
+			paramList.push_back(newParam);
+		}
 	}
-	void Parameter::setParam2(float newParam) {
-		p2.f = newParam;
+	void Parameter::setParam(int paramNum, long newParamVal) {
+		// If param exists in the vector
+		if (paramNum < getNumParams()) {
+			// Update it
+			paramList[paramNum].l = newParamVal;
+		} else {
+			// Otherwise add a new parameter
+			param newParam;
+			memset(&newParam, 0, sizeof(newParam));
+			newParam.l = newParamVal;
+			paramList.push_back(newParam);
+		}
 	}
-	void Parameter::setParam2(double newParam) {
-		p2.d = newParam;
+	void Parameter::setParam(int paramNum, float newParamVal) {
+		// If param exists in the vector
+		if (paramNum < getNumParams()) {
+			// Update it
+			paramList[paramNum].f = newParamVal;
+		} else {
+			// Otherwise add a new parameter
+			param newParam;
+			memset(&newParam, 0, sizeof(newParam));
+			newParam.f = newParamVal;
+			paramList.push_back(newParam);
+		}
+	}
+	void Parameter::setParam(int paramNum, double newParamVal) {
+		// If param exists in the vector
+		if (paramNum < getNumParams()) {
+			// Update it
+			paramList[paramNum].d = newParamVal;
+		} else {
+			// Otherwise add a new parameter
+			param newParam;
+			memset(&newParam, 0, sizeof(newParam));
+			newParam.d = newParamVal;
+			paramList.push_back(newParam);
+		}
+	}
+
+	int Parameter::getNumParams() {
+		return paramList.size();
 	}
 
 	Parameter::~Parameter() {
