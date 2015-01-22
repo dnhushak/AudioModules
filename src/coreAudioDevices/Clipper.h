@@ -7,13 +7,14 @@
 
 namespace audio {
 	using namespace device;
+	using namespace std;
 	class Clipper: public Alterable<Connectable<AudioDevice, AudioDevice> > {
 		public:
 			Clipper();
 
 			virtual Clipper * clone();
 
-			void alter(std::string paramName, Parameter p);
+			void alter(string paramName, Parameter p);
 
 			sample_t * advance();
 

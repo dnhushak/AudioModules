@@ -3,14 +3,19 @@
 
 #include "AudioDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace audio {
+	using namespace device;
+	using namespace std;
 	
-	class Gain: public device::Connectable<AudioDevice, AudioDevice> {
+	class Gain: public Alterable<Connectable<AudioDevice, AudioDevice> >{
 		public:
 			Gain();
 
 			virtual Gain * clone();
+
+			void alter(string paramName, Parameter p);
 
 			sample_t * advance();
 

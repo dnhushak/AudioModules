@@ -89,6 +89,10 @@ std::vector<audio::Wavetable *> * GenerateSynthTables() {
 // Main
 int main(int argc, char *argv[]) {
 
+	using namespace audio;
+	using namespace midi;
+	using namespace std;
+
 	printf("Generating PortMIDI Handler...\n");
 	midi::PortMIDIHandler * PMHandler = new midi::PortMIDIHandler();
 	printf("Generating PortAudio Handler...\n");
@@ -191,10 +195,20 @@ int main(int argc, char *argv[]) {
 	mixer->connectDevice(gain);
 
 	audio::Mixer * mixer3 = mixer->clone();
+
 //	audio::Mixer * mixer3 = mixer->cloneAndConnect();
 //	mixer->connectDevice(dly);
 //	mixer->connectDevice(dly2);
 //	mixer->connectDevice(dly3);
+
+	Clipper * clip = new Clipper;
+	cout << "\n Clipper threshold: " << clip->getThreshold();
+	clip->setThreshold(-6);
+	cout << "\n Clipper threshold: " << clip->getThreshold();
+	Parameter thresh;
+	thresh.setParam(0, (float) 3);
+	clip->alter("threshold", thresh);
+	cout << "\n Clipper threshold: " << clip->getThreshold() << "\n";
 
 	gain->setGain(-12);
 	gain->connectDevice(wobble);

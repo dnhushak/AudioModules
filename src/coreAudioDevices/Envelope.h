@@ -2,19 +2,24 @@
 #define ENVELOPE_h_
 #include "AudioDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace audio {
+	using namespace device;
+	using namespace std;
 
 	enum envState_t {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
-	class Envelope: public device::Connectable<AudioDevice, AudioDevice> {
+	class Envelope: public Alterable<Connectable<AudioDevice, AudioDevice> > {
 		public:
 			// Constructor
 			Envelope();
 
 			virtual Envelope * clone();
+
+			void alter(string paramName, Parameter p);
 
 			// Advance/fill the buffer
 			sample_t * advance();

@@ -29,6 +29,27 @@ namespace audio {
 		return newDevice;
 	}
 
+	void Envelope::alter(string paramName, Parameter p){
+		if(!paramName.compare("attack")){
+			setAttack(p.getParam().i);
+		}
+		if(!paramName.compare("decay")){
+			setAttack(p.getParam().i);
+		}
+		if(!paramName.compare("sustain")){
+			setAttack(p.getParam().f);
+		}
+		if(!paramName.compare("release")){
+			setAttack(p.getParam().i);
+		}
+		if(!paramName.compare("start")){
+			startEnv();
+		}
+		if(!paramName.compare("end")){
+			releaseEnv();
+		}
+	}
+
 	// Advance the envelope. Returns a buffer holding the envelope multiplier values
 	sample_t * Envelope::advance() {
 

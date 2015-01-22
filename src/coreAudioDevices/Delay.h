@@ -3,14 +3,18 @@
 
 #include "AudioDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace audio {
-	
-	class Delay: public device::Connectable<AudioDevice, AudioDevice> {
+	using namespace device;
+	using namespace std;
+	class Delay: public Alterable<Connectable<AudioDevice, AudioDevice> > {
 		public:
 			Delay();
 
 			virtual Delay * clone();
+
+			void alter(string paramName, Parameter p);
 
 			sample_t * advance();
 
@@ -20,18 +24,18 @@ namespace audio {
 
 			void setDelaySamples(int);
 
-			void normalizeCurrentPointer();
-
-			void normalizeDelayPointer();
-
-			void zeroDelayBuffer();
-
 			int getDelayTime();
 
 			int getDelaySamples();
 
 			virtual ~Delay();
 		private:
+			void normalizeCurrentPointer();
+
+			void normalizeDelayPointer();
+
+			void zeroDelayBuffer();
+
 			sample_t * delayBuffer;
 
 			int delayBufferSize;

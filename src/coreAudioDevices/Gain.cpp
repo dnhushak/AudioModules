@@ -18,6 +18,12 @@ namespace audio {
 		return newDevice;
 	}
 
+	void Gain::alter(string paramName, Parameter p){
+		if(!paramName.compare("gain")){
+			setGain(p.getParam().f);
+		}
+	}
+
 	sample_t * Gain::advance() {
 		if (isEmpty()) {
 			zeroBuffer();

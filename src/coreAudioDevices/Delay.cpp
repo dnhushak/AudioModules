@@ -31,6 +31,16 @@ namespace audio {
 		return newDevice;
 	}
 
+	void Delay::alter(string paramName, Parameter p) {
+		if (!paramName.compare("time ms")) {
+			setDelayTime(p.getParam().i);
+		}
+		if (!paramName.compare("time samples")) {
+			setDelaySamples(p.getParam().i);
+		}
+
+	}
+
 	sample_t* Delay::advance() {
 		for (int i = 0; i < bufferSize; i++) {
 			// Fill the delay buffer with appropriate samples from input
