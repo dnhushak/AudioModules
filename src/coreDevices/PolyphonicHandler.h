@@ -7,8 +7,7 @@
 
 namespace device {
 	
-	class PolyphonicHandler: public device::Device,
-			public device::Connectable<Device, Device> {
+	class PolyphonicHandler: public device::Connectable<Device, Device> {
 		public:
 			PolyphonicHandler();
 
