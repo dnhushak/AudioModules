@@ -18,8 +18,11 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Clipper::alter(std::string paramName, device::Parameter p) {
-
+	void Clipper::alter(std::string paramName, Parameter p) {
+		// Check for parameter string
+		if(paramName.compare("threshold")){
+			setThreshold(p.getParam().f);
+		}
 	}
 
 	sample_t * Clipper::advance() {
