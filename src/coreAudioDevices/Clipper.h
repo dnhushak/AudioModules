@@ -3,13 +3,15 @@
 
 #include "AudioDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace audio {
 	
-	class Clipper: public device::Connectable<AudioDevice, AudioDevice> {
+	class Clipper: public device::Alterable<device::Connectable<AudioDevice, AudioDevice> > {
 		public:
 			Clipper();
 			virtual Clipper * clone();
+			void alter(std::string paramName, device::Parameter p);
 			sample_t * advance();
 			void setThreshold(float);
 		private:

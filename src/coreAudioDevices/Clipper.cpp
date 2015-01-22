@@ -18,6 +18,10 @@ namespace audio {
 		return newDevice;
 	}
 
+	void Clipper::alter(std::string paramName, device::Parameter p) {
+
+	}
+
 	sample_t * Clipper::advance() {
 		if (!isEmpty()) {
 
