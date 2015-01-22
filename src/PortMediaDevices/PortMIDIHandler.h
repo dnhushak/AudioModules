@@ -8,7 +8,7 @@
 
 namespace midi {
 	
-	class PortMIDIHandler: public MIDIDevice, public device::Connectable<MIDIDevice, MIDIDevice> {
+	class PortMIDIHandler: public device::Connectable<MIDIDevice, MIDIDevice> {
 		public:
 			PortMIDIHandler();
 
