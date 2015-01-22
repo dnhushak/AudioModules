@@ -3,6 +3,11 @@
 
 namespace device {
 	
+	/**
+	 * A container class for storing multiple values of multiple types.
+	 * Heavily utilized in the ```Alterable``` line of thinking, by exposing
+	 * several functions to a generic style of parameterization.
+	 */
 	class Parameter {
 			union param {
 					int i;
@@ -13,24 +18,39 @@ namespace device {
 		public:
 			Parameter();
 
-			param getParam1();
-			param getParam2();
+			/**
+			 * Get a desired parameter.
+			 *
+			 * Note! After calling, must use the union qualifier to actually extract a value
+			 * (for instance, ```param.i``` to get the int value)
+			 *
+			 * @param paramNum The parameter number to extract, for multi-valued parameters
+			 * @return The desired parameter
+			 */
+			param getParam(int paramNum);
 
-			void setParam1(int newParam);
-			void setParam1(long newParam);
-			void setParam1(float newParam);
-			void setParam1(double newParam);
+			/**
+			 * Get the first parameter
+			 *
+			 * Note! After calling, must use the union qualifier to actually extract a value
+			 * (for instance, ```param.i``` to get the int value)
+			 *
+			 * @return The first parameter
+			 */
+			param getParam();
 
-			void setParam2(int newParam);
-			void setParam2(long newParam);
-			void setParam2(float newParam);
-			void setParam2(double newParam);
+
+			void setParam(int paramNum, int newParam);
+			void setParam(int paramNum, long newParam);
+			void setParam(int paramNum, float newParam);
+			void setParam(int paramNum, double newParam);
+
+			int getNumParams();
 
 			virtual ~Parameter();
 
 		private:
-			param p1;
-			param p2;
+			std::vector<param> paramList;
 
 	};
 
