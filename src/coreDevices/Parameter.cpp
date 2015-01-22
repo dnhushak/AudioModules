@@ -3,19 +3,15 @@
 namespace device {
 	
 	Parameter::Parameter() {
-		param start;
-		// Zero the first param
-		memset(&start, 0, sizeof(start));
-		paramList.push_back(start);
+
+		paramList.push_back(createEmptyParam());
 	}
 	
 	Parameter::param Parameter::getParam(int paramNum) {
 		if (paramNum < getNumParams()) {
 			return paramList[paramNum];
 		} else {
-			param empty;
-			empty.i = 0;
-			return empty;
+			return createEmptyParam();
 		}
 	}
 
@@ -30,7 +26,7 @@ namespace device {
 			paramList[paramNum].i = newParamVal;
 		} else {
 			// Otherwise add a new parameter
-			param newParam;
+			param newParam = createEmptyParam();
 			newParam.i = newParamVal;
 			paramList.push_back(newParam);
 		}
@@ -42,8 +38,7 @@ namespace device {
 			paramList[paramNum].l = newParamVal;
 		} else {
 			// Otherwise add a new parameter
-			param newParam;
-			memset(&newParam, 0, sizeof(newParam));
+			param newParam = createEmptyParam();
 			newParam.l = newParamVal;
 			paramList.push_back(newParam);
 		}
@@ -55,8 +50,7 @@ namespace device {
 			paramList[paramNum].f = newParamVal;
 		} else {
 			// Otherwise add a new parameter
-			param newParam;
-			memset(&newParam, 0, sizeof(newParam));
+			param newParam = createEmptyParam();
 			newParam.f = newParamVal;
 			paramList.push_back(newParam);
 		}
@@ -68,8 +62,7 @@ namespace device {
 			paramList[paramNum].d = newParamVal;
 		} else {
 			// Otherwise add a new parameter
-			param newParam;
-			memset(&newParam, 0, sizeof(newParam));
+			param newParam = createEmptyParam();
 			newParam.d = newParamVal;
 			paramList.push_back(newParam);
 		}
@@ -77,6 +70,13 @@ namespace device {
 
 	int Parameter::getNumParams() {
 		return paramList.size();
+	}
+
+	Parameter::param Parameter::createEmptyParam() {
+		param empty;
+		// Zero the  param
+		memset(&empty, 0, sizeof(empty));
+		return empty;
 	}
 
 	Parameter::~Parameter() {

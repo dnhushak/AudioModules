@@ -47,9 +47,12 @@ namespace device {
 
 			int getNumParams();
 
+
 			virtual ~Parameter();
 
 		private:
+			param createEmptyParam();
+
 			std::vector<param> paramList;
 
 	};
