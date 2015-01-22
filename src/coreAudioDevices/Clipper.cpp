@@ -12,15 +12,14 @@ namespace audio {
 		Clipper * newDevice = new Clipper();
 		// Set all member variables
 		newDevice->state = this->state;
-		newDevice->thresholdHi = this->thresholdHi;
-		newDevice->thresholdLo = this->thresholdLo;
+		newDevice->setThreshold(this->threshold);
 
 		return newDevice;
 	}
 
 	void Clipper::alter(std::string paramName, Parameter p) {
 		// Check for parameter string
-		if(paramName.compare("threshold")){
+		if (!paramName.compare("threshold")) {
 			setThreshold(p.getParam().f);
 		}
 	}
@@ -49,7 +48,12 @@ namespace audio {
 		return buffer;
 	}
 
+	float Clipper::getThreshold() {
+		return threshold;
+	}
+
 	void Clipper::setThreshold(float newThreshold) {
+		threshold = newThreshold;
 		thresholdHi = (sample_t) (dbToRatio(newThreshold) * sampleMax);
 		thresholdLo = -thresholdHi;
 	}

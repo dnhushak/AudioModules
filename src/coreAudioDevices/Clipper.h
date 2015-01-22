@@ -10,13 +10,21 @@ namespace audio {
 	class Clipper: public Alterable<Connectable<AudioDevice, AudioDevice> > {
 		public:
 			Clipper();
+
 			virtual Clipper * clone();
+
 			void alter(std::string paramName, Parameter p);
+
 			sample_t * advance();
+
+			float getThreshold();
+
 			void setThreshold(float);
+
 		private:
 			sample_t thresholdHi;
 			sample_t thresholdLo;
+			float threshold;
 	};
 
 }
