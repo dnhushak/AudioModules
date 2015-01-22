@@ -4,7 +4,7 @@
 
 namespace midi {
 	
-	class ChannelFilter: public MIDIDevice, public device::Connectable<MIDIDevice, MIDIDevice> {
+	class ChannelFilter: public device::Connectable<MIDIDevice, MIDIDevice> {
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);
