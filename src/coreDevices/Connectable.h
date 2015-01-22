@@ -14,6 +14,8 @@ namespace device {
 				maxNumDevices = -1;
 			}
 
+			// TODO: Figure out how the eff to do this recursive cloning crap correctly (nice alliteration)
+
 			/**
 			 * Handles duplication/simultaneous connection of children, called in devices' ```duplicate()``` function
 			 *
@@ -41,23 +43,23 @@ namespace device {
 //				return (SelfType *) newDevice;
 //			}
 
-			virtual Connectable<InheritType, ConnectType> * cloneAndConnect() {
-				// Clone self
-				Connectable<InheritType, ConnectType> * newDevice = this->clone();
-				if (!isEmpty()) {
-					// Start at the beginning of the device list
-					deviceIter = begin();
-					while (deviceIter != end()) {
-						// Select each connected device
-						ConnectType * newChild = (*deviceIter);
-						// Connect child device to the parent clone
-						newDevice->connectDevice(newChild);
-						// Increment the iterator
-						deviceIter++;
-					}
-				}
-				return newDevice;
-			}
+//			virtual Connectable<InheritType, ConnectType> * cloneAndConnect() {
+//				// Clone self
+//				Connectable<InheritType, ConnectType> * newDevice = this->clone();
+//				if (!isEmpty()) {
+//					// Start at the beginning of the device list
+//					deviceIter = begin();
+//					while (deviceIter != end()) {
+//						// Select each connected device
+//						ConnectType * newChild = (*deviceIter);
+//						// Connect child device to the parent clone
+//						newDevice->connectDevice(newChild);
+//						// Increment the iterator
+//						deviceIter++;
+//					}
+//				}
+//				return newDevice;
+//			}
 
 			typename std::list<ConnectType *>::iterator begin() {
 				return deviceList.begin();
