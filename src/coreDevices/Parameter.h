@@ -1,6 +1,8 @@
 #ifndef PARAMETER_H_
 #define PARAMETER_H_
 
+#include <vector>
+
 namespace device {
 	
 	/**
