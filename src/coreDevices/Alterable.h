@@ -2,10 +2,11 @@
 #define ALTERABLE_H_
 
 #include "Parameter.h"
-//#include <string>
-#include <map>
 
 namespace device {
+	using namespace device;
+	using namespace std;
+
 	/**
 	 * ```Alterable``` is a mixin style class enhancer, adding functions to whatever class is defined as its inherit type
 	 * This class provides a generalized public function intended to alter a class's member variables.
@@ -22,7 +23,7 @@ namespace device {
 				numParameters = 0;
 			}
 
-			virtual void alter(std::string paramName, device::Parameter p) = 0;
+			virtual void alter(string paramName, Parameter p) = 0;
 
 			virtual ~Alterable() {
 
