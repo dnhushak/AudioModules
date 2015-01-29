@@ -5,6 +5,7 @@
 #include <iostream>
 
 namespace midi {
+	using namespace std;
 	
 	class MessagePrinter: public MIDIDevice {
 		public:
