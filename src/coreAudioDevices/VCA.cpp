@@ -33,7 +33,11 @@ namespace audio {
 			if (getNumDevices() == 2) {
 				// Multiply every sample of the first buffer by the second buffer, as well as the VCA gain
 				for (int i = 0; i < bufferSize; i++) {
+					// Multiply buffers
 					buffer[i] *= back()->read()[i];
+					// Divide by the maximum value of the sample type
+					buffer[i] /= sampleMax;
+					// Multiply by the VCA gain
 					buffer[i] *= gain;
 				}
 			}
