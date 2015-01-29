@@ -5,12 +5,16 @@
 #include "Connectable.h"
 
 namespace audio {
+	using namespace device;
+	using namespace std;
 	
-	class VCO: public device::Connectable<Oscillator, AudioDevice> {
+	class VCO: public Alterable<Connectable<Oscillator, AudioDevice> > {
 		public:
 			VCO();
 
 			virtual VCO * clone();
+
+			void alter(string paramName, Parameter p);
 
 			sample_t * advance();
 

@@ -39,6 +39,16 @@ namespace audio {
 
 	}
 
+	void Oscillator::alter(string paramName, Parameter p) {
+		if (!paramName.compare("frequency")) {
+			setBaseFrequency(p.getParam().f);
+		}
+		if(!paramName.compare("note")){
+			setBaseFrequencyMIDI(p.getParam().i);
+		}
+		// TODO: Find graceful way to MIDI trigger a change of wavetable
+	}
+
 	// Returns a buffer of sample values based on oscillation
 	sample_t * Oscillator::advance() {
 		for (int i = 0; i < bufferSize; i++) {
@@ -67,6 +77,12 @@ namespace audio {
 			frequency = newFrequency;
 		}
 		calcStepSize(frequency);
+	}
+
+	void Oscillator::setBaseFrequencyMIDI(int MIDINote) {
+		if (MIDINote >= 0 && MIDINote < 128) {
+			setBaseFrequency(MtoF(MIDINote));
+		}
 	}
 
 	void Oscillator::calcStepSize(float curFrequency) {

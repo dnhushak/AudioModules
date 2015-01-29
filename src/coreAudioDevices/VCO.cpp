@@ -22,6 +22,13 @@ namespace audio {
 
 	}
 
+	void VCO::alter(string paramName, Parameter p){
+		Oscillator::alter(paramName, p);
+		if(!paramName.compare("sensitivity")){
+			setSensitivity(p.getParam().f);
+		}
+	}
+
 	sample_t * VCO::advance() {
 		// If there is a connected device...
 		if (!isEmpty()) {

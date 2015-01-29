@@ -5,12 +5,16 @@
 #include "Connectable.h"
 
 namespace audio {
+	using namespace device;
+	using namespace std;
 	
-	class VCA: public device::Connectable<AudioDevice, AudioDevice> {
+	class VCA: public Alterable<Connectable<AudioDevice, AudioDevice> >{
 		public:
 			VCA();
 
 			virtual VCA * clone();
+
+			void alter(string paramName, Parameter P);
 
 			sample_t * advance();
 

@@ -5,13 +5,17 @@
 #include "Connectable.h"
 
 namespace audio {
+	using namespace device;
+	using namespace std;
 
-	class Ramp: public device::Connectable<AudioDevice, AudioDevice> {
+	class Ramp: public Alterable<Connectable<AudioDevice, AudioDevice> > {
 		public:
 			// Constructor
 			Ramp();
 
 			virtual Ramp * clone();
+
+			void alter(string paramName, Parameter p);
 
 			// Advance/fill the buffer
 			sample_t * advance();

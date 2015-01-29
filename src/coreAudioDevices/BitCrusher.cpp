@@ -28,6 +28,12 @@ namespace audio {
 		return buffer;
 	}
 
+	void BitCrusher::alter(string paramName, Parameter p){
+		if(!paramName.compare("bit depth")){
+			setBitDepth(p.getParam().i);
+		}
+	}
+
 	void BitCrusher::setBitDepth(int newBitDepth) {
 		if (newBitDepth > 0 & newBitDepth < 25) {
 			bitDepth = newBitDepth;

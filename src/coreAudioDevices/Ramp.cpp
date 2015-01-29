@@ -35,6 +35,18 @@ namespace audio {
 
 	}
 
+	void Ramp::alter(string paramName, Parameter p){
+		if(!paramName.compare("time")){
+			setTime(p.getParam().i);
+		}
+		if(!paramName.compare("start")){
+			startRamp();
+		}
+		if(!paramName.compare("end")){
+			stopRamp();
+		}
+	}
+
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
 	sample_t * Ramp::advance() {
 		if (!isEmpty()) {
