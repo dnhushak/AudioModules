@@ -11,6 +11,12 @@ namespace midi {
 		}
 	}
 
+	void ChannelFilter::alter(string paramName, Parameter p){
+		if (!paramName.compare("channel")) {
+			setChannel(p.getParam().i);
+		}
+	}
+
 	void ChannelFilter::affect(MIDIMessage * message) {
 		// Check to see if the message is of the desired channel
 		if (message->statusType == SYSTEM) {

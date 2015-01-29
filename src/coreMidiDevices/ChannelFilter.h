@@ -3,11 +3,15 @@
 #include "Connectable.h"
 
 namespace midi {
+	using namespace device;
+	using namespace std;
 	
-	class ChannelFilter: public device::Connectable<MIDIDevice, MIDIDevice> {
+	class ChannelFilter: public Alterable<Connectable<MIDIDevice, MIDIDevice> >{
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);
+
+			void alter(string paramName, Parameter p);
 
 			// Pass on the filtered MIDI channel data to each item in MIDIDeviceList
 			void affect(MIDIMessage *);
