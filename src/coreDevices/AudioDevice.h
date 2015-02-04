@@ -11,13 +11,6 @@
 #include <list>
 
 namespace audio {
-	// Size of buffer
-	//TODO: Change buffer of all audio devices
-	static int bufferSize = 64;
-
-	// Sampling rate of the audio system
-	//TODO: Ability to used mixed sample rates
-	static int sampleRate = 44100;
 
 	/**
 	 * This is the master class for all audio devices.
@@ -25,7 +18,7 @@ namespace audio {
 	 * by either an audio output device interfacing the program with the OS's devices
 	 * or another audio device within the application.
 	 *
-	 * Most audio devices in the library utilize the ```ConnectableDevice``` class, allowing multiple
+	 * Most audio devices in the library utilize the ```Connectable``` mixin class, allowing multiple
 	 * devices to be connected to each other. Typically in the ```advance``` call of one device, the ```advance```
 	 * call of a connected device will also be called, to retain sample coherency and sample-by-sample
 	 * effects, such as VCAs, etc.
@@ -35,7 +28,11 @@ namespace audio {
 		public:
 			AudioDevice();
 
-			virtual AudioDevice * clone() =0;
+			/**
+			 * Creates a deep copy of the current device, excluding buffer contents and device ID
+			 * @return A copy of the device
+			 */
+			virtual AudioDevice * clone() = 0;
 
 			/**
 			 * The advance for all audio devices that actually does the 'work.'
@@ -45,7 +42,6 @@ namespace audio {
 			 * @return A pointer to the buffer of samples of type ```sample_t```
 			 */
 			virtual sample_t * advance() = 0;
-
 
 			/**
 			 * Reads the buffer. If the device has not yet been advanced, it advances it
@@ -61,10 +57,16 @@ namespace audio {
 			virtual void cleanup();
 
 			/**
-			 * Resize the buffer of all audio devices
+			 * Resize the buffer of all this device
 			 * @param newSize New size of buffer in samples. Must be > 0
 			 */
 			void setBufferSize(int newSize);
+
+			/**
+			 * Resize the buffer of every audio device
+			 * @param newSize New size of buffer in samples. Must be > 0
+			 */
+			static void setAllBufferSizes(int newSize);
 
 			/**
 			 * Return the buffer size
@@ -86,7 +88,8 @@ namespace audio {
 
 			/**
 			 * Copies ```numSamples``` samples from another buffer over to the
-			 * devices own buffer
+			 * device's own buffer. If ```otherbuffer``` is > ```bufferSize```, this function
+			 * will only copy up to the buffer size of the device.
 			 * @param otherBuffer A pointer to the other buffer to copy from
 			 * @param numSamples The number of samples to copy over, usually the same
 			 * as ```bufferSize```
@@ -134,6 +137,13 @@ namespace audio {
 			 * An indicator showing whether or not the device has been advanced
 			 */
 			int advanced;
+
+			// Size of buffer
+			int bufferSize;
+
+			// Sampling rate of the audio system
+			//TODO: Ability to use mixed sample rates
+			int sampleRate;
 
 	};
 

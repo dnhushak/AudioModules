@@ -2,11 +2,12 @@
 
 namespace audio {
 
-	AudioDevice::AudioDevice() {
+	AudioDevice::AudioDevice() : bufferSize (64), sampleRate (44100){
 		// Allocate space for the device's output buffer
 		buffer = (sample_t *) malloc(sizeof(sample_t) * bufferSize);
 		audioDeviceList.push_back(this);
 		zeroBuffer();
+		advanced = 0;
 	}
 
 	void AudioDevice::cleanup() {
@@ -31,8 +32,8 @@ namespace audio {
 
 	void AudioDevice::setBufferSize(int newSize) {
 		if (newSize > 0) {
-			bufferSize = newSize;
 			for (AudioDevice * audioDevice : audioDeviceList) {
+				audioDevice->bufferSize = newSize;
 				audioDevice->resizeBuffer();
 			}
 		}
@@ -53,6 +54,9 @@ namespace audio {
 	}
 
 	void AudioDevice::copyToBuffer(sample_t * otherBuffer, int numSamples) {
+		if (numSamples > bufferSize) {
+			numSamples = bufferSize;
+		}
 		memcpy(buffer, otherBuffer, sizeof(sample_t) * numSamples);
 	}
 

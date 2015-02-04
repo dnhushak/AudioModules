@@ -9,10 +9,10 @@ namespace midi {
 		listen.data2 = 0;
 		listen.channel = 0;
 		filterByData1 = 0;
-		intLo = 0;
-		intHi = 127;
-		floLo = 0;
-		floHi = 127;
+//		intLo = 0;
+//		intHi = 127;
+//		floLo = 0;
+//		floHi = 127;
 	}
 	
 	void Affector::affect(MIDIMessage * message) {
@@ -41,13 +41,13 @@ namespace midi {
 	}
 
 	void Affector::setIntScale(int lo, int hi) {
-		intLo = lo;
-		intHi = hi;
+//		intLo = lo;
+//		intHi = hi;
 	}
 
 	void Affector::setFloatScale(float lo, float hi) {
-		floLo = lo;
-		floHi = hi;
+//		floLo = lo;
+//		floHi = hi;
 	}
 
 	void Affector::setTrigger(StatusType status) {

@@ -8,13 +8,11 @@ namespace audio {
 	using namespace device;
 	using namespace std;
 
-	class Filter: public Alterable<Connectable<AudioDevice, AudioDevice> > {
+	class Filter: public Connectable<AudioDevice, AudioDevice>{
 		public:
 			Filter();
 
 			virtual Filter * clone();
-
-			void alter(string paramName, Parameter p);
 
 			sample_t * advance();
 	};

@@ -2,10 +2,12 @@
 #define AFFECTOR_h_
 #include "MIDIDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace midi {
+	using namespace device;
 	
-	class Affector: public device::Connectable<device::Device, MIDIDevice> {
+	class Affector: public Connectable<MIDIDevice, Alterable<Device> > {
 		public:
 			Affector();
 
@@ -70,8 +72,9 @@ namespace midi {
 		private:
 			int learning;
 			int filterByData1;
-			int intLo, intHi;
-			float floLo, floHi;
+			char paramType;
+			Parameter lo;
+			Parameter hi;
 			MIDIMessage listen;
 	};
 

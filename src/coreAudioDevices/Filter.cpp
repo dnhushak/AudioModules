@@ -14,6 +14,7 @@ namespace audio {
 		return newDevice;
 	}
 
+
 	sample_t * Filter::advance() {
 		if (!isEmpty()) {
 			copyToBuffer(front()->read(), bufferSize);

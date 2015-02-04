@@ -4,6 +4,7 @@
 #include "ChannelFilter.h"
 #include "Wavetable.h"
 #include "Oscillator.h"
+#include "Buffer.h"
 #include "MessagePrinter.h"
 #include <vector>
 #include "Voice.h"
@@ -150,91 +151,26 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-//	device::Device * device = new device::Device();
-//	device::Device * dupeDevice = device->clone();
-//
-//	std::cout << "\n\n";
-//	std::cout << "Device 1 ID: ";
-//	std::cout << device->getDevID();
-//	std::cout << "\n\n";
-//	std::cout << "Device 2 ID: ";
-//	std::cout << dupeDevice->getDevID();
-//	std::cout << "\n\n";
+	Buffer * buffer = new Buffer();
+	buffer->setSample(1.3, 3000);
+	cout << "\n\n" << buffer->getSample(3000) << "\n\n" ;
+	buffer->setBufferSize(300);
+	cout << "\n\n" << buffer->getSample(3000) << "\n\n" ;
+	buffer->setBufferSize(3001);
+	buffer->setSample(1.4, 3000);
+	cout << "\n\n" << buffer->getSample(3000) << "\n\n" ;
 
-	audio::Gain * gain = new audio::Gain();
 
-	std::vector<audio::Wavetable *> * tables = GenerateSynthTables();
 
-	audio::Oscillator * sin = new audio::Oscillator();
-	sin->setWavetable(tables->at(5));
-	sin->setBaseFrequency(4);
-
-	audio::Ramp * ramp = new audio::Ramp();
-	ramp->setTime(3000);
-	ramp->connectDevice(sin);
-
-	audio::VCO * wobble = new audio::VCO();
-	wobble->setWavetable(tables->at(3));
-	wobble->connectDevice(ramp);
-	wobble->setSensitivity(.4);
-	wobble->setBaseFrequency(400);
-
-	audio::Delay * dly = new audio::Delay();
-	dly->connectDevice(gain);
-	dly->setDelayTime(500);
-
-	audio::Delay * dly2 = new audio::Delay();
-	dly2->connectDevice(gain);
-	dly2->setDelayTime(1000);
-
-	audio::Delay * dly3 = new audio::Delay();
-	dly3->connectDevice(gain);
-	dly3->setDelayTime(1500);
-
-	audio::Mixer * mixer = new audio::Mixer();
-	mixer->connectDevice(gain);
-
-	audio::Mixer * mixer3 = mixer->clone();
-
-//	audio::Mixer * mixer3 = mixer->cloneAndConnect();
-//	mixer->connectDevice(dly);
-//	mixer->connectDevice(dly2);
-//	mixer->connectDevice(dly3);
-
-	Clipper * clip = new Clipper;
-	cout << "\n Clipper threshold: " << clip->getThreshold();
-	clip->setThreshold(-6);
-	cout << "\n Clipper threshold: " << clip->getThreshold();
-	Parameter thresh;
-	thresh.setParam(0, (float) 3);
-	clip->alter("threshold", thresh);
-	cout << "\n Clipper threshold: " << clip->getThreshold() << "\n";
-
-	gain->setGain(-12);
-	gain->connectDevice(wobble);
-
-//	audio::Gain * gain2 = gain->clone();
-	/*** Set up the PA Handler. This is where the audio callback is ***/
-
-//	audio::sample_t * buffer;
-//
-//	audio::AudioDevice::endOfBuffer();
-//	buffer = sin->read();
-//	printf("\n\nBuffer:\n");
-//	for (int i = 0; i < gain->getBufferSize(); i++) {
-//		printf("%d||%d\n", i, buffer[i]);
-//	}
-//
-//	printf("\n\n");
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-			numOutChannels, numInChannels, mixer3);
+			numOutChannels, numInChannels, buffer);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);
 	}
 	usleep(1000000);
-	ramp->startRamp();
+//	ramp->startRamp();
 //	for (int i = 100; i < 900; i++) {
 ////		sin->setBaseFrequency(i);
 //		usleep(10000);

@@ -8,7 +8,7 @@ namespace audio {
 		setGain(0);
 	}
 
-	Gain * Gain::clone(){
+	Gain * Gain::clone() {
 		// Create new device
 		Gain * newDevice = new Gain();
 		// Set all member variables
@@ -18,8 +18,8 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Gain::alter(string paramName, Parameter p){
-		if(!paramName.compare("gain")){
+	void Gain::alter(string paramName, Parameter p) {
+		if (!paramName.compare("gain")) {
 			setGain(p.getParam().f);
 		}
 	}

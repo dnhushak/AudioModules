@@ -3,6 +3,7 @@
 
 #include "AudioDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace audio {
 	using namespace device;

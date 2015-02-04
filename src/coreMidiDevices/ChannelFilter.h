@@ -1,6 +1,7 @@
 #pragma once
 #include "MIDIDevice.h"
 #include "Connectable.h"
+#include "Alterable.h"
 
 namespace midi {
 	using namespace device;
