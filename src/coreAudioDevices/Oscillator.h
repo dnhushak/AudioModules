@@ -26,6 +26,9 @@ namespace audio {
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			sample_t * advance();
 
+			virtual void process(const sample_t *inBuffer, sample_t *outBuffer,
+								int samplesToProcess, int numInChannels);
+
 			void setBaseFrequency(float);
 
 			void setBaseFrequencyMIDI(int);

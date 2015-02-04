@@ -18,6 +18,9 @@ namespace audio {
 
 			sample_t * advance();
 
+			void process(const sample_t *inBuffer, sample_t *outBuffer,
+					int samplesToProcess, int numChannels);
+
 			float getThreshold();
 
 			void setThreshold(float);

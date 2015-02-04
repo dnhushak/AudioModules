@@ -24,6 +24,9 @@ namespace audio {
 			// Advance/fill the buffer
 			sample_t * advance();
 
+			void process(const sample_t *inBuffer, sample_t *outBuffer,
+					int samplesToProcess, int numChannels);
+
 			// Gets the current state
 			envState_t getEnvState();
 

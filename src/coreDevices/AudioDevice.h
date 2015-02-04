@@ -43,6 +43,29 @@ namespace audio {
 			 */
 			virtual sample_t * advance() = 0;
 
+			virtual void process(const sample_t * * inBuffers, int numInBuffers,
+					int numInChannels, sample_t * * outBuffers,
+					int numOutBuffers, int numOutChannels,
+					int samplesToProcess);
+
+			// Process for n to n processing blocks
+			virtual void process(const sample_t *inBuffer, sample_t *outBuffer,
+					int samplesToProcess, int numInChannels);
+
+			// Process for n to m processing blocks
+			virtual void process(const sample_t *inBuffer, sample_t *outBuffer,
+					int samplesToProcess, int numInChannels,
+					int numOutChannels);
+
+			// Process for generator blocks
+			virtual void process(sample_t *outBuffer, int samplesToProcess,
+					int numOutChannels);
+
+			// Process for stream combining blocks
+			virtual void process(const sample_t * *inBuffers, int numInBuffers,
+					sample_t *outBuffer, int samplesToProcess,
+					int numInChannels);
+
 			/**
 			 * Reads the buffer. If the device has not yet been advanced, it advances it
 			 * Can be used to create "multiple outputs," where two devices read
@@ -152,4 +175,4 @@ namespace audio {
 	 */
 	static std::list<AudioDevice *> audioDeviceList;
 }
-#endif //AUDIOUDEVICE_h_
+#endif //AUDIOUDEVICE_h_

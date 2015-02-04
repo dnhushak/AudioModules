@@ -13,7 +13,7 @@ namespace audio {
 		setSustain(.7);
 	}
 
-	Envelope * Envelope::clone(){
+	Envelope * Envelope::clone() {
 		// Create new device
 		Envelope * newDevice = new Envelope();
 		// Set all member variables
@@ -29,23 +29,23 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Envelope::alter(string paramName, Parameter p){
-		if(!paramName.compare("attack")){
+	void Envelope::alter(string paramName, Parameter p) {
+		if (!paramName.compare("attack")) {
 			setAttack(p.getParam().i);
 		}
-		if(!paramName.compare("decay")){
+		if (!paramName.compare("decay")) {
 			setAttack(p.getParam().i);
 		}
-		if(!paramName.compare("sustain")){
+		if (!paramName.compare("sustain")) {
 			setAttack(p.getParam().f);
 		}
-		if(!paramName.compare("release")){
+		if (!paramName.compare("release")) {
 			setAttack(p.getParam().i);
 		}
-		if(!paramName.compare("start")){
+		if (!paramName.compare("start")) {
 			startEnv();
 		}
-		if(!paramName.compare("end")){
+		if (!paramName.compare("end")) {
 			releaseEnv();
 		}
 	}
@@ -81,6 +81,21 @@ namespace audio {
 			envloc += bufferSize;
 		}
 		return buffer;
+	}
+
+	void Envelope::process(const sample_t *inBuffer, sample_t *outBuffer,
+			int samplesToProcess, int numChannels) {
+
+		// Account for multichannel buffers
+		int totalSamples = samplesToProcess;
+
+		// Go through each sample in the buffer
+		for (int i = 0; i < totalSamples; i++) {
+			for (int j = 0; i < numChannels; j++) {
+				outBuffer[i + j] = inBuffer[i + j] * calcEnvMult();
+			}
+			envloc++;
+		}
 	}
 
 // Gets the state of the envelope (generally for cleanup purposes)
