@@ -36,4 +36,26 @@ namespace audio {
 		return buffer;
 	}
 
+	void Mixer::process(const sample_t * *inBuffers, int numInBuffers,
+			sample_t *outBuffer, int samplesToProcess, int numInChannels) {
+
+		// Account for multichannel buffers
+		int totalSamples = samplesToProcess * numInChannels;
+
+		// If the first input buffer is not the same buffer as the output buffer...
+		if (inBuffers[0] != outBuffer) {
+			// ...Copy over the first input buffer to the output buffer
+			for (int i = 0; i < totalSamples; i++) {
+				outBuffer[i] = inBuffers[0][i];
+			}
+		}
+
+		// For each additional input buffer, sample-wise add it to the output buffer
+		for (int j = 1; j < numInBuffers; j++) {
+			for (int i = 0; i < totalSamples; i++) {
+				outBuffer[i] += inBuffers[j][i];
+			}
+		}
+	}
+
 }
