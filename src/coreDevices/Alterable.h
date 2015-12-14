@@ -30,7 +30,6 @@ namespace device {
 			}
 		protected:
 			int numParameters;
-
 	};
 
 }
