@@ -34,6 +34,7 @@ namespace device {
 					int cloneType) {
 				Connectable<InheritType, ConnectType> * newDevice = this->clone(
 						0);
+				printf("Connectable Clone \n");
 				switch (cloneType) {
 					case SELF:
 						break;

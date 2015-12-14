@@ -159,9 +159,11 @@ int main(int argc, char *argv[]) {
 	gain->setGain(-12);
 
 	gain->connectDevice(osc);
+	audio::Gain * gain2 = gain->clone(2);
+
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-			numOutChannels, numInChannels, gain);
+			numOutChannels, numInChannels, gain2);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);
@@ -171,6 +173,7 @@ int main(int argc, char *argv[]) {
 		osc->setWavetable(waveTables[j]);
 		for (int i = 40; i < 70; i++) {
 			osc->setBaseFrequencyMIDI(i);
+			((Oscillator*) gain2->front())->setBaseFrequencyMIDI(i);
 			usleep(100000);
 		}
 	}
