@@ -7,7 +7,7 @@ namespace audio {
 		setMaxNumDevices(1);
 	}
 
-	Clipper * Clipper::clone() {
+	Clipper * Clipper::clone(int) {
 		// Create new device
 		Clipper * newDevice = new Clipper();
 		// Set all member variables

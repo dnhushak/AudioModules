@@ -3,7 +3,7 @@ namespace audio {
 	Mixer::Mixer() {
 	}
 
-	Mixer * Mixer::clone() {
+	Mixer * Mixer::clone(int) {
 		// Create new device
 		Mixer * newDevice = new Mixer();
 		// Set all member variables

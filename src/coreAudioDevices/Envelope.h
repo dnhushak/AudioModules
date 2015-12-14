@@ -17,7 +17,7 @@ namespace audio {
 			// Constructor
 			Envelope();
 
-			virtual Envelope * clone();
+			virtual Envelope * clone(int);
 
 			void alter(int paramNum, Parameter p);
 

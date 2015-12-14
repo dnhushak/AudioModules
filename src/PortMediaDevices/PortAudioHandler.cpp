@@ -5,7 +5,7 @@ namespace audio {
 		return buffer;
 	}
 
-	PortAudioHandler * PortAudioHandler::clone() {
+	PortAudioHandler * PortAudioHandler::clone(int) {
 		//TODO: Clone for PAHandler
 		return this;
 	}

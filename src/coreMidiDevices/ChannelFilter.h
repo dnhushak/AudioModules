@@ -14,6 +14,8 @@ namespace midi {
 
 			void alter(int paramNum, Parameter p);
 
+			virtual ChannelFilter * clone(int);
+
 			// Pass on the filtered MIDI channel data to each item in MIDIDeviceList
 			void affect(MIDIMessage *);
 

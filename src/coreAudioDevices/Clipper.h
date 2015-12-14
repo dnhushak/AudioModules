@@ -12,7 +12,7 @@ namespace audio {
 		public:
 			Clipper();
 
-			virtual Clipper * clone();
+			virtual Clipper * clone(int);
 
 			void alter(int paramName, Parameter p);
 

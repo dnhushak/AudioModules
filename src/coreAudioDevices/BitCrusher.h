@@ -11,7 +11,7 @@ namespace audio {
 	class BitCrusher: public Alterable<Connectable<AudioDevice, AudioDevice> > {
 		public:
 			BitCrusher();
-			virtual BitCrusher * clone();
+			virtual BitCrusher * clone(int cloneType);
 			sample_t * advance();
 			void alter(int paramNum, Parameter p);
 			void setBitDepth(int newBitDepth);

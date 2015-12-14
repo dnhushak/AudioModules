@@ -7,7 +7,7 @@ namespace audio {
 		setGain(0);
 	}
 
-	VCA * VCA::clone() {
+	VCA * VCA::clone(int) {
 		// Create new device
 		VCA * newDevice = new VCA();
 		// Set all member variables

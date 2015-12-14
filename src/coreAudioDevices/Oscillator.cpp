@@ -26,7 +26,7 @@ namespace audio {
 		wavetable = NULL;
 	}
 
-	Oscillator * Oscillator::clone() {
+	Oscillator * Oscillator::clone(int) {
 		// Create new device
 		Oscillator * newDevice = new Oscillator();
 		// Set all member variables

@@ -7,7 +7,7 @@ namespace audio {
 		setSensitivity(1);
 	}
 	
-	VCO * VCO::clone() {
+	VCO * VCO::clone(int) {
 		// Create new device
 		VCO * newDevice = new VCO();
 		// Set all member variables

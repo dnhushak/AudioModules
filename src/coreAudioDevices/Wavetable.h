@@ -13,7 +13,7 @@ namespace audio {
 			// Constructor. Takes a table size as input
 			Wavetable(int);
 
-			virtual Wavetable * clone();
+			virtual Wavetable * clone(int);
 
 			// Return the sample value at a given location in the table
 			sample_t getSample(int);

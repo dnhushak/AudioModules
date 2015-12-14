@@ -7,6 +7,13 @@
 #include <algorithm>
 
 namespace device {
+
+	/**
+	 * This is the template file for a ```Connectable``` Class.
+	 * The declaration is ```class Object: public Connectable<InheritType, ConnectType>```,
+	 * where ```InheritType``` is the class that the Object inherits from,
+	 * and ```ConnectType``` is the class of objects that can connect to this Object.
+	 */
 	template<class InheritType, class ConnectType>
 	class Connectable: public InheritType {
 		public:
@@ -23,42 +30,43 @@ namespace device {
 			 * @param children Determines behavior: 1 - recursively duplicate children, and then attach to ```newDevice```;
 			 * 2 - simply attach all children of ```this``` to ```newDevice```
 			 */
-//			virtual SelfType * cloneWithConnected() {
-//				// Clone self
-//				SelfType * newDevice = (SelfType *) this->clone();
-//
-//				if (!isEmpty()) {
-//					// Start at the beginning of the device list
-//					deviceIter = begin();
-//					while (deviceIter != end()) {
-//						// Recursively call cloneWithConnected on each connected device
-//						ConnectType * newChild =
-//								(ConnectType *) ((ConnectableDevice *) (*deviceIter))->cloneWithConnected();
-//						// Connect newly cloned child device to the parent clone
-//						newDevice->connectDevice(newChild);
-//						// Increment the iterator
-//						deviceIter++;
-//					}
-//				}
-//				return (SelfType *) newDevice;
-//			}
-//			virtual Connectable<InheritType, ConnectType> * cloneAndConnect() {
-//				// Clone self
-//				Connectable<InheritType, ConnectType> * newDevice = this->clone();
-//				if (!isEmpty()) {
-//					// Start at the beginning of the device list
-//					deviceIter = begin();
-//					while (deviceIter != end()) {
-//						// Select each connected device
-//						ConnectType * newChild = (*deviceIter);
-//						// Connect child device to the parent clone
-//						newDevice->connectDevice(newChild);
-//						// Increment the iterator
-//						deviceIter++;
-//					}
-//				}
-//				return newDevice;
-//			}
+			virtual Connectable<InheritType, ConnectType> * clone(
+					int cloneType) {
+				Connectable<InheritType, ConnectType> * newDevice = this->clone(
+						0);
+				switch (cloneType) {
+					case SELF:
+						break;
+					case SAMETREE:
+						if (!isEmpty()) {
+							// Start at the beginning of the device list
+							deviceIter = begin();
+							while (deviceIter != end()) {
+								newDevice->connectDevice(*deviceIter);
+								deviceIter++;
+							}
+						}
+						break;
+					case CLONETREE:
+						if (!isEmpty()) {
+							// Start at the beginning of the device list
+							deviceIter = begin();
+							while (deviceIter != end()) {
+								// Recursively call clone on each connected device
+								ConnectType * newChild =
+										(ConnectType *) (*deviceIter)->clone(
+												CLONETREE);
+								// Connect newly cloned child device to the parent clone
+								newDevice->connectDevice(newChild);
+								// Increment the iterator
+								deviceIter++;
+							}
+						}
+						break;
+				}
+				return newDevice;
+			}
+
 			typename std::list<ConnectType *>::iterator begin() {
 				return deviceList.begin();
 			}
@@ -176,7 +184,7 @@ namespace device {
 			// Get and set info
 			int hasSpace() {
 				// Returns true (1) if number of devices is less than the max, or there is no max (-1)
-				return (getNumDevices() < maxNumDevices || maxNumDevices == -1);
+				return (maxNumDevices == -1 || getNumDevices() < maxNumDevices);
 			}
 
 			bool isEmpty() {
@@ -212,6 +220,11 @@ namespace device {
 			typename std::list<ConnectType *> deviceList;
 			typename std::list<ConnectType *>::iterator deviceIter;
 			int maxNumDevices;
+
+			// Types of clones to be made
+			enum cloneTypes {
+				SELF, SAMETREE, CLONETREE
+			};
 	};
 }
 

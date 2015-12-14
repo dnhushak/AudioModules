@@ -11,7 +11,7 @@ namespace audio {
 	
 	class PortAudioHandler : AudioDevice {
 		public:
-			virtual PortAudioHandler * clone();
+			virtual PortAudioHandler * clone(int);
 
 			sample_t * advance();
 

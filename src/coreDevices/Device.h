@@ -22,7 +22,7 @@ namespace device {
 		public:
 			Device();
 
-			virtual Device * clone();
+			virtual Device * clone(int);
 
 			/**
 			 * Get the current device state

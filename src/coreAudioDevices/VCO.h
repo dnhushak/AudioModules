@@ -12,7 +12,7 @@ namespace audio {
 		public:
 			VCO();
 
-			virtual VCO * clone();
+			virtual VCO * clone(int);
 
 			void alter(int paramName, Parameter p);
 

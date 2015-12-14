@@ -10,6 +10,12 @@ namespace midi {
 		public:
 			MIDIDevice();
 
+			/**
+			 * Creates a deep copy of the current device, excluding buffer contents and device ID
+			 * @return A copy of the device
+			 */
+			virtual MIDIDevice * clone(int) = 0;
+
 			// The affect call used to act based on MIDI input
 			virtual void affect(MIDIMessage *) = 0;
 

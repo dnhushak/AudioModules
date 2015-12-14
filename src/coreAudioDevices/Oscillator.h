@@ -19,7 +19,7 @@ namespace audio {
 			// Constructor
 			Oscillator();
 
-			virtual Oscillator * clone();
+			virtual Oscillator * clone(int);
 
 			void alter(int paramNum, Parameter p);
 

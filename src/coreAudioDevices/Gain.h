@@ -13,7 +13,7 @@ namespace audio {
 		public:
 			Gain();
 
-			virtual Gain * clone();
+			virtual Gain * clone(int);
 
 			void alter(int paramName, Parameter p);
 

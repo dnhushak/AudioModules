@@ -20,6 +20,11 @@ namespace midi {
 		}
 	}
 
+	ChannelFilter * ChannelFilter::clone(int){
+		// TODO: ChannelFilter clone
+		return this;
+	}
+
 	void ChannelFilter::affect(MIDIMessage * message) {
 		// Check to see if the message is of the desired channel
 		if (message->statusType == SYSTEM) {

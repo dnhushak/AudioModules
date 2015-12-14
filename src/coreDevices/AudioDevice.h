@@ -32,7 +32,7 @@ namespace audio {
 			 * Creates a deep copy of the current device, excluding buffer contents and device ID
 			 * @return A copy of the device
 			 */
-			virtual AudioDevice * clone() = 0;
+			virtual AudioDevice * clone(int) = 0;
 
 			/**
 			 * The advance for all audio devices that actually does the 'work.'

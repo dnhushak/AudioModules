@@ -13,7 +13,7 @@ namespace audio {
 		public:
 			VCA();
 
-			virtual VCA * clone();
+			virtual VCA * clone(int);
 
 			void alter(int paramNum, Parameter p);
 

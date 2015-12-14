@@ -7,7 +7,7 @@ namespace audio {
 		table = (sample_t*) malloc(sizeof(sample_t) * tableSize);
 	}
 
-	Wavetable * Wavetable::clone(){
+	Wavetable * Wavetable::clone(int){
 		// Create new device
 		Wavetable * newDevice = new Wavetable(this->tableSize);
 		// Set all member variables

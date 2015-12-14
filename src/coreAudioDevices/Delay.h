@@ -12,7 +12,7 @@ namespace audio {
 		public:
 			Delay();
 
-			virtual Delay * clone();
+			virtual Delay * clone(int);
 
 			void alter(int paramNum, Parameter p);
 

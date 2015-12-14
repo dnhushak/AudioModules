@@ -14,7 +14,7 @@ namespace audio {
 			// Constructor
 			Ramp();
 
-			virtual Ramp * clone();
+			virtual Ramp * clone(int);
 
 			void alter(int paramNum, Parameter p);
 

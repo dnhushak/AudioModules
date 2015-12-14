@@ -10,7 +10,7 @@ namespace device {
 		devIDCounter++;
 	}
 
-	Device * Device::clone() {
+	Device * Device::clone(int) {
 		Device * newDevice = new Device();
 		newDevice->state = this->getState();
 		return newDevice;

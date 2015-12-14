@@ -17,7 +17,7 @@ namespace audio {
 		setDelaySamples(0);
 	}
 	
-	Delay * Delay::clone() {
+	Delay * Delay::clone(int) {
 		// Create new device
 		Delay * newDevice = new Delay();
 		// Set all member variables

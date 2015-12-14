@@ -7,7 +7,7 @@ namespace audio {
 		setMaxNumDevices(1);
 	}
 	
-	BitCrusher * BitCrusher::clone() {
+	BitCrusher * BitCrusher::clone(int cloneType) {
 		// Create new device
 		BitCrusher * newDevice = new BitCrusher();
 		// Set all member variables

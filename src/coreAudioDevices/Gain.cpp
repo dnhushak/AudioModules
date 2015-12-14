@@ -8,7 +8,7 @@ namespace audio {
 		setGain(0);
 	}
 
-	Gain * Gain::clone() {
+	Gain * Gain::clone(int) {
 		// Create new device
 		Gain * newDevice = new Gain();
 		// Set all member variables
