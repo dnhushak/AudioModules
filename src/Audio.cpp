@@ -111,61 +111,71 @@ int main(int argc, char *argv[]) {
 	//Scans for argument inputs: -p # binds audioophone to MIDI Port number #, -v makes audioophone behave in verbose mode
 	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a:")) != EOF) {
 		switch (ch) {
-			case 'p':
-				// MIDI Port argument
-				MIDIDevID = atoi(optarg);
-				break;
-			case 'a':
-				// Audio Device argument
-				AudioOutDevID = atoi(optarg);
-				break;
-			case 'v':
-				// Verbose argument
-				verbose = 1;
-				printf("Executing in verbose mode...\n");
-				break;
-			case 'd':
-				// Devices argument
-				PAHandler->printAudioDevices();
-				PMHandler->printMIDIDevices();
-				exit(0);
-				break;
-			case 'b':
-				// Buffer Size Argument
-				//audio::AudioDevice::setBufferSize(atoi(optarg));
-				break;
-			case 's':
-				// Sample Rate argument
-				//audio::AudioDevice::setSampleRate(atoi(optarg));
-				break;
-			case 'c':
-				// Audio Channels
-				numOutChannels = atoi(optarg);
-				break;
-			case 'm':
-				// Number of Modules
-				numModules = atoi(optarg);
-				break;
+		case 'p':
+			// MIDI Port argument
+			MIDIDevID = atoi(optarg);
+			break;
+		case 'a':
+			// Audio Device argument
+			AudioOutDevID = atoi(optarg);
+			break;
+		case 'v':
+			// Verbose argument
+			verbose = 1;
+			printf("Executing in verbose mode...\n");
+			break;
+		case 'd':
+			// Devices argument
+			PAHandler->printAudioDevices();
+			PMHandler->printMIDIDevices();
+			exit(0);
+			break;
+		case 'b':
+			// Buffer Size Argument
+			//audio::AudioDevice::setBufferSize(atoi(optarg));
+			break;
+		case 's':
+			// Sample Rate argument
+			//audio::AudioDevice::setSampleRate(atoi(optarg));
+			break;
+		case 'c':
+			// Audio Channels
+			numOutChannels = atoi(optarg);
+			break;
+		case 'm':
+			// Number of Modules
+			numModules = atoi(optarg);
+			break;
 
 		}
 	}
+	std::vector<audio::Wavetable *> waveTables = *GenerateSynthTables();
 
+	audio::Oscillator *osc = new Oscillator();
+	osc->setWavetable(waveTables[0]);
+	osc->setBaseFrequencyMIDI(50);
 
+	audio::Gain * gain = new Gain();
+	gain->setGain(-12);
+
+	gain->connectDevice(osc);
 	PaError paerr;
-//	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-//			numOutChannels, numInChannels, buffer);
+	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
+			numOutChannels, numInChannels, gain);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);
 	}
-	usleep(1000000);
-//	ramp->startRamp();
-//	for (int i = 100; i < 900; i++) {
-////		sin->setBaseFrequency(i);
-//		usleep(10000);
-//	}
-//	gain->setGain(-128);
-	std::cout << "\nChipophone running, press enter to end program\n";
-	std::cin.ignore(255, '\n');
+//	usleep(1000000);
+	for (int j = 0; j < 4; j++) {
+		osc->setWavetable(waveTables[j]);
+		for (int i = 40; i < 70; i++) {
+			osc->setBaseFrequencyMIDI(i);
+			usleep(100000);
+		}
+	}
+
+//	std::cout << "\nChipophone running, press enter to end program\n";
+//	std::cin.ignore(255, '\n');
 
 }
