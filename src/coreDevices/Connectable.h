@@ -21,15 +21,6 @@ namespace device {
 				maxNumDevices = -1;
 			}
 
-			// TODO: Figure out how the eff to do this recursive cloning crap correctly (nice alliteration)
-
-			/**
-			 * Handles duplication/simultaneous connection of children, called in devices' ```duplicate()``` function
-			 *
-			 * @param newDevice The new device that has been duplicated - the one to attach the children to
-			 * @param children Determines behavior: 1 - recursively duplicate children, and then attach to ```newDevice```;
-			 * 2 - simply attach all children of ```this``` to ```newDevice```
-			 */
 			virtual Connectable<InheritType, ConnectType> * clone(
 					int cloneType) {
 				Connectable<InheritType, ConnectType> * newDevice = this->clone(
