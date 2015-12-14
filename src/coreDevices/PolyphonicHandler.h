@@ -7,7 +7,7 @@
 
 namespace device {
 	
-	class PolyphonicHandler: public device::Connectable<Device, Device> {
+	class PolyphonicHandler: public device::Alterable<Connectable<Device, Device>> {
 		public:
 			PolyphonicHandler();
 
@@ -17,12 +17,6 @@ namespace device {
 			 * @param newMaxNumVoices
 			 */
 			void setMaxNumVoices(int newMaxNumVoices);
-
-			/**
-			 * Sets the number of timbres for multitimbral instruments. Minimum is 1.
-			 * @param newNumTimbres
-			 */
-			void setNumTimbres(int newNumTimbres);
 
 			/**
 			 * Sets the device that all voices will attach to upstream. This allows the ```PolyphonicHandler``` to remain
@@ -45,8 +39,9 @@ namespace device {
 			/**
 			 * Activates or updates a voice, based on a voice number (commonly a MIDI note number)
 			 * @param voiceNumber
+			 * @param param The parameter to pass to a new voice, typically velocity from a MIDI controller
 			 */
-			void activateVoice(int voiceNumber);
+			void activateVoice(int voiceNumber, Parameter param);
 
 			/**
 			 * Deactivates a voice, based on a voice number (commonly a MIDI note number)
@@ -63,8 +58,6 @@ namespace device {
 
 		private:
 			int maxNumVoices;
-			int numTimbres;
-			int curTimbre;
 			int numVoices;
 			std::map<int, Device *> voiceMap;
 			std::map<int, Device *>::iterator voiceIter;

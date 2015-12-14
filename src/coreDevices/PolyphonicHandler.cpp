@@ -1,10 +1,8 @@
-	#include "PolyphonicHandler.h"
+#include "PolyphonicHandler.h"
 
 namespace device {
 	
 	PolyphonicHandler::PolyphonicHandler() {
-		numTimbres = 1;
-		curTimbre = 0;
 		numVoices = 0;
 		maxNumVoices = -1;
 		upstream = 0;
@@ -16,12 +14,6 @@ namespace device {
 		}
 	}
 
-	void PolyphonicHandler::setNumTimbres(int newNumTimbres) {
-		if (newNumTimbres > 0) {
-			numTimbres = newNumTimbres;
-		}
-	}
-
 	void PolyphonicHandler::setUpstream(
 			Connectable<Device, Device> * newUpstream) {
 		upstream = newUpstream;
@@ -30,17 +22,18 @@ namespace device {
 	void PolyphonicHandler::disconnectUpstream() {
 		// Check if upstream still exists
 		if (upstream != 0) {
-			// Remove all voices from upstream device
+			// TODO: Remove all voices from upstream device
 		}
 		upstream = 0;
 	}
 
-	void PolyphonicHandler::activateVoice(int voiceNumber) {
-		// Check if voiceNumber already exists in map
+	void PolyphonicHandler::activateVoice(int voiceNumber, Parameter param) {
+		// Check if voiceNumber already exists
 		// If it does, update it with new parameter
 		if (voiceMap.count(voiceNumber)) {
-
+			//TODO: Update current voice with new parameter
 		}
+
 		// If it doesn't...
 		else {
 			// Check to see if we have voices available
@@ -48,18 +41,14 @@ namespace device {
 				// Increment the voice counter
 				numVoices++;
 
-				// Copy the current timbre tree (hehe)
-//				Device * NewTree = (this->copyConnectedTree())->getDeviceByLoc(curTimbre);
-				//TODO: Figure out the best way to do this without copying all timbre trees (maybe clone is the best option?)
+				if (!isEmpty()) {
+					// Copy the current device tree (hehe)
+					Device * NewTree = this->front->clone(2);
 
-				// Increment the timbre counter
-				curTimbre++;
-				// Make sure the timbre counter is within bounds
-				curTimbre = (numTimbres - 1) % curTimbre;
-
-				// If there is an upstream device, attach the new timbre tree to upstream
-				if (upstream != 0) {
-//					upstream->connectDevice(NewTree);
+					// If there is an upstream device, attach the new device tree to upstream
+					if (upstream != 0) {
+						upstream->connectDevice(NewTree);
+					}
 				}
 			}
 		}
@@ -70,6 +59,8 @@ namespace device {
 
 	void PolyphonicHandler::deactivateVoice(int voiceNumber) {
 		// Check if voiceNumber does exist in map
+		if (voiceMap.count(voiceNumber)) {
+		}
 		// If it does, deactivate it
 		// Decrement the voice counter
 		numVoices--;
