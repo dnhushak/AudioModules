@@ -12,7 +12,7 @@ namespace midi {
 			//Initialize with a starting channel number
 			ChannelFilter(int);
 
-			void alter(int paramName, Parameter p);
+			void alter(int paramNum, Parameter p);
 
 			// Pass on the filtered MIDI channel data to each item in MIDIDeviceList
 			void affect(MIDIMessage *);

@@ -39,21 +39,21 @@ namespace audio {
 		return buffer;
 	}
 
-	void Gain::process(
-			const sample_t *inBuffer,
-			sample_t *outBuffer,
-			int samplesToProcess,
-			int numChannels) {
-
-		// Account for multichannel buffers
-		int totalSamples = samplesToProcess * numChannels;
-
-		// Go through each sample in the buffer
-		for (int i = 0; i < totalSamples; i++) {
-			outBuffer[i] = inBuffer[i] * gain;
-
-		}
-	}
+//	void Gain::process(
+//			const sample_t *inBuffer,
+//			sample_t *outBuffer,
+//			int samplesToProcess,
+//			int numChannels) {
+//
+//		// Account for multichannel buffers
+//		int totalSamples = samplesToProcess * numChannels;
+//
+//		// Go through each sample in the buffer
+//		for (int i = 0; i < totalSamples; i++) {
+//			outBuffer[i] = inBuffer[i] * gain;
+//
+//		}
+//	}
 
 	void Gain::setGain(float volume) {
 		// Volume is coming in dbs

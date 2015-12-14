@@ -67,20 +67,20 @@ namespace audio {
 		return buffer;
 	}
 
-	void Oscillator::process(
-			const sample_t *inBuffer,
-			sample_t *outBuffer,
-			int samplesToProcess,
-			int numChannels) {
-
-		// Account for multichannel buffers
-		int totalSamples = samplesToProcess * numChannels;
-
-		// Go through each sample in the buffer
-		for (int i = 0; i < totalSamples; i++) {
-			outBuffer[i] = inBuffer[i];
-		}
-	}
+//	void Oscillator::process(
+//			const sample_t *inBuffer,
+//			sample_t *outBuffer,
+//			int samplesToProcess,
+//			int numChannels) {
+//
+//		// Account for multichannel buffers
+//		int totalSamples = samplesToProcess * numChannels;
+//
+//		// Go through each sample in the buffer
+//		for (int i = 0; i < totalSamples; i++) {
+//			outBuffer[i] = inBuffer[i];
+//		}
+//	}
 
 	// Return the oscillator's current frequency
 	float Oscillator::getFrequency() {

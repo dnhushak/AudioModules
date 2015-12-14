@@ -93,23 +93,23 @@ namespace audio {
 		return buffer;
 	}
 
-	void Envelope::process(
-			const sample_t *inBuffer,
-			sample_t *outBuffer,
-			int samplesToProcess,
-			int numChannels) {
-
-		// Account for multichannel buffers
-		int totalSamples = samplesToProcess;
-
-		// Go through each sample in the buffer
-		for (int i = 0; i < totalSamples; i++) {
-			for (int j = 0; i < numChannels; j++) {
-				outBuffer[i + j] = inBuffer[i + j] * calcEnvMult();
-			}
-			envloc++;
-		}
-	}
+//	void Envelope::process(
+//			const sample_t *inBuffer,
+//			sample_t *outBuffer,
+//			int samplesToProcess,
+//			int numChannels) {
+//
+//		// Account for multichannel buffers
+//		int totalSamples = samplesToProcess;
+//
+//		// Go through each sample in the buffer
+//		for (int i = 0; i < totalSamples; i++) {
+//			for (int j = 0; i < numChannels; j++) {
+//				outBuffer[i + j] = inBuffer[i + j] * calcEnvMult();
+//			}
+//			envloc++;
+//		}
+//	}
 
 // Gets the state of the envelope (generally for cleanup purposes)
 	envState_t Envelope::getEnvState() {

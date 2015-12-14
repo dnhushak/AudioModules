@@ -7,9 +7,9 @@ namespace midi {
 	void MessagePrinter::affect(MIDIMessage * message) {
 
 		//Make Magenta
-		int cyan = "\033[1;36m";
+		char * cyan = "\033[1;36m";
 		// Make default color
-		int defcol = "\033[0m";
+		char * defcol = "\033[0m";
 		cout << cyan;
 		printf("MIDI Message | Type: ");
 		decodeMessageType(message);

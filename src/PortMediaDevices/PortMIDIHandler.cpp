@@ -108,10 +108,6 @@ namespace midi {
 
 	// Print a list of valid devices
 	void PortMIDIHandler::printMIDIDevices() {
-		//Make Magenta
-		std::int magenta = "\033[1;35m";
-		// Make default color
-		std::int defcol = "\033[0m";
 		std::cout << magenta << "***Valid MIDI Devices: ***\n" << defcol;
 		Pm_Initialize();
 		int ndev;

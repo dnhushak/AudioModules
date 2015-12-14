@@ -51,31 +51,6 @@ namespace audio {
 		return buffer;
 	}
 
-	void Clipper::process(
-			const sample_t *inBuffer,
-			sample_t *outBuffer,
-			int samplesToProcess,
-			int numChannels) {
-
-		// Account for multichannel buffers
-		int totalSamples = samplesToProcess * numChannels;
-
-		// Go through each sample in the buffer
-		for (int i = 0; i < totalSamples; i++) {
-			// If lower than low threshold...
-			if (inBuffer[i] < thresholdLo) {
-				// ... Set value to the low threshold
-				outBuffer[i] = thresholdLo;
-				// Else if higher than the high threshold...
-			} else if (inBuffer[i] > thresholdHi) {
-				// ... Set value to high threshold
-				outBuffer[i] = thresholdHi;
-			} else {
-				outBuffer[i] = inBuffer[i];
-			}
-		}
-	}
-
 	float Clipper::getThreshold() {
 		return threshold;
 	}

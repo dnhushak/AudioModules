@@ -36,27 +36,27 @@ namespace audio {
 		return buffer;
 	}
 
-	void Mixer::process(
-			const sample_t * *inBuffers,
-			int numInBuffers,
-			sample_t *outBuffer,
-			int samplesToProcess,
-			int numInChannels) {
-
-		// Account for multichannel buffers
-		int totalSamples = samplesToProcess * numInChannels;
-
-		if (inBuffers[0] != outBuffer) {
-			// Go through each sample in the buffer
-			for (int i = 0; i < totalSamples; i++) {
-				outBuffer[i] = inBuffers[0][i];
-			}
-		}
-		for (int j = 1; j < numInBuffers; j++) {
-			for (int i = 0; i < totalSamples; i++) {
-				outBuffer[i] += inBuffers[j][i];
-			}
-		}
-	}
+//	void Mixer::process(
+//			const sample_t * *inBuffers,
+//			int numInBuffers,
+//			sample_t *outBuffer,
+//			int samplesToProcess,
+//			int numInChannels) {
+//
+//		// Account for multichannel buffers
+//		int totalSamples = samplesToProcess * numInChannels;
+//
+//		if (inBuffers[0] != outBuffer) {
+//			// Go through each sample in the buffer
+//			for (int i = 0; i < totalSamples; i++) {
+//				outBuffer[i] = inBuffers[0][i];
+//			}
+//		}
+//		for (int j = 1; j < numInBuffers; j++) {
+//			for (int i = 0; i < totalSamples; i++) {
+//				outBuffer[i] += inBuffers[j][i];
+//			}
+//		}
+//	}
 
 }

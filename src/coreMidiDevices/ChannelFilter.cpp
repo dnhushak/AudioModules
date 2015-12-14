@@ -11,9 +11,12 @@ namespace midi {
 		}
 	}
 
-	void ChannelFilter::alter(int paramName, Parameter p){
-		if (!paramName.compare("channel")) {
-			setChannel(p.getParam().i);
+	void ChannelFilter::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Channel
+				setChannel(p.getParam().i);
+				break;
 		}
 	}
 
@@ -25,7 +28,7 @@ namespace midi {
 			if (channelMatches(message->channel)) {
 				// If it is, forward it to all MIDI Devices
 				deviceIter = begin();
-				while(deviceIter != end()) {
+				while (deviceIter != end()) {
 					(*deviceIter)->affect(message);
 					deviceIter++;
 				}
@@ -40,7 +43,7 @@ namespace midi {
 		}
 	}
 
-	int ChannelFilter::channelMatches(int channelToCheck){
+	int ChannelFilter::channelMatches(int channelToCheck) {
 		return (channel == -1 || channelToCheck == channel);
 	}
 

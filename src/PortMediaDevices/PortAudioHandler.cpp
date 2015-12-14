@@ -5,14 +5,17 @@ namespace audio {
 		return buffer;
 	}
 
-	PortAudioHandler * PortAudioHandler::clone(){
+	PortAudioHandler * PortAudioHandler::clone() {
 		//TODO: Clone for PAHandler
 		return this;
 	}
 
 	// Setup and start a PortAudio Stream
-	PaError PortAudioHandler::connectAudioStream(PaDeviceIndex outDevID,
-			PaDeviceIndex inDevID, int numOutChannels, int numInChannels,
+	PaError PortAudioHandler::connectAudioStream(
+			PaDeviceIndex outDevID,
+			PaDeviceIndex inDevID,
+			int numOutChannels,
+			int numInChannels,
 			void *userData) {
 
 		// Declare output parameters
@@ -62,8 +65,8 @@ namespace audio {
 
 		// Open the stream
 		err = Pa_OpenStream(&astream, inputParameters, outputParameters,
-				sampleRate, bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
-				paCallback, userData); // We want to pass a pointer to the AudioProcessor
+							sampleRate, bufferSize, paNoFlag, /* we won't output out of range samples so don't bother clipping them */
+							paCallback, userData); // We want to pass a pointer to the AudioProcessor
 		if (err != paNoError)
 			return errorPortAudio(err);
 		printf("Stream opened...\n");
@@ -94,8 +97,6 @@ namespace audio {
 	// PortAudio Error Check
 	PaError PortAudioHandler::errorPortAudio(PaError err) {
 		Pa_Terminate();
-		std::int red = "\033[1;31m";
-		std::int defcol = "\033[0m";
 		std::cout << red;
 		std::cout << "An error occured while using the portaudio stream\n";
 		std::cout << "Error number: " << err << "\n";
@@ -107,10 +108,7 @@ namespace audio {
 
 	// Print a list of valid devices
 	void PortAudioHandler::printAudioDevices() {
-		//Make Magenta
-		std::int magenta = "\033[1;35m";
-		// Make default color
-		std::int defcol = "\033[0m";
+
 		std::cout << magenta << "***Valid Audio Devices: ***\n" << defcol;
 		Pa_Initialize();
 		int ndev;
@@ -148,12 +146,10 @@ namespace audio {
 					(PaDeviceIndex) defaultin);
 			const PaDeviceInfo * outputinfo = Pa_GetDeviceInfo(
 					(PaDeviceIndex) defaultout);
-			printf(
-					"Default Input Device:   | In: %02i | Out: %02i | %02i: %s \n",
+			printf("Default Input Device:   | In: %02i | Out: %02i | %02i: %s \n",
 					inputinfo->maxInputChannels, inputinfo->maxOutputChannels,
 					defaultin, inputinfo->name);
-			printf(
-					"Default Output Device:  | In: %02i | Out: %02i | %02i: %s \n\n",
+			printf("Default Output Device:  | In: %02i | Out: %02i | %02i: %s \n\n",
 					outputinfo->maxInputChannels, outputinfo->maxOutputChannels,
 					defaultout, outputinfo->name);
 		}
@@ -165,10 +161,13 @@ namespace audio {
 	}
 
 // PortAudio Callback
-	int PortAudioHandler::paCallback(const void * inputBuffer,
-			void * outputBuffer, unsigned long framesPerBuffer,
+	int PortAudioHandler::paCallback(
+			const void * inputBuffer,
+			void * outputBuffer,
+			unsigned long framesPerBuffer,
 			const PaStreamCallbackTimeInfo* timeInfo,
-			PaStreamCallbackFlags statusFlags, void *userData) {
+			PaStreamCallbackFlags statusFlags,
+			void *userData) {
 
 		// Not used, just removing -Wunused flags
 		inputBuffer = (float*) inputBuffer;

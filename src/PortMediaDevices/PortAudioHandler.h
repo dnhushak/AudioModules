@@ -2,6 +2,11 @@
 #include "AudioDevice.h"
 #include <stdio.h>
 
+//Define Terminal Text Colors (for printing)
+#define magenta "\033[1;35m"
+#define defcol "\033[0m"
+#define red "\033[1;31m"
+
 namespace audio {
 	
 	class PortAudioHandler : AudioDevice {

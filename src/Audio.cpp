@@ -4,7 +4,6 @@
 #include "ChannelFilter.h"
 #include "Wavetable.h"
 #include "Oscillator.h"
-#include "Buffer.h"
 #include "MessagePrinter.h"
 #include <vector>
 #include "Voice.h"
@@ -151,20 +150,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	Buffer * buffer = new Buffer();
-	buffer->setSample(1.3, 3000);
-	cout << "\n\n" << buffer->getSample(3000) << "\n\n" ;
-	buffer->setBufferSize(300);
-	cout << "\n\n" << buffer->getSample(3000) << "\n\n" ;
-	buffer->setBufferSize(3001);
-	buffer->setSample(1.4, 3000);
-	cout << "\n\n" << buffer->getSample(3000) << "\n\n" ;
-
-
 
 	PaError paerr;
-	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-			numOutChannels, numInChannels, buffer);
+//	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
+//			numOutChannels, numInChannels, buffer);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);

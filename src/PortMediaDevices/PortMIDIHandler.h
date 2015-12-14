@@ -6,6 +6,11 @@
 #include <pthread.h>
 #include <iostream>
 
+//Define Terminal Text Colors (for printing)
+#define magenta "\033[1;35m"
+#define defcol "\033[0m"
+#define red "\033[1;31m"
+
 namespace midi {
 	
 	class PortMIDIHandler: public device::Connectable<MIDIDevice, MIDIDevice> {

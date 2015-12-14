@@ -26,7 +26,7 @@ EXE = Audio
 HEADERS = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(HEADER)))
 SOURCES = $(foreach DIR, $(DIRLIST), $(wildcard $(DIR)*$(SOURCE)))
 OBJECTS = $(addsuffix $(BINARY), $(notdir $(basename $(SOURCES))))
-INCLUDE = $(foreach DIR, $(DIRLIST),-I$(DIR))
+INCLUDE = $(foreach DIR, $(DIRLIST),-I $(DIR))
 
 all: $(EXE)
 
