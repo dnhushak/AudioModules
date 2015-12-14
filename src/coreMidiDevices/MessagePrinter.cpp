@@ -7,10 +7,11 @@ namespace midi {
 	void MessagePrinter::affect(MIDIMessage * message) {
 
 		//Make Magenta
-		char * cyan = "\033[1;36m";
+#define cyan "\033[1;36m"
 		// Make default color
-		char * defcol = "\033[0m";
-		cout << cyan;
+#define defcol "\033[0m"
+		cout << cyan
+		;
 		printf("MIDI Message | Type: ");
 		decodeMessageType(message);
 		printf(" | Channel: %02i | Data1: %03i | Data2: %03i | Time: %i",
