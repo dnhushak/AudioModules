@@ -24,10 +24,6 @@ namespace device {
 
 			virtual Device * clone();
 
-			virtual Device * cloneWithConnected();
-
-			virtual Device * cloneAndConnect();
-
 			/**
 			 * Get the current device state
 			 * @return Current device state, generally either ```INACTIVE``` (0), or ```ACTIVE``` (1)
@@ -35,7 +31,6 @@ namespace device {
 			virtual devState_t getState();
 
 			int getDevID();
-
 
 			virtual ~Device();
 
