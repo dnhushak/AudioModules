@@ -13,7 +13,10 @@ namespace audio {
 		setSustain(.7);
 	}
 
-	Envelope * Envelope::clone(int) {
+	Envelope * Envelope::clone(int cloneType) {
+		if (cloneType != 0) {
+			return (Gain *) Connectable::clone(cloneType);
+		}
 		// Create new device
 		Envelope * newDevice = new Envelope();
 		// Set all member variables

@@ -23,7 +23,10 @@ namespace audio {
 		stopRamp();
 	}
 
-	Ramp * Ramp::clone(int) {
+	Ramp * Ramp::clone(int cloneType) {
+		if (cloneType != 0) {
+			return (Gain *) Connectable::clone(cloneType);
+		}
 		// Create new device
 		Ramp * newDevice = new Ramp();
 		// Set all member variables
