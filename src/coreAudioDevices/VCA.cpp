@@ -1,10 +1,29 @@
-#include "VCA.hpp"
+#include "VCA.h"
 
 namespace audio {
 
 	VCA::VCA() {
 		setMaxNumDevices(2);
 		setGain(0);
+	}
+
+	VCA * VCA::clone() {
+		// Create new device
+		VCA * newDevice = new VCA();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->gain = this->gain;
+
+		return newDevice;
+	}
+
+	void VCA::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Gain
+				setGain(p.getParam().f);
+				break;
+		}
 	}
 
 	sample_t * VCA::advance() {
@@ -17,7 +36,11 @@ namespace audio {
 			if (getNumDevices() == 2) {
 				// Multiply every sample of the first buffer by the second buffer, as well as the VCA gain
 				for (int i = 0; i < bufferSize; i++) {
+					// Multiply buffers
 					buffer[i] *= back()->read()[i];
+					// Divide by the maximum value of the sample type
+					buffer[i] /= sampleMax;
+					// Multiply by the VCA gain
 					buffer[i] *= gain;
 				}
 			}

@@ -1,4 +1,4 @@
-#include "Oscillator.hpp"
+#include "Oscillator.h"
 
 namespace audio {
 // Constructor. Sets buffer size and sample rate
@@ -17,17 +17,41 @@ namespace audio {
 		// The amount to truncate the phase by every step increase
 		phaseTruncateAmt = 0;
 
-		// The scale
-		phaseScale = 0;
-
 		// The amount to increase the phase by every sample
 		stepSize = 0;
 
 		// The current frequency of the oscillator
 		frequency = 0;
 
-		freqRatio = 1.0;
 		wavetable = NULL;
+	}
+
+	Oscillator * Oscillator::clone() {
+		// Create new device
+		Oscillator * newDevice = new Oscillator();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setWavetable(this->wavetable);
+		newDevice->setBaseFrequency(this->frequency);
+		newDevice->phase = this->phase;
+
+		return newDevice;
+
+	}
+
+	void Oscillator::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Frequency
+				setBaseFrequency(p.getParam().f);
+				break;
+
+			case 1:
+				// Note
+				setBaseFrequencyMIDI(p.getParam().i);
+				break;
+		}
+		// TODO: Find graceful way to MIDI trigger a change of wavetable
 	}
 
 	// Returns a buffer of sample values based on oscillation
@@ -41,6 +65,21 @@ namespace audio {
 			phase += stepSize;
 		}
 		return buffer;
+	}
+
+	void Oscillator::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
+
+		// Account for multichannel buffers
+		int totalSamples = samplesToProcess * numChannels;
+
+		// Go through each sample in the buffer
+		for (int i = 0; i < totalSamples; i++) {
+			outBuffer[i] = inBuffer[i];
+		}
 	}
 
 	// Return the oscillator's current frequency
@@ -58,6 +97,12 @@ namespace audio {
 			frequency = newFrequency;
 		}
 		calcStepSize(frequency);
+	}
+
+	void Oscillator::setBaseFrequencyMIDI(int MIDINote) {
+		if (MIDINote >= 0 && MIDINote < 128) {
+			setBaseFrequency(MtoF(MIDINote));
+		}
 	}
 
 	void Oscillator::calcStepSize(float curFrequency) {

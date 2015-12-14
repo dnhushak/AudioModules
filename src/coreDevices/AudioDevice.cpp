@@ -1,19 +1,16 @@
-#include "AudioDevice.hpp"
+#include "AudioDevice.h"
 
 namespace audio {
-	AudioDevice::AudioDevice() {
-		// Add the device to the audio engine, so that at the end of every buffer update,
-		// all audio devices can be remarked as "not advanced"
-//		engine.addDevice(this);
 
+	AudioDevice::AudioDevice() : bufferSize (64), sampleRate (44100){
 		// Allocate space for the device's output buffer
 		buffer = (sample_t *) malloc(sizeof(sample_t) * bufferSize);
-		resetAdvanceBit();
+		audioDeviceList.push_back(this);
 		zeroBuffer();
+		advanced = 0;
 	}
 
 	void AudioDevice::cleanup() {
-		return;
 	}
 
 	sample_t * AudioDevice::read() {
@@ -35,14 +32,10 @@ namespace audio {
 
 	void AudioDevice::setBufferSize(int newSize) {
 		if (newSize > 0) {
-			bufferSize = newSize;
-
-			/* Use realloc so any samples currently in the buffer stay in it,
-			 * and the buffer is extended. The buffer is truncated if the new size
-			 * is smaller
-			 */
-			buffer = (sample_t *) realloc(buffer,
-					sizeof(sample_t) * bufferSize);
+			for (AudioDevice * audioDevice : audioDeviceList) {
+				audioDevice->bufferSize = newSize;
+				audioDevice->resizeBuffer();
+			}
 		}
 	}
 
@@ -56,20 +49,38 @@ namespace audio {
 		}
 	}
 
-	void AudioDevice::resetAdvanceBit() {
-		advanced = 0;
-	}
-
 	int AudioDevice::getSampleRate() {
 		return sampleRate;
 	}
 
 	void AudioDevice::copyToBuffer(sample_t * otherBuffer, int numSamples) {
+		if (numSamples > bufferSize) {
+			numSamples = bufferSize;
+		}
 		memcpy(buffer, otherBuffer, sizeof(sample_t) * numSamples);
 	}
 
+	void AudioDevice::resizeBuffer() {
+		/* Use realloc so any samples currently in the buffer stay in it,
+		 * and the buffer is extended. The buffer is truncated if the new size
+		 * is smaller
+		 */
+		buffer = (sample_t *) realloc(buffer, sizeof(sample_t) * bufferSize);
+	}
+
+	void AudioDevice::endOfBuffer() {
+		for (AudioDevice * audioDevice : audioDeviceList) {
+			audioDevice->resetAdvanceBit();
+			audioDevice->cleanup();
+		}
+	}
+
+	void AudioDevice::resetAdvanceBit() {
+		advanced = 0;
+	}
+
 	AudioDevice::~AudioDevice() {
-		engine.removeDevice(this);
+		audioDeviceList.remove(this);
 		free(buffer);
 	}
 }

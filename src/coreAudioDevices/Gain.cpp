@@ -1,4 +1,4 @@
-#include "Gain.hpp"
+#include "Gain.h"
 
 namespace audio {
 
@@ -6,6 +6,25 @@ namespace audio {
 		setMaxNumDevices(1);
 		// Default gain to 0 db
 		setGain(0);
+	}
+
+	Gain * Gain::clone() {
+		// Create new device
+		Gain * newDevice = new Gain();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->gain = this->gain;
+
+		return newDevice;
+	}
+
+	void Gain::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				//Gain
+				setGain(p.getParam().f);
+				break;
+		}
 	}
 
 	sample_t * Gain::advance() {
@@ -18,6 +37,22 @@ namespace audio {
 			}
 		}
 		return buffer;
+	}
+
+	void Gain::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
+
+		// Account for multichannel buffers
+		int totalSamples = samplesToProcess * numChannels;
+
+		// Go through each sample in the buffer
+		for (int i = 0; i < totalSamples; i++) {
+			outBuffer[i] = inBuffer[i] * gain;
+
+		}
 	}
 
 	void Gain::setGain(float volume) {

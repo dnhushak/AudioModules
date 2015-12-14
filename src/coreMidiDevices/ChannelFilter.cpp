@@ -1,4 +1,4 @@
-#include "ChannelFilter.hpp"
+#include "ChannelFilter.h"
 
 namespace midi {
 	
@@ -8,6 +8,12 @@ namespace midi {
 		// Expects channel in  bit value (0-15)
 		if (initChannel > -2 && initChannel < 16) {
 			channel = initChannel;
+		}
+	}
+
+	void ChannelFilter::alter(int paramName, Parameter p){
+		if (!paramName.compare("channel")) {
+			setChannel(p.getParam().i);
 		}
 	}
 

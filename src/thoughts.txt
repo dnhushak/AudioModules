@@ -1,0 +1,8 @@
+// Parameter type to pass into all functions
+"Find all connected" function in ConnectableDevice
+PolyphonicHandler class that triggers voices
+Voice superclass, has list of Parameter types, which can be pointed to
+
+
+
+MIDIRouter class, connect alterable devices to it. Define MIDI messages and their data to send to various connected devices

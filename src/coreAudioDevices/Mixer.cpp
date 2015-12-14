@@ -1,6 +1,15 @@
-#include "Mixer.hpp"
+#include "Mixer.h"
 namespace audio {
 	Mixer::Mixer() {
+	}
+
+	Mixer * Mixer::clone() {
+		// Create new device
+		Mixer * newDevice = new Mixer();
+		// Set all member variables
+		newDevice->state = this->state;
+
+		return newDevice;
 	}
 
 	sample_t * Mixer::advance() {
@@ -25,6 +34,29 @@ namespace audio {
 		}
 		//Pointer to the summed buffer
 		return buffer;
+	}
+
+	void Mixer::process(
+			const sample_t * *inBuffers,
+			int numInBuffers,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numInChannels) {
+
+		// Account for multichannel buffers
+		int totalSamples = samplesToProcess * numInChannels;
+
+		if (inBuffers[0] != outBuffer) {
+			// Go through each sample in the buffer
+			for (int i = 0; i < totalSamples; i++) {
+				outBuffer[i] = inBuffers[0][i];
+			}
+		}
+		for (int j = 1; j < numInBuffers; j++) {
+			for (int i = 0; i < totalSamples; i++) {
+				outBuffer[i] += inBuffers[j][i];
+			}
+		}
 	}
 
 }

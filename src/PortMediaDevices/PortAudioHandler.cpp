@@ -1,9 +1,15 @@
-#include "PortAudioHandler.hpp"
+#include "PortAudioHandler.h"
 
 namespace audio {
 	sample_t * PortAudioHandler::advance() {
 		return buffer;
 	}
+
+	PortAudioHandler * PortAudioHandler::clone(){
+		//TODO: Clone for PAHandler
+		return this;
+	}
+
 	// Setup and start a PortAudio Stream
 	PaError PortAudioHandler::connectAudioStream(PaDeviceIndex outDevID,
 			PaDeviceIndex inDevID, int numOutChannels, int numInChannels,
@@ -88,8 +94,8 @@ namespace audio {
 	// PortAudio Error Check
 	PaError PortAudioHandler::errorPortAudio(PaError err) {
 		Pa_Terminate();
-		std::string red = "\033[1;31m";
-		std::string defcol = "\033[0m";
+		std::int red = "\033[1;31m";
+		std::int defcol = "\033[0m";
 		std::cout << red;
 		std::cout << "An error occured while using the portaudio stream\n";
 		std::cout << "Error number: " << err << "\n";
@@ -102,9 +108,9 @@ namespace audio {
 	// Print a list of valid devices
 	void PortAudioHandler::printAudioDevices() {
 		//Make Magenta
-		std::string magenta = "\033[1;35m";
+		std::int magenta = "\033[1;35m";
 		// Make default color
-		std::string defcol = "\033[0m";
+		std::int defcol = "\033[0m";
 		std::cout << magenta << "***Valid Audio Devices: ***\n" << defcol;
 		Pa_Initialize();
 		int ndev;
@@ -176,7 +182,7 @@ namespace audio {
 		for (unsigned int i = 0; i < framesPerBuffer; i++) {
 			*out++ = ((float) (audio->read()[i])) / sampleMax;
 		}
-//		engine.endOfBuffer();
+		endOfBuffer();
 
 		// Continue
 		return paContinue;

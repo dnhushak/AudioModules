@@ -1,4 +1,4 @@
-#include "Envelope.hpp"
+#include "Envelope.h"
 namespace audio {
 	Envelope::Envelope() {
 		// Restrict to only one audio device;
@@ -11,6 +11,53 @@ namespace audio {
 		setAttack(100);
 		setDecay(100);
 		setSustain(.7);
+	}
+
+	Envelope * Envelope::clone() {
+		// Create new device
+		Envelope * newDevice = new Envelope();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setAttack(this->attack);
+		newDevice->setDecay(this->decay);
+		newDevice->setSustain(this->sustain);
+		newDevice->setRelease(this->release);
+		newDevice->envloc = this->envloc;
+		newDevice->envState = this->envState;
+		newDevice->calcEnvMult();
+
+		return newDevice;
+	}
+
+	void Envelope::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Attack
+				setAttack(p.getParam().i);
+				break;
+			case 1:
+				// Decay
+
+				setDecay(p.getParam().i);
+				break;
+			case 2:
+				// Sustain
+				setSustain(p.getParam().f);
+				break;
+			case 3:
+				// Release
+				setRelease(p.getParam().i);
+				break;
+			case 4:
+				// Envelope Start
+				startEnv();
+				break;
+
+			case 5:
+				// Envelope Release
+				releaseEnv();
+				break;
+		}
 	}
 
 	// Advance the envelope. Returns a buffer holding the envelope multiplier values
@@ -44,6 +91,24 @@ namespace audio {
 			envloc += bufferSize;
 		}
 		return buffer;
+	}
+
+	void Envelope::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
+
+		// Account for multichannel buffers
+		int totalSamples = samplesToProcess;
+
+		// Go through each sample in the buffer
+		for (int i = 0; i < totalSamples; i++) {
+			for (int j = 0; i < numChannels; j++) {
+				outBuffer[i + j] = inBuffer[i + j] * calcEnvMult();
+			}
+			envloc++;
+		}
 	}
 
 // Gets the state of the envelope (generally for cleanup purposes)

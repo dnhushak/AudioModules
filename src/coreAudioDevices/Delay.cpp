@@ -1,7 +1,6 @@
-#include "Delay.hpp"
+#include "Delay.h"
 
 namespace audio {
-	
 	Delay::Delay() {
 		setMaxNumDevices(1);
 
@@ -13,10 +12,39 @@ namespace audio {
 
 		// Start the input writing at the beginning of the delay buffer;
 		curSample = 0;
+
 		// Default to 0 delay;
 		setDelaySamples(0);
 	}
 	
+	Delay * Delay::clone() {
+		// Create new device
+		Delay * newDevice = new Delay();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->curDelaySample = this->curDelaySample;
+		newDevice->curSample = this->curSample;
+		newDevice->delaySamples = this->delaySamples;
+		newDevice->delayTime = this->delayTime;
+		newDevice->setMaxDelayTime(delayBufferSize);
+
+		return newDevice;
+	}
+
+	void Delay::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Time in Ms
+				setDelayTime(p.getParam().i);
+				break;
+			case 1:
+				// Time in samples
+				setDelaySamples(p.getParam().i);
+				break;
+		}
+
+	}
+
 	sample_t* Delay::advance() {
 		for (int i = 0; i < bufferSize; i++) {
 			// Fill the delay buffer with appropriate samples from input
@@ -45,8 +73,8 @@ namespace audio {
 			delayBufferSize = msToSamp(newMaxTime, sampleRate);
 			// Resize the buffer - since using realloc, maintains whatever
 			// current buffer is, minus whatever gets truncated if buffer is shrinking
-			delayBuffer = (sample_t *) realloc(delayBuffer,
-					sizeof(sample_t) * delayBufferSize);
+			delayBuffer = (sample_t *) realloc(
+					delayBuffer, sizeof(sample_t) * delayBufferSize);
 		}
 	}
 
@@ -55,6 +83,10 @@ namespace audio {
 	}
 
 	void Delay::normalizeDelayPointer() {
+		//Prevents negative modulous errors
+		while (curDelaySample < 0) {
+			curDelaySample += delayBufferSize;
+		}
 		curDelaySample %= delayBufferSize;
 	}
 
@@ -65,7 +97,7 @@ namespace audio {
 			delaySamples = msToSamp(newTime, sampleRate);
 
 			// Adjust the delay pointer to delay correctly
-			curDelaySample = curSample + delaySamples;
+			curDelaySample = curSample - delaySamples;
 			normalizeDelayPointer();
 		}
 	}
@@ -77,7 +109,7 @@ namespace audio {
 			delaySamples = newSamples;
 
 			// Adjust the delay pointer to delay correctly
-			curDelaySample = curSample + delaySamples;
+			curDelaySample = curSample - delaySamples;
 			normalizeDelayPointer();
 		}
 	}

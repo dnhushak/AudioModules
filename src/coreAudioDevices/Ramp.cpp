@@ -1,4 +1,4 @@
-#include "Ramp.hpp"
+#include "Ramp.h"
 namespace audio {
 	Ramp::Ramp() {
 
@@ -19,6 +19,36 @@ namespace audio {
 
 		// Slope of the ramp curve
 		slope = .01;
+
+		stopRamp();
+	}
+
+	Ramp * Ramp::clone() {
+		// Create new device
+		Ramp * newDevice = new Ramp();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setTime(this->time);
+		newDevice->ramploc = this->ramploc;
+		return newDevice;
+
+	}
+
+	void Ramp::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				//Time
+				setTime(p.getParam().i);
+				break;
+			case 1:
+				// Start Ramp
+				startRamp();
+				break;
+			case 2:
+				// Stop Ramp
+				stopRamp();
+				break;
+		}
 	}
 
 	// Advance the ramp. Returns a buffer of the new ramp-scaled values
@@ -31,11 +61,10 @@ namespace audio {
 					rampmult += slope;
 					// When the evelope location has hit the number of samples, do a state transition
 					if (ramploc >= sampCount) {
-						state = device::INACTIVE;
-						ramploc = 0;
+						stopRamp();
 					}
 				}
-				buffer[i] *= (sample_t) rampmult;
+				buffer[i] *= rampmult;
 				ramploc++;
 			}
 		} else {
@@ -63,6 +92,8 @@ namespace audio {
 		if (newTime > 0) {
 			time = newTime;
 			sampCount = msToSamp(time, sampleRate);
+			// Adjust the slope to the new time, if the ramp still hasn't completed
+			slope = (1.0 - rampmult) / (sampCount - ramploc);
 		}
 	}
 

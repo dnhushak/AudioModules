@@ -1,4 +1,4 @@
-#include "VCO.hpp"
+#include "VCO.h"
 
 namespace audio {
 	
@@ -7,13 +7,38 @@ namespace audio {
 		setSensitivity(1);
 	}
 	
+	VCO * VCO::clone() {
+		// Create new device
+		VCO * newDevice = new VCO();
+		// Set all member variables
+		newDevice->state = this->state;
+		newDevice->setWavetable(this->wavetable);
+		newDevice->setBaseFrequency(this->frequency);
+		newDevice->phase = this->phase;
+		newDevice->setSensitivity(this->sensitivity);
+		newDevice->freqRatio = this->freqRatio;
+
+		return newDevice;
+
+	}
+
+	void VCO::alter(int paramNum, Parameter p) {
+		//TODO: Fix alter numbering between these
+		Oscillator::alter(paramNum, p);
+		switch (paramNum) {
+			case 0:
+				// Sensitivity
+				setSensitivity(p.getParam().f);
+				break;
+		}
+	}
+
 	sample_t * VCO::advance() {
 		// If there is a connected device...
-		if(!isEmpty()){
+		if (!isEmpty()) {
 			// Copy its buffer to the VCO's buffer
 			copyToBuffer(front()->read(), bufferSize);
-		}
-		else{
+		} else {
 			// Otherwise, zero the VCO's buffer
 			zeroBuffer();
 		}
@@ -23,7 +48,7 @@ namespace audio {
 			// Else they will all be zero.
 
 			// Use these values currently in the buffer to adjust the frequency
-			adjustFrequency(buffer[i]);
+			adjustFrequency((float) buffer[i] / (float) sampleMax);
 
 			// Grab the truncated current phase value
 			phaseTruncated = phase >> phaseTruncateAmt;
@@ -51,7 +76,6 @@ namespace audio {
 	}
 
 	VCO::~VCO() {
-		// TODO Auto-generated destructor stub
 	}
 
 }

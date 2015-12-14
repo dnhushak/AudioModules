@@ -1,4 +1,4 @@
-#include "MIDIDevice.hpp"
+#include "MIDIDevice.h"
 
 namespace midi {
 	MIDIDevice::MIDIDevice() {

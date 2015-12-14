@@ -1,4 +1,4 @@
-#include "Device.hpp"
+#include "Device.h"
 
 namespace device {
 	
@@ -8,7 +8,23 @@ namespace device {
 		// Device ID
 		devID = devIDCounter;
 		devIDCounter++;
+//		parameterList = new std::List<Parameter>();
+	}
 
+	Device * Device::clone() {
+		Device * newDevice = new Device();
+		newDevice->state = this->getState();
+		return newDevice;
+	}
+
+	Device * Device::cloneWithConnected() {
+		Device * newDevice = this->clone();
+		return newDevice;
+	}
+
+	Device * Device::cloneAndConnect() {
+		Device * newDevice = this->clone();
+		return newDevice;
 	}
 
 	int Device::getDevID() {
@@ -18,7 +34,6 @@ namespace device {
 	devState_t Device::getState() {
 		return state;
 	}
-
 
 	Device::~Device() {
 		state = INACTIVE;
