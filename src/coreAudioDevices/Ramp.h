@@ -16,7 +16,7 @@ namespace audio {
 
 			virtual Ramp * clone();
 
-			void alter(string paramName, Parameter p);
+			void alter(int paramNum, Parameter p);
 
 			// Advance/fill the buffer
 			sample_t * advance();

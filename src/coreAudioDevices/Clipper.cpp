@@ -17,10 +17,13 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Clipper::alter(string paramName, Parameter p) {
+	void Clipper::alter(int paramNum, Parameter p) {
 		// Check for parameter string
-		if (!paramName.compare("threshold")) {
-			setThreshold(p.getParam().f);
+		switch (paramNum) {
+			case 0:
+				//Threshold
+				setThreshold(p.getParam().f);
+				break;
 		}
 	}
 
@@ -48,8 +51,11 @@ namespace audio {
 		return buffer;
 	}
 
-	void Clipper::process(const sample_t *inBuffer, sample_t *outBuffer,
-			int samplesToProcess, int numChannels){
+	void Clipper::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
 
 		// Account for multichannel buffers
 		int totalSamples = samplesToProcess * numChannels;
@@ -64,8 +70,7 @@ namespace audio {
 			} else if (inBuffer[i] > thresholdHi) {
 				// ... Set value to high threshold
 				outBuffer[i] = thresholdHi;
-			}
-			else{
+			} else {
 				outBuffer[i] = inBuffer[i];
 			}
 		}

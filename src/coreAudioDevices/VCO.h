@@ -14,7 +14,7 @@ namespace audio {
 
 			virtual VCO * clone();
 
-			void alter(string paramName, Parameter p);
+			void alter(int paramName, Parameter p);
 
 			sample_t * advance();
 

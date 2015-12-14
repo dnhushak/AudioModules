@@ -18,9 +18,12 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Gain::alter(string paramName, Parameter p) {
-		if (!paramName.compare("gain")) {
-			setGain(p.getParam().f);
+	void Gain::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				//Gain
+				setGain(p.getParam().f);
+				break;
 		}
 	}
 
@@ -36,8 +39,11 @@ namespace audio {
 		return buffer;
 	}
 
-	void Gain::process(const sample_t *inBuffer, sample_t *outBuffer,
-			int samplesToProcess, int numChannels) {
+	void Gain::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
 
 		// Account for multichannel buffers
 		int totalSamples = samplesToProcess * numChannels;

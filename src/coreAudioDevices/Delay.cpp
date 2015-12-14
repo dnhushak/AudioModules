@@ -31,12 +31,16 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Delay::alter(string paramName, Parameter p) {
-		if (!paramName.compare("time ms")) {
-			setDelayTime(p.getParam().i);
-		}
-		if (!paramName.compare("time samples")) {
-			setDelaySamples(p.getParam().i);
+	void Delay::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Time in Ms
+				setDelayTime(p.getParam().i);
+				break;
+			case 1:
+				// Time in samples
+				setDelaySamples(p.getParam().i);
+				break;
 		}
 
 	}
@@ -69,8 +73,8 @@ namespace audio {
 			delayBufferSize = msToSamp(newMaxTime, sampleRate);
 			// Resize the buffer - since using realloc, maintains whatever
 			// current buffer is, minus whatever gets truncated if buffer is shrinking
-			delayBuffer = (sample_t *) realloc(delayBuffer,
-					sizeof(sample_t) * delayBufferSize);
+			delayBuffer = (sample_t *) realloc(
+					delayBuffer, sizeof(sample_t) * delayBufferSize);
 		}
 	}
 

@@ -7,7 +7,7 @@ namespace audio {
 		setGain(0);
 	}
 
-	VCA * VCA::clone(){
+	VCA * VCA::clone() {
 		// Create new device
 		VCA * newDevice = new VCA();
 		// Set all member variables
@@ -17,9 +17,12 @@ namespace audio {
 		return newDevice;
 	}
 
-	void VCA::alter(string paramName, Parameter p){
-		if(!paramName.compare("gain")){
-			setGain(p.getParam().f);
+	void VCA::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Gain
+				setGain(p.getParam().f);
+				break;
 		}
 	}
 

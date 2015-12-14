@@ -13,7 +13,7 @@ namespace audio {
 			BitCrusher();
 			virtual BitCrusher * clone();
 			sample_t * advance();
-			void alter(string paramName, Parameter p);
+			void alter(int paramNum, Parameter p);
 			void setBitDepth(int newBitDepth);
 			int getBitDepth();
 			virtual ~BitCrusher();

@@ -39,12 +39,17 @@ namespace audio {
 
 	}
 
-	void Oscillator::alter(string paramName, Parameter p) {
-		if (!paramName.compare("frequency")) {
-			setBaseFrequency(p.getParam().f);
-		}
-		if(!paramName.compare("note")){
-			setBaseFrequencyMIDI(p.getParam().i);
+	void Oscillator::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Frequency
+				setBaseFrequency(p.getParam().f);
+				break;
+
+			case 1:
+				// Note
+				setBaseFrequencyMIDI(p.getParam().i);
+				break;
 		}
 		// TODO: Find graceful way to MIDI trigger a change of wavetable
 	}
@@ -62,8 +67,11 @@ namespace audio {
 		return buffer;
 	}
 
-	void Oscillator::process(const sample_t *inBuffer, sample_t *outBuffer,
-			int samplesToProcess, int numChannels) {
+	void Oscillator::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
 
 		// Account for multichannel buffers
 		int totalSamples = samplesToProcess * numChannels;

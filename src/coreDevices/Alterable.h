@@ -23,7 +23,7 @@ namespace device {
 				numParameters = 0;
 			}
 
-			virtual void alter(string paramName, Parameter p) = 0;
+			virtual void alter(int paramNum, Parameter p) = 0;
 
 			virtual ~Alterable() {
 

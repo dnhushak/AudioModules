@@ -9,10 +9,6 @@ namespace midi {
 		listen.data2 = 0;
 		listen.channel = 0;
 		filterByData1 = 0;
-//		intLo = 0;
-//		intHi = 127;
-//		floLo = 0;
-//		floHi = 127;
 	}
 	
 	void Affector::affect(MIDIMessage * message) {
@@ -26,7 +22,7 @@ namespace midi {
 			if (message->statusType == listen.statusType) {
 				// If
 				if (filterByData1 && (listen.data1 == message->data1)) {
-					// TODO: Send data2
+					this->front()->alter(0,lo);
 				}
 				else{
 					// TODO: Send data1 and data2
@@ -40,12 +36,11 @@ namespace midi {
 		learning = 1;
 	}
 
-	void Affector::setIntScale(int lo, int hi) {
-//		intLo = lo;
-//		intHi = hi;
+	void Affector::setIntScale(int newLo, int newHhi) {
+
 	}
 
-	void Affector::setFloatScale(float lo, float hi) {
+	void Affector::setFloatScale(float newLo, float newHi) {
 //		floLo = lo;
 //		floHi = hi;
 	}

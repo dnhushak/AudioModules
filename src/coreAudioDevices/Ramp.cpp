@@ -30,20 +30,24 @@ namespace audio {
 		newDevice->state = this->state;
 		newDevice->setTime(this->time);
 		newDevice->ramploc = this->ramploc;
-
 		return newDevice;
 
 	}
 
-	void Ramp::alter(string paramName, Parameter p){
-		if(!paramName.compare("time")){
-			setTime(p.getParam().i);
-		}
-		if(!paramName.compare("start")){
-			startRamp();
-		}
-		if(!paramName.compare("end")){
-			stopRamp();
+	void Ramp::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				//Time
+				setTime(p.getParam().i);
+				break;
+			case 1:
+				// Start Ramp
+				startRamp();
+				break;
+			case 2:
+				// Stop Ramp
+				stopRamp();
+				break;
 		}
 	}
 

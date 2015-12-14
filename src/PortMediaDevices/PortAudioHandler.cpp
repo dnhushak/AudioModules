@@ -94,8 +94,8 @@ namespace audio {
 	// PortAudio Error Check
 	PaError PortAudioHandler::errorPortAudio(PaError err) {
 		Pa_Terminate();
-		std::string red = "\033[1;31m";
-		std::string defcol = "\033[0m";
+		std::int red = "\033[1;31m";
+		std::int defcol = "\033[0m";
 		std::cout << red;
 		std::cout << "An error occured while using the portaudio stream\n";
 		std::cout << "Error number: " << err << "\n";
@@ -108,9 +108,9 @@ namespace audio {
 	// Print a list of valid devices
 	void PortAudioHandler::printAudioDevices() {
 		//Make Magenta
-		std::string magenta = "\033[1;35m";
+		std::int magenta = "\033[1;35m";
 		// Make default color
-		std::string defcol = "\033[0m";
+		std::int defcol = "\033[0m";
 		std::cout << magenta << "***Valid Audio Devices: ***\n" << defcol;
 		Pa_Initialize();
 		int ndev;

@@ -22,10 +22,14 @@ namespace audio {
 
 	}
 
-	void VCO::alter(string paramName, Parameter p){
-		Oscillator::alter(paramName, p);
-		if(!paramName.compare("sensitivity")){
-			setSensitivity(p.getParam().f);
+	void VCO::alter(int paramNum, Parameter p) {
+		//TODO: Fix alter numbering between these
+		Oscillator::alter(paramNum, p);
+		switch (paramNum) {
+			case 0:
+				// Sensitivity
+				setSensitivity(p.getParam().f);
+				break;
 		}
 	}
 
@@ -44,7 +48,7 @@ namespace audio {
 			// Else they will all be zero.
 
 			// Use these values currently in the buffer to adjust the frequency
-			adjustFrequency((float)buffer[i]/(float)sampleMax);
+			adjustFrequency((float) buffer[i] / (float) sampleMax);
 
 			// Grab the truncated current phase value
 			phaseTruncated = phase >> phaseTruncateAmt;

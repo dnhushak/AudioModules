@@ -21,7 +21,7 @@ namespace audio {
 
 			virtual Oscillator * clone();
 
-			void alter(string paramName, Parameter p);
+			void alter(int paramNum, Parameter p);
 
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			sample_t * advance();
@@ -31,6 +31,10 @@ namespace audio {
 
 			void setBaseFrequency(float);
 
+			/**
+			 * Sets the oscillator's frequency based on a MIDI note
+			 * @param MIDINote MIDI note from 0 to 127
+			 */
 			void setBaseFrequencyMIDI(int);
 
 			// Return the oscillator's current frequency

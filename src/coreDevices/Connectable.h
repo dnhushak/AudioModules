@@ -42,7 +42,6 @@ namespace device {
 //				}
 //				return (SelfType *) newDevice;
 //			}
-
 //			virtual Connectable<InheritType, ConnectType> * cloneAndConnect() {
 //				// Clone self
 //				Connectable<InheritType, ConnectType> * newDevice = this->clone();
@@ -60,7 +59,6 @@ namespace device {
 //				}
 //				return newDevice;
 //			}
-
 			typename std::list<ConnectType *>::iterator begin() {
 				return deviceList.begin();
 			}
@@ -146,10 +144,11 @@ namespace device {
 
 			}
 
-			void replaceDevice(ConnectType * oldDevice,
+			void replaceDevice(
+					ConnectType * oldDevice,
 					ConnectType * newDevice) {
 				std::replace(deviceList.begin(), deviceList.end(), oldDevice,
-						newDevice);
+								newDevice);
 			}
 
 			// Removing Devices
@@ -213,9 +212,7 @@ namespace device {
 			typename std::list<ConnectType *> deviceList;
 			typename std::list<ConnectType *>::iterator deviceIter;
 			int maxNumDevices;
-	}
-	;
-
+	};
 }
 
 #endif /* CONNECTABLE_h_ */

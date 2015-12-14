@@ -11,7 +11,7 @@ namespace midi {
 		}
 	}
 
-	void ChannelFilter::alter(string paramName, Parameter p){
+	void ChannelFilter::alter(int paramName, Parameter p){
 		if (!paramName.compare("channel")) {
 			setChannel(p.getParam().i);
 		}

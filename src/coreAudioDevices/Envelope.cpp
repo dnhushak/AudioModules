@@ -29,24 +29,34 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Envelope::alter(string paramName, Parameter p) {
-		if (!paramName.compare("attack")) {
-			setAttack(p.getParam().i);
-		}
-		if (!paramName.compare("decay")) {
-			setAttack(p.getParam().i);
-		}
-		if (!paramName.compare("sustain")) {
-			setAttack(p.getParam().f);
-		}
-		if (!paramName.compare("release")) {
-			setAttack(p.getParam().i);
-		}
-		if (!paramName.compare("start")) {
-			startEnv();
-		}
-		if (!paramName.compare("end")) {
-			releaseEnv();
+	void Envelope::alter(int paramNum, Parameter p) {
+		switch (paramNum) {
+			case 0:
+				// Attack
+				setAttack(p.getParam().i);
+				break;
+			case 1:
+				// Decay
+
+				setDecay(p.getParam().i);
+				break;
+			case 2:
+				// Sustain
+				setSustain(p.getParam().f);
+				break;
+			case 3:
+				// Release
+				setRelease(p.getParam().i);
+				break;
+			case 4:
+				// Envelope Start
+				startEnv();
+				break;
+
+			case 5:
+				// Envelope Release
+				releaseEnv();
+				break;
 		}
 	}
 
@@ -83,8 +93,11 @@ namespace audio {
 		return buffer;
 	}
 
-	void Envelope::process(const sample_t *inBuffer, sample_t *outBuffer,
-			int samplesToProcess, int numChannels) {
+	void Envelope::process(
+			const sample_t *inBuffer,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numChannels) {
 
 		// Account for multichannel buffers
 		int totalSamples = samplesToProcess;

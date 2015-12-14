@@ -14,7 +14,7 @@ namespace audio {
 
 			virtual Delay * clone();
 
-			void alter(string paramName, Parameter p);
+			void alter(int paramNum, Parameter p);
 
 			sample_t * advance();
 

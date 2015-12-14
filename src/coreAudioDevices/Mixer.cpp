@@ -36,8 +36,12 @@ namespace audio {
 		return buffer;
 	}
 
-	void Mixer::process(const sample_t * *inBuffers, int numInBuffers,
-			sample_t *outBuffer, int samplesToProcess, int numInChannels) {
+	void Mixer::process(
+			const sample_t * *inBuffers,
+			int numInBuffers,
+			sample_t *outBuffer,
+			int samplesToProcess,
+			int numInChannels) {
 
 		// Account for multichannel buffers
 		int totalSamples = samplesToProcess * numInChannels;
