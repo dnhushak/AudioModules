@@ -19,9 +19,6 @@ namespace audio {
 
 			sample_t * advance();
 
-//			void process(const sample_t *inBuffer, sample_t *outBuffer,
-//					int samplesToProcess, int numChannels);
-
 			void setGain(float);
 
 		private:
