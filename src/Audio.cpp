@@ -17,6 +17,7 @@
 #include "Clipper.h"
 #include "AudioDevice.h"
 #include <pthread.h>
+#include "Connectable.h"
 
 std::vector<audio::Wavetable *> * GenerateSynthTables() {
 	std::vector<audio::Wavetable *> * tables = new std::vector<
@@ -43,21 +44,23 @@ std::vector<audio::Wavetable *> * GenerateSynthTables() {
 	//Cycle through the entirety of 16 and generate triangle, and square waves
 	//The triangle wave statement takes the current index of the for loop, casts it to a float (to do division), and scales it to do the correct math in triangle wave generation
 	for (float i = 0; i < 16; i++) {
-		sawtooth->setSample(i,
+		sawtooth->setSample(
+				i,
 				(audio::sample_t) (audio::sampleMax * (((float) i / 8) - 1)));
 
 		//First half of the wave
 		if (i < half) {
 			square50->setSample(i, audio::sampleMin);
 			square25->setSample(i, audio::sampleMin);
-			triangle->setSample(i,
-					audio::sampleMin + (i / (quarter)) * audio::sampleMax);
+			triangle->setSample(
+					i, audio::sampleMin + (i / (quarter)) * audio::sampleMax);
 		}
 		//Third quarter of the wave
 		else if (i < three_fourths) {
 			square50->setSample(i, audio::sampleMax);
 			square25->setSample(i, audio::sampleMin);
-			triangle->setSample(i,
+			triangle->setSample(
+					i,
 					audio::sampleMax
 							- ((i - half) / (quarter)) * audio::sampleMax);
 		}
@@ -65,7 +68,8 @@ std::vector<audio::Wavetable *> * GenerateSynthTables() {
 		else {
 			square50->setSample(i, audio::sampleMax);
 			square25->setSample(i, audio::sampleMax);
-			triangle->setSample(i,
+			triangle->setSample(
+					i,
 					audio::sampleMax
 							- ((i - half) / (quarter)) * audio::sampleMax);
 		}
@@ -111,41 +115,41 @@ int main(int argc, char *argv[]) {
 	//Scans for argument inputs: -p # binds audioophone to MIDI Port number #, -v makes audioophone behave in verbose mode
 	while ((ch = getopt(argc, argv, "dvp:b:s:c:m:a:")) != EOF) {
 		switch (ch) {
-		case 'p':
-			// MIDI Port argument
-			MIDIDevID = atoi(optarg);
-			break;
-		case 'a':
-			// Audio Device argument
-			AudioOutDevID = atoi(optarg);
-			break;
-		case 'v':
-			// Verbose argument
-			verbose = 1;
-			printf("Executing in verbose mode...\n");
-			break;
-		case 'd':
-			// Devices argument
-			PAHandler->printAudioDevices();
-			PMHandler->printMIDIDevices();
-			exit(0);
-			break;
-		case 'b':
-			// Buffer Size Argument
-			//audio::AudioDevice::setBufferSize(atoi(optarg));
-			break;
-		case 's':
-			// Sample Rate argument
-			//audio::AudioDevice::setSampleRate(atoi(optarg));
-			break;
-		case 'c':
-			// Audio Channels
-			numOutChannels = atoi(optarg);
-			break;
-		case 'm':
-			// Number of Modules
-			numModules = atoi(optarg);
-			break;
+			case 'p':
+				// MIDI Port argument
+				MIDIDevID = atoi(optarg);
+				break;
+			case 'a':
+				// Audio Device argument
+				AudioOutDevID = atoi(optarg);
+				break;
+			case 'v':
+				// Verbose argument
+				verbose = 1;
+				printf("Executing in verbose mode...\n");
+				break;
+			case 'd':
+				// Devices argument
+				PAHandler->printAudioDevices();
+				PMHandler->printMIDIDevices();
+				exit(0);
+				break;
+			case 'b':
+				// Buffer Size Argument
+				//audio::AudioDevice::setBufferSize(atoi(optarg));
+				break;
+			case 's':
+				// Sample Rate argument
+				//audio::AudioDevice::setSampleRate(atoi(optarg));
+				break;
+			case 'c':
+				// Audio Channels
+				numOutChannels = atoi(optarg);
+				break;
+			case 'm':
+				// Number of Modules
+				numModules = atoi(optarg);
+				break;
 
 		}
 	}
@@ -161,15 +165,17 @@ int main(int argc, char *argv[]) {
 	gain->connectDevice(osc);
 	audio::Gain * gain2 = gain->clone(2);
 
+
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-			numOutChannels, numInChannels, gain2);
+											numOutChannels, numInChannels,
+											gain2);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);
 	}
 //	usleep(1000000);
-	for (int j = 0; j < 4; j++) {
+	for (int j = 0; j < 0; j++) {
 		osc->setWavetable(waveTables[j]);
 		for (int i = 40; i < 70; i++) {
 			osc->setBaseFrequencyMIDI(i);

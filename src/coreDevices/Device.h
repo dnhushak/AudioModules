@@ -35,11 +35,11 @@ namespace device {
 			virtual ~Device();
 
 		protected:
-
 			devState_t state;
+			bool connectable;
+			bool alterable;
 
 		private:
-
 			int devID;
 	};
 

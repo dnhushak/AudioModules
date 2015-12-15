@@ -7,7 +7,7 @@ namespace arduino {
 		buffer = 0;
 	}
 
-	void ArduinoMIDI::begin() {
+	void ArduinoMIDI::initialize() {
 		MIDIport->begin(31250);
 		MIDIport->flush();
 		MIDIport->setTimeout(100);

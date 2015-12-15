@@ -13,7 +13,7 @@ namespace arduino {
 
 			ArduinoMIDI(HardwareSerial * port);
 
-			void begin();
+			void initialize();
 
 			// Read from the FIFO serial stream
 			void readMIDI();

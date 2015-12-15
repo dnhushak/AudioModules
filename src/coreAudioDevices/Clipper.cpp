@@ -9,7 +9,7 @@ namespace audio {
 
 	Clipper * Clipper::clone(int cloneType) {
 		if (cloneType != 0) {
-			return (Gain *) Connectable::clone(cloneType);
+			return (Clipper *) Connectable::clone(cloneType);
 		}
 		// Create new device
 		Clipper * newDevice = new Clipper();

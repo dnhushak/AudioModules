@@ -3,11 +3,12 @@
 
 #include "Connectable.h"
 #include "Device.h"
+#include "Alterable.h"
 #include <map>
 
 namespace device {
 	
-	class PolyphonicHandler: public device::Alterable<Connectable<Device, Device>> {
+	class PolyphonicHandler: public device::Alterable<Connectable<Device, Device> > {
 		public:
 			PolyphonicHandler();
 

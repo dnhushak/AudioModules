@@ -5,7 +5,7 @@ namespace audio {
 
 	Mixer * Mixer::clone(int cloneType) {
 		if (cloneType != 0) {
-			return (Gain *) Connectable::clone(cloneType);
+			return (Mixer *) Connectable::clone(cloneType);
 		}
 		// Create new device
 		Mixer * newDevice = new Mixer();

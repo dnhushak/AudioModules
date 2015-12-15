@@ -9,7 +9,7 @@ namespace audio {
 	
 	BitCrusher * BitCrusher::clone(int cloneType) {
 		if (cloneType != 0) {
-			return (Gain *) Connectable::clone(cloneType);
+			return (BitCrusher *) Connectable::clone(cloneType);
 		}
 		// Create new device
 		BitCrusher * newDevice = new BitCrusher();

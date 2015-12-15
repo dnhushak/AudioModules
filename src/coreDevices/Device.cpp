@@ -8,6 +8,8 @@ namespace device {
 		// Device ID
 		devID = devIDCounter;
 		devIDCounter++;
+		connectable = false;
+		alterable = false;
 	}
 
 	Device * Device::clone(int) {

@@ -15,7 +15,7 @@ namespace audio {
 
 	Envelope * Envelope::clone(int cloneType) {
 		if (cloneType != 0) {
-			return (Gain *) Connectable::clone(cloneType);
+			return (Envelope *) Connectable::clone(cloneType);
 		}
 		// Create new device
 		Envelope * newDevice = new Envelope();

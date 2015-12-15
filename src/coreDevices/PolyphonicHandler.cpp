@@ -6,64 +6,96 @@ namespace device {
 		numVoices = 0;
 		maxNumVoices = -1;
 		upstream = 0;
+
+		// Can only have 1 device attached to it,
+		// that device and any subsequently connected
+		// devices will be the base "voice" for any polyphony
+		setMaxNumDevices(1);
 	}
 	
 	void PolyphonicHandler::setMaxNumVoices(int newMaxNumVoices) {
-		if (newMaxNumVoices == -1 || newMaxNumVoices > 0) {
-			maxNumVoices = newMaxNumVoices;
-		}
+//		if (newMaxNumVoices == -1 || newMaxNumVoices > 0) {
+//			maxNumVoices = newMaxNumVoices;
+//		}
 	}
 
 	void PolyphonicHandler::setUpstream(
 			Connectable<Device, Device> * newUpstream) {
-		upstream = newUpstream;
+//		upstream = newUpstream;
+//		// Start at the beginning of the voice map
+//		voiceIter = voiceMap.begin();
+//		// Iterate over the whole map
+//		while (voiceIter != voiceMap.end()) {
+//			// Add all of the devices in the voice map from the upstream device
+//			upstream->connectDevice(*voiceIter);
+//		}
+
 	}
 
 	void PolyphonicHandler::disconnectUpstream() {
-		// Check if upstream still exists
-		if (upstream != 0) {
-			// TODO: Remove all voices from upstream device
-		}
-		upstream = 0;
+//		// Check if upstream still exists
+//		if (upstream != 0) {
+//			// Start at the beginning of the voice map
+//			voiceIter = voiceMap.begin();
+//			// Iterate over the whole map
+//			while (voiceIter != voiceMap.end()) {
+//				// Get rid of all of the devices in the voice map from the upstream device
+//				upstream->disconnectDevice(*voiceIter);
+//			}
+//		}
+//		upstream = 0;
 	}
 
 	void PolyphonicHandler::activateVoice(int voiceNumber, Parameter param) {
-		// Check if voiceNumber already exists
-		// If it does, update it with new parameter
-		if (voiceMap.count(voiceNumber)) {
-			//TODO: Update current voice with new parameter
-		}
-
-		// If it doesn't...
-		else {
-			// Check to see if we have voices available
-			if (maxNumVoices == -1 || numVoices < maxNumVoices) {
-				// Increment the voice counter
-				numVoices++;
-
-				if (!isEmpty()) {
-					// Copy the current device tree (hehe)
-					Device * NewTree = this->front->clone(2);
-
-					// If there is an upstream device, attach the new device tree to upstream
-					if (upstream != 0) {
-						upstream->connectDevice(NewTree);
-					}
-				}
-			}
-		}
+//		// Check if voiceNumber already exists
+//		// If it does, update it with new parameter
+//		if (voiceMap.count(voiceNumber)) {
+//			//TODO: Update current voice with new parameter
+//		}
+//
+//		// If it doesn't...
+//		else {
+//			// Check to see if we have voices available
+//			if (maxNumVoices == -1 || numVoices < maxNumVoices) {
+//				// Increment the voice counter
+//				numVoices++;
+//
+//				if (!isEmpty()) {
+//					// Copy the current device tree
+//					Device * newTree = this->front->clone(2);
+//
+//					// Add the new tree to the voiceMap
+//					voiceMap.insert(voiceNumber, newTree);
+//
+//					// If there is an upstream device, attach the new device tree to upstream
+//					if (upstream != 0) {
+//						upstream->connectDevice(newTree);
+//					}
+//				}
+//			}
+//		}
 	}
 
 	void PolyphonicHandler::cleanup() {
+//		voiceIter = voiceMap.begin();
+//		// Iterate over the whole map
+//		while (voiceIter != voiceMap.end()) {
+//			if (*voiceIter->getStatus == INACTIVE) {
+//				if (upstream != 0) {
+//					upstream->disconnectDevice(*voiceIter);
+//				}
+//				voiceMap.erase(voiceIter);
+//			}
+//		}
 	}
 
 	void PolyphonicHandler::deactivateVoice(int voiceNumber) {
-		// Check if voiceNumber does exist in map
-		if (voiceMap.count(voiceNumber)) {
-		}
-		// If it does, deactivate it
-		// Decrement the voice counter
-		numVoices--;
+//		// Check if voiceNumber does exist in map
+//		if (voiceMap.count(voiceNumber)) {
+//		}
+//		// If it does, deactivate it
+//		// Decrement the voice counter
+//		numVoices--;
 	}
 
 	PolyphonicHandler::~PolyphonicHandler() {

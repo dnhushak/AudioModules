@@ -19,7 +19,7 @@ namespace audio {
 	
 	Delay * Delay::clone(int cloneType) {
 		if (cloneType != 0) {
-			return (Gain *) Connectable::clone(cloneType);
+			return (Delay *) Connectable::clone(cloneType);
 		}
 		// Create new device
 		Delay * newDevice = new Delay();

@@ -12,7 +12,6 @@ namespace audio {
 		if (cloneType != 0) {
 			return (Gain *) Connectable::clone(cloneType);
 		}
-		printf("Gain Clone\n");
 		// Create new device
 		Gain * newDevice = new Gain();
 		// Set all member variables

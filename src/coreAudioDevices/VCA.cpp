@@ -9,7 +9,7 @@ namespace audio {
 
 	VCA * VCA::clone(int cloneType) {
 		if (cloneType != 0) {
-			return (Gain *) Connectable::clone(cloneType);
+			return (VCA *) Connectable::clone(cloneType);
 		}
 		// Create new device
 		VCA * newDevice = new VCA();

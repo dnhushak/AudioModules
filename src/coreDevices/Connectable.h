@@ -19,13 +19,13 @@ namespace device {
 		public:
 			Connectable() {
 				maxNumDevices = -1;
+				connectable = true;
 			}
 
 			virtual Connectable<InheritType, ConnectType> * clone(
 					int cloneType) {
 				Connectable<InheritType, ConnectType> * newDevice = this->clone(
 						0);
-				printf("Connectable Clone \n");
 				switch (cloneType) {
 					case SELF:
 						break;
@@ -217,6 +217,7 @@ namespace device {
 			enum cloneTypes {
 				SELF, SAMETREE, CLONETREE
 			};
+			bool connectable;
 	};
 }
 
