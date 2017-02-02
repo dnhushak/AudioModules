@@ -15,6 +15,7 @@ namespace audio {
 		// Create new device
 		Gain * newDevice = new Gain();
 		// Set all member variables
+
 		newDevice->state = this->state;
 		newDevice->gain = this->gain;
 
@@ -25,7 +26,7 @@ namespace audio {
 		switch (paramNum) {
 			case 0:
 				//Gain
-				setGain(p.getParam().f);
+				setGain(p.getParam().d);
 				break;
 		}
 	}
