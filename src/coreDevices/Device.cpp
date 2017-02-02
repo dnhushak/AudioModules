@@ -26,6 +26,10 @@ namespace device {
 		return state;
 	}
 
+	void Device::setState(devState_t newState) {
+		state = newState;
+	}
+
 	Device::~Device() {
 		state = INACTIVE;
 	}
