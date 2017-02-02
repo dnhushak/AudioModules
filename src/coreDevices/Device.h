@@ -30,7 +30,7 @@ namespace device {
 			 */
 			virtual devState_t getState();
 
-			virtual void Device::setState(devState_t newState);
+			virtual void setState(devState_t newState);
 
 			int getDevID();
 
