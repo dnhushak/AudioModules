@@ -24,8 +24,7 @@ namespace device {
 
 			virtual Connectable<InheritType, ConnectType> * clone(
 					int cloneType) {
-				Connectable<InheritType, ConnectType> * newDevice = this->clone(
-						0);
+				Connectable<InheritType, ConnectType> * newDevice = this->clone(0);
 				switch (cloneType) {
 					case SELF:
 						break;
