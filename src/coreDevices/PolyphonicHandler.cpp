@@ -77,7 +77,7 @@ namespace device {
 	void PolyphonicHandler::cleanup() {
 		voiceIter = voiceMap.begin();
 		// Iterate over the whole map
-		while (voiceIter != voiceMap.end()) {
+		for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
 			// Check for inactive voices
 			if ( voiceIter->second->getState() == INACTIVE) {
 				if (upstream != 0) {

@@ -6,6 +6,7 @@
 // For iterators
 #include <algorithm>
 
+
 namespace device {
 
 	/**
@@ -192,6 +193,7 @@ namespace device {
 
 			virtual void erase(int eraseType){
 				switch (eraseType){
+
 				case SELF:
 					delete this;
 					break;
@@ -201,7 +203,7 @@ namespace device {
 				case WHOLETREE:
 					if(!isEmpty()){
 						for (deviceIter = begin(); deviceIter != end();deviceIter++) {
-							*deviceIter->erase(WHOLETREE);
+							(*deviceIter)->erase(WHOLETREE);
 						}
 					}
 					delete this;

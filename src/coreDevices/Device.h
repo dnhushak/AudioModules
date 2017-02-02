@@ -24,7 +24,7 @@ namespace device {
 
 			virtual Device * clone(int);
 
-			virtual void Device::erase(int);
+			virtual void erase(int);
 
 			/**
 			 * Get the current device state

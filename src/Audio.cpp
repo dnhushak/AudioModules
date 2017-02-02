@@ -22,11 +22,18 @@
 std::vector<audio::Wavetable *> * GenerateSynthTables() {
 	std::vector<audio::Wavetable *> * tables = new std::vector<
 			audio::Wavetable *>;
+
+	std::cout << "\n Sawtooth Wavetable";
 	audio::Wavetable* sawtooth = new audio::Wavetable(16);
+	std::cout << "\n Triangle Wavetable";
 	audio::Wavetable* triangle = new audio::Wavetable(16);
+	std::cout << "\n Square 50 Wavetable";
 	audio::Wavetable* square50 = new audio::Wavetable(16);
+	std::cout << "\n Square 25 Wavetable";
 	audio::Wavetable* square25 = new audio::Wavetable(16);
+	std::cout << "\n Noise Wavetable";
 	audio::Wavetable* noise = new audio::Wavetable(8192);
+	std::cout << "\n Vibrasin Wavetable";
 	audio::Wavetable* vibrasin = new audio::Wavetable(256);
 
 	tables->push_back(sawtooth);
@@ -106,7 +113,7 @@ int main(int argc, char *argv[]) {
 	int numInChannels = 0;
 	int numModules = 5;
 	int MIDIDevID = 0;
-	int AudioOutDevID = 2;
+	int AudioOutDevID = 1;
 	int AudioInDevID = -1;
 	int verbose = 0;
 	extern char *optarg;
@@ -155,16 +162,25 @@ int main(int argc, char *argv[]) {
 	}
 	std::vector<audio::Wavetable *> waveTables = *GenerateSynthTables();
 
+
+	std::cout << "\n Main Oscillator";
 	audio::Oscillator *osc = new Oscillator();
 	osc->setWavetable(waveTables[0]);
 	osc->setBaseFrequencyMIDI(50);
 
+
+	std::cout << "\n First Gain";
 	audio::Gain * gain = new Gain();
 	gain->setGain(-12);
 
 	gain->connectDevice(osc);
+
+
+	std::cout << "\n Gain & Oscillator Clones";
 	audio::Gain * gain2 = gain->clone(2);
 
+gain->disconnectAllDevices();
+	osc->erase(2);
 
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
@@ -219,7 +235,7 @@ int main(int argc, char *argv[]) {
 	printf("\n");
 
 
-	for (int j = 0; j < 4; j++) {
+	for (int j = 0; j < 1; j++) {
 		gain2->alter(0,*gainVal1);
 		((Oscillator*) gain2->front())->setWavetable(waveTables[j]);
 		for (int i = 0; i < 26; i++) {
@@ -230,6 +246,12 @@ int main(int argc, char *argv[]) {
 		gain2->alter(0,*gainVal2);
 		usleep(500000);
 	}
+
+	device::Device * osc2 = gain2->front();
+	std::cout << "\n Gain 2 DevID: "<< gain2->getDevID();
+	gain->connectDevice(gain2);
+	gain->erase(2);
+//	osc2->erase(2);
 
 
 
