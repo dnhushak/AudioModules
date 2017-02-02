@@ -190,6 +190,25 @@ namespace device {
 				return maxNumDevices;
 			}
 
+			virtual void erase(int eraseType){
+				switch (eraseType){
+				case SELF:
+					delete this;
+					break;
+				case SAMETREE:
+					delete this;
+					break;
+				case WHOLETREE:
+					if(!isEmpty()){
+						for (deviceIter = begin(); deviceIter != end();deviceIter++) {
+							*deviceIter->erase(WHOLETREE);
+						}
+					}
+					delete this;
+				}
+				return;
+			}
+
 			virtual ~Connectable() {
 			}
 
@@ -216,7 +235,7 @@ namespace device {
 			// SELF - clones just the device, its state, and all member variables
 			// SAMETREE - clones just like SELF, and then connects all of the devices connected to the original to the new one (same tree, duplicate head)
 			// CLONETREE - recursively clones EVERY device in the tree of devices connected to the original device (new, duplicate tree)
-			enum cloneTypes {
+			enum treeAlterTypes {
 				SELF, SAMETREE, WHOLETREE
 			};
 			bool connectable;

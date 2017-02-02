@@ -18,6 +18,11 @@ namespace device {
 		return newDevice;
 	}
 
+	void Device::erase(int){
+		delete this;
+		return;
+	}
+
 	int Device::getDevID() {
 		return devID;
 	}
