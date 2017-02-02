@@ -174,15 +174,66 @@ int main(int argc, char *argv[]) {
 		std::cout << "Port Audio Error";
 		exit(0);
 	}
+
+	int mushroom[26];
+	mushroom[0]=36;
+	mushroom[1]=31;
+	mushroom[2]=36;
+	mushroom[3]=40;
+	mushroom[4]=43;
+	mushroom[5]=48;
+	mushroom[6]=43;
+	mushroom[7]=32;
+	mushroom[8]=36;
+	mushroom[9]=39;
+	mushroom[10]=44;
+	mushroom[11]=39;
+	mushroom[12]=44;
+	mushroom[13]=48;
+	mushroom[14]=51;
+	mushroom[15]=56;
+	mushroom[16]=51;
+	mushroom[17]=34;
+	mushroom[18]=38;
+	mushroom[19]=41;
+	mushroom[20]=46;
+	mushroom[21]=41;
+	mushroom[22]=46;
+	mushroom[23]=60;
+	mushroom[24]=53;
+	mushroom[25]=58;
+
+	device::Parameter * gainVal1 = new device::Parameter();
+	device::Parameter * gainVal2 = new device::Parameter();
+
 //	usleep(1000000);
-	for (int j = 0; j < 0; j++) {
-		osc->setWavetable(waveTables[j]);
-		for (int i = 40; i < 70; i++) {
+	gainVal1->setParam(0,-12.0);
+	gainVal2->setParam(0,-128.0);
+
+	printf("\nGainVal1: %f", gainVal1->getParam(0).f);
+	printf("\nGainVal1: %f", gainVal1->getParam(0).d);
+	printf("\nGainVal1: %i", gainVal1->getParam(0).i);
+	printf("\nGainVal2: %f", gainVal2->getParam(0).f);
+	printf("\nGainVal2: %f", gainVal2->getParam(0).d);
+	printf("\nGainVal2: %i", gainVal2->getParam(0).i);
+	printf("\n");
+
+
+	for (int j = 0; j < 4; j++) {
+		gain2->alter(0,*gainVal1);
+		((Oscillator*) gain2->front())->setWavetable(waveTables[j]);
+		for (int i = 0; i < 26; i++) {
 			osc->setBaseFrequencyMIDI(i);
-			((Oscillator*) gain2->front())->setBaseFrequencyMIDI(i);
-			usleep(100000);
+			((Oscillator*) gain2->front())->setBaseFrequencyMIDI(mushroom[i]+24);
+			usleep(35000);
 		}
+		gain2->alter(0,*gainVal2);
+		usleep(500000);
 	}
+
+
+
+
 
 //	std::cout << "\nChipophone running, press enter to end program\n";
 //	std::cin.ignore(255, '\n');
