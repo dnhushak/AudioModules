@@ -60,7 +60,7 @@ namespace device {
 
 				if (!isEmpty()) {
 					// Copy the current device tree
-					Device * newTree =  this->front()->clone(2);
+					Device * newTree =  this->front()->clone(WHOLETREE);
 
 					// Add the new tree to the voiceMap
 					voiceMap.insert(std::pair<int,Device *>(voiceNumber, newTree));

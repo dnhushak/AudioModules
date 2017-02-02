@@ -38,7 +38,7 @@ namespace device {
 							}
 						}
 						break;
-					case CLONETREE:
+					case WHOLETREE:
 						if (!isEmpty()) {
 							// Start at the beginning of the device list
 							deviceIter = begin();
@@ -46,7 +46,7 @@ namespace device {
 								// Recursively call clone on each connected device
 								ConnectType * newChild =
 										(ConnectType *) (*deviceIter)->clone(
-												CLONETREE);
+												WHOLETREE);
 								// Connect newly cloned child device to the parent clone
 								newDevice->connectDevice(newChild);
 								// Increment the iterator
@@ -213,8 +213,11 @@ namespace device {
 			int maxNumDevices;
 
 			// Types of clones to be made
+			// SELF - clones just the device, its state, and all member variables
+			// SAMETREE - clones just like SELF, and then connects all of the devices connected to the original to the new one (same tree, duplicate head)
+			// CLONETREE - recursively clones EVERY device in the tree of devices connected to the original device (new, duplicate tree)
 			enum cloneTypes {
-				SELF, SAMETREE, CLONETREE
+				SELF, SAMETREE, WHOLETREE
 			};
 			bool connectable;
 	};
