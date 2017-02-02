@@ -25,9 +25,9 @@ namespace device {
 		// Start at the beginning of the voice map
 		voiceIter = voiceMap.begin();
 		// Iterate over the whole map
-		while (voiceIter != voiceMap.end()) {
+		for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
 			// Add all of the devices in the voice map from the upstream device
-			upstream->connectDevice( (device::Device*) *voiceIter);
+			upstream->connectDevice(voiceIter->second);
 		}
 
 	}
@@ -35,12 +35,10 @@ namespace device {
 	void PolyphonicHandler::disconnectUpstream() {
 		// Check if upstream still exists
 		if (upstream != 0) {
-			// Start at the beginning of the voice map
-			voiceIter = voiceMap.begin();
 			// Iterate over the whole map
-			while (voiceIter != voiceMap.end()) {
+			for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
 				// Get rid of all of the devices in the voice map from the upstream device
-				upstream->disconnectDevice( (device::Device*) *voiceIter);
+				upstream->disconnectDevice(voiceIter->second);
 			}
 		}
 		upstream = 0;
@@ -62,7 +60,7 @@ namespace device {
 
 				if (!isEmpty()) {
 					// Copy the current device tree
-					Device * newTree =  ((device::Device*)this->front)->clone(2);
+					Device * newTree =  this->front()->clone(2);
 
 					// Add the new tree to the voiceMap
 					voiceMap.insert(std::pair<int,Device *>(voiceNumber, newTree));
@@ -80,9 +78,11 @@ namespace device {
 		voiceIter = voiceMap.begin();
 		// Iterate over the whole map
 		while (voiceIter != voiceMap.end()) {
-			if ( ((device::Device*) *voiceIter)->getState == INACTIVE) {
+			// Check for inactive voices
+			if ( voiceIter->second->getState() == INACTIVE) {
 				if (upstream != 0) {
-					upstream->disconnectDevice( (device::Device*) *voiceIter);
+					// Disconnect the device from upstream
+					upstream->disconnectDevice(voiceIter->second);
 				}
 				voiceMap.erase(voiceIter);
 			}
@@ -101,6 +101,11 @@ namespace device {
 	}
 
 	PolyphonicHandler::~PolyphonicHandler() {
-	}
+		voiceIter = voiceMap.begin();
+		while (voiceIter != voiceMap.end()) {
+			// Get rid of all of the devices in the voice map from the upstream device
 
+			voiceIter++;
+		}
+	}
 }
