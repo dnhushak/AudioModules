@@ -85,6 +85,7 @@ namespace device {
 					upstream->disconnectDevice(voiceIter->second);
 				}
 				voiceMap.erase(voiceIter);
+				voiceIter->second->erase(WHOLETREE);
 			}
 		}
 	}
