@@ -4,10 +4,11 @@ PolyphonicHandler class that triggers voices
 Voice superclass, has list of Parameter types, which can be pointed to
 
 
-2 Major problems to solve:
+Major problems to solve:
 
 1. Polyphony, specifically with trees of connected devices
 2. Generalized (runtime programmable) MIDI/Input parameter alteration and routing
+3. "Bufferless" options
 
 
 MIDIRouter class, connect alterable devices to it. Define MIDI messages and their data to send to various connected devices
