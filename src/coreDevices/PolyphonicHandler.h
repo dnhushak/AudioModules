@@ -150,13 +150,10 @@ namespace device {
 				// Check if voiceNumber does exist in map
 				if (voiceMap.count(voiceNumber)){
 
-					//TODO: Figure out how to best work with envelopes and other time-based things that have alternative states - utilize Alter fcn??
 					// Deactivate it
-
 					Parameter deactivator;
 					deactivator.setParam(0, INACTIVE);
 					voiceMap[voiceNumber]->alter(0, deactivator);
-					std::cout << "\n Deactivating Voice\n";
 					// Decrement the voice counter
 					numVoices--;
 				}
@@ -176,7 +173,6 @@ namespace device {
 							// Disconnect the device from upstream
 							upstream->disconnectDevice(voiceIter->second);
 						}
-						std::cout << "\n found inactive ... tossing it\n";
 						voiceIter->second->erase(this->SAMETREE);
 						voiceMap.erase(voiceIter);
 						voiceIter = voiceMap.begin();
