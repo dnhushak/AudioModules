@@ -35,6 +35,10 @@ namespace device {
 				maxNumVoices = -1;
 				upstream = 0;
 
+
+				deactivator.setParam(0, INACTIVE);
+				activator.setParam(0,ACTIVE);
+
 				// Can only have 1 device attached to it,
 				// that device and any subsequently connected
 				// devices will be the base "voice" for any polyphony
@@ -101,9 +105,6 @@ namespace device {
 			 * @param param The parameter to pass to a new voice, typically velocity from a MIDI controller
 			 */
 			void activateVoice(int voiceNumber, int paramNum, Parameter param){
-				// Built activator parameter
-				Parameter activator;
-				activator.setParam(0,ACTIVE);
 
 				// Check if voiceNumber already exists
 				// If it does, update it with new parameter
@@ -151,11 +152,16 @@ namespace device {
 				if (voiceMap.count(voiceNumber)){
 
 					// Deactivate it
-					Parameter deactivator;
-					deactivator.setParam(0, INACTIVE);
 					voiceMap[voiceNumber]->alter(0, deactivator);
 					// Decrement the voice counter
 					numVoices--;
+				}
+			}
+
+			void deactivateAllVoices(){
+				for (voiceIter = voiceMap.begin(); voiceIter != voiceMap.end();
+										voiceIter++){
+					voiceIter->second->alter(0, deactivator);
 				}
 			}
 
@@ -194,7 +200,8 @@ namespace device {
 			int numVoices;
 			std::map<int, UpstreamConnectingType *> voiceMap;
 			typename std::map<int, UpstreamConnectingType *>::iterator voiceIter;
-
+			Parameter deactivator;
+			Parameter activator;
 			UpstreamType * upstream;
 
 	};
