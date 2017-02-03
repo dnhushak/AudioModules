@@ -40,13 +40,14 @@ namespace audio {
 	}
 
 	void Oscillator::alter(int paramNum, Parameter p) {
+		Device::alter(paramNum, p);
 		switch (paramNum) {
-			case 0:
+			case 1:
 				// Frequency
 				setBaseFrequency(p.getParam().d);
 				break;
 
-			case 1:
+			case 2:
 				// Note
 				setBaseFrequencyMIDI(p.getParam().i);
 				break;
