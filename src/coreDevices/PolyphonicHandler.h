@@ -7,6 +7,23 @@
 
 namespace device {
 
+/**
+ * ```PolyphonicHandler``` is a class used to do just that: handle polyphony.
+ *
+ * Essentially instead of creating all of the voices one could want at runtime, PH will dynamically create (and destroy) voices as needed
+ *
+ * It works much like a modular synthesizer, with the added bonus of digital duplicity
+ *
+ * Since PH is a ```Connectable``` object, you can connect a Device (or a string of ```Connectable``` Devices) to it, and it will automatically duplicate
+ * the entire tree when a new voice is needed. It will then attach the head of that new tree to the upstream device.
+ *
+ * Note that the template class declarations *have to match* the class declarations within ```Connectable``` of the upstream class type
+ *
+ * I.E. a common example is a ```Mixer``` as the upstream object. ```Mixer``` is of type ```Connectable<AudioDevice,AudioDevice>```, so declaring a
+ * PolyphonicHandler that will have a mixer as its upstream device, you would declare it as ```PolyphonicHandler<AudioDevice,AudioDevice>```
+ *
+ * PH only allows for one object to connect to it, and it will treat this as the "head" of the tree to recursively duplicate for every voice
+ */
 template<class UpstreamInheritedType, class UpstreamConnectingType>
 class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 	typedef Connectable<UpstreamInheritedType, UpstreamConnectingType> UpstreamType;
