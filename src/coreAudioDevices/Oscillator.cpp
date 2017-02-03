@@ -43,7 +43,7 @@ namespace audio {
 		switch (paramNum) {
 			case 0:
 				// Frequency
-				setBaseFrequency(p.getParam().f);
+				setBaseFrequency(p.getParam().d);
 				break;
 
 			case 1:
