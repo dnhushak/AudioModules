@@ -83,6 +83,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 				// Check if voiceNumber already exists
 				// If it does, update it with new parameter
 				if (voiceMap.count(voiceNumber)) {
+					voiceMap[voiceNumber]->setState(ACTIVE);
 					voiceMap[voiceNumber]->alter(0,param);
 				}
 
@@ -121,9 +122,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 				// Check if voiceNumber does exist in map
 				if (voiceMap.count(voiceNumber)) {
 
-					// If it does, disconnect the device from upstream
-					upstream->disconnectDevice(voiceMap[voiceNumber]);
-
+					//TODO: Figure out how to best work with envelopes and other time-based things that have alternative states - utilize Alter fcn??
 					// Deactivate it
 					voiceMap[voiceNumber]->setState(INACTIVE);
 
@@ -145,8 +144,9 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 							// Disconnect the device from upstream
 							upstream->disconnectDevice(voiceIter->second);
 						}
+						voiceIter->second->erase(this->SAMETREE);
 						voiceMap.erase(voiceIter);
-						voiceIter->second->erase(this->WHOLETREE);
+						std::cout << "\nVoices Remaining:" << voiceMap.size() <<"\n";
 					}
 				}
 			}
