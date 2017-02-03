@@ -20,7 +20,6 @@ namespace device {
 		public:
 			Connectable() {
 				maxNumDevices = -1;
-				connectable = true;
 			}
 
 			virtual Connectable<InheritType, ConnectType> * clone(
@@ -245,7 +244,6 @@ namespace device {
 			enum treeAlterTypes {
 				SELF, SAMETREE, WHOLETREE
 			};
-			bool connectable;
 	};
 }
 
