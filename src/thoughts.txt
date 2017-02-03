@@ -6,7 +6,7 @@ Voice superclass, has list of Parameter types, which can be pointed to
 
 Major problems to solve:
 
-1. Polyphony, specifically with trees of connected devices
+BOOOOM DONE 1. Polyphony, specifically with trees of connected devices
 2. Generalized (runtime programmable) MIDI/Input parameter alteration and routing
 3. "Bufferless" options
 
