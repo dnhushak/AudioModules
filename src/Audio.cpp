@@ -11,6 +11,7 @@
 #include "Ramp.h"
 #include "Delay.h"
 #include "Gain.h"
+#include "Envelope.h"
 #include <math.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -152,26 +153,39 @@ int main(int argc, char *argv[]){
 
 		}
 	}
+
+	// ***************************************** //
+
 	std::vector<audio::Wavetable *> waveTables = *GenerateSynthTables();
 
+	// Oscillator
 	audio::Oscillator *osc = new Oscillator();
 	osc->setWavetable(waveTables[3]);
 	osc->setBaseFrequencyMIDI(50);
 
-//	audio::Oscillator *osc2 = osc->clone(2);
-
+	// Polyphonic Voice Mixer
 	audio::Mixer * mixer = new Mixer();
-//	mixer->connectDevice(osc2);
 
+	// Gain generation
 	audio::Gain * gain = new Gain();
 	gain->setGain(-24);
 	gain->connectDevice(mixer);
 
+	// Envelope Generation
+	Envelope * env = new Envelope();
+	env->setAttack(500);
+	env->setDecay(100);
+	env->setSustain(.5);
+	env->setRelease(1000);
+	env->connectDevice(osc);
+
+	// Polyvoice handler
 	device::PolyphonicHandler<AudioDevice, AudioDevice> * poly =
 			new device::PolyphonicHandler<AudioDevice, AudioDevice>();
-	poly->connectDevice(osc);
+	poly->connectDevice(env);
 	poly->setUpstream(mixer);
 
+	// PortAudio handler
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
 			numOutChannels, numInChannels, gain);
@@ -180,10 +194,22 @@ int main(int argc, char *argv[]){
 		exit(0);
 	}
 
-	device::Parameter * freq1 = new device::Parameter();
-	freq1->setParam(0, 440.0);
+	device::Parameter freq1;
+	device::Parameter freq2;
+	device::Parameter freq3;
+	device::Parameter freq4;
+	device::Parameter freq5;
+	device::Parameter act;
+	device::Parameter deact;
+	freq1.setParam(0, 440.0);
+	freq2.setParam(0, 880.0);
+	freq3.setParam(0, 1760.0);
+	freq4.setParam(0, 300.0);
+	freq5.setParam(0, 600.0);
+	act.setParam(0, ACTIVE);
+	deact.setParam(0, INACTIVE);
 
-	for (int j = 0; j < 3; j++){
+//	for (int j = 0; j < 3; j++){
 //		gain2->alter(0,*freq1);
 //		osc->setWavetable(waveTables[j]);
 //		for (int i = 0; i < 26; i++) {
@@ -192,28 +218,46 @@ int main(int argc, char *argv[]){
 //			usleep(35000);
 //		}
 //		gain2->alter(0,*freq2);
+//	}
 
-		poly->activateVoice(j, *freq1);
-
-		freq1->setParam(0, freq1->getParam().d * 2.0);
-
-		usleep(1000000);
-	}
-
-	freq1->setParam(0, 300.);
-	poly->activateVoice(0, *freq1);
-
+	// First note
+	std::cout << "\nFirst note\n";
+	poly->activateVoice(0, 8, freq1);
 	usleep(1000000);
+
+	// Second note
+	std::cout << "\nSecond note\n";
+	poly->activateVoice(1, 8, freq2);
+	usleep(1000000);
+
+	// Third note
+	std::cout << "\nThird note\n";
+	poly->activateVoice(2, 8, freq3);
+	usleep(1000000);
+
+	// Change first note
+	std::cout << "\nChange First note\n";
+	poly->activateVoice(0, 8, freq4);
+	usleep(1000000);
+
+	// Stop third note
+	std::cout << "\nStop third note\n";
 	poly->deactivateVoice(2);
 	usleep(1000000);
+
+	// Stop second note
+	std::cout << "\nStop second note\n";
 	poly->deactivateVoice(1);
-
-	poly->cleanup();
-
-	freq1->setParam(0, freq1->getParam().d * 2.0);
-
 	usleep(1000000);
-	poly->activateVoice(2, *freq1);
+
+	// Cleanup
+	std::cout << "\nCleanup\n";
+	poly->cleanup();
+	usleep(1000000);
+
+	// Start third note again
+	std::cout << "\nStart third note again\n";
+	poly->activateVoice(2, 8, freq5);
 
 	std::cout << "\nChipophone running, press enter to end program\n";
 	std::cin.ignore(255, '\n');

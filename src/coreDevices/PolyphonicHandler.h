@@ -100,12 +100,16 @@ namespace device {
 			 * @param voiceNumber
 			 * @param param The parameter to pass to a new voice, typically velocity from a MIDI controller
 			 */
-			void activateVoice(int voiceNumber, Parameter param){
+			void activateVoice(int voiceNumber, int paramNum, Parameter param){
+				// Built activator parameter
+				Parameter activator;
+				activator.setParam(0,ACTIVE);
+
 				// Check if voiceNumber already exists
 				// If it does, update it with new parameter
 				if (voiceMap.count(voiceNumber)){
-					voiceMap[voiceNumber]->setState(ACTIVE);
-					voiceMap[voiceNumber]->alter(0, param);
+					voiceMap[voiceNumber]->alter(0, activator);
+					voiceMap[voiceNumber]->alter(paramNum, param);
 				}
 
 				// If it doesn't...
@@ -120,7 +124,9 @@ namespace device {
 							UpstreamConnectingType * newTree =
 									this->front()->clone(this->WHOLETREE);
 
-							newTree->alter(0, param);
+							// Make necessary alterations
+							newTree->alter(0, activator);
+							newTree->alter(paramNum, param);
 
 							// Add the new tree to the voiceMap
 							voiceMap.insert(
@@ -146,8 +152,11 @@ namespace device {
 
 					//TODO: Figure out how to best work with envelopes and other time-based things that have alternative states - utilize Alter fcn??
 					// Deactivate it
-					voiceMap[voiceNumber]->setState(INACTIVE);
 
+					Parameter deactivator;
+					deactivator.setParam(0, INACTIVE);
+					voiceMap[voiceNumber]->alter(0, deactivator);
+					std::cout << "\n Deactivating Voice\n";
 					// Decrement the voice counter
 					numVoices--;
 				}
@@ -167,6 +176,7 @@ namespace device {
 							// Disconnect the device from upstream
 							upstream->disconnectDevice(voiceIter->second);
 						}
+						std::cout << "\n found inactive ... tossing it\n";
 						voiceIter->second->erase(this->SAMETREE);
 						voiceMap.erase(voiceIter);
 						voiceIter = voiceMap.begin();

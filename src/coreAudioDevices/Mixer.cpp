@@ -13,7 +13,10 @@ namespace audio {
 		newDevice->state = this->state;
 
 		return newDevice;
+
 	}
+
+
 
 	sample_t * Mixer::advance() {
 		if (!isEmpty()) {

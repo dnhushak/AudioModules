@@ -23,8 +23,10 @@ namespace audio {
 	}
 
 	void Gain::alter(int paramNum, Parameter p){
+		Connectable::alter(paramNum,p);
+		Device::alter(paramNum,p);
 		switch (paramNum){
-			case 0:
+			case 1:
 				//Gain
 				setGain(p.getParam().d);
 				break;

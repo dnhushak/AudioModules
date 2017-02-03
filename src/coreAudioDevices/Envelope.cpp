@@ -34,6 +34,7 @@ namespace audio {
 	}
 
 	void Envelope::alter(int paramNum, Parameter p) {
+		Connectable::alter(paramNum,p);
 		switch (paramNum) {
 			case 0:
 				// Active/Inactive
@@ -85,6 +86,8 @@ namespace audio {
 		 * Decay goes from 1 to the Sustain volume
 		 * Release goes from the current volume to 0
 		 * Below is a graph of a note's volume going through the states of ADSR
+		 *
+		 * -a--|d|----s----|-r-|
 		 *     /\
 		 *    /  \__________
 		 *   /              \

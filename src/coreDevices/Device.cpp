@@ -8,7 +8,7 @@ namespace device {
 		// Device ID
 		devID = devIDCounter;
 		devIDCounter++;
-		numParameters = 0;
+		numParameters = 1;
 	}
 
 	Device * Device::clone(int){
