@@ -229,6 +229,27 @@ namespace device {
 				return totalParams;
 			}
 
+			virtual void alter(int paramNum, Parameter p){
+				// If the paramNum is referencing a parameter higher than this device's parameter count, send it on to the list of devices
+				if (paramNum >= Device::numParameters){
+					// Decrement the parameter pointer (so downstream devices can latch onto it)
+					paramNum -= Device::numParameters;
+
+					// Start with the first device
+					deviceIter = begin();
+
+					// Increment through the attached devices until the paramNum lines up within the desired device
+					while (paramNum >= (*deviceIter)->getNumParameters()){
+						// paramNum is still out of range, so decrement it
+						paramNum -= (*deviceIter)->getNumParameters();
+						// and move on to the next device in the list
+						deviceIter++;
+					}
+					// Forward on the parameter, with the adjusted paramNum
+					(*deviceIter)->alter(paramNum, p);
+				}
+			}
+
 		protected:
 
 			void setMaxNumDevices(int newMax){
