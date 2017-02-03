@@ -29,22 +29,22 @@ namespace device {
 
 			virtual void alter(int paramNum, Parameter p);
 
-			int getNumParameters();
+			virtual int getNumParameters();
 
 			/**
 			 * Get the current device state
 			 * @return Current device state, generally either ```INACTIVE``` (0), or ```ACTIVE``` (1)
 			 */
-			virtual devState_t getState();
+			virtual int getState();
 
-			virtual void setState(devState_t newState);
+			virtual void setState(int newState);
 
 			int getDevID();
 
 			virtual ~Device();
 
 		protected:
-			devState_t state;
+			int state;
 			int numParameters;
 
 		private:

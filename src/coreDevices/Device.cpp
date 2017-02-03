@@ -1,8 +1,8 @@
 #include "Device.h"
 
 namespace device {
-	
-	Device::Device() {
+
+	Device::Device(){
 		// State
 		state = ACTIVE;
 		// Device ID
@@ -11,7 +11,7 @@ namespace device {
 		numParameters = 0;
 	}
 
-	Device * Device::clone(int) {
+	Device * Device::clone(int){
 		Device * newDevice = new Device();
 		newDevice->state = this->getState();
 		return newDevice;
@@ -22,11 +22,16 @@ namespace device {
 		return;
 	}
 
-	int Device::getDevID() {
+	int Device::getDevID(){
 		return devID;
 	}
 
 	void Device::alter(int paramNum, Parameter p){
+		switch (paramNum){
+			case 0:
+				this->setState(p.getParam().i);
+				break;
+		}
 		return;
 	}
 
@@ -34,15 +39,15 @@ namespace device {
 		return numParameters;
 	}
 
-	devState_t Device::getState() {
+	int Device::getState(){
 		return state;
 	}
 
-	void Device::setState(devState_t newState) {
+	void Device::setState(int newState){
 		state = newState;
 	}
 
-	Device::~Device() {
+	Device::~Device(){
 		state = INACTIVE;
 	}
 
