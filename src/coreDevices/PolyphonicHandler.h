@@ -114,7 +114,6 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 						numVoices++;
 
 						if (!this->isEmpty()) {
-							std::cout << "\nCloning Device Tree\n";
 							// Copy the current device tree
 							UpstreamConnectingType * newTree =  this->front()->clone(this->WHOLETREE);
 
@@ -125,7 +124,6 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 
 							// If there is an upstream device, attach the new device tree to upstream
 							if (upstream != 0) {
-								std::cout << "\nConnecting device to upstream\n";
 								upstream->connectDevice(newTree);
 							}
 						}
@@ -157,7 +155,6 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 				voiceIter = voiceMap.begin();
 				// Iterate over the whole map
 				for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
-					std::cout << "\n " << voiceIter->first << "\n ";
 					// Check for inactive voices
 					if ( voiceIter->second->getState() == INACTIVE) {
 						if (upstream != 0) {
@@ -167,18 +164,16 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 						voiceIter->second->erase(this->SAMETREE);
 						voiceMap.erase(voiceIter);
 						voiceIter=voiceMap.begin();
-						std::cout << "\nVoices Remaining:" << voiceMap.size() <<"\n";
 					}
 				}
 			}
 
 			virtual  ~PolyphonicHandler(){
 				voiceIter = voiceMap.begin();
-				while (voiceIter != voiceMap.end()) {
-					// Get rid of all of the devices in the voice map from the upstream device
-
-					voiceIter++;
+				for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
+					voiceIter->second->setState(INACTIVE);
 				}
+				cleanup();
 			}
 
 		private:
