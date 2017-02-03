@@ -218,6 +218,17 @@ namespace device {
 			virtual ~Connectable(){
 			}
 
+			virtual int getNumParameters(){
+				int totalParams = Device::numParameters;
+				if (!isEmpty()){
+					for (deviceIter = begin(); deviceIter != end();
+							deviceIter++){
+						totalParams += (*deviceIter)->getNumParameters();
+					}
+				}
+				return totalParams;
+			}
+
 		protected:
 
 			void setMaxNumDevices(int newMax){
