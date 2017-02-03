@@ -32,9 +32,9 @@ namespace audio {
 
 	void AudioDevice::setBufferSize(int newSize) {
 		if (newSize > 0) {
-			for (AudioDevice * audioDevice : audioDeviceList) {
-				audioDevice->bufferSize = newSize;
-				audioDevice->resizeBuffer();
+			for (audioDeviceIter=audioDeviceList.begin(); audioDeviceIter!=audioDeviceList.end();audioDeviceIter++) {
+				(*audioDeviceIter)->bufferSize = newSize;
+				(*audioDeviceIter)->resizeBuffer();
 			}
 		}
 	}
@@ -69,9 +69,9 @@ namespace audio {
 	}
 
 	void AudioDevice::endOfBuffer() {
-		for (AudioDevice * audioDevice : audioDeviceList) {
-			audioDevice->resetAdvanceBit();
-			audioDevice->cleanup();
+		for (audioDeviceIter=audioDeviceList.begin(); audioDeviceIter!=audioDeviceList.end();audioDeviceIter++) {
+			(*audioDeviceIter)->resetAdvanceBit();
+			(*audioDeviceIter)->cleanup();
 		}
 	}
 

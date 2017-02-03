@@ -151,5 +151,6 @@ namespace audio {
 	 * List of all audio devices. Used for buffer resizing and ```advanced``` bit resetting
 	 */
 	static std::list<AudioDevice *> audioDeviceList;
+	static std::list<AudioDevice *>::iterator audioDeviceIter;
 }
 #endif //AUDIOUDEVICE_h_
