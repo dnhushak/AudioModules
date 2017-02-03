@@ -24,6 +24,8 @@ namespace audio {
 		frequency = 0;
 
 		wavetable = NULL;
+
+		numParameters=3;
 	}
 
 	Oscillator * Oscillator::clone(int) {
