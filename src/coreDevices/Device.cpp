@@ -26,7 +26,7 @@ namespace device {
 		return devID;
 	}
 
-	virtual void Device::alter(int paramNum, Parameter p){
+	void Device::alter(int paramNum, Parameter p){
 		return;
 	}
 

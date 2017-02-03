@@ -10,6 +10,7 @@
 #include <functional>
 // For list
 #include <list>
+#include "Parameter.h"
 
 namespace device {
 	enum devState_t {
