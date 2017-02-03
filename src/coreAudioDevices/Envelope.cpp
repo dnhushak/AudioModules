@@ -11,6 +11,7 @@ namespace audio {
 		setAttack(100);
 		setDecay(100);
 		setSustain(.7);
+		numParameters = 7;
 	}
 
 	Envelope * Envelope::clone(int cloneType) {
@@ -35,28 +36,40 @@ namespace audio {
 	void Envelope::alter(int paramNum, Parameter p) {
 		switch (paramNum) {
 			case 0:
+				// Active/Inactive
+				// The default 0 parameter for every device is to set either active or inactive
+				// Since the envelope works slightly different (has a release phase to finish), we bypass this
+				if(p.getParam().i == INACTIVE){
+					// Instead of making the envelope inactive, we release it
+					releaseEnv();
+				}
+				else{
+					setState(ACTIVE);
+					startEnv();
+				}
+				break;
+			case 1:
 				// Attack
 				setAttack(p.getParam().i);
 				break;
-			case 1:
+			case 2:
 				// Decay
 
 				setDecay(p.getParam().i);
 				break;
-			case 2:
+			case 3:
 				// Sustain
 				setSustain(p.getParam().f);
 				break;
-			case 3:
+			case 4:
 				// Release
 				setRelease(p.getParam().i);
 				break;
-			case 4:
+			case 5:
 				// Envelope Start
 				startEnv();
 				break;
-
-			case 5:
+			case 6:
 				// Envelope Release
 				releaseEnv();
 				break;
@@ -115,7 +128,7 @@ namespace audio {
 //	}
 
 // Gets the state of the envelope (generally for cleanup purposes)
-	envState_t Envelope::getEnvState() {
+	int Envelope::getEnvState() {
 		return envState;
 	}
 

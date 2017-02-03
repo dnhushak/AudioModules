@@ -7,7 +7,7 @@ namespace audio {
 	using namespace device;
 	using namespace std;
 
-	enum envState_t {
+	enum envState_t{
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
@@ -23,11 +23,11 @@ namespace audio {
 			// Advance/fill the buffer
 			sample_t * advance();
 
-//			void process(const sample_t *inBuffer, sample_t *outBuffer,
-//					int samplesToProcess, int numChannels);
+			//			void process(const sample_t *inBuffer, sample_t *outBuffer,
+			//					int samplesToProcess, int numChannels);
 
 			// Gets the current state
-			envState_t getEnvState();
+			int getEnvState();
 
 			// Starts the Envelope
 			void startEnv();
@@ -56,7 +56,7 @@ namespace audio {
 			float calcEnvMult();
 
 			// Current state of envelope
-			envState_t envState;
+			int envState;
 
 			// ADSR - A, D, and R are in ms, S is a multiplier scaled from 0.0 - 1.0
 			int attack;
