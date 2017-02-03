@@ -215,9 +215,6 @@ namespace device {
 				return;
 			}
 
-			virtual ~Connectable(){
-			}
-
 			virtual int getNumParameters(){
 				int totalParams = Device::numParameters;
 				if (!isEmpty()){
@@ -229,6 +226,22 @@ namespace device {
 				return totalParams;
 			}
 
+			/**
+			 * This is a recursive method to allow for connected device's alterable parameters to be accessible at the head of the connected tree
+			 *
+			 * Say we have an oscillator connected to a gain, which is then connected to a mixer:
+			 *
+			 * Audio Card <- Mixer <- Gain <- Oscillator
+			 *
+			 * A mixer has 1 parameter (activate/deactivate)
+			 * A gain has 2 parameters (activate/deactivate and gain)
+			 * An oscillator has 3 parameters (act/deact, set frequency (direct), and set frequency (midi number))
+			 *
+			 * Since they're chained together like this, one could still set the frequency of the oscillator without direct access to the
+			 * oscillator's alter() function - instead, you could call mixer->alter(5, frequencyParameter) to alter the frequency of the oscillator
+			 * via a midi note number
+			 *
+			 */
 			virtual void alter(int paramNum, Parameter p){
 				// If the paramNum is referencing a parameter higher than this device's parameter count, send it on to the list of devices
 				if (paramNum >= Device::numParameters){
@@ -248,6 +261,9 @@ namespace device {
 					// Forward on the parameter, with the adjusted paramNum
 					(*deviceIter)->alter(paramNum, p);
 				}
+			}
+
+			virtual ~Connectable(){
 			}
 
 		protected:
