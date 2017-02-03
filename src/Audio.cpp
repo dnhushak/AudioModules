@@ -24,17 +24,11 @@ std::vector<audio::Wavetable *> * GenerateSynthTables() {
 	std::vector<audio::Wavetable *> * tables = new std::vector<
 			audio::Wavetable *>;
 
-	std::cout << "\n Sawtooth Wavetable";
 	audio::Wavetable* sawtooth = new audio::Wavetable(16);
-	std::cout << "\n Triangle Wavetable";
 	audio::Wavetable* triangle = new audio::Wavetable(16);
-	std::cout << "\n Square 50 Wavetable";
 	audio::Wavetable* square50 = new audio::Wavetable(16);
-	std::cout << "\n Square 25 Wavetable";
 	audio::Wavetable* square25 = new audio::Wavetable(16);
-	std::cout << "\n Noise Wavetable";
 	audio::Wavetable* noise = new audio::Wavetable(8192);
-	std::cout << "\n Vibrasin Wavetable";
 	audio::Wavetable* vibrasin = new audio::Wavetable(256);
 
 	tables->push_back(sawtooth);
@@ -164,105 +158,74 @@ int main(int argc, char *argv[]) {
 	std::vector<audio::Wavetable *> waveTables = *GenerateSynthTables();
 
 
-	std::cout << "\n Main Oscillator";
 	audio::Oscillator *osc = new Oscillator();
-	osc->setWavetable(waveTables[0]);
+	osc->setWavetable(waveTables[3]);
 	osc->setBaseFrequencyMIDI(50);
 
 
-	std::cout << "\n First Gain";
-	audio::Gain * gain = new Gain();
-	gain->setGain(-12);
-
-	gain->connectDevice(osc);
-
-
-	std::cout << "\n Gain & Oscillator Clones";
-	audio::Gain * gain2 = gain->clone(2);
-
-	gain->disconnectAllDevices();
-	osc->erase(2);
+//	audio::Oscillator *osc2 = osc->clone(2);
 
 	audio::Mixer * mixer = new Mixer();
+//	mixer->connectDevice(osc2);
 
-	device::PolyphonicHandler * poly = new device::PolyphonicHandler();
+	audio::Gain * gain = new Gain();
+	gain->setGain(-24);
+	gain->connectDevice(mixer);
+
+	device::PolyphonicHandler<AudioDevice,AudioDevice> * poly = new device::PolyphonicHandler<AudioDevice,AudioDevice>();
+	poly->connectDevice(osc);
+	poly->setUpstream(mixer);
 
 	PaError paerr;
-	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
-											numOutChannels, numInChannels,
-											mixer);
-	if (paerr != paNoError) {
-		std::cout << "Port Audio Error";
-		exit(0);
-	}
-
-	int mushroom[26];
-	mushroom[0]=36;
-	mushroom[1]=31;
-	mushroom[2]=36;
-	mushroom[3]=40;
-	mushroom[4]=43;
-	mushroom[5]=48;
-	mushroom[6]=43;
-	mushroom[7]=32;
-	mushroom[8]=36;
-	mushroom[9]=39;
-	mushroom[10]=44;
-	mushroom[11]=39;
-	mushroom[12]=44;
-	mushroom[13]=48;
-	mushroom[14]=51;
-	mushroom[15]=56;
-	mushroom[16]=51;
-	mushroom[17]=34;
-	mushroom[18]=38;
-	mushroom[19]=41;
-	mushroom[20]=46;
-	mushroom[21]=41;
-	mushroom[22]=46;
-	mushroom[23]=60;
-	mushroom[24]=53;
-	mushroom[25]=58;
-
-	device::Parameter * gainVal1 = new device::Parameter();
-	device::Parameter * gainVal2 = new device::Parameter();
-
-//	usleep(1000000);
-	gainVal1->setParam(0,-12.0);
-	gainVal2->setParam(0,-128.0);
-
-	printf("\nGainVal1: %f", gainVal1->getParam(0).f);
-	printf("\nGainVal1: %f", gainVal1->getParam(0).d);
-	printf("\nGainVal1: %i", gainVal1->getParam(0).i);
-	printf("\nGainVal2: %f", gainVal2->getParam(0).f);
-	printf("\nGainVal2: %f", gainVal2->getParam(0).d);
-	printf("\nGainVal2: %i", gainVal2->getParam(0).i);
-	printf("\n");
-
-
-	for (int j = 0; j < 1; j++) {
-		gain2->alter(0,*gainVal1);
-		((Oscillator*) gain2->front())->setWavetable(waveTables[j]);
-		for (int i = 0; i < 26; i++) {
-			osc->setBaseFrequencyMIDI(i);
-			((Oscillator*) gain2->front())->setBaseFrequencyMIDI(mushroom[i]+24);
-			usleep(35000);
+		paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
+												numOutChannels, numInChannels,
+												gain);
+		if (paerr != paNoError) {
+			std::cout << "Port Audio Error";
+			exit(0);
 		}
-		gain2->alter(0,*gainVal2);
-		usleep(500000);
+
+	device::Parameter * freq1 = new device::Parameter();
+	freq1->setParam(0,440.0);
+
+	for (int j = 0; j < 3; j++) {
+//		gain2->alter(0,*freq1);
+//		osc->setWavetable(waveTables[j]);
+//		for (int i = 0; i < 26; i++) {
+//			osc->setBaseFrequencyMIDI(i);
+//			osc->setBaseFrequencyMIDI(mushroom[i]+24);
+//			usleep(35000);
+//		}
+//		gain2->alter(0,*freq2);
+
+		poly->activateVoice(j,*freq1);
+
+
+		freq1->setParam(0,freq1->getParam().d*2.0);
+
+		usleep(1000000);
 	}
 
-	device::Device * osc2 = gain2->front();
-	std::cout << "\n Gain 2 DevID: "<< gain2->getDevID();
-	gain->connectDevice(gain2);
-	gain->erase(2);
-//	osc2->erase(2);
+		freq1->setParam(0,300.);
+		poly->activateVoice(0,*freq1);
+
+		usleep(1000000);
+		poly->deactivateVoice(2);
+		usleep(1000000);
+		poly->deactivateVoice(1);
+
+		poly->cleanup();
+
+		freq1->setParam(0,freq1->getParam().d*2.0);
+
+		usleep(1000000);
+		poly->activateVoice(2,*freq1);
 
 
 
 
 
-//	std::cout << "\nChipophone running, press enter to end program\n";
-//	std::cin.ignore(255, '\n');
+	std::cout << "\nChipophone running, press enter to end program\n";
+	std::cin.ignore(255, '\n');
 
 }
