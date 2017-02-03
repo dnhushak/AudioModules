@@ -198,7 +198,11 @@ namespace device {
 					delete this;
 					break;
 				case SAMETREE:
-					delete this;
+					if(!isEmpty()){
+						for (deviceIter = begin(); deviceIter != end();deviceIter++) {
+							(*deviceIter)->erase(WHOLETREE);
+						}
+					}
 					break;
 				case WHOLETREE:
 					if(!isEmpty()){
@@ -215,6 +219,7 @@ namespace device {
 			}
 
 		protected:
+
 			void setMaxNumDevices(int newMax) {
 				// Check for valid input
 				if (newMax < -1) {
