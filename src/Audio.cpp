@@ -256,10 +256,19 @@ int main(int argc, char *argv[]){
 	usleep(1000000);
 
 	// Start third note again
-	std::cout << "\nStart third note again\n";
+	std::cout << "\nStart third note again, with different pitch\n";
 	poly->activateVoice(2, 8, freq5);
 
 	std::cout << "\nChipophone running, press enter to end program\n";
 	std::cin.ignore(255, '\n');
+
+	// Deactivate all voices
+	std::cout << "\nDeactivating all voices\n";
+	poly->deactivateAllVoices();
+	usleep(1000000);
+
+	// Cleanup
+	std::cout << "\nCleanup\n";
+	poly->cleanup();
 
 }
