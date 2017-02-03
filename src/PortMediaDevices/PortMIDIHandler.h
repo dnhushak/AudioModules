@@ -23,7 +23,7 @@ namespace midi {
 
 			PmError disconnectMIDIStream();
 
-			void affect(MIDIMessage * message);
+			void process(MIDIMessage * message);
 
 			// Read from the FIFO serial stream
 			void readMIDI();

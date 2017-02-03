@@ -17,7 +17,7 @@ namespace midi {
 			virtual ChannelFilter * clone(int);
 
 			// Pass on the filtered MIDI channel data to each item in MIDIDeviceList
-			void affect(MIDIMessage *);
+			void process(MIDIMessage *);
 
 			// Set the new channel, checking for correct channel numbers
 			void setChannel(int);

@@ -14,7 +14,7 @@ namespace midi {
 
 	}
 
-	void PortMIDIHandler::affect(MIDIMessage* message) {
+	void PortMIDIHandler::process(MIDIMessage* message) {
 		writeMIDI(message);
 	}
 
