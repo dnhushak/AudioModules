@@ -26,6 +26,10 @@ namespace device {
 
 			virtual void erase(int);
 
+			virtual void alter(int paramNum, Parameter p);
+
+			int getNumParameters();
+
 			/**
 			 * Get the current device state
 			 * @return Current device state, generally either ```INACTIVE``` (0), or ```ACTIVE``` (1)
@@ -40,8 +44,7 @@ namespace device {
 
 		protected:
 			devState_t state;
-			bool connectable;
-			bool alterable;
+			int numParameters;
 
 		private:
 			int devID;

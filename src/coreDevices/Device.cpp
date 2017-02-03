@@ -8,8 +8,7 @@ namespace device {
 		// Device ID
 		devID = devIDCounter;
 		devIDCounter++;
-		connectable = false;
-		alterable = false;
+		numParameters = 0;
 	}
 
 	Device * Device::clone(int) {
@@ -25,6 +24,14 @@ namespace device {
 
 	int Device::getDevID() {
 		return devID;
+	}
+
+	virtual void Device::alter(int paramNum, Parameter p){
+		return;
+	}
+
+	int Device::getNumParameters(){
+		return numParameters;
 	}
 
 	devState_t Device::getState() {

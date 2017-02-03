@@ -3,13 +3,12 @@
 
 #include "AudioDevice.h"
 #include "Connectable.h"
-#include "Alterable.h"
 
 namespace audio {
 	using namespace device;
 	using namespace std;
 
-	class Ramp: public Alterable<Connectable<AudioDevice, AudioDevice> > {
+	class Ramp: public Connectable<AudioDevice, AudioDevice>{
 		public:
 			// Constructor
 			Ramp();

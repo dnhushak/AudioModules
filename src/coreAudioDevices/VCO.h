@@ -8,7 +8,7 @@ namespace audio {
 	using namespace device;
 	using namespace std;
 	
-	class VCO: public Alterable<Connectable<Oscillator, AudioDevice> > {
+	class VCO: public Connectable<Oscillator, AudioDevice>{
 		public:
 			VCO();
 

@@ -18,6 +18,7 @@
 #include "AudioDevice.h"
 #include <pthread.h>
 #include "Connectable.h"
+#include "PolyphonicHandler.h"
 
 std::vector<audio::Wavetable *> * GenerateSynthTables() {
 	std::vector<audio::Wavetable *> * tables = new std::vector<
@@ -179,13 +180,17 @@ int main(int argc, char *argv[]) {
 	std::cout << "\n Gain & Oscillator Clones";
 	audio::Gain * gain2 = gain->clone(2);
 
-gain->disconnectAllDevices();
+	gain->disconnectAllDevices();
 	osc->erase(2);
+
+	audio::Mixer * mixer = new Mixer();
+
+	device::PolyphonicHandler * poly = new device::PolyphonicHandler();
 
 	PaError paerr;
 	paerr = PAHandler->connectAudioStream(AudioOutDevID, AudioInDevID,
 											numOutChannels, numInChannels,
-											gain2);
+											mixer);
 	if (paerr != paNoError) {
 		std::cout << "Port Audio Error";
 		exit(0);

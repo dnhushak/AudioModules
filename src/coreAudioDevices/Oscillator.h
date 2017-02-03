@@ -3,7 +3,6 @@
 
 #include "AudioDevice.h"
 #include "Wavetable.h"
-#include "Alterable.h"
 
 //For phase register maximum
 #include <limits.h>
@@ -14,7 +13,7 @@ namespace audio {
 	using namespace device;
 	using namespace std;
 
-	class Oscillator: public Alterable<AudioDevice> {
+	class Oscillator: public AudioDevice {
 		public:
 			// Constructor
 			Oscillator();

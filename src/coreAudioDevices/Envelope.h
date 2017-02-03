@@ -2,7 +2,6 @@
 #define ENVELOPE_h_
 #include "AudioDevice.h"
 #include "Connectable.h"
-#include "Alterable.h"
 
 namespace audio {
 	using namespace device;
@@ -12,7 +11,7 @@ namespace audio {
 		INIT, ATTACK, DECAY, SUSTAIN, RELEASE, DONE
 	};
 
-	class Envelope: public Alterable<Connectable<AudioDevice, AudioDevice> > {
+	class Envelope: public Connectable<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Envelope();

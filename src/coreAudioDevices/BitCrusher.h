@@ -2,13 +2,12 @@
 #define BITCRUSHER_h_
 #include "AudioDevice.h"
 #include "Connectable.h"
-#include "Alterable.h"
 
 namespace audio {
 	using namespace device;
 	using namespace std;
 	
-	class BitCrusher: public Alterable<Connectable<AudioDevice, AudioDevice> > {
+	class BitCrusher: public Connectable<AudioDevice, AudioDevice>{
 		public:
 			BitCrusher();
 			virtual BitCrusher * clone(int cloneType);

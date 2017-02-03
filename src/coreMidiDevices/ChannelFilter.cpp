@@ -26,17 +26,10 @@ namespace midi {
 	}
 
 	void ChannelFilter::process(MIDIMessage * message) {
-		// Check to see if the message is of the desired channel
-		if (message->statusType == SYSTEM) {
-			//System messages are channel independent
-		} else {
-			if (channelMatches(message->channel)) {
-				// If it is, forward it to all MIDI Devices
-				deviceIter = begin();
-				while (deviceIter != end()) {
-					(*deviceIter)->process(message);
-					deviceIter++;
-				}
+		if (channelMatches(message->channel) || message->statusType == SYSTEM) {
+			// If it is, forward it to all MIDI Devices
+			for (deviceIter = begin();deviceIter != end();deviceIter++) {
+				(*deviceIter)->process(message);
 			}
 		}
 	}

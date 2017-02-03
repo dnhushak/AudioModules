@@ -1,13 +1,12 @@
 #pragma once
 #include "MIDIDevice.h"
 #include "Connectable.h"
-#include "Alterable.h"
 
 namespace midi {
 	using namespace device;
 	using namespace std;
 	
-	class ChannelFilter: public Alterable<Connectable<MIDIDevice, MIDIDevice> >{
+	class ChannelFilter: public Connectable<MIDIDevice, MIDIDevice>{
 		public:
 			//Initialize with a starting channel number
 			ChannelFilter(int);
