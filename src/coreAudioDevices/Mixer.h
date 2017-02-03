@@ -5,7 +5,8 @@
 #include "Connectable.h"
 
 namespace audio {
-	class Mixer: public device::Connectable<AudioDevice, AudioDevice> {
+	using namespace device;
+	class Mixer: public Connectable<AudioDevice, AudioDevice> {
 		public:
 			// Constructor
 			Mixer();
