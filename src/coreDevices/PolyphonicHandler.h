@@ -19,6 +19,8 @@ namespace device {
  *
  * Note that the template class declarations *have to match* the class declarations within ```Connectable``` of the upstream class type
  *
+ * Note also that Upstream HAS to be ```Connectable```
+ *
  * I.E. a common example is a ```Mixer``` as the upstream object. ```Mixer``` is of type ```Connectable<AudioDevice,AudioDevice>```, so declaring a
  * PolyphonicHandler that will have a mixer as its upstream device, you would declare it as ```PolyphonicHandler<AudioDevice,AudioDevice>```
  *
@@ -155,6 +157,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 				voiceIter = voiceMap.begin();
 				// Iterate over the whole map
 				for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
+					std::cout << "\n " << voiceIter->first << "\n ";
 					// Check for inactive voices
 					if ( voiceIter->second->getState() == INACTIVE) {
 						if (upstream != 0) {
@@ -163,6 +166,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 						}
 						voiceIter->second->erase(this->SAMETREE);
 						voiceMap.erase(voiceIter);
+						voiceIter=voiceMap.begin();
 						std::cout << "\nVoices Remaining:" << voiceMap.size() <<"\n";
 					}
 				}
