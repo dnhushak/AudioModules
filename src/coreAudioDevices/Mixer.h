@@ -13,8 +13,6 @@ namespace audio {
 
 			virtual Mixer * clone(int);
 
-			void alter(int, Parameter);
-
 			// Advance by a given number of samples (in this case summing all in the AudioList
 			sample_t * advance();
 
