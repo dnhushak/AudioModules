@@ -2,14 +2,14 @@
 
 namespace audio {
 
-	Gain::Gain() {
+	Gain::Gain(){
 		setMaxNumDevices(1);
 		// Default gain to 0 db
 		setGain(0);
 	}
 
-	Gain * Gain::clone(int cloneType) {
-		if (cloneType != 0) {
+	Gain * Gain::clone(int cloneType){
+		if (cloneType != 0){
 			return (Gain *) Connectable::clone(cloneType);
 		}
 		// Create new device
@@ -22,8 +22,8 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Gain::alter(int paramNum, Parameter p) {
-		switch (paramNum) {
+	void Gain::alter(int paramNum, Parameter p){
+		switch (paramNum){
 			case 0:
 				//Gain
 				setGain(p.getParam().d);
@@ -31,19 +31,20 @@ namespace audio {
 		}
 	}
 
-	sample_t * Gain::advance() {
-		if (isEmpty()) {
+	sample_t * Gain::advance(){
+		if (isEmpty()){
 			zeroBuffer();
-		} else {
+		}
+		else{
 			copyToBuffer(front()->read(), bufferSize);
-			for (int i = 0; i < bufferSize; i++) {
+			for (int i = 0; i < bufferSize; i++){
 				buffer[i] *= gain;
 			}
 		}
 		return buffer;
 	}
 
-	void Gain::setGain(float volume) {
+	void Gain::setGain(float volume){
 		// Volume is coming in dbs
 		// 0 dbs => gain of 1
 		gain = dbToRatio(volume);

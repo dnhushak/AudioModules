@@ -7,29 +7,29 @@
 
 namespace device {
 
-/**
- * ```PolyphonicHandler``` is a class used to do just that: handle polyphony.
- *
- * Essentially instead of creating all of the voices one could want at runtime, PH will dynamically create (and destroy) voices as needed
- *
- * It works much like a modular synthesizer, with the added bonus of digital duplicity
- *
- * Since PH is a ```Connectable``` object, you can connect a Device (or a string of ```Connectable``` Devices) to it, and it will automatically duplicate
- * the entire tree when a new voice is needed. It will then attach the head of that new tree to the upstream device.
- *
- * Note that the template class declarations *have to match* the class declarations within ```Connectable``` of the upstream class type
- *
- * Note also that Upstream HAS to be ```Connectable```
- *
- * I.E. a common example is a ```Mixer``` as the upstream object. ```Mixer``` is of type ```Connectable<AudioDevice,AudioDevice>```, so declaring a
- * PolyphonicHandler that will have a mixer as its upstream device, you would declare it as ```PolyphonicHandler<AudioDevice,AudioDevice>```
- *
- * PH only allows for one object to connect to it, and it will treat this as the "head" of the tree to recursively duplicate for every voice
- */
-template<class UpstreamInheritedType, class UpstreamConnectingType>
-class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
-	typedef Connectable<UpstreamInheritedType, UpstreamConnectingType> UpstreamType;
-	public:
+	/**
+	 * ```PolyphonicHandler``` is a class used to do just that: handle polyphony.
+	 *
+	 * Essentially instead of creating all of the voices one could want at runtime, PH will dynamically create (and destroy) voices as needed
+	 *
+	 * It works much like a modular synthesizer, with the added bonus of digital duplicity
+	 *
+	 * Since PH is a ```Connectable``` object, you can connect a Device (or a string of ```Connectable``` Devices) to it, and it will automatically duplicate
+	 * the entire tree when a new voice is needed. It will then attach the head of that new tree to the upstream device.
+	 *
+	 * Note that the template class declarations *have to match* the class declarations within ```Connectable``` of the upstream class type
+	 *
+	 * Note also that Upstream HAS to be ```Connectable```
+	 *
+	 * I.E. a common example is a ```Mixer``` as the upstream object. ```Mixer``` is of type ```Connectable<AudioDevice,AudioDevice>```, so declaring a
+	 * PolyphonicHandler that will have a mixer as its upstream device, you would declare it as ```PolyphonicHandler<AudioDevice,AudioDevice>```
+	 *
+	 * PH only allows for one object to connect to it, and it will treat this as the "head" of the tree to recursively duplicate for every voice
+	 */
+	template<class UpstreamInheritedType, class UpstreamConnectingType>
+	class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
+			typedef Connectable<UpstreamInheritedType, UpstreamConnectingType> UpstreamType;
+		public:
 			PolyphonicHandler(){
 				numVoices = 0;
 				maxNumVoices = -1;
@@ -47,7 +47,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 			 * @param newMaxNumVoices
 			 */
 			void setMaxNumVoices(int newMaxNumVoices){
-				if (newMaxNumVoices == -1 || newMaxNumVoices > 0) {
+				if (newMaxNumVoices == -1 || newMaxNumVoices > 0){
 					maxNumVoices = newMaxNumVoices;
 				}
 			}
@@ -64,7 +64,8 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 				// Start at the beginning of the voice map
 				voiceIter = voiceMap.begin();
 				// Iterate over the whole map
-				for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
+				for (voiceIter = voiceMap.begin(); voiceIter != voiceMap.end();
+						voiceIter++){
 					// Add all of the devices in the voice map from the upstream device
 					upstream->connectDevice(voiceIter->second);
 				}
@@ -83,9 +84,10 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 			 */
 			void disconnectUpstream(){
 				// Check if upstream still exists
-				if (upstream != 0) {
+				if (upstream != 0){
 					// Iterate over the whole map
-					for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
+					for (voiceIter = voiceMap.begin();
+							voiceIter != voiceMap.end(); voiceIter++){
 						// Get rid of all of the devices in the voice map from the upstream device
 						upstream->disconnectDevice(voiceIter->second);
 					}
@@ -101,29 +103,32 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 			void activateVoice(int voiceNumber, Parameter param){
 				// Check if voiceNumber already exists
 				// If it does, update it with new parameter
-				if (voiceMap.count(voiceNumber)) {
+				if (voiceMap.count(voiceNumber)){
 					voiceMap[voiceNumber]->setState(ACTIVE);
-					voiceMap[voiceNumber]->alter(0,param);
+					voiceMap[voiceNumber]->alter(0, param);
 				}
 
 				// If it doesn't...
-				else {
+				else{
 					// Check to see if we have voices available
-					if (maxNumVoices == -1 || numVoices < maxNumVoices) {
+					if (maxNumVoices == -1 || numVoices < maxNumVoices){
 						// Increment the voice counter
 						numVoices++;
 
-						if (!this->isEmpty()) {
+						if (!this->isEmpty()){
 							// Copy the current device tree
-							UpstreamConnectingType * newTree =  this->front()->clone(this->WHOLETREE);
+							UpstreamConnectingType * newTree =
+									this->front()->clone(this->WHOLETREE);
 
-							newTree->alter(0,param);
+							newTree->alter(0, param);
 
 							// Add the new tree to the voiceMap
-							voiceMap.insert(std::pair<int,UpstreamConnectingType *>(voiceNumber, newTree));
+							voiceMap.insert(
+									std::pair<int, UpstreamConnectingType *>(
+											voiceNumber, newTree));
 
 							// If there is an upstream device, attach the new device tree to upstream
-							if (upstream != 0) {
+							if (upstream != 0){
 								upstream->connectDevice(newTree);
 							}
 						}
@@ -137,7 +142,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 			 */
 			void deactivateVoice(int voiceNumber){
 				// Check if voiceNumber does exist in map
-				if (voiceMap.count(voiceNumber)) {
+				if (voiceMap.count(voiceNumber)){
 
 					//TODO: Figure out how to best work with envelopes and other time-based things that have alternative states - utilize Alter fcn??
 					// Deactivate it
@@ -154,23 +159,25 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 			void cleanup(){
 				voiceIter = voiceMap.begin();
 				// Iterate over the whole map
-				for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
+				for (voiceIter = voiceMap.begin(); voiceIter != voiceMap.end();
+						voiceIter++){
 					// Check for inactive voices
-					if ( voiceIter->second->getState() == INACTIVE) {
-						if (upstream != 0) {
+					if (voiceIter->second->getState() == INACTIVE){
+						if (upstream != 0){
 							// Disconnect the device from upstream
 							upstream->disconnectDevice(voiceIter->second);
 						}
 						voiceIter->second->erase(this->SAMETREE);
 						voiceMap.erase(voiceIter);
-						voiceIter=voiceMap.begin();
+						voiceIter = voiceMap.begin();
 					}
 				}
 			}
 
-			virtual  ~PolyphonicHandler(){
+			virtual ~PolyphonicHandler(){
 				voiceIter = voiceMap.begin();
-				for (voiceIter=voiceMap.begin();voiceIter != voiceMap.end();voiceIter++) {
+				for (voiceIter = voiceMap.begin(); voiceIter != voiceMap.end();
+						voiceIter++){
 					voiceIter->second->setState(INACTIVE);
 				}
 				cleanup();
@@ -184,8 +191,7 @@ class PolyphonicHandler: public Connectable<Device, UpstreamConnectingType> {
 
 			UpstreamType * upstream;
 
-
-};
+	};
 }
 
 #endif /* POLYPHONICHANDLER_H_ */

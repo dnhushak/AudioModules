@@ -13,13 +13,13 @@
 #include "Parameter.h"
 
 namespace device {
-	enum devState_t {
+	enum devState_t{
 		INACTIVE, ACTIVE
 	};
-	
+
 	static int devIDCounter = 0;
 
-	class Device {
+	class Device{
 		public:
 			Device();
 

@@ -1,14 +1,14 @@
 #include "Clipper.h"
 
 namespace audio {
-	
-	Clipper::Clipper() {
+
+	Clipper::Clipper(){
 		setThreshold(-3);
 		setMaxNumDevices(1);
 	}
 
-	Clipper * Clipper::clone(int cloneType) {
-		if (cloneType != 0) {
+	Clipper * Clipper::clone(int cloneType){
+		if (cloneType != 0){
 			return (Clipper *) Connectable::clone(cloneType);
 		}
 		// Create new device
@@ -20,9 +20,9 @@ namespace audio {
 		return newDevice;
 	}
 
-	void Clipper::alter(int paramNum, Parameter p) {
+	void Clipper::alter(int paramNum, Parameter p){
 		// Check for parameter string
-		switch (paramNum) {
+		switch (paramNum){
 			case 0:
 				//Threshold
 				setThreshold(p.getParam().f);
@@ -30,35 +30,37 @@ namespace audio {
 		}
 	}
 
-	sample_t * Clipper::advance() {
-		if (!isEmpty()) {
+	sample_t * Clipper::advance(){
+		if (!isEmpty()){
 
 			// Get the buffer from the connected device
 			copyToBuffer(front()->read(), bufferSize);
 
 			// Go through each sample in the buffer
-			for (int i = 0; i < bufferSize; i++) {
+			for (int i = 0; i < bufferSize; i++){
 				// If lower than low threshold...
-				if (buffer[i] < thresholdLo) {
+				if (buffer[i] < thresholdLo){
 					// ... Set value to the low threshold
 					buffer[i] = thresholdLo;
 					// Else if higher than the high threshold...
-				} else if (buffer[i] > thresholdHi) {
+				}
+				else if (buffer[i] > thresholdHi){
 					// ... Set value to high threshold
 					buffer[i] = thresholdHi;
 				}
 			}
-		} else {
+		}
+		else{
 			zeroBuffer();
 		}
 		return buffer;
 	}
 
-	float Clipper::getThreshold() {
+	float Clipper::getThreshold(){
 		return threshold;
 	}
 
-	void Clipper::setThreshold(float newThreshold) {
+	void Clipper::setThreshold(float newThreshold){
 		threshold = newThreshold;
 		thresholdHi = (sample_t) (dbToRatio(newThreshold) * sampleMax);
 		thresholdLo = -thresholdHi;
