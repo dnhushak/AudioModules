@@ -17,7 +17,7 @@ namespace midi {
 			virtual MIDIDevice * clone(int) = 0;
 
 			// The affect call used to act based on MIDI input
-			virtual void affect(MIDIMessage *) = 0;
+			virtual void process(MIDIMessage *) = 0;
 
 			virtual ~MIDIDevice();
 	};

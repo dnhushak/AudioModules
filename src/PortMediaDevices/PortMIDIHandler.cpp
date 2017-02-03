@@ -177,7 +177,7 @@ namespace midi {
 	void PortMIDIHandler::forward(MIDIMessage* message) {
 		deviceIter = begin();
 		while (deviceIter != end()) {
-			(*deviceIter)->affect(message);
+			(*deviceIter)->process(message);
 			deviceIter++;
 		}
 	}

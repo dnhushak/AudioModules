@@ -11,7 +11,7 @@ namespace midi {
 		public:
 			MessagePrinter();
 
-			virtual void affect(MIDIMessage *);
+			virtual void process(MIDIMessage *);
 
 			void decodeMessageType(MIDIMessage *);
 	};

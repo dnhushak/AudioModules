@@ -21,7 +21,7 @@ namespace arduino {
 		if (!isEmpty()) {
 			deviceIter = begin();
 			while (deviceIter != end()) {
-				(*deviceIter)->affect(message);
+				(*deviceIter)->process(message);
 				deviceIter++;
 			}
 		}

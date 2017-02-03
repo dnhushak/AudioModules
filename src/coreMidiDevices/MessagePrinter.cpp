@@ -4,7 +4,7 @@ namespace midi {
 	MessagePrinter::MessagePrinter() {
 	}
 
-	void MessagePrinter::affect(MIDIMessage * message) {
+	void MessagePrinter::process(MIDIMessage * message) {
 
 		//Make Magenta
 #define cyan "\033[1;36m"

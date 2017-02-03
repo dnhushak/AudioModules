@@ -34,7 +34,7 @@ namespace midi {
 				// If it is, forward it to all MIDI Devices
 				deviceIter = begin();
 				while (deviceIter != end()) {
-					(*deviceIter)->affect(message);
+					(*deviceIter)->process(message);
 					deviceIter++;
 				}
 			}
