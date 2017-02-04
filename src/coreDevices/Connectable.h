@@ -13,6 +13,8 @@ namespace device {
 	 * The declaration is ```class Object: public Connectable<InheritType, ConnectType>```,
 	 * where ```InheritType``` is the class that the Object inherits from,
 	 * and ```ConnectType``` is the class of objects that can connect to this Object.
+	 *
+	 * Do note that ```InheritType``` MUST be of type ```Device``` or child thereof
 	 */
 	template<class InheritType, class ConnectType>
 	class Connectable: public InheritType{
